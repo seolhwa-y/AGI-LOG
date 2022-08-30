@@ -1,0 +1,732 @@
+@charset "UTF-8";
+
+@font-face {
+    font-family: 'twayair';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_tway@1.0/twayair.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    font-family: 'twayair';
+}
+
+#background {
+    margin: 0 auto;
+    height: 55rem;
+    width: 90rem;
+}
+
+#top {
+    height: 13rem;
+    width: 90rem;
+    margin: auto;
+}
+
+#accessArea {
+    float: right;
+    margin: 0.5rem;
+    height: 2rem;
+    color: rgb(192, 192, 192);
+    font-size: 1.5rem;
+}
+
+#accessArea span {
+	margin-right: 20px;
+	font-size: 1rem;
+}
+
+#middle {
+    height: 47rem;
+    width: 90rem;
+    background-color: #fff1f1;
+    margin: 0 auto;
+}
+
+#logo {
+    height: 10rem;
+    text-align: center;
+    width: 30rem;
+    margin: 0 auto;
+    cursor: pointer;
+}
+
+img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+#mainMenuList {
+
+    height: 2rem;
+    width: 70rem;
+    margin: 0 auto;
+    margin-top: 0.6rem;
+    padding: 0;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -moz-flex;
+    display: -webkit-flex;
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+    color: rgb(192, 192, 192);
+    font-size: 1.5rem;
+}
+.mainMenu:hover{
+    color: #fff1f1;
+    cursor: pointer;
+}
+
+#leftArea {
+    position: relative;
+    height: 100%;
+    width: 1rem;
+    float: left;
+}
+
+#rightArea {
+    height: 98%;
+    width: 79.6rem;
+    margin: 0 auto;
+    padding: 0 5%;
+    padding-top: 1%;
+    overflow: auto;
+
+}
+/* 스크롤바 */
+.scrollBar { 
+    width: 200px;
+    height: 200px;
+    overflow: scroll;
+
+  }
+  
+  /* 아래의 모든 코드는 영역::코드로 사용 */
+  
+  .scrollBar::-webkit-scrollbar {
+      width: 10px;  /* 스크롤바의 너비 */
+  }
+  
+  .scrollBar::-webkit-scrollbar-thumb {
+      height: 30%; /* 스크롤바의 길이 */
+      background: rgb(234, 234, 234); /* 스크롤바의 색상 */
+      
+      border-radius: 10px;
+  }
+  
+  .scrollBar::-webkit-scrollbar-track {
+      background:#fff1f1;  /*스크롤바 뒷 배경 색상*/
+  }
+
+.button1 {
+    font-size: 2rem;
+}
+
+.input1 {
+    font-size: 2rem;
+}
+
+/* navigator */
+
+.fa {
+    position: relative;
+    display: table-cell;
+    width: 60px;
+    height: 36px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 40px;
+}
+
+.side-menu {
+    position: absolute;
+    background: #ffd4d4;
+    border-right: 1px solid #e5e5e5;
+    border-radius: 0 30px 30px 0;
+    top: 0;
+    bottom: 0;
+    height: 100%;
+    left: 0;
+    width: 25px;
+    overflow: hidden;
+    -webkit-transition: width .05s linear;
+    transition: width .05s linear;
+    -webkit-transform: translateZ(0) scale(1, 1);
+    z-index: 1000;
+    
+}
+
+.side-menu:hover,
+nav.side-menu.expanded {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 250px;
+    overflow: visible;
+    border-radius: 0px 50px 50px 0px;
+}
+.side-menu:hover .menus {
+    display: block;
+}
+
+.menus {
+    display: none;
+}
+
+.side-menu>ul {
+    margin: 7px 0;
+}
+
+.side-menu li {
+    position: relative;
+    display: block;
+    width: 250px;
+}
+
+.side-menu li>a {
+    position: relative;
+    display: table;
+    border-collapse: collapse;
+    border-spacing: 0;
+    color: #999;
+    font-family: arial;
+    font-size: 30px;
+    text-decoration: none;
+    -webkit-transform: translateZ(0) scale(1, 1);
+    -webkit-transition: all .1s linear;
+    transition: all .1s linear;
+
+}
+
+
+
+.nav-text {
+    position: relative;
+    display: table-cell;
+    vertical-align: middle;
+    width: 190px;
+    font-size: 40px;
+    color: #FFFFFF;
+    text-align: center;
+    margin-top: 5rem;
+    margin-bottom: 1rem;
+    margin-left: -1.2rem;
+}
+
+.nav-sText{
+    color: #FFFFFF;
+    font-size: 30px;
+    margin-left: 4.5rem;
+    margin-bottom: 1rem;
+}
+.nav-sText:hover{
+    color: rgb(192, 192, 192);
+    cursor: pointer;
+}
+
+
+a:hover,
+a:focus {
+    text-decoration: none;
+}
+
+nav {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+nav ul,
+nav li {
+    outline: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.side-menu li:hover>a,
+nav.side-menu li.active>a,
+.dropdown-menu>li>a:hover,
+.dropdown-menu>li>a:focus,
+.dropdown-menu>.active>a,
+.dropdown-menu>.active>a:hover,
+.dropdown-menu>.active>a:focus,
+.no-touch .dashboard-page nav.dashboard-menu ul li:hover a,
+.dashboard-page nav.dashboard-menu ul li.active a {
+    color: #fff;
+    background-color: #5fa2db;
+}
+
+@font-face {
+    font-family: 'Titillium Web';
+    font-style: normal;
+    font-weight: 300;
+    src: local('Titillium WebLight'), local('TitilliumWeb-Light'), url(http://themes.googleusercontent.com/static/fonts/titilliumweb/v2/anMUvcNT0H1YN4FII8wpr24bNCNEoFTpS2BTjF6FB5E.woff) format('woff');
+}
+
+
+/*-------------------버튼---------------------------------------*/
+/* 모달 */
+.modal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal.show {
+    display: block;
+}
+
+.modal_body {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 600px;
+    height: 600px;
+    padding: 40px;
+    text-align: center;
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.modal_head {
+    width: 100%;
+    height: 10%;
+}
+
+.miniProfile {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 250px;
+    height: 50px;
+    text-align: left;
+}
+
+.miniProfile p {
+    margin: auto;
+    width: inherit;
+}
+
+ /* 로그인 회원가입 */
+ :root {
+    --accessInput-color-ink-low-contrast: rgba(60, 60, 67, 0.3);
+    --accessInput-color-ink-medium-contrast: rgba(19, 19, 21, 0.6);
+    --accessInput-color-interaction: pink;
+    --accessInput-color-interaction-minus-two: rgba(73, 133, 224, 0.12);
+
+}
+
+/* 로그인,회원가입 Input*/
+.accessInput-input-group {
+    position: relative;
+}
+
+.accessInput {
+    border: none;
+    border-radius: 0;
+    border-bottom: 0.125rem solid var(--accessInput-color-ink-medium-contrast);
+    width: 100%;
+    height: 2rem;
+    font-size: 1.2rem;
+    padding-left: 0.875rem;
+    line-height: 147.6%;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    width: 20.4375rem;
+    background-color: #fff1f1;
+    font-family: none;
+}
+
+.accessInput:focus {
+    outline: none;
+}
+
+.accessInput+.accessInput-label {
+    position: absolute;
+    top: 0.875rem;
+    left: 0.675rem;
+    line-height: 147.6%;
+    color: var(--accessInput-color-ink-medium-contrast);
+    transition: top .2s;
+    font-size: 1.2rem;
+    margin-top: 2px;
+    margin-left: 0.5rem;
+}
+
+.accessInput+.accessInput-helper {
+    font-size: 0.9375rem;
+    color: var(--accessInput-color-ink-medium-contrast);
+    letter-spacing: 0.0275rem;
+    margin: 0.125rem 0.875rem;
+}
+
+.accessInput:focus+.accessInput-label {
+    color: var(--accessInput-color-interaction);
+}
+
+.accessInput:focus {
+    border-color: var(--accessInput-color-interaction);
+}
+
+input:focus+.accessInput-label,
+input:valid+.accessInput-label {
+    top: -0.875rem;
+    font-size: 1rem;
+}
+
+/* 마이프로필 */
+/* 마이프로필 썸네일 */
+button {
+    border: none;
+    border-radius: 5px;
+    letter-spacing: 1.5px;
+    transform: translateY(-3px);
+}
+
+.profilePhoto {
+    background-color: gray;
+    margin: 10px;
+    width: 120px;
+    height: 120px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    border-radius: 100%;
+}
+
+/* 마이프로필 버튼 */
+.miniBtn {
+    width: 90px;
+    height: 25px;
+    background-color: #e6dccb;
+    box-shadow: 0px 5px 0px 0px rgb(167 158 146);
+}
+
+.miniBtn:hover {
+    background-color: #f7efe1;
+}
+
+.miniBtnB {
+    width: 90px;
+    height: 25px;
+    background-color: #c5b6a2;
+    box-shadow: 0px 5px 0px 0px rgb(167 158 146);
+}
+
+.miniBtnB:hover {
+    background-color: rgb(236, 230, 219);
+}
+
+.profileInput {
+    width: 90px;
+    height: 2rem;
+}
+
+.dateInput {
+    width: 8rem;
+    height: 2rem;
+    font-size: 1rem;
+    padding-left: 1%;
+}
+
+/* 모달 인풋 */
+input {
+    border-radius: 5px;
+    border: solid 2px rgb(173, 173, 173);
+}
+
+.mBasicInput {
+    width: 18rem;
+    height: 2rem;
+    font-size: 1rem;
+}
+
+.mMiniInput {
+    width: 90px;
+    height: 2rem;
+}
+
+.mCommentInput {
+    width: 25rem;
+    height: 2rem;
+}
+
+.mContentInput {
+    width: 30rem;
+    height: 12rem;
+    font-size: 1rem;
+    resize: none;
+}
+
+.mHashTagInput {
+    width: 30rem;
+    height: 2rem;
+    font-size: 1rem;
+}
+
+.mMemoInput {
+    width: 28rem;
+    height: 4.6rem;
+    font-size: 1rem;
+    resize: none;
+}
+
+.mScheduleInput {
+    width: 11rem;
+    height: 1.2rem;
+    font-size: 1rem;
+}
+
+.mEditInput {
+    width: 20rem;
+    height: 1.5rem;
+}
+
+
+
+/* 눌렀을 때 들어가는 애들(전부다 class에 btn,버튼이름 이렇게 두개 들어가야함)*/
+.btn:active {
+    transform: translate(0px, 1px);
+    -webkit-transform: translate(0px, 1px);
+    box-shadow: 0px 1px 0px 0px;
+}
+
+.editBtn:active {
+    transform: translate(0px, 5px);
+    -webkit-transform: translate(0px, 5px);
+}
+
+.mBtnO {
+    height: 2.3rem;
+    width: 13rem;
+    box-shadow: 0px 5px 0px 0px rgb(239 157 171);
+    background-color: rgb(255, 194, 204);
+    font-size: 1.1rem;
+    color: dimgray;
+}
+
+.mBtnO:hover {
+    background-color: rgb(255, 234, 238);
+}
+
+.mBtnX {
+    height: 2.3rem;
+    width: 13rem;
+    box-shadow: 0px 5px 0px 0px rgb(182, 182, 182);
+    font-size: 1.1rem;
+    color: dimgray;
+}
+
+.mBtnX:hover {
+    background-color: rgb(255, 234, 238);
+}
+
+.mCheckBtn {
+    height: 2.3rem;
+    width: 4rem;
+    box-shadow: 0px 5px 0px 0px rgb(141, 141, 141);
+    background-color: pink;
+}
+
+.mCheckBtn:hover {
+    background-color: red;
+}
+
+.mResBtn {
+    height: 2.3rem;
+    width: 4rem;
+    box-shadow: 0px 5px 0px 0px rgb(182 153 195);
+    background-color: #cfb8d9;
+    font-size: 1.1rem;
+}
+
+.mResBtn:hover {
+    background-color: #e5d3ed;
+}
+
+.mAddBtn {
+    color: gray;
+}
+
+.mAddBtn:hover {
+    color: rgb(90, 90, 90);
+}
+
+.mMiniBtn {
+    height: 1.5rem;
+    width: 4rem;
+    box-shadow: 0px 5px 0px 0px rgb(239 157 171);
+    background-color: rgb(255, 194, 204);
+}
+
+.mMiniBtn:hover {
+    background-color: rgb(255, 234, 238);
+}
+
+
+/* 눌렀을때 들어가는 애들 말고 나머지 */
+.closeBtn,
+.mDelBtn,
+.delBtn,
+.mUpdBtn,
+.updBtn {
+    padding: 0;
+    border: none;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+}
+
+.mDelBtn:hover,
+.closeBtn:hover,
+.delBtn:hover {
+    color: red;
+}
+
+.mDelBtn:active,
+.closeBtn:active,
+.delBtn:active {
+    text-shadow: 2px 2px 8px #FF0000;
+}
+
+.mUpdBtn:hover,
+.updBtn:hover {
+    color: green;
+}
+
+.mUpdBtn:active,
+.updBtn:active {
+    text-shadow: 2px 2px 8px green;
+}
+
+.mDelBtn,
+.mUpdBtn {
+    font-size: 1rem;
+}
+
+
+
+/*재필*/
+.basicBtn {
+    letter-spacing: 1rem;
+    height: 2.3rem;
+    width: 20rem;
+    font-size: 1.5rem;
+    font-weight: 800;
+    box-shadow: 0px 5px 0px 0px rgb(239 157 171);
+    background-color: rgb(255, 194, 204);
+    color: #5e5c5c;
+}
+
+.basicBtn:hover {
+    background-color: rgb(255, 234, 238);
+}
+
+.basicInput {
+    height: 2rem;
+    width: 20rem;
+    font-size: 1rem;
+}
+
+.checkBtn {
+    height: 2.3rem;
+    width: 7rem;
+    box-shadow: 0px 5px 0px 0px rgb(172 201 201);
+    background-color: #ccdddd;
+    font-size: 1.1rem;
+    color: dimgray;
+}
+
+.checkBtn:hover {
+    background-color: #e2eeee;
+}
+
+.updBtn,
+.delBtn,
+.updProfile {
+    font-size: 1.5rem;
+}
+
+.closeBtn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 2rem;
+}
+
+.saveBtn {
+    height: 1.5rem;
+    width: 4rem;
+    box-shadow: 0px 5px 0px 0px rgb(182 153 195);
+    background-color: #cfb8d9;
+    font-size: 0.9rem;
+}
+
+.saveBtn:hover {
+    background-color: #e5d3ed;
+}
+
+.submitBtn {
+    height: 2.3rem;
+    width: 5rem;
+    box-shadow: 0px 5px 0px 0px rgb(158 197 174);
+    background-color: #c7ddd0;
+    font-size: 1.1rem;
+    color: dimgray;
+    /* background-color: #d4ebdd; */
+}
+
+.submitBtn:hover {
+    background-color: #e2f5ea;
+}
+
+.commentInput {
+    height: 2rem;
+    width: 45rem;
+}
+
+.search-group {
+    position: relative;
+}
+
+.diarySearchInput {
+    height: 1.5rem;
+    width: 10rem;
+    padding-left: 30px;
+    float: left;
+}
+
+.searchIcon {
+    position: absolute;
+    left: 5px;
+    top:4px;
+    z-index: 1;
+    color: #4f5b66;
+}
+
+.writeBtn {
+    height: 1.5rem;
+    width: 4rem;
+    box-shadow: 0px 5px 0px 0px rgb(187 187 187);
+    background-color: whitesmoke;
+}
+
+.searchInput {
+    height: 2rem;
+    width: 35rem;
+}
+
+.editCommentInput {
+    height: 1.5rem;
+    width: 35rem;
+}
