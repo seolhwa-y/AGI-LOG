@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<!-- DBCP: HikariCP >> 프로젝트 시작과 동시에 특정 DB와의 커넥션을 생성 한 후, 대여 -->
+	<bean id="authbDBCP" class="com.zaxxer.hikari.HikariConfig">
+		<property name="driverClassName" value="oracle.jdbc.OracleDriver"></property>
+ 		<property name="jdbcUrl" value="jdbc:oracle:thin:@authbdb.hoonzzang.com:11000:xe"></property>
+		<property name="username" value="authb"></property>
+		<property name="password" value="1234"></property>
+	</bean>
+	
+	<!-- DBCP Using >> DataSource -->
+	<bean id="ds" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+		<constructor-arg ref="authbDBCP"></constructor-arg>
+	</bean>
+	
+	<!-- myBatis-spring SessionFactory -->
+	<bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="ds"></property>
+	</bean>
+	
+	<!-- SqlSessionTemplate -->
+	<bean id="dbcpSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg name="sqlSessionFactory" ref="sessionFactory"></constructor-arg>
+	</bean>
+	
+	<!-- Transaction -->
+	<bean id="agilogTran" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="ds"></property>
+	</bean>
+	
+	<!-- Javax.mail -->
+	<!-- <bean id="mail" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.naver.com"></property>
+		<property name="port" value="587"></property>
+		<property name="username" value=""></property>
+		<property name="password" value=""></property>
+		<property name="defaultEncoding" value="utf-8"></property>
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.debug">true</prop>
+				<prop key="mail.transport">smtp</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+				<prop key="mail.smtp.ssl.checkserveridentity">true</prop>메일 서버가 존재하는지 체크
+				<prop key="mail.smtp.ssl.trust">*</prop>특정 메일 서버에만 보냄
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.socketFactory">javax.net.ssl.SSLSocketFactory</prop>
+			</props>
+		</property>
+	</bean> -->
+	
+	<tx:annotation-driven></tx:annotation-driven>
+	<mybatis-spring:scan base-package="com.agilog.interfaces"></mybatis-spring:scan>
+</beans>

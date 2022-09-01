@@ -1,0 +1,75 @@
+.fullJoin{
+	margin:0 auto;
+	margin-top:2rem;
+	width:40rem;
+	height:45rem;
+}
+.joinTitle{
+	margin:0 auto;
+	margin-top:2rem;
+	text-align:center;
+	font-size:3rem;
+	letter-spacing: 8px;
+	width: 15rem;
+	padding: 10px;
+	font-weight: bold;
+	color: rgb(97, 97, 97);
+}
+.smallJoinTitle{
+	margin:0 auto;
+	margin-top:1rem;
+	text-align:center;
+	font-size:1.5rem;
+	letter-spacing: 7px;
+	width: 20rem;
+	padding: 10px;
+	font-weight: bold;
+	color: rgb(97, 97, 97);
+}
+
+/* 회원가입 Input*/
+.accessInput-input-group {
+ width:27.9rem;
+ margin:0 auto;
+ position: relative;
+ margin-top:2rem;
+}
+.accessInput-input-group2 {
+ width:32.4rem;
+ margin:0 auto;
+ position: relative;
+ margin-top:2rem;
+}
+
+.accessInput {
+ border: none;
+ margin-top:0.5rem;
+ border-radius: 0;
+ border-bottom: 0.125rem solid var(--accessInput-color-ink-medium-contrast);
+ width: 10rem;
+ height: 2rem;
+ font-size: 1.2rem;
+ padding-left: 0.875rem;
+ line-height: 147.6%;
+ padding-top: 0.5rem;
+ padding-bottom: 0.5rem;
+ width: 20.4375rem;
+ background-color: #fff1f1;
+}
+.necessaryInfo{
+	text-align:center;
+	font-size:1.2rem;
+	margin-top:10px;
+	width:4.5rem;
+	height:2rem;
+	float:left;
+}
+.joinconfirm{
+	margin-left: 7.5rem;
+    margin-top: 2rem;
+}
+.necessaryPoint{
+	color:#ff6262;
+	font-size:1rem;
+	margin-right:6px;
+}
