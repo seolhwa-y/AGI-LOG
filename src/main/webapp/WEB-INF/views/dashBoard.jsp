@@ -7,7 +7,8 @@
 <title>아기로그</title>
 <script src="/res/js/agiMain.js"></script>
 <script src="https://use.fontawesome.com/releases/v6.1.2/js/all.js"></script>
-<link rel="stylesheet" href="/res/css/agiMain.css">
+<!-- <link rel="stylesheet" href="/res/css/agiMain.css"> -->
+<link rel="stylesheet" href="/res/css/dashBoard.css">
 
 <!-- 카카오 스크립트 -->
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
@@ -59,6 +60,10 @@ function kakaoLogout() {
 		Kakao.Auth.setAccessToken(undefined)
 	}
 }
+
+function me(){
+    alert("이동하자 해당 감성일기로");
+}
 </script>
 </head>
 <body onload="getInfo()">
@@ -84,7 +89,56 @@ function kakaoLogout() {
 		</div>
 		<div id="middle">
 			<div id="rightArea" class="scrollBar">
-				
+				                <div class = "main" style="height: 78%;">
+                    <div class = "mainLeft" style="width: 75%; height: 100%; float: left;">
+                        <!-- 메인 이미지 영역 -->
+                    </div>
+                    <div class="mainRight" style="width: 25%; height: 100%; float: right; margin: 0 auto;">
+                        <div class="todayFeed" style="position:sticky; height: 10%; text-align: center; margin-top: 25%; font-size: 2rem">
+                            <!-- 감성일기 좋아요 많은 순으로 띄어진다. 아님 최신순? -->
+                            오늘의 피드
+                            <div class="photo" style="position:sticky;">
+                                <!-- 오늘의 피드 사진 영역 -->
+                                <img src="/res/img/photo.png" onclick="me()" class="todayPhoto">
+                                <img src="/res/img/photo.png" onclick="me()" class="todayPhoto">
+                                <img src="/res/img/photo.png" onclick="me()" class="todayPhoto">
+                                <img src="/res/img/photo.png" onclick="me()" class="todayPhoto">
+                                <img src="/res/img/photo.png" onclick="me()" class="todayPhoto">
+                                <img src="/res/img/photo.png" onclick="me()" class="todayPhoto">
+                                <img src="/res/img/photo.png" onclick="me()" class="todayPhoto">
+                                <img src="/res/img/photo.png" onclick="me()" class="todayPhoto">
+                                <img src="/res/img/photo.png" onclick="me()" class="todayPhoto">                            
+                                </div>
+                        </div>
+                    </div>
+                <div style=" display: flex; height: 20%; width: 100%; margin: 2%;">
+                <!-- 하단 설명단 -->
+                    <div style="width: 33%; position: relative;">
+                        <div style="font-size: 11rem; color: lightgrey;">
+                            1
+                        </div>
+                       <div style="position: absolute; width: 74%; font-size: 1.5rem; margin: -5.2rem 2.2rem;">
+                            아이와의 소중한 추억을 기록하고 간직하세요
+                       </div>
+                    </div>
+                    <div style="width: 33%; position: relative;">
+                        <div style="font-size: 11rem; color: lightgrey;">
+                            2
+                        </div>
+                        <div style="position: absolute; width: 79%; font-size: 1.5rem; margin: -5.2rem 2.2rem;">
+                            아이의 건강상태를 체크하고 전문가와 상담할 수 있어요
+                       </div>
+                    </div>
+                     <div style="width: 34%; position: relative;">
+                        <div style="font-size: 11rem; color: lightgrey;">
+                            3
+                        </div>
+                        <div style="position: absolute; width: 79%; font-size: 1.5rem; margin: -5.2rem 2.2rem;">
+                            내 주변에 병원, 약국 등 육아에 필요한 시설의 위치를 찾아보세요
+                       </div>
+                    </div>
+                </div>
+            </div>
 			</div>
 		</div>
 		<div class="modal">

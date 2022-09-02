@@ -1,0 +1,182 @@
+@charset "UTF-8";
+
+table {
+	border-collapse: separate;
+	border-spacing: 1px;
+	text-align: center;
+	line-height: 1.5;
+	margin: 0 auto;
+}
+
+th {
+	letter-spacing: 7px;
+	font-size: 2rem;
+	width: 20rem;
+	padding: 10px;
+	font-weight: bold;
+	vertical-align: top;
+	color: #fff;
+	background: #e2baa7;
+}
+
+td {
+	width: 155px;
+	font-size: 1.2rem;
+	padding: 10px;
+	vertical-align: top;
+	color: rgb(97, 97, 97);
+	border-bottom: 1px solid #ccc;
+	background: #fafafa;
+}
+/*버튼 정렬을 위해 id값 추가*/
+#doctorMgrTitleDiv {
+	width: 70rem;
+	height: 5rem;
+	margin: 0 auto;
+}
+
+#addDocBtn {
+	margin-left: 59rem;
+}
+
+#doctorMgrTitle {
+	color: rgb(121, 121, 121);
+	font-size: 2rem;
+	height: 3rem;
+	width: 15rem;
+	margin: 0 auto;
+	text-align: center;
+}
+#checkCompanyTitleDiv {
+	width: 20rem;
+	height: 15rem;
+	margin: auto;
+	margin-top:9rem;
+}
+#checkCompanyTitle{
+	color: rgb(121, 121, 121);
+	font-size: 2rem;
+	height: 3rem;
+	width: 15rem;
+	margin: 0 auto;
+	text-align: center;
+}
+.basicInput{
+	margin:auto;
+	margin-top:2rem;
+}
+.basicBtn{
+	margin:auto;
+	margin-top:2rem;
+}
+
+
+/*모달*/
+.modal{
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  display: none;
+
+  background-color: rgba(0, 0, 0, 0.4);
+}
+.editBtn{
+	float:right;
+}
+
+
+
+
+/*기업 회원가입*/
+
+.fullJoin{
+	margin:0 auto;
+	margin-top:2rem;
+	width:40rem;
+	height:45rem;
+}
+.joinTitle{
+	margin:0 auto;
+	margin-top:2rem;
+	text-align:center;
+	font-size:3rem;
+	letter-spacing: 8px;
+	width: 15rem;
+	padding: 10px;
+	font-weight: bold;
+	color: rgb(97, 97, 97);
+}
+.smallJoinTitle{
+	margin:0 auto;
+	margin-top:1rem;
+	text-align:center;
+	font-size:1.5rem;
+	letter-spacing: 7px;
+	width: 20rem;
+	padding: 10px;
+	font-weight: bold;
+	color: rgb(97, 97, 97);
+}
+
+/* 회원가입 Input*/
+.accessInput-input-group {
+ width:27.9rem;
+ margin:0 auto;
+ position: relative;
+ margin-top:2rem;
+}
+.accessInput-input-group2 {
+ width:32.4rem;
+ margin:0 auto;
+ position: relative;
+ margin-top:2rem;
+}
+
+.accessInput {
+ border: none;
+ margin-top:0.5rem;
+ border-radius: 0;
+ border-bottom: 0.125rem solid var(--accessInput-color-ink-medium-contrast);
+ width: 10rem;
+ height: 2rem;
+ font-size: 1.2rem;
+ padding-left: 0.875rem;
+ line-height: 147.6%;
+ padding-top: 0.5rem;
+ padding-bottom: 0.5rem;
+ width: 20.4375rem;
+ background-color: #fff1f1;
+}
+.necessaryInfo{
+	text-align:center;
+	font-size:1.2rem;
+	margin-top:10px;
+	width:4.5rem;
+	height:2rem;
+	float:left;
+}
+.joinconfirm{
+	margin-left: 7.5rem;
+    margin-top: 2rem;
+}
+.necessaryPoint{
+	color:#ff6262;
+	font-size:1rem;
+	margin-right:6px;
+}
+.form{
+	width:6.5rem;
+	height:2.3rem;
+	text-align:center;
+}
+#formTwo{
+	text-align:center;
+}
+.isCheckCC{
+	margin: 0 auto;
+    width: 16rem;
+}

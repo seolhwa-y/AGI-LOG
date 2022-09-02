@@ -106,6 +106,8 @@ public class Authentication implements ServiceRule {
 		}
 	}
 
+	
+//	네이버는 금지!!!!!
 	@Transactional
 	private void socialJoin(ModelAndView mav) {
 		AuthBean ab = (AuthBean) mav.getModel().get("authBean");
@@ -118,7 +120,7 @@ public class Authentication implements ServiceRule {
 		ab.setSuName(this.enc.encode(ab.getSuName()));
 		ab.setSuEmail(this.enc.encode(ab.getSuEmail()));
 		
-		System.out.println(ab);
+
 		try {
 			ab.setSuPhone(this.enc.aesEncode(ab.getSuPhone(), ab.getSuCode()));
 		} catch (Exception e) {
@@ -389,7 +391,7 @@ public class Authentication implements ServiceRule {
 			cb.setCoPassword(this.enc.encode(cb.getCoPassword()));
 			cb.setCoEmail(this.enc.encode(cb.getCoEmail()));
 
-			// aes 방식 암호화 : 이름, 연락처, 주소, 관리자코드 -> 키값은 암호화된 메일
+			// aes 방식 암호화 : 이름, 연락처, 주소, 관리자코드 -> 키값은 사업자등록번호
 			cb.setCoName(this.enc.aesEncode(cb.getCoName(), cb.getCoCode()));
 			cb.setCoPhone(this.enc.aesEncode(cb.getCoPhone(), cb.getCoCode()));
 			cb.setCoAddress(this.enc.aesEncode(cb.getCoAddress(), cb.getCoCode()));
