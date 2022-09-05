@@ -302,8 +302,12 @@ function getInfo() {
 	let pImage = document.getElementById("pImage");
 	let parentName = document.getElementById("parentName");
 	let parentNickName = document.getElementById("parentNickName");
-	
-	pImage.innerHTML = "<img class='profileImage' src=\'"+"${mypageInfo.suPhoto}"+"\'>";
+	///resources/img/2411751690/2411751690.jpg
+	//String path = "/Users/js94/git/agi-log/src/main/webapp/resources/img/2411751690/2411751690"+suCode;
+	//C:\Users\js94\git\agi-log\src\main\webapp\resources\img\2411751690\2411751690.jpg
+	//file:///C://Users/js94/git/agi-log/src/main/webapp/resources/img/2411751690/2411751690.jpg
+	//    /Users
+	pImage.innerHTML = "<img class='profileImage' src=\'"+"/Users/js94/git/agi-log/src/main/webapp"+"${mypageInfo.suPhoto}"+"\'>";
 	parentName.innerText="${mypageInfo.suName}";
 	parentNickName.innerText="${mypageInfo.suNickName}";
 	
@@ -315,7 +319,7 @@ function getInfo() {
 
 	//아이사진이 없으면 안띄워줌
 	if(!"${mypageInfo.babyList[0].bbPhoto}" == ""){
-		bImage.innerHTML = "<img class='profileImage' src='"+"${mypageInfo.babyList[0].bbPhoto}"+"'>";
+		bImage.innerHTML = "<img class='profileImage' src='"+"/Users/js94/git/agi-log/src/main/webapp"+"${mypageInfo.babyList[0].bbPhoto}"+"'>";
 	}else{
 		bImage.innerHTML ="";
 	}
@@ -389,10 +393,11 @@ function callbackGetBabyInfo(jsonData){
 	let bbHeight = document.getElementById("bbHeight");
 	let bbWeight = document.getElementById("bbWeight");
 	
-	//아이프로필사진이 없다면 사진부분에 아무것도 띄워주지 않음
-	if(!babyInfo.babyList[babyNum].babyPhoto == ""){
-		babyImage.innerHTML = "<img class=\"profileImage\" src=\""+babyInfo.babyList[babyNum].bbPhoto+"\" >";
+	if(!babyInfo.babyList[babyNum].bbPhoto == ""){
+
+		babyImage.innerHTML = "<img class=\"profileImage\" src='"+"/Users/js94/git/agi-log/src/main/webapp"+babyInfo.babyList[1].bbPhoto+"'>";
 	}else{
+
 		babyImage.innerHTML = "";
 	}
 	
@@ -437,7 +442,7 @@ function changeBaby(number){
 			let bbWeight = document.getElementById("bbWeight");
 			
 			if(!babyInfo.babyList[babyNum].bbPhoto == ""){
-				babyImage.innerHTML = "<img class=\"profileImage\" src=\""+babyInfo.babyList[babyNum].bbPhoto+"\" >";
+				babyImage.innerHTML = "<img class=\"profileImage\" src='"+"/Users/js94/git/agi-log/src/main/webapp"+babyInfo.babyList[babyNum].bbPhoto+"'>";
 			}else{
 				babyImage.innerHTML = "";
 			}
@@ -475,7 +480,7 @@ function changeBaby(number){
 		let bbWeight = document.getElementById("bbWeight");
 
 		if(!babyInfo.babyList[babyNum].bbPhoto == ""){
-			babyImage.innerHTML = "<img class=\"profileImage\" src=\""+babyInfo.babyList[babyNum].bbPhoto+"\" >";
+			babyImage.innerHTML = "<img class=\"profileImage\" src='"+"/Users/js94/git/agi-log/src/main/webapp"+babyInfo.babyList[babyNum].bbPhoto+"'>";
 		}else{
 			babyImage.innerHTML = "";
 		}		
