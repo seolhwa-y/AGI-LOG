@@ -9,6 +9,7 @@
 
 * {
     font-family: 'twayair';
+    color: #616161;
 }
 
 #background {
@@ -154,7 +155,7 @@ img {
     -webkit-transition: width .05s linear;
     transition: width .05s linear;
     -webkit-transform: translateZ(0) scale(1, 1);
-    z-index: 1000;
+    z-index: 500;
     
 }
 
@@ -274,13 +275,11 @@ nav.side-menu li.active>a,
     position: absolute;
     top: 0;
     left: 0;
-
     width: 100%;
     height: 100%;
-
     display: none;
-
     background-color: rgba(0, 0, 0, 0.4);
+    z-index: 1000;
 }
 
 .modal.show {
@@ -288,22 +287,18 @@ nav.side-menu li.active>a,
 }
 
 .modal_body {
-    position: absolute;
+    position: relative;
     top: 50%;
     left: 50%;
-
-    width: 600px;
-    height: 600px;
-
-    padding: 40px;
-
+    width: 700px;
+    height: 700px;
+    padding: 20px;
     text-align: center;
-
     background-color: rgb(255, 255, 255);
     border-radius: 10px;
     box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
-
     transform: translateX(-50%) translateY(-50%);
+    
 }
 
  /* 로그인 회원가입 */
@@ -465,7 +460,7 @@ input {
 }
 
 .mMemoInput {
-    width: 28rem;
+    width: 40rem;
     height: 4.6rem;
     font-size: 1rem;
     resize: none;
@@ -497,8 +492,8 @@ input {
 }
 
 .mBtnO {
-    height: 2.3rem;
-    width: 13rem;
+    height: 2.5rem;
+    width: 20rem;
     box-shadow: 0px 5px 0px 0px rgb(239 157 171);
     background-color: rgb(255, 194, 204);
     font-size: 1.1rem;
@@ -510,10 +505,11 @@ input {
 }
 
 .mBtnX {
-    height: 2.3rem;
-    width: 13rem;
+    height: 2.5rem;
+    width: 20rem;
     box-shadow: 0px 5px 0px 0px rgb(182, 182, 182);
     font-size: 1.1rem;
+    background: gainsboro;
     color: dimgray;
 }
 

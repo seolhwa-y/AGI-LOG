@@ -48,11 +48,9 @@ function getAjaxJson(jobCode, clientData, fn) {
 }
 /* Ajax :: POST */
 function postAjaxJson(jobCode, clientData, fn) {
-	alert(jobCode);
 	const ajax = new XMLHttpRequest();
 	ajax.onreadystatechange = function() {
 		if(ajax.readyState == 4 && ajax.status == 200) { //4:데이터가 넘어옴
-			alert(ajax.responseText);
 			window[fn](ajax.responseText); //응답 데이터
 		}
 	};

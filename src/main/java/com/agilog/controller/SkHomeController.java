@@ -15,6 +15,7 @@ import com.agilog.beans.BebeCalendarBean;
 import com.agilog.beans.BoardBean;
 import com.agilog.beans.CompanyBean;
 import com.agilog.beans.DailyDiaryBean;
+import com.agilog.beans.HealthDiaryBean;
 import com.agilog.beans.MyPageBean;
 import com.agilog.services.Authentication;
 import com.agilog.services.BebeCalendar;
@@ -23,6 +24,7 @@ import com.agilog.services.Board;
 import com.agilog.services.Company;
 import com.agilog.services.DailyDiary;
 import com.agilog.services.DashBoard;
+import com.agilog.services.HealthDiary;
 import com.agilog.services.MyPage;
 
 @Controller
@@ -35,6 +37,8 @@ public class SkHomeController {
 	Company company;
 	@Autowired
 	DailyDiary dailyDiary;
+	@Autowired
+	HealthDiary healthDiary;
 	@Autowired
 	BebeMap bebeMap;
 	@Autowired
@@ -172,6 +176,30 @@ public class SkHomeController {
 	public ModelAndView socialJoin(ModelAndView mav, @ModelAttribute AuthBean ab) {
 		mav.addObject(ab);
 		this.auth.backController(mav, 20);
+		
+		return mav;
+	}
+	
+	@RequestMapping(value = "/MoveHealthDiaryPage", method = RequestMethod.GET)
+	public ModelAndView moveHealthDiaryPage(ModelAndView mav, @ModelAttribute AuthBean ab) {
+		mav.addObject(ab);
+		this.healthDiary.backController(mav, 33);
+		
+		return mav;
+	}
+	
+	@RequestMapping(value = "/InsertHealthDiary", method = RequestMethod.POST)
+	public ModelAndView insertHealthDiary(ModelAndView mav, @ModelAttribute HealthDiaryBean hb) {
+		mav.addObject(hb);
+		this.healthDiary.backController(mav, 37);
+		
+		return mav;
+	}
+	
+	@RequestMapping(value = "/DeleteHealthDiary", method = RequestMethod.POST)
+	public ModelAndView deleteHealthDiary(ModelAndView mav, @ModelAttribute HealthDiaryBean hb) {
+		mav.addObject(hb);
+		this.healthDiary.backController(mav, 30);
 		
 		return mav;
 	}

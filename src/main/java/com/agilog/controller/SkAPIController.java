@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.agilog.beans.AuthBean;
+import com.agilog.beans.HealthDiaryBean;
 import com.agilog.services.Authentication;
 import com.agilog.services.BebeCalendar;
 import com.agilog.services.BebeMap;
@@ -18,6 +19,7 @@ import com.agilog.services.Board;
 import com.agilog.services.Company;
 import com.agilog.services.DailyDiary;
 import com.agilog.services.DashBoard;
+import com.agilog.services.HealthDiary;
 import com.agilog.services.MyPage;
 
 @RestController
@@ -30,6 +32,8 @@ public class SkAPIController {
 	Company company;
 	@Autowired
 	DailyDiary dailyDiary;
+	@Autowired
+	HealthDiary healthDiary;
 	@Autowired
 	BebeMap bebeMap;
 	@Autowired
@@ -44,8 +48,15 @@ public class SkAPIController {
 	public String checkPersonalOverlap(Model model, HttpServletRequest req, @ModelAttribute AuthBean ab) {
 		model.addAttribute("code",req.getParameter("code"));
 		model.addAttribute(ab);
-		System.out.println("중복체크 컨트롤러 진입");
 		this.auth.backController(model, 18);
 		return (String)model.getAttribute("check");
+	}
+	
+	@SuppressWarnings("unchecked")
+	@PostMapping("/ShowHealthDiary")
+	public List<HealthDiaryBean> showHealthDiary(Model model, @ModelAttribute HealthDiaryBean hb) {
+		model.addAttribute(hb);
+		this.healthDiary.backController(model, 103);
+		return (List<HealthDiaryBean>)model.getAttribute("healthDetail");
 	}
 }
