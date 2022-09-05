@@ -29,4 +29,5 @@ public class JsAPIController {
 		myPage.backController(model, 66);
 		return ((MyPageBean)model.getAttribute("myPageBean")).getSuTheme();
 	}
+	
 }

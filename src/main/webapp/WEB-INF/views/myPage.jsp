@@ -264,7 +264,15 @@ function isCharLengthCheck(text, minimum, maximum) {
 }
 Kakao.init('2afdabad57ed92e1cc9de5bd4baed321');
 function getInfo() {
+	/* 테마 사용자값으로 설정 */
+	let middle = document.getElementById("middle");
+	//let sideMenu = document.querySelector(".side-menu");
 
+	let color = "${mypageInfo.suTheme}".split(":");
+	
+	middle.style.background = color[0];
+	//sideMenu.style.background= color[1];
+	
 	if("${message}"!= ""){
 		alert("${message}");
 	}
@@ -300,10 +308,10 @@ function getInfo() {
 	parentNickName.innerText="${mypageInfo.suNickName}";
 	
 	let bImage = document.getElementById("bImage");
-	let babyName = document.getElementById("babyName");
-	let babyBirthDay = document.getElementById("babyBirthday");
-	let babyHeight = document.getElementById("babyHeight");
-	let babyWeight = document.getElementById("babyWeight");
+	let bbName = document.getElementById("bbName");
+	let babyBirthDay = document.getElementById("bbBirthday");
+	let bbHeight = document.getElementById("bbHeight");
+	let bbWeight = document.getElementById("bbWeight");
 
 	//아이사진이 없으면 안띄워줌
 	if(!"${mypageInfo.babyList[0].bbPhoto}" == ""){
@@ -311,10 +319,10 @@ function getInfo() {
 	}else{
 		bImage.innerHTML ="";
 	}
-	babyName.innerText="${mypageInfo.babyList[0].bbName}";
+	bbName.innerText="${mypageInfo.babyList[0].bbName}";
 	babyBirthDay.innerText="${mypageInfo.babyList[0].bbBirthday}";
-	babyHeight.innerText="${mypageInfo.babyList[0].bbHeight}"+"cm";
-	babyWeight.innerText="${mypageInfo.babyList[0].bbWeight}"+"kg";
+	bbHeight.innerText="${mypageInfo.babyList[0].bbHeight}"+"cm";
+	bbWeight.innerText="${mypageInfo.babyList[0].bbWeight}"+"kg";
 	
 	//내 밑으로 두아이 이상이라면 '>' 버튼 보여줌
 	if("${mypageInfo.babyList.size()}">1){
@@ -376,10 +384,10 @@ function callbackGetBabyInfo(jsonData){
 	babyNum++;
 	
 	let babyImage = document.getElementById("bImage");
-	let babyName = document.getElementById("babyName");
-	let babyBirthDay = document.getElementById("babyBirthday");
-	let babyHeight = document.getElementById("babyHeight");
-	let babyWeight = document.getElementById("babyWeight");
+	let bbName = document.getElementById("bbName");
+	let babyBirthDay = document.getElementById("bbBirthday");
+	let bbHeight = document.getElementById("bbHeight");
+	let bbWeight = document.getElementById("bbWeight");
 	
 	//아이프로필사진이 없다면 사진부분에 아무것도 띄워주지 않음
 	if(!babyInfo.babyList[babyNum].babyPhoto == ""){
@@ -388,10 +396,10 @@ function callbackGetBabyInfo(jsonData){
 		babyImage.innerHTML = "";
 	}
 	
-	babyName.innerText = babyInfo.babyList[babyNum].bbName;
+	bbName.innerText = babyInfo.babyList[babyNum].bbName;
 	babyBirthDay.innerText=babyInfo.babyList[babyNum].bbBirthday;
-	babyHeight.innerText=babyInfo.babyList[babyNum].bbHeight;
-	babyWeight.innerText=babyInfo.babyList[babyNum].bbWeight;
+	bbHeight.innerText=babyInfo.babyList[babyNum].bbHeight;
+	bbWeight.innerText=babyInfo.babyList[babyNum].bbWeight;
 	
 	let num = babyNum;
 	num++;
@@ -423,10 +431,10 @@ function changeBaby(number){
 			babyNum++;
 			
 			let babyImage = document.getElementById("bImage");
-			let babyName = document.getElementById("bbName");
+			let bbName = document.getElementById("bbName");
 			let babyBirthDay = document.getElementById("bbBirthday");
-			let babyHeight = document.getElementById("bbHeight");
-			let babyWeight = document.getElementById("bbWeight");
+			let bbHeight = document.getElementById("bbHeight");
+			let bbWeight = document.getElementById("bbWeight");
 			
 			if(!babyInfo.babyList[babyNum].bbPhoto == ""){
 				babyImage.innerHTML = "<img class=\"profileImage\" src=\""+babyInfo.babyList[babyNum].bbPhoto+"\" >";
@@ -434,10 +442,10 @@ function changeBaby(number){
 				babyImage.innerHTML = "";
 			}
 
-			babyName.innerText = babyInfo.babyList[babyNum].bbName;
+			bbName.innerText = babyInfo.babyList[babyNum].bbName;
 			babyBirthDay.innerText=babyInfo.babyList[babyNum].bbBirthday;
-			babyHeight.innerText=babyInfo.babyList[babyNum].bbHeight+"cm";
-			babyWeight.innerText=babyInfo.babyList[babyNum].bbWeight+"kg";
+			bbHeight.innerText=babyInfo.babyList[babyNum].bbHeight+"cm";
+			bbWeight.innerText=babyInfo.babyList[babyNum].bbWeight+"kg";
 			
 			let num = babyNum;
 			num++;
@@ -461,20 +469,20 @@ function changeBaby(number){
 		babyNum--;
 	
 		let babyImage = document.getElementById("bImage");
-		let babyName = document.getElementById("babyName");
-		let babyBirthDay = document.getElementById("babyBirthday");
-		let babyHeight = document.getElementById("babyHeight");
-		let babyWeight = document.getElementById("babyWeight");
+		let bbName = document.getElementById("bbName");
+		let babyBirthDay = document.getElementById("bbBirthday");
+		let bbHeight = document.getElementById("bbHeight");
+		let bbWeight = document.getElementById("bbWeight");
 
 		if(!babyInfo.babyList[babyNum].bbPhoto == ""){
 			babyImage.innerHTML = "<img class=\"profileImage\" src=\""+babyInfo.babyList[babyNum].bbPhoto+"\" >";
 		}else{
 			babyImage.innerHTML = "";
 		}		
-		babyName.innerText = babyInfo.babyList[babyNum].bbName;
+		bbName.innerText = babyInfo.babyList[babyNum].bbName;
 		babyBirthDay.innerText=babyInfo.babyList[babyNum].bbBirthday;
-		babyHeight.innerText=babyInfo.babyList[babyNum].bbHeight+"cm";
-		babyWeight.innerText=babyInfo.babyList[babyNum].bbWeight+"kg";
+		bbHeight.innerText=babyInfo.babyList[babyNum].bbHeight+"cm";
+		bbWeight.innerText=babyInfo.babyList[babyNum].bbWeight+"kg";
 		
 		//가장 첫번째 아기일 때 <버튼만 막아주면 됨
 		if(babyNum==0){
@@ -549,8 +557,8 @@ function parentEditCancel(){
 	
 	parentNickName.innerText="${mypageInfo.suNickName}";
 }
-let babyName = "";
-let babyBirthday = "";
+let bbName = "";
+let bbBirthday = "";
 //아이프로필변경 :: 아이쪽 프로필변경 클릭 :: 관련없는 다른 버튼들 지워주기
 function changeBabyProfile(){
 
@@ -565,40 +573,40 @@ function changeBabyProfile(){
 	cover("0");
 	
 	// 현재 저장된 프로필 값 input박스 value로 넣어 사용자에게 보여주기
-	//let babyNameTd = document.getElementById("babyName");
-	let babyBirthdayTd = document.getElementById("babyBirthday");
+	//let bbNameTd = document.getElementById("bbName");
+	let bbBirthdayTd = document.getElementById("bbBirthday");
 	
-	//babyName = babyNameTd.innerText;
-	babyBirthday = babyBirthdayTd.innerText;
-	//babyNameTd.innerHTML = "<input type=\"text\" name='babyName' class=\"profileInput dateInput\" value=\""+babyName+"\">";
-	babyBirthdayTd.innerHTML = "<input type=\"date\" name='bbBirthday' class=\"profileInput dateInput\" value=\""+bbBirthday+"\">";
+	//bbName = bbNameTd.innerText;
+	bbBirthday = bbBirthdayTd.innerText;
+	//bbNameTd.innerHTML = "<input type=\"text\" name='bbName' class=\"profileInput dateInput\" value=\""+bbName+"\">";
+	bbBirthdayTd.innerHTML = "<input type=\"date\" name='bbBirthday' class=\"profileInput dateInput\" value=\""+bbBirthday+"\">";
 
 }
 //아이프로필변경 :: 수정완료버튼 클릭
 function changeBabyInfo(){
 	let babyNumber;
-	let babyNameInput = document.getElementsByName("babyName")[0];
-	let babyBirthdayInput = document.getElementsByName("babyBirthday")[0];
+	let bbNameInput = document.getElementsByName("bbName")[0];
+	let bbBirthdayInput = document.getElementsByName("bbBirthday")[0];
 	let form = document.getElementById("serverForm");
 	
 
 	if(babyInfo == null){
 		babyNumber = "${mypageInfo.babyList[0].bbCode}";
-		//babyName = "${mypageInfo.babyList[0].babyName}";
+		//bbName = "${mypageInfo.babyList[0].bbName}";
 		
 	}else{
 		babyNumber = babyInfo.babyList[babyNum].bbCode;
-		//babyName = babyInfo.babyList[babyNum].babyName;
+		//bbName = babyInfo.babyList[babyNum].bbName;
 	}
 	
-	/*if(babyNameInput.value==""){
+	/*if(bbNameInput.value==""){
 		alert("아이 이름을 작성해 주세요");
 		return;
 	}*/
 	
 	form.appendChild(createInput("text","bbCode",babyNumber,"",""));
-	form.appendChild(babyBirthdayInput);
-	//form.appendChild(babyNameInput);
+	form.appendChild(bbBirthdayInput);
+	//form.appendChild(bbNameInput);
 	
 	form.action = "ChangeBabyInfo";
 	form.method = "post";
@@ -619,9 +627,9 @@ function babyEditCancel(){
 	// <,> 보여주기
 	cover("1");
 	
-	let babyBirthdayTd = document.getElementById("babyBirthday");
+	let bbBirthdayTd = document.getElementById("bbBirthday");
 	
-	babyBirthdayTd.innerText = babyBirthday;
+	bbBirthdayTd.innerText = bbBirthday;
 }
 //아이정보 <왼쪽 >오른쪽 버튼 가려주기
 function cover(number){
@@ -659,15 +667,15 @@ function insertBabyModal(){
 function insertBabyInfo(){
 	let form = document.getElementById("InsertBabyInfo");
 	
-	let babyName = document.getElementsByName("bbName")[0];
-	let babyBirthday = document.getElementsByName("bbBirthday")[0];
-	let babyHeight = document.getElementsByName("bbHeight")[0];
-	let babyWeight = document.getElementsByName("bbWeight")[0];
+	let bbName = document.getElementsByName("bbName")[0];
+	let bbBirthday = document.getElementsByName("bbBirthday")[0];
+	let bbHeight = document.getElementsByName("bbHeight")[0];
+	let bbWeight = document.getElementsByName("bbWeight")[0];
 	
 	//이름 글자 제한
-	if(!isCharLengthCheck(babyName.value,"1","20")){
+	if(!isCharLengthCheck(bbName.value,"1","20")){
 		alert("아이 이름은 1자~20자 사이로 입력해 주세요")
-		babyName.focus();
+		bbName.focus();
 		return;
 	}
 	
@@ -776,44 +784,35 @@ function changeTheme(num){
 	let clientData = "";
 	switch(num){
 	case 1 : //핑크
-		clientData = "suTheme=pink";
+		clientData = "suTheme=#fff1f1:#ffd4d4";
 		break;
 	case 3 : //노랑
-		clientData = "suTheme=yellow";
+		clientData = "suTheme=#FAF4C0:#FAED7D";
 		break;
 	case 5 : //파랑
-		clientData = "suTheme=blue";
+		clientData = "suTheme=#D4F4FA:#B2EBF4";
 		break;
 	case 7 : //보라
-		clientData = "suTheme=purple";
+		clientData = "suTheme=#E8D9FF:#E8D9FF";
 		break;
 	case 9 : //초록
-		clientData = "suTheme=green";
+		clientData = "suTheme=#CEFBC9:#B7F0B1";
 		break;
 	}
 	postAjaxJson("ChangeTheme",clientData,"callBackTheme");
 	
 }
 function callBackTheme(theme){
+	let middle = document.getElementById("middle");
+	let sideMenu = document.querySelector(".side-menu");
 	alert(theme);
-	/*
-	switch(theme){
-	case pink : //핑크
-		clientData = "suTheme=pink";
-		break;
-	case yellow : //노랑
-		clientData = "suTheme=yellow";
-		break;
-	case blue : //파랑
-		clientData = "suTheme=blue";
-		break;
-	case purple : //보라
-		clientData = "suTheme=purple";
-		break;
-	case green : //초록
-		clientData = "suTheme=green";
-		break;
-	}*/
+	let color = theme.split(":");
+	alert(color[0]+"앤드"+color[1]);
+	
+	middle.style.background = color[0];
+	//sideMenu.style.background= color[1];
+	
+	themeModalClose();
 }
 </script>
 </head>
@@ -896,20 +895,20 @@ function callBackTheme(theme){
 						<table >
 							<tr>
 								<td><span >이름</span></td>
-								<td colspan="2" id="babyName"></td>
+								<td colspan="2" id="bbName"></td>
 							</tr>
 							<tr>
 								<td><span>생일</span></td>
-								<td colspan="2" id="babyBirthday"></td>
+								<td colspan="2" id="bbBirthday"></td>
 		
 							</tr>
 							<tr>
 								<td><span>키</span></td>
-								<td colspan="2" id="babyHeight"></td>
+								<td colspan="2" id="bbHeight"></td>
 							</tr>
 							<tr>
 								<td><span>몸무게</span></td>
-								<td colspan="2" id="babyWeight"></td>
+								<td colspan="2" id="bbWeight"></td>
 							</tr>
 						</table>
 					</div>

@@ -77,7 +77,20 @@ public class MyPage implements ServiceRule {
 	/* 테마변경 */
 	@Transactional
 	private void changeThemeCtl(Model model) {
-		// TODO Auto-generated method stub
+		AuthBean ab;
+		MyPageBean mpb = (MyPageBean)model.getAttribute("myPageBean");
+		
+		try {
+			ab = (AuthBean) this.pu.getAttribute("accessInfo");
+			ab.setSuTheme(mpb.getSuTheme());
+			if(this.converToBoolean(this.session.update("updTheme",ab))) {
+				//테마변경 성공
+			}else {
+				model.addAttribute("message","테마변경 실패");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 	}
 
@@ -99,14 +112,14 @@ public class MyPage implements ServiceRule {
 				/* HealthDiaryBean에 정보 담기 */
 				HealthDiaryBean hdb = new HealthDiaryBean();
 				hdb.setSuCode(ab.getSuCode());
-				hdb.setBabyCode(babyCode);
-				hdb.setBabyWeight(bb.getBbWeight());
+				hdb.setBbCode(babyCode);
+				hdb.setBbWeight(bb.getBbWeight());
 				hdb.setHdCaCode("01");
 				/* HealthDiaryCode max+1값 가져옴 */
 				hdb.setHdCode(this.session.selectOne("getHealthDiaryCode"));
 				/* DB :: HealthDiary테이블에 아이 몸무게 INSERT */
 				if(this.converToBoolean(this.session.insert("insHDWeight",hdb))) {
-					hdb.setBabyHeight(bb.getBbHeight());
+					hdb.setBbHeight(bb.getBbHeight());
 					hdb.setHdCaCode("02");
 					/* DB :: HealthDiary테이블에 아이 키 INSERT */
 					if(this.converToBoolean(this.session.insert("insHDHeight",hdb))) {

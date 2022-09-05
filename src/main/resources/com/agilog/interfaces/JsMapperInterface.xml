@@ -3,7 +3,7 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.agilog.interfaces.JsMapperInterface">
 	<select id="getMyInfo" parameterType="string" resultType="com.agilog.beans.MyPageBean">
-		SELECT SU_CODE AS SUCODE, SU_NAME AS SUNAME, SU_NICKNAME AS SUNICKNAME, SU_EMAIL AS SUEMAIL, SU_PHONE AS SUPHONE ,SU_PHOTO AS SUPHOTO FROM SU WHERE SU_CODE = #{suCode}
+		SELECT SU_CODE AS SUCODE, SU_NAME AS SUNAME, SU_NICKNAME AS SUNICKNAME, SU_EMAIL AS SUEMAIL, SU_PHONE AS SUPHONE ,SU_PHOTO AS SUPHOTO ,SU_THEME AS SUTHEME FROM SU WHERE SU_CODE = #{suCode}
 	</select>
 	<select id="getBabyInfoList" parameterType="string" resultType="com.agilog.beans.BabyBean">
 		SELECT BB_CODE AS BBCODE, BB_SUCODE AS SUCODE, BB_NAME AS BBNAME, TO_CHAR(BB_BIRTHDAY,'YYYY-MM-DD') AS BBBIRTHDAY, BBWEIGHT, BBHEIGHT,BB_PHOTO AS BBPHOTO
@@ -41,4 +41,7 @@
 	<insert id="insHDHeight" parameterType="com.agilog.beans.HealthDiaryBean">
 		INSERT INTO HEALTHDIARY VALUES(#{hdCode},SYSDATE,#{hdCaCode},#{suCode},#{bbCode},#{bbHeight})
 	</insert>
+	<update id="updTheme" parameterType="com.agilog.beans.AuthBean" >
+		UPDATE SU SET SU_THEME = #{suTheme} WHERE SU_CODE = #{suCode}
+	</update>
 </mapper>
