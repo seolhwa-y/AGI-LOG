@@ -20,6 +20,17 @@
 		}
 		
 	}
+	
+	function checkManager(action) {
+		let form = document.getElementById("serverForm");
+		let managerCode = document.getElementsByName("coManagerCode")[0];
+
+		form.appendChild(managerCode);
+		
+		form.action = action;
+		form.method = "post";
+		form.submit();
+	}
 </script>
 </head>
 <body onload="init()">
@@ -43,7 +54,8 @@
 		</div>
 		<div id="middle">
 			<div id="rightArea" class="scrollBar">
-				
+				<input type="text" name="coManagerCode">
+				<input type="button" value="매니저 인증" onclick="checkManager('CheckManager')">
 			</div>
 		</div>
 		<div class="modal">
