@@ -90,7 +90,7 @@ public class MyPage implements ServiceRule {
 			/*인서트 하기 위해서 babyBean에 정보를 담음*/
 			ab = (AuthBean) this.pu.getAttribute("accessInfo");
 			String babyCode = this.session.selectOne("getNewBabyCode",ab);
-			bb.setBabyCode(babyCode);
+			bb.setBbCode(babyCode);
 			bb.setSuCode(ab.getSuCode());
 			
 			/*아이 추가 :: baby 테이블에 인서트*/
@@ -100,13 +100,13 @@ public class MyPage implements ServiceRule {
 				HealthDiaryBean hdb = new HealthDiaryBean();
 				hdb.setSuCode(ab.getSuCode());
 				hdb.setBabyCode(babyCode);
-				hdb.setBabyWeight(bb.getBabyWeight());
+				hdb.setBabyWeight(bb.getBbWeight());
 				hdb.setHdCaCode("01");
 				/* HealthDiaryCode max+1값 가져옴 */
 				hdb.setHdCode(this.session.selectOne("getHealthDiaryCode"));
 				/* DB :: HealthDiary테이블에 아이 몸무게 INSERT */
 				if(this.converToBoolean(this.session.insert("insHDWeight",hdb))) {
-					hdb.setBabyHeight(bb.getBabyHeight());
+					hdb.setBabyHeight(bb.getBbHeight());
 					hdb.setHdCaCode("02");
 					/* DB :: HealthDiary테이블에 아이 키 INSERT */
 					if(this.converToBoolean(this.session.insert("insHDHeight",hdb))) {
@@ -234,7 +234,7 @@ public class MyPage implements ServiceRule {
 		BabyBean bb = new BabyBean();
 		bb = (BabyBean)mav.getModel().get("babyBean");
 		/* DB에 UPDATE하기 전에 2022-01-01 => 20220101로 바꿔주기 */
-		bb.setBabyBirthday((bb.getBabyBirthday()).replaceAll("-",""));
+		bb.setBbBirthday((bb.getBbBirthday()).replaceAll("-",""));
 		try {
 			bb.setSuCode(((AuthBean)this.pu.getAttribute("accessInfo")).getSuCode());
 			/* DB에 생일 UPDATE*/
@@ -260,14 +260,14 @@ public class MyPage implements ServiceRule {
 			BabyBean bb = (BabyBean) mav.getModel().get("babyBean");
 			bb.setSuCode(((AuthBean)this.pu.getAttribute("accessInfo")).getSuCode());
 			String suCode = bb.getSuCode();
-			String babyCode = bb.getBabyCode();
+			String babyCode = bb.getBbCode();
 			/* 저장 폴더 경로 설정 */
 			String path = "C:\\upload\\profile\\"+suCode+"\\"+babyCode;
 			
 			/* 확장자 뽑아내서 파일이름(부모코드 만들어주기 */
 			int pos = file.getOriginalFilename().lastIndexOf(".");
 			String ext = file.getOriginalFilename().substring(pos);
-			String fileName = bb.getBabyCode()+ext; //유저코드 + 확장자 
+			String fileName = bb.getBbCode()+ext; //유저코드 + 확장자 
 			
 			/* 파일저장 */
 			File uploadPath = new File(path);
@@ -278,7 +278,7 @@ public class MyPage implements ServiceRule {
 			
 			
 			String babyPhoto = "/upload/profile/"+suCode+"/"+babyCode+"/"+fileName;
-			bb.setBabyPhoto(babyPhoto);
+			bb.setBbPhoto(babyPhoto);
 			/* DB에 파일 저장한 경로 INSERT */
 			if(this.converToBoolean((this.session.update("updBabyPhoto",bb)))){
 				/* 성공 */

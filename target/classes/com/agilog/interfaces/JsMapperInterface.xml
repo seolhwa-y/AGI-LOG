@@ -6,39 +6,39 @@
 		SELECT SU_CODE AS SUCODE, SU_NAME AS SUNAME, SU_NICKNAME AS SUNICKNAME, SU_EMAIL AS SUEMAIL, SU_PHONE AS SUPHONE ,SU_PHOTO AS SUPHOTO FROM SU WHERE SU_CODE = #{suCode}
 	</select>
 	<select id="getBabyInfoList" parameterType="string" resultType="com.agilog.beans.BabyBean">
-		SELECT BB_CODE AS BABYCODE, BB_SUCODE AS SUCODE, BB_NAME AS BABYNAME, TO_CHAR(BB_BIRTHDAY,'YYYY-MM-DD') AS BABYBIRTHDAY, BABYWEIGHT, BABYHEIGHT,BB_PHOTO AS BABYPHOTO
+		SELECT BB_CODE AS BBCODE, BB_SUCODE AS SUCODE, BB_NAME AS BBNAME, TO_CHAR(BB_BIRTHDAY,'YYYY-MM-DD') AS BBBIRTHDAY, BBWEIGHT, BBHEIGHT,BB_PHOTO AS BBPHOTO
 		FROM BB LEFT OUTER JOIN BABYRECENTWEIGHT ON (BB_CODE = WBABYCODE AND BB_SUCODE = WSUCODE)
         LEFT OUTER JOIN BABYRECENTHEIGHT ON (BB_CODE = HBABYCODE AND BB_SUCODE = HSUCODE)
 		WHERE BB_SUCODE = #{suCode} 
-		ORDER BY BABYCODE
+		ORDER BY BBCODE
 	</select>
 	<update id="updProFile" parameterType="com.agilog.beans.MyPageBean">
 		UPDATE SU SET SU_NICKNAME = #{suNickName} WHERE SU_CODE = #{suCode}
 	</update>
 	<update id="updBabyBirthday" parameterType="com.agilog.beans.BabyBean">
-		UPDATE BABY SET  BB_BIRTHDAY = TO_DATE(#{babyBirthday},'YY-MM-DD') WHERE BB_SUCODE = #{suCode} AND BB_CODE = #{babyCode}
+		UPDATE BABY SET  BB_BIRTHDAY = TO_DATE(#{bbBirthday},'YY-MM-DD') WHERE BB_SUCODE = #{suCode} AND BB_CODE = #{bbCode}
 	</update>
 	<select id="getNewBabyCode" parameterType="com.agilog.beans.AuthBean" resultType="string">
 		SELECT CONCAT(LTRIM(NVL(TO_CHAR(MAX(BB_CODE)+1,'00'),' 01')), '') AS BABYCODE
 		FROM BB WHERE BB_SUCODE = #{suCode}
 	</select>
 	<insert id="insBabyInfo" parameterType="com.agilog.beans.BabyBean" >
-		INSERT INTO BB VALUES(#{babyCode},#{suCode},#{babyName},TO_DATE(#{babyBirthday},'YY-MM-DD'),'')
+		INSERT INTO BB VALUES(#{bbCode},#{suCode},#{bbName},TO_DATE(#{bbBirthday},'YY-MM-DD'),'')
 	</insert>
 	<update id="updSocialUserPhoto" parameterType="com.agilog.beans.AuthBean" >
 		UPDATE SU SET SU_PHOTO = #{suPhoto} WHERE SU_CODE = #{suCode}
 	</update>
 	<update id="updBabyPhoto" parameterType="com.agilog.beans.BabyBean" >
-		UPDATE BABY SET BB_PHOTO = #{babyPhoto} WHERE BB_SUCODE = #{suCode} AND BB_CODE = #{babyCode}
+		UPDATE BABY SET BB_PHOTO = #{bbPhoto} WHERE BB_SUCODE = #{suCode} AND BB_CODE = #{bbCode}
 	</update>
 	<select id="getHealthDiaryCode" resultType="string">
 		SELECT NVL((MAX(HD_CODE)+1),100001)
 		FROM HD
 	</select>
 	<insert id="insHDWeight" parameterType="com.agilog.beans.HealthDiaryBean">
-		INSERT INTO HEALTHDIARY VALUES(#{hdCode},SYSDATE,#{hdCaCode},#{suCode},#{babyCode},#{babyWeight})
+		INSERT INTO HEALTHDIARY VALUES(#{hdCode},SYSDATE,#{hdCaCode},#{suCode},#{bbCode},#{bbWeight})
 	</insert>
 	<insert id="insHDHeight" parameterType="com.agilog.beans.HealthDiaryBean">
-		INSERT INTO HEALTHDIARY VALUES(#{hdCode},SYSDATE,#{hdCaCode},#{suCode},#{babyCode},#{babyWeight})
+		INSERT INTO HEALTHDIARY VALUES(#{hdCode},SYSDATE,#{hdCaCode},#{suCode},#{bbCode},#{bbHeight})
 	</insert>
 </mapper>

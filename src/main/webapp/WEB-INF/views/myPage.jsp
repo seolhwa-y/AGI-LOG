@@ -306,15 +306,15 @@ function getInfo() {
 	let babyWeight = document.getElementById("babyWeight");
 
 	//아이사진이 없으면 안띄워줌
-	if(!"${mypageInfo.babyList[0].babyPhoto}" == ""){
-		bImage.innerHTML = "<img class='profileImage' src='"+"${mypageInfo.babyList[0].babyPhoto}"+"'>";
+	if(!"${mypageInfo.babyList[0].bbPhoto}" == ""){
+		bImage.innerHTML = "<img class='profileImage' src='"+"${mypageInfo.babyList[0].bbPhoto}"+"'>";
 	}else{
 		bImage.innerHTML ="";
 	}
-	babyName.innerText="${mypageInfo.babyList[0].babyName}";
-	babyBirthDay.innerText="${mypageInfo.babyList[0].babyBirthday}";
-	babyHeight.innerText="${mypageInfo.babyList[0].babyHeight}"+"cm";
-	babyWeight.innerText="${mypageInfo.babyList[0].babyWeight}"+"kg";
+	babyName.innerText="${mypageInfo.babyList[0].bbName}";
+	babyBirthDay.innerText="${mypageInfo.babyList[0].bbBirthday}";
+	babyHeight.innerText="${mypageInfo.babyList[0].bbHeight}"+"cm";
+	babyWeight.innerText="${mypageInfo.babyList[0].bbWeight}"+"kg";
 	
 	//내 밑으로 두아이 이상이라면 '>' 버튼 보여줌
 	if("${mypageInfo.babyList.size()}">1){
@@ -383,15 +383,15 @@ function callbackGetBabyInfo(jsonData){
 	
 	//아이프로필사진이 없다면 사진부분에 아무것도 띄워주지 않음
 	if(!babyInfo.babyList[babyNum].babyPhoto == ""){
-		babyImage.innerHTML = "<img class=\"profileImage\" src=\""+babyInfo.babyList[babyNum].babyPhoto+"\" >";
+		babyImage.innerHTML = "<img class=\"profileImage\" src=\""+babyInfo.babyList[babyNum].bbPhoto+"\" >";
 	}else{
 		babyImage.innerHTML = "";
 	}
 	
-	babyName.innerText = babyInfo.babyList[babyNum].babyName;
-	babyBirthDay.innerText=babyInfo.babyList[babyNum].babyBirthday;
-	babyHeight.innerText=babyInfo.babyList[babyNum].babyHeight;
-	babyWeight.innerText=babyInfo.babyList[babyNum].babyWeight;
+	babyName.innerText = babyInfo.babyList[babyNum].bbName;
+	babyBirthDay.innerText=babyInfo.babyList[babyNum].bbBirthday;
+	babyHeight.innerText=babyInfo.babyList[babyNum].bbHeight;
+	babyWeight.innerText=babyInfo.babyList[babyNum].bbWeight;
 	
 	let num = babyNum;
 	num++;
@@ -423,21 +423,21 @@ function changeBaby(number){
 			babyNum++;
 			
 			let babyImage = document.getElementById("bImage");
-			let babyName = document.getElementById("babyName");
-			let babyBirthDay = document.getElementById("babyBirthday");
-			let babyHeight = document.getElementById("babyHeight");
-			let babyWeight = document.getElementById("babyWeight");
+			let babyName = document.getElementById("bbName");
+			let babyBirthDay = document.getElementById("bbBirthday");
+			let babyHeight = document.getElementById("bbHeight");
+			let babyWeight = document.getElementById("bbWeight");
 			
-			if(!babyInfo.babyList[babyNum].babyPhoto == ""){
-				babyImage.innerHTML = "<img class=\"profileImage\" src=\""+babyInfo.babyList[babyNum].babyPhoto+"\" >";
+			if(!babyInfo.babyList[babyNum].bbPhoto == ""){
+				babyImage.innerHTML = "<img class=\"profileImage\" src=\""+babyInfo.babyList[babyNum].bbPhoto+"\" >";
 			}else{
 				babyImage.innerHTML = "";
 			}
 
-			babyName.innerText = babyInfo.babyList[babyNum].babyName;
-			babyBirthDay.innerText=babyInfo.babyList[babyNum].babyBirthday;
-			babyHeight.innerText=babyInfo.babyList[babyNum].babyHeight+"cm";
-			babyWeight.innerText=babyInfo.babyList[babyNum].babyWeight+"kg";
+			babyName.innerText = babyInfo.babyList[babyNum].bbName;
+			babyBirthDay.innerText=babyInfo.babyList[babyNum].bbBirthday;
+			babyHeight.innerText=babyInfo.babyList[babyNum].bbHeight+"cm";
+			babyWeight.innerText=babyInfo.babyList[babyNum].bbWeight+"kg";
 			
 			let num = babyNum;
 			num++;
@@ -466,15 +466,15 @@ function changeBaby(number){
 		let babyHeight = document.getElementById("babyHeight");
 		let babyWeight = document.getElementById("babyWeight");
 
-		if(!babyInfo.babyList[babyNum].babyPhoto == ""){
-			babyImage.innerHTML = "<img class=\"profileImage\" src=\""+babyInfo.babyList[babyNum].babyPhoto+"\" >";
+		if(!babyInfo.babyList[babyNum].bbPhoto == ""){
+			babyImage.innerHTML = "<img class=\"profileImage\" src=\""+babyInfo.babyList[babyNum].bbPhoto+"\" >";
 		}else{
 			babyImage.innerHTML = "";
 		}		
-		babyName.innerText = babyInfo.babyList[babyNum].babyName;
-		babyBirthDay.innerText=babyInfo.babyList[babyNum].babyBirthday;
-		babyHeight.innerText=babyInfo.babyList[babyNum].babyHeight+"cm";
-		babyWeight.innerText=babyInfo.babyList[babyNum].babyWeight+"kg";
+		babyName.innerText = babyInfo.babyList[babyNum].bbName;
+		babyBirthDay.innerText=babyInfo.babyList[babyNum].bbBirthday;
+		babyHeight.innerText=babyInfo.babyList[babyNum].bbHeight+"cm";
+		babyWeight.innerText=babyInfo.babyList[babyNum].bbWeight+"kg";
 		
 		//가장 첫번째 아기일 때 <버튼만 막아주면 됨
 		if(babyNum==0){
@@ -571,7 +571,7 @@ function changeBabyProfile(){
 	//babyName = babyNameTd.innerText;
 	babyBirthday = babyBirthdayTd.innerText;
 	//babyNameTd.innerHTML = "<input type=\"text\" name='babyName' class=\"profileInput dateInput\" value=\""+babyName+"\">";
-	babyBirthdayTd.innerHTML = "<input type=\"date\" name='babyBirthday' class=\"profileInput dateInput\" value=\""+babyBirthday+"\">";
+	babyBirthdayTd.innerHTML = "<input type=\"date\" name='bbBirthday' class=\"profileInput dateInput\" value=\""+bbBirthday+"\">";
 
 }
 //아이프로필변경 :: 수정완료버튼 클릭
@@ -583,11 +583,11 @@ function changeBabyInfo(){
 	
 
 	if(babyInfo == null){
-		babyNumber = "${mypageInfo.babyList[0].babyCode}";
+		babyNumber = "${mypageInfo.babyList[0].bbCode}";
 		//babyName = "${mypageInfo.babyList[0].babyName}";
 		
 	}else{
-		babyNumber = babyInfo.babyList[babyNum].babyCode;
+		babyNumber = babyInfo.babyList[babyNum].bbCode;
 		//babyName = babyInfo.babyList[babyNum].babyName;
 	}
 	
@@ -596,7 +596,7 @@ function changeBabyInfo(){
 		return;
 	}*/
 	
-	form.appendChild(createInput("text","babyCode",babyNumber,"",""));
+	form.appendChild(createInput("text","bbCode",babyNumber,"",""));
 	form.appendChild(babyBirthdayInput);
 	//form.appendChild(babyNameInput);
 	
@@ -647,10 +647,10 @@ function insertBabyModal(){
 
 	modal.style.display = "block";
 	modalHead.innerHTML = "<div class='insBabyTitle'>아이 추가</div>";
-	modalContent.innerHTML = "<table class='insBabyTable'><tr><td class='tdName'><span class='name'>아이 이름 :</span></td><td class='tdValue'><input class='mBasicInput name'type='text' name='babyName' placeholder='이름' required></td></tr>"
-							+"<tr><td class='tdName'><span class='name'>출생일 :</span></td><td class='tdValue'><input class='mBasicInput name' type='date' name='babyBirthday' placeholder='출생일' required></td></tr>"
-							+"<tr><td class='tdName'><span class='name'>키 :</span></td><td class='tdValue'><input class='mMiniInput name'type='text' name='babyHeight' placeholder='cm' required></td></tr>"
-							+"<tr><td class='tdName'><span class='name'>몸무게 :</span></td><td class='tdValue'><input type='text' class='mMiniInput name' name='babyWeight' placeholder='kg' required></td></tr></table>";
+	modalContent.innerHTML = "<table class='insBabyTable'><tr><td class='tdName'><span class='name'>아이 이름 :</span></td><td class='tdValue'><input class='mBasicInput name'type='text' name='bbName' placeholder='이름' required></td></tr>"
+							+"<tr><td class='tdName'><span class='name'>출생일 :</span></td><td class='tdValue'><input class='mBasicInput name' type='date' name='bbBirthday' placeholder='출생일' required></td></tr>"
+							+"<tr><td class='tdName'><span class='name'>키 :</span></td><td class='tdValue'><input class='mMiniInput name'type='text' name='bbHeight' placeholder='cm' required></td></tr>"
+							+"<tr><td class='tdName'><span class='name'>몸무게 :</span></td><td class='tdValue'><input type='text' class='mMiniInput name' name='bbWeight' placeholder='kg' required></td></tr></table>";
 	modalFoot.innerHTML = "<button class='mBtnX' onclick='modalClose()'>취소</button><button class='mBtnO' onclick='insertBabyInfo()'>추가</button>";
 
 
@@ -659,10 +659,10 @@ function insertBabyModal(){
 function insertBabyInfo(){
 	let form = document.getElementById("InsertBabyInfo");
 	
-	let babyName = document.getElementsByName("babyName")[0];
-	let babyBirthday = document.getElementsByName("babyBirthday")[0];
-	let babyHeight = document.getElementsByName("babyHeight")[0];
-	let babyWeight = document.getElementsByName("babyWeight")[0];
+	let babyName = document.getElementsByName("bbName")[0];
+	let babyBirthday = document.getElementsByName("bbBirthday")[0];
+	let babyHeight = document.getElementsByName("bbHeight")[0];
+	let babyWeight = document.getElementsByName("bbWeight")[0];
 	
 	//이름 글자 제한
 	if(!isCharLengthCheck(babyName.value,"1","20")){
@@ -722,13 +722,13 @@ function submitPhoto(num){
 		
 		//아이코드
 		if(babyInfo == null){
-			babyCode = "${mypageInfo.babyList[0].babyCode}";
+			babyCode = "${mypageInfo.babyList[0].bbCode}";
 		}else{
-			babyCode = babyInfo.babyList[babyNum].babyCode;
+			babyCode = babyInfo.babyList[babyNum].bbCode;
 		}
 		//폼에 담아 서버전송
 		form.appendChild(imgInput);
-		form.appendChild(createInput("hidden","babyCode",babyCode,"",""));
+		form.appendChild(createInput("hidden","bbCode",babyCode,"",""));
 		form.action = "UploadBabyImage";
 		form.method = "post";
 		form.enctype = "multipart/form-data";

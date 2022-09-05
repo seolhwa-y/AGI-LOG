@@ -5,10 +5,10 @@ import lombok.Data;
 @Data
 public class BabyBean {
 	private String suCode;
-	private String babyCode;
-	private String babyBirthday;
-	private String babyName;
-	private String babyHeight;
-	private String babyWeight;
-	private String babyPhoto;
+	private String bbCode;
+	private String bbBirthday;
+	private String bbName;
+	private String bbHeight;
+	private String bbWeight;
+	private String bbPhoto;
 }
