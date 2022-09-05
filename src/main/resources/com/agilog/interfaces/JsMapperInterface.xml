@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.agilog.interfaces.JsMapperInterface">
+	<select id="getMyInfo" parameterType="string" resultType="com.agilog.beans.MyPageBean">
+		SELECT SU_CODE AS SUCODE, SU_NAME AS SUNAME, SU_NICKNAME AS SUNICKNAME, SU_EMAIL AS SUEMAIL, SU_PHONE AS SUPHONE ,SU_PHOTO AS SUPHOTO FROM SU WHERE SU_CODE = #{suCode}
+	</select>
+	<select id="getBabyInfoList" parameterType="string" resultType="com.agilog.beans.BabyBean">
+		SELECT BB_CODE AS BABYCODE, BB_SUCODE AS SUCODE, BB_NAME AS BABYNAME, TO_CHAR(BB_BIRTHDAY,'YYYY-MM-DD') AS BABYBIRTHDAY, BABYWEIGHT, BABYHEIGHT,BB_PHOTO AS BABYPHOTO
+		FROM BB LEFT OUTER JOIN BABYRECENTWEIGHT ON (BB_CODE = WBABYCODE AND BB_SUCODE = WSUCODE)
+        LEFT OUTER JOIN BABYRECENTHEIGHT ON (BB_CODE = HBABYCODE AND BB_SUCODE = HSUCODE)
+		WHERE BB_SUCODE = #{suCode} 
+		ORDER BY BABYCODE
+	</select>
+	<update id="updProFile" parameterType="com.agilog.beans.MyPageBean">
+		UPDATE SU SET SU_NICKNAME = #{suNickName} WHERE SU_CODE = #{suCode}
+	</update>
+	<update id="updBabyBirthday" parameterType="com.agilog.beans.BabyBean">
+		UPDATE BABY SET  BB_BIRTHDAY = TO_DATE(#{babyBirthday},'YY-MM-DD') WHERE BB_SUCODE = #{suCode} AND BB_CODE = #{babyCode}
+	</update>
+	<select id="getNewBabyCode" parameterType="com.agilog.beans.AuthBean" resultType="string">
+		SELECT CONCAT(LTRIM(NVL(TO_CHAR(MAX(BB_CODE)+1,'00'),' 01')), '') AS BABYCODE
+		FROM BB WHERE BB_SUCODE = #{suCode}
+	</select>
+	<insert id="insBabyInfo" parameterType="com.agilog.beans.BabyBean" >
+		INSERT INTO BB VALUES(#{babyCode},#{suCode},#{babyName},TO_DATE(#{babyBirthday},'YY-MM-DD'),'')
+	</insert>
+	<update id="updSocialUserPhoto" parameterType="com.agilog.beans.AuthBean" >
+		UPDATE SU SET SU_PHOTO = #{suPhoto} WHERE SU_CODE = #{suCode}
+	</update>
+	<update id="updBabyPhoto" parameterType="com.agilog.beans.BabyBean" >
+		UPDATE BABY SET BB_PHOTO = #{babyPhoto} WHERE BB_SUCODE = #{suCode} AND BB_CODE = #{babyCode}
+	</update>
+	<select id="getHealthDiaryCode" resultType="string">
+		SELECT NVL((MAX(HD_CODE)+1),100001)
+		FROM HD
+	</select>
+	<insert id="insHDWeight" parameterType="com.agilog.beans.HealthDiaryBean">
+		INSERT INTO HEALTHDIARY VALUES(#{hdCode},SYSDATE,#{hdCaCode},#{suCode},#{babyCode},#{babyWeight})
+	</insert>
+	<insert id="insHDHeight" parameterType="com.agilog.beans.HealthDiaryBean">
+		INSERT INTO HEALTHDIARY VALUES(#{hdCode},SYSDATE,#{hdCaCode},#{suCode},#{babyCode},#{babyWeight})
+	</insert>
+</mapper>

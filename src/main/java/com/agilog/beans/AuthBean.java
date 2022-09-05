@@ -9,9 +9,11 @@ public class AuthBean {
 	private String suPhone;
 	private String suEmail;
 	private String suNickName;
+	private String suPhoto;
 	
 	private String alDate;
 	private int alAction;
 	
 	private String type;
+	
 }
