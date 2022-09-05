@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.agilog.interfaces.JpMapperInterface">
+	<select id="isMember" parameterType="com.agilog.beans.AuthBean" resultType="int">
+		SELECT COUNT(*) FROM SU WHERE SU_CODE = #{suCode}
+	</select>
+	<insert id="insAuthLog" parameterType="com.agilog.beans.AuthBean">
+		INSERT INTO AUTHLOG VALUES(SYSDATE,#{alAction},#{suCode})
+	</insert>
+	<select id="isAccess" parameterType="com.agilog.beans.AuthBean" resultType="String">
+		SELECT SUM(AL_ACTION) FROM AL WHERE AL_SUCODE = #{suCode}
+	</select>
+	<select id="getAccessInfo" parameterType="com.agilog.beans.AuthBean" resultType="com.agilog.beans.AuthBean">
+		SELECT SU_CODE AS SUCODE, SU_NICKNAME AS SUNICKNAME FROM SU WHERE SU_CODE = #{suCode}
+	</select>
+	<select id="isCompanyMember" parameterType="com.agilog.beans.CompanyBean" resultType="string">
+		SELECT CO_PASSWORD AS COPASSWORD FROM CO WHERE CO_CODE = #{coCode}
+	</select>
+	<select id="isCompanyAccess" parameterType="com.agilog.beans.CompanyBean" resultType="string">
+		SELECT SUM(CL_ACTION) FROM COMPANYLOG WHERE CL_COCODE = #{coCode}
+	</select>
+	<insert id="insCompanyAuthLog" parameterType="com.agilog.beans.CompanyBean" >
+		INSERT INTO COMPANYLOG VALUES(DEFAULT,#{clAction},#{coCode})
+	</insert>
+	
+	
+	<!--기업 엑세스인포 -->
+	<select id="getCompanyAccessInfo" parameterType="com.agilog.beans.CompanyBean" resultType="com.agilog.beans.CompanyBean">
+	   SELECT CO_CODE AS COCODE, CO_NAME AS CONAME, CO_EMAIL AS COEMAIL, CO_MANAGERCODE AS COMANAGERCODE, CO_PHONE AS COPHONE,
+	   CO_ADDRESS AS COADDRESS FROM CO WHERE CO_CODE = #{coCode}
+	</select>
+	<!-- 의사 정보 -->
+	<select id="getDoctorInfo" parameterType="com.agilog.beans.DoctorBean" resultType="com.agilog.beans.DoctorBean">
+	 SELECT DO_CODE AS DOCODE, DO_NAME AS DONAME, DO_COCODE AS COCODE FROM DO WHERE DO_COCODE = #{coCode}
+	</select>
+	<!-- 의사코드 중복검사 -->
+	<select id="checkDoctorCode" parameterType="com.agilog.beans.DoctorBean" resultType="String">
+		SELECT COUNT(*) FROM DO WHERE DO_CODE = #{doCode}
+	</select>
+	<!-- 의사 추가 -->
+	<select id="insDoctorInfo" parameterType="com.agilog.beans.DoctorBean">
+		INSERT INTO DO VALUES(#{doCode},#{coCode},#{doName},#{doPassword})
+	</select>
+	<!-- 의사 삭제 -->
+	<delete id="delDoctor" parameterType="com.agilog.beans.DoctorBean">
+		DELETE FROM DO WHERE DO_COCODE = #{coCode} AND DO_CODE = #{doCode};
+	</delete>
+	
+	
+	<select id="insCompanyInfo" parameterType="com.agilog.beans.CompanyBean">
+		INSERT INTO CO VALUES(#{coCode}, #{coPassword}, #{coManagerCode}, #{coName}, #{coPhone}, #{coEmail}, #{coAddress})
+	</select>
+	<select id="checkNickName" parameterType="com.agilog.beans.AuthBean" resultType="String">
+		SELECT COUNT(*) FROM SU WHERE SU_NICKNAME = #{suNickName}
+	</select>
+	<insert id="insSocialUser" parameterType="com.agilog.beans.AuthBean" >
+		INSERT INTO SU VALUES(#{suCode},#{suName},#{suPhone},#{suEmail},#{suNickName})
+	</insert>
+
+</mapper>

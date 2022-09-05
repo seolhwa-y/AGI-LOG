@@ -5,9 +5,26 @@ import lombok.Data;
 @Data
 public class HealthDiaryBean {
 	private String suCode;
-	private String babyCode;
-	private String babyHeight;
-	private String babyWeight;
+	
+	private String bbCode;
+	private String bbName;
+	
 	private String hdCode;
-	private String hdCaCode;
+	private String hdDate;
+	private String hdValue;
+	
+	private String bbWeight;
+	private String bbHeight;
+	private String head;
+	private String foot;
+	private String temperature;
+	private String sleep;
+	private String defecation;
+	private String defstatus;
+	private String meal;
+	private String memo;
+	
+	private String caCode;
+	private String caName;
+	private String caType;
 }

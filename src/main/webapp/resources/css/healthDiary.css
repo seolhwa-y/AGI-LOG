@@ -1,0 +1,111 @@
+#rightArea {
+position: relative;
+}
+.saveBtn {
+width: auto;
+}
+/* modal */
+.modal_head {
+	position: relative;
+	text-align: left;
+    width: 100%;
+    height: 8%;
+}
+.modal_content {
+	display: flex;
+    height: 85%;
+    flex-direction: column;
+    justify-content: space-between;	
+}
+.modal_foot {
+	display: flex;
+	justify-content: space-around;
+	position: absolute;
+	bottom: 20px;
+	left: 0;
+	right: 0;
+	width: 100%;
+}
+.row {
+	display: flex;
+	justify-content: space-between;
+}
+.item {
+	display: flex;
+	align-items: center;
+	width: 300px;
+}
+.item span {
+	width: 30%;
+}
+.mMiniSelect {
+    width: 90px;
+    height: 2rem;
+}
+
+/* timepicker */
+.ui-timepicker-container{
+	z-index: 10000000 !important;
+}
+/* diary list */
+#buttonArea {
+	display: flex;
+	margin: 0 auto;
+	padding: 0 5%;
+    box-sizing: border-box;
+	width: 90%;
+	height: 8%;
+	align-items: center;
+	justify-content: space-between;
+}
+#diaryArea {
+	margin: 0 auto;
+	padding: 0 5%;
+	box-sizing: border-box;
+	width: 100%;
+}
+.diary {
+	position: relative;
+	margin: 0 auto;
+	margin-bottom: 50px;
+	padding: 10px 15px;
+	box-sizing: border-box;
+	background-color: white;
+	width: 90%;
+	height: 130px;
+	border-radius: 5px;
+	box-shadow: 3px 3px 8px 0px dimgray;
+	display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    z-index: 1;
+}
+.diary .title {
+	height: 40px;
+	line-height: 40px;
+	font-size: 1.4rem;
+	padding-left: 65px;
+}
+/* profile */
+.miniProfile {
+	display: flex;
+	height: 60px;
+	align-items: center;
+}
+.miniProfile .text {
+	margin-left: 5px;
+	margin-block: 0.5em;
+	font-size: 1.2rem;
+}
+.delBtn {
+	z-index:100;
+}
+.delBtn,.closeBtn {
+	position:absolute;
+	top:5px;
+	right:5px;
+}
+.up {
+	position: absolute;
+	display: none;
+}
