@@ -12,3 +12,4 @@ public class BabyBean {
 	private String bbWeight;
 	private String bbPhoto;
 }
+

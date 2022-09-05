@@ -1,14 +1,20 @@
 package com.agilog.controller;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.agilog.beans.AuthBean;
+import com.agilog.beans.BabyBean;
 import com.agilog.beans.BebeCalendarBean;
 import com.agilog.beans.BoardBean;
 import com.agilog.beans.CompanyBean;
@@ -53,6 +59,45 @@ public class JsHomeController {
 	@RequestMapping(value = "/CompanyLogout", method = RequestMethod.GET)
 	public ModelAndView companyLogout(ModelAndView mav, @ModelAttribute CompanyBean cb) {
 		this.auth.backController(mav, 94);
+		
+		return mav;
+	}
+	
+	@RequestMapping(value = "/UpdateProfile", method = RequestMethod.POST)
+	public ModelAndView updateProfile(ModelAndView mav, @ModelAttribute MyPageBean mb) {
+		mav.addObject(mb);
+	
+		this.myPage.backController(mav, 91);
+		
+		return mav;
+	}
+	
+	@RequestMapping(value = "/ChangeBabyInfo", method = RequestMethod.POST)
+	public ModelAndView changeBabyInfo(ModelAndView mav, @ModelAttribute BabyBean bb) {
+		mav.addObject(bb);
+		this.myPage.backController(mav, 68);
+		
+		return mav;
+	}
+	@RequestMapping(value = "/InsertBabyInfo", method = RequestMethod.POST)
+	public ModelAndView insertBabyInfo(ModelAndView mav, @ModelAttribute BabyBean bb) {
+		mav.addObject(bb);
+		this.myPage.backController(mav, 69);
+		
+		return mav;
+	}
+	@RequestMapping(value = "/UploadParentImage", method = RequestMethod.POST)
+	public ModelAndView uploadFile(MultipartFile file, ModelAndView mav, @ModelAttribute MyPageBean mb) {
+		mav.addObject("file",file);
+		mav.addObject(mb);
+		this.myPage.backController(mav, 108);
+		return mav;
+	}
+	@RequestMapping(value = "/UploadBabyImage", method = RequestMethod.POST)
+	public ModelAndView uploadBabyImage(MultipartFile file, ModelAndView mav, @ModelAttribute BabyBean bb) {
+		mav.addObject("file",file);
+		mav.addObject(bb);
+		this.myPage.backController(mav, 109);
 		
 		return mav;
 	}
