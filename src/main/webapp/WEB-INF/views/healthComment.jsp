@@ -97,7 +97,7 @@ function kakaoLogout() {
 						<li class="nav-sText" onclick="movePage('MoveMyDailyDiaryPage')"><span>내 피드</span></li>
 						<li class="nav-text"><span>건강일기</span></li>
 						<li class="nav-sText" onclick="movePage('MoveHealthDiaryPage')"><span>내 피드</span></li>
-						<li class="nav-sText" onclick="movePage('MoveHealthStatusPage')"><span>통계기록</span></li>
+						<li class="nav-sText" onclick="movePagePost('MoveHealthStatusPage')"><span>통계기록</span></li>
 						<li class="nav-sText" onclick="movePage('MoveDoctorComment')"><span>진료기록</span></li>
 					</ul>
 				</nav>

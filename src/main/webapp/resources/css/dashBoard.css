@@ -726,8 +726,8 @@ input {
 }
 
 .todayPhoto{
-    width: 30%; 
-    height: 100%; 
-    margin: 0 auto; 
+    width: 6.5rem;
+    height: 6.5rem;
     cursor: pointer;
+    margin: 2% 2%;
 }
