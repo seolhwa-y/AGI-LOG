@@ -10,7 +10,7 @@ public class AuthBean {
 	private String suEmail;
 	private String suNickName;
 	private String suPhoto;
-	
+	private String suTheme;
 	private String alDate;
 	private int alAction;
 	

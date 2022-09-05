@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.agilog.interfaces.SkMapperInterface">
+	<!-- 전체 아이정보 조회 -->
+	<select id="getTotalBabyCode" parameterType="com.agilog.beans.AuthBean" resultType="com.agilog.beans.BabyBean">
+		SELECT * FROM TOTALBABYINFO WHERE SUCODE = #{suCode}
+	</select>
+	<!-- 전체 건강일기 조회 -->
+	<select id="getHealthDiary" parameterType="com.agilog.beans.AuthBean" resultType="com.agilog.beans.HealthDiaryBean">
+		SELECT * FROM HEALTHDIARYLIST WHERE SUCODE = #{suCode} ORDER BY HDDATE DESC
+	</select>
+	<!-- 새 건강일기 코드 조회 -->
+	<select id="getHealthDiaryCode" parameterType="com.agilog.beans.HealthDiaryBean" resultType="String">
+		SELECT NVL(TO_CHAR(TO_NUMBER(MAX(HD_CODE))+1),'100001')
+				AS HDCODE FROM HD WHERE HD_BBSUCODE = #{suCode}
+	</select>
+	<!-- 건강일기 항목별 삽입 (10) -->
+	<insert id="insHDWeight" parameterType="com.agilog.beans.HealthDiaryBean" >
+		INSERT INTO HD(HD_CODE,HD_DATE,HD_CACODE,HD_BBSUCODE,HD_BBCODE,HD_VALUE) 
+		VALUES(#{hdCode},DEFAULT,#{caCode},#{suCode},#{bbCode},#{bbWeight})
+	</insert>
+	<insert id="insHDHeight" parameterType="com.agilog.beans.HealthDiaryBean" >
+		INSERT INTO HD(HD_CODE,HD_DATE,HD_CACODE,HD_BBSUCODE,HD_BBCODE,HD_VALUE) 
+		VALUES(#{hdCode},DEFAULT,#{caCode},#{suCode},#{bbCode},#{bbHeight})
+	</insert>
+	<insert id="insHDHead" parameterType="com.agilog.beans.HealthDiaryBean" >
+		INSERT INTO HD(HD_CODE,HD_DATE,HD_CACODE,HD_BBSUCODE,HD_BBCODE,HD_VALUE) 
+		VALUES(#{hdCode},DEFAULT,#{caCode},#{suCode},#{bbCode},#{head})
+	</insert>
+	<insert id="insHDFoot" parameterType="com.agilog.beans.HealthDiaryBean" >
+		INSERT INTO HD(HD_CODE,HD_DATE,HD_CACODE,HD_BBSUCODE,HD_BBCODE,HD_VALUE) 
+		VALUES(#{hdCode},DEFAULT,#{caCode},#{suCode},#{bbCode},#{foot})
+	</insert>
+	<insert id="insHDTemp" parameterType="com.agilog.beans.HealthDiaryBean" >
+		INSERT INTO HD(HD_CODE,HD_DATE,HD_CACODE,HD_BBSUCODE,HD_BBCODE,HD_VALUE) 
+		VALUES(#{hdCode},DEFAULT,#{caCode},#{suCode},#{bbCode},#{temperature})
+	</insert>
+	<insert id="insHDSleep" parameterType="com.agilog.beans.HealthDiaryBean" >
+		INSERT INTO HD(HD_CODE,HD_DATE,HD_CACODE,HD_BBSUCODE,HD_BBCODE,HD_VALUE) 
+		VALUES(#{hdCode},DEFAULT,#{caCode},#{suCode},#{bbCode},#{sleep})
+	</insert>
+	<insert id="insHDdefecation" parameterType="com.agilog.beans.HealthDiaryBean" >
+		INSERT INTO HD(HD_CODE,HD_DATE,HD_CACODE,HD_BBSUCODE,HD_BBCODE,HD_VALUE) 
+		VALUES(#{hdCode},DEFAULT,#{caCode},#{suCode},#{bbCode},#{defecation})
+	</insert>
+	<insert id="insHDDefstatus" parameterType="com.agilog.beans.HealthDiaryBean" >
+		INSERT INTO HD(HD_CODE,HD_DATE,HD_CACODE,HD_BBSUCODE,HD_BBCODE,HD_VALUE) 
+		VALUES(#{hdCode},DEFAULT,#{caCode},#{suCode},#{bbCode},#{defstatus})
+	</insert>
+	<insert id="insHDMeal" parameterType="com.agilog.beans.HealthDiaryBean" >
+		INSERT INTO HD(HD_CODE,HD_DATE,HD_CACODE,HD_BBSUCODE,HD_BBCODE,HD_VALUE) 
+		VALUES(#{hdCode},DEFAULT,#{caCode},#{suCode},#{bbCode},#{meal})
+	</insert>
+	<insert id="insHDMemo" parameterType="com.agilog.beans.HealthDiaryBean" >
+		INSERT INTO HD(HD_CODE,HD_DATE,HD_CACODE,HD_BBSUCODE,HD_BBCODE,HD_VALUE) 
+		VALUES(#{hdCode},DEFAULT,#{caCode},#{suCode},#{bbCode},#{memo})
+	</insert>
+	<!-- 특정 건강일기 디테일 조회 -->
+	<select id="getHealthDiaryDetail" parameterType="com.agilog.beans.HealthDiaryBean" resultType="com.agilog.beans.HealthDiaryBean">
+		SELECT * FROM DETAILHEALTHDIARY WHERE HDCODE=#{hdCode} AND SUCODE = #{suCode}
+	</select>
+	<!-- 특정 건강일기 삭제 -->
+	<delete id="delHealthDiary" parameterType="com.agilog.beans.HealthDiaryBean">
+		DELETE FROM HD WHERE HD_BBSUCODE = #{suCode} AND HD_CODE = #{hdCode}
+	</delete>
+</mapper>
