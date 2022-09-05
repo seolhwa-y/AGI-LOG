@@ -33,6 +33,8 @@ public class Authentication implements ServiceRule {
 	@Autowired
 	private ProjectUtils pu;
 	private JavaMailSenderImpl mail;
+	@Autowired
+	private DashBoard dashBoard;
 
 	public Authentication() {
 	}
@@ -208,7 +210,7 @@ public class Authentication implements ServiceRule {
 			AuthBean ab = (AuthBean) this.pu.getAttribute("accessInfo");
 			if (ab != null) {
 				mav.addObject("accessInfo", ab);
-				page = "dashBoard";
+				this.dashBoard.backController(mav, 4);
 			} else {
 				page = "login";
 			}
@@ -224,7 +226,7 @@ public class Authentication implements ServiceRule {
 			AuthBean ab = (AuthBean) this.pu.getAttribute("accessInfo");
 			if (ab != null) {
 				mav.addObject("accessInfo", ab);
-				page = "dashBoard";
+				this.dashBoard.backController(mav, 4);
 			} else {
 				page = "login";
 			}
@@ -282,7 +284,7 @@ public class Authentication implements ServiceRule {
 		try {
 			String page = "login", action = "";
 			if (this.pu.getAttribute("accessInfo") != null) {
-				page = "dashBoard";
+				this.dashBoard.backController(mav, 4);
 			} else {
 				AuthBean ab = (AuthBean) mav.getModel().get("authBean");
 				int result = Integer.parseInt(this.session.selectOne("isMember", ab).toString());
@@ -322,7 +324,7 @@ public class Authentication implements ServiceRule {
 		try {
 			String page = "login";
 			if (this.pu.getAttribute("accessInfo") != null) {
-				page = "dashBoard";
+				this.dashBoard.backController(mav, 4);
 			} else {
 				AuthBean ab = (AuthBean) mav.getModel().get("authBean");
 				int result = Integer.parseInt(this.session.selectOne("isMember", ab).toString());
@@ -343,15 +345,16 @@ public class Authentication implements ServiceRule {
 							}
 							this.pu.setAttribute("accessInfo", a);
 							mav.addObject("accessInfo", a);
-							page = "dashBoard";
+							System.out.println("여기야");
+							this.dashBoard.backController(mav, 4);
 						}
 					}
 				} else {
 					mav.addObject("message", "가입된 회원이 아닙니다.");
-					page = "login";
+					mav.setViewName(page);
 				}
 			}
-			mav.setViewName(page);
+//			mav.setViewName(page);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -436,7 +439,7 @@ public class Authentication implements ServiceRule {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		mav.setViewName("dashBoard");
+		this.dashBoard.backController(mav, 4);
 	}
 
 	private void insertDoctorCtl(ModelAndView mav) {

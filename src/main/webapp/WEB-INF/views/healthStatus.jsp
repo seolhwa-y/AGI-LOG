@@ -13,6 +13,11 @@
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 <!-- 네이버 스크립트 -->
 <script	src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
+
+<!-- 테마 CSS -->
+<link rel="stylesheet" href="https://naver.github.io/billboard.js/release/latest/dist/theme/datalab.min.css">
+<!-- 차트 JAVA SCRIPT -->
+<script src="https://naver.github.io/billboard.js/release/latest/dist/billboard.pkgd.min.js"></script>
 <script>
 Kakao.init('2afdabad57ed92e1cc9de5bd4baed321');
 function getInfo() {
@@ -59,6 +64,13 @@ function kakaoLogout() {
 		Kakao.Auth.setAccessToken(undefined)
 	}
 }
+
+// 셀렉트 박스 선택시 아이 추세 변경
+function cngHealthStatus() {
+	// 선택된 아기의 코드
+	var babyCode = document.getElementById("babyName").value;
+	console.log("현재 선택된 아이 코드 : " + babyCode);
+}
 </script>
 </head>
 <body onload="getInfo()">
@@ -97,7 +109,7 @@ function kakaoLogout() {
 						<li class="nav-sText" onclick="movePage('MoveMyDailyDiaryPage')"><span>내 피드</span></li>
 						<li class="nav-text"><span>건강일기</span></li>
 						<li class="nav-sText" onclick="movePage('MoveHealthDiaryPage')"><span>내 피드</span></li>
-						<li class="nav-sText" onclick="movePage('MoveHealthStatusPage')"><span>통계기록</span></li>
+						<li class="nav-sText" onclick="movePagePost('MoveHealthStatusPage')"><span>통계기록</span></li>
 						<li class="nav-sText" onclick="movePage('MoveDoctorComment')"><span>진료기록</span></li>
 
 					</ul>
@@ -105,7 +117,76 @@ function kakaoLogout() {
 
 				<!-- ------------------------------------------------------------------------ -->
 			</div>
-			<div id="rightArea" class="scrollBar"></div>
+			<div id="rightArea" class="scrollBar">
+			<!-- 차트 영역 -->
+			    <div id="barChart"></div>
+			    <script>
+			    	// 그래프 생성시 고정으로 나오는 선
+			        var chart1 = bb.generate({
+			            data: {
+			                columns: [
+			                    ["몸무게", 30, 40, 50, 60, 50, 40],
+			                    ["키", 130, 135, 140, 145, 150, 160]
+			                ],
+			                type: "bar"
+			            },
+			            bar: {
+			                width: {
+			                    ratio: 0.5
+			                }
+			            },
+			            bindto: "#barChart"
+			        });
+			        // 시간이 지나면 생기는 하나의 선
+			        setTimeout(function () {
+			            chart1.load({
+			                columns: [
+			                    ["평균", 130, 140, 150, 155, 160, 170]
+			                ]
+			            });
+			        }, 1000);
+			    </script>
+			
+			    <!-- Markup -->
+			    <div id="lineChart"></div>
+			    <script>
+			        // for ESM environment, need to import modules as:
+			        // import bb, {line} from "billboard.js";
+			        var chart2 = bb.generate({
+			            data: {
+			                columns: [
+			                    ["키", 100, 120, 130, 140, 150, 160],
+			                    ["몸무게", 10, 20, 30, 35, 40, 45]
+			                ],
+			                type: "line", // for ESM specify as: line()
+			            },
+			            bindto: "#lineChart"
+			        });
+			
+			        setTimeout(function () {
+			            chart2.load({
+			                columns: [
+			                    ["키", 110, 120, 130, 140, 150, 160]
+			                ]
+			            });
+			        }, 1000);
+			
+			        setTimeout(function () {
+			            chart2.load({
+			                columns: [
+			                    ["평균", 95, 105, 115, 125, 135, 145]
+			                ]
+			            });
+			        }, 1500);
+			
+			        setTimeout(function () {
+			            chart2.unload({
+			                ids: "data1"
+			            });
+			        }, 2000);
+			    </script>
+			   <div> ${babyStatusList.babyList} </div>
+			</div>
 		</div>
 		<div class="modal">
             <div class="modal_body">

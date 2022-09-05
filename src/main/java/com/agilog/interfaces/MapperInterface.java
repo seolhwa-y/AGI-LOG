@@ -10,6 +10,7 @@ import com.agilog.beans.BoardBean;
 import com.agilog.beans.CompanyBean;
 import com.agilog.beans.DailyDiaryBean;
 import com.agilog.beans.DailyDiaryCommentBean;
+import com.agilog.beans.DailyDiaryPhotoBean;
 import com.agilog.beans.HealthDiaryBean;
 import com.agilog.beans.MyPageBean;
 import com.agilog.beans.PostBean;
@@ -57,7 +58,7 @@ public interface MapperInterface {
 	public int insCompanyComment(BebeMapCommentBean bmcb);
 	public int delMapComment(BebeMapCommentBean bmcb);
 	public int insReservationList(ReservationBean rb);
-	//
+	// 
 	public List<DailyDiaryBean> getDailyDiaryList();
 	public DailyDiaryBean getDailyDiaryFeed(DailyDiaryBean ddb);
 	public List<DailyDiaryCommentBean> getFeedComment(DailyDiaryCommentBean ddcb);

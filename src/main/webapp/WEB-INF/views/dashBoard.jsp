@@ -94,11 +94,15 @@ function me(){
                         <!-- 메인 이미지 영역 -->
                     </div>
                     <div class="mainRight" style="width: 25%; height: 100%; float: right; margin: 0 auto;">
-                        <div class="todayFeed" style="position:sticky; height: 10%; text-align: center; margin-top: 25%; font-size: 2rem">
+                        <div>
+                            <div class="todayFeed" style="height: 20%; text-align: center;  font-size: 2rem; margin: 12%;">
+                            	오늘의 피드
+                            </div>
                             <!-- 감성일기 좋아요 많은 순으로 띄어진다. 아님 최신순? -->
-                            오늘의 피드
-                            <div class="photo" style="position:sticky;">
+                            <div class="photo" style="position:sticky; height: 80%;">
+                            	${dailyDiaryPhoto}
                                 <!-- 오늘의 피드 사진 영역 -->
+                                <!-- <img src="/res/img/photo.png" onclick="me()" class="todayPhoto">
                                 <img src="/res/img/photo.png" onclick="me()" class="todayPhoto">
                                 <img src="/res/img/photo.png" onclick="me()" class="todayPhoto">
                                 <img src="/res/img/photo.png" onclick="me()" class="todayPhoto">
@@ -106,9 +110,8 @@ function me(){
                                 <img src="/res/img/photo.png" onclick="me()" class="todayPhoto">
                                 <img src="/res/img/photo.png" onclick="me()" class="todayPhoto">
                                 <img src="/res/img/photo.png" onclick="me()" class="todayPhoto">
-                                <img src="/res/img/photo.png" onclick="me()" class="todayPhoto">
-                                <img src="/res/img/photo.png" onclick="me()" class="todayPhoto">                            
-                                </div>
+                                <img src="/res/img/photo.png" onclick="me()" class="todayPhoto">    -->                         
+                        	</div>
                         </div>
                     </div>
                 <div style=" display: flex; height: 20%; width: 100%; margin: 2%;">
