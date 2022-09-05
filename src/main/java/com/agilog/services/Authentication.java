@@ -110,7 +110,7 @@ public class Authentication implements ServiceRule {
 
 	
 //	네이버는 금지!!!!!
-	@Transactional
+	@Transactional(rollbackFor = SQLException.class)
 	private void socialJoin(ModelAndView mav) {
 		AuthBean ab = (AuthBean) mav.getModel().get("authBean");
 		boolean type = false;
@@ -119,11 +119,9 @@ public class Authentication implements ServiceRule {
 			type = true;
 		}
 
-		ab.setSuName(this.enc.encode(ab.getSuName()));
-		ab.setSuEmail(this.enc.encode(ab.getSuEmail()));
-		
-
 		try {
+			ab.setSuName(this.enc.aesEncode(ab.getSuName(), ab.getSuCode()));
+			ab.setSuEmail(this.enc.aesEncode(ab.getSuEmail(), ab.getSuCode()));
 			ab.setSuPhone(this.enc.aesEncode(ab.getSuPhone(), ab.getSuCode()));
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -139,7 +137,7 @@ public class Authentication implements ServiceRule {
 	}
 
 	// 기업회원 로그아웃 제어
-	@Transactional
+	@Transactional(rollbackFor = SQLException.class)
 	private void companyLogout(ModelAndView mav) {
 		CompanyBean cb;
 		try {
@@ -160,7 +158,7 @@ public class Authentication implements ServiceRule {
 	}
 
 	// 추가해주기~~~~
-	@Transactional
+	@Transactional(rollbackFor = SQLException.class)
 	private void companyLogin(ModelAndView mav) {
 		CompanyBean cb = ((CompanyBean) mav.getModel().get("companyBean"));
 		String companyPw = cb.getCoPassword();
@@ -279,7 +277,7 @@ public class Authentication implements ServiceRule {
 		mav.setViewName("companyJoin");
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = SQLException.class)
 	private void naverLoginCtl(ModelAndView mav) {
 		try {
 			String page = "login", action = "";
@@ -319,7 +317,7 @@ public class Authentication implements ServiceRule {
 		}
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = SQLException.class)
 	private void kakaoLoginCtl(ModelAndView mav) {
 		try {
 			String page = "login";

@@ -2,6 +2,7 @@ package com.agilog.services;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -95,7 +96,7 @@ public class MyPage implements ServiceRule {
 	}
 
 	/* 아이추가 */
-	@Transactional
+	@Transactional(rollbackFor = SQLException.class)
 	private void insertBabyInfoCtl(ModelAndView mav) {
 		AuthBean ab;
 		BabyBean bb = (BabyBean) mav.getModel().get("babyBean");
@@ -116,7 +117,7 @@ public class MyPage implements ServiceRule {
 				hdb.setBbWeight(bb.getBbWeight());
 				hdb.setCaCode("01");
 				/* HealthDiaryCode max+1값 가져옴 */
-				hdb.setHdCode(this.session.selectOne("getHealthDiaryCode"));
+				hdb.setHdCode(this.session.selectOne("getHealthDiaryCode",hdb));
 				/* DB :: HealthDiary테이블에 아이 몸무게 INSERT */
 				if(this.converToBoolean(this.session.insert("insHDWeight",hdb))) {
 					hdb.setBbHeight(bb.getBbHeight());
@@ -145,7 +146,7 @@ public class MyPage implements ServiceRule {
 		}
 	}
 	/* 부모 프로필 변경 */
-	@Transactional
+	@Transactional(rollbackFor = SQLException.class)
 	private void updateProfileCtl(ModelAndView mav) {
 
 		MyPageBean mb = ((MyPageBean)mav.getModel().get("myPageBean"));
@@ -171,7 +172,7 @@ public class MyPage implements ServiceRule {
 	}
 	
 	/* 내 아이정보 가져오기 */
-	@Transactional
+	@Transactional(rollbackFor = SQLException.class)
 	private void getBabyInfo(Model model) {
 		AuthBean ab;
 		List<BabyBean> bb = new ArrayList<BabyBean>();
@@ -198,7 +199,7 @@ public class MyPage implements ServiceRule {
 	}
 
 	/* 마이페이지 이동 CTL */
-	@Transactional
+	@Transactional(rollbackFor = SQLException.class)
 	private void moveMyPageCtl(ModelAndView mav) {
 		AuthBean ab;
 		List<BabyBean> bb = new ArrayList<BabyBean>();
@@ -243,6 +244,7 @@ public class MyPage implements ServiceRule {
 	}
 	
 	/* 아이 프로필변경 */
+	@Transactional(rollbackFor = SQLException.class)
 	private void changeBabyInfoCtl(ModelAndView mav) {
 		BabyBean bb = new BabyBean();
 		bb = (BabyBean)mav.getModel().get("babyBean");
@@ -267,6 +269,7 @@ public class MyPage implements ServiceRule {
 
 
 	/* 아이 프로필사진 변경 */
+	@Transactional(rollbackFor = SQLException.class)
 	private void uploadBabyImageCtl(ModelAndView mav) {
 		MultipartFile file = (MultipartFile)mav.getModel().get("file");
 		try {
@@ -311,6 +314,7 @@ public class MyPage implements ServiceRule {
 	
 	}
 	/* 부모 프로필사진 업데이트 */
+	@Transactional(rollbackFor = SQLException.class)
 	private void uploadParentImageCtl(ModelAndView mav) {
 		MultipartFile file = (MultipartFile)mav.getModel().get("file");
 

@@ -92,14 +92,10 @@ function kakaoLogout() {
 
 				<nav class="side-menu">
 					<ul class="menus">
-						<li class="nav-text"><span>감성일기</span></li>
-						<li class="nav-sText" onclick="movePage('MoveDailyDiaryPage')"><span>전체피드</span></li>
-						<li class="nav-sText" onclick="movePage('MoveMyDailyDiaryPage')"><span>내 피드</span></li>
-						<li class="nav-text"><span>건강일기</span></li>
-						<li class="nav-sText" onclick="movePage('MoveMyDailyDiaryPage')"><span>내 피드</span></li>
-						<li class="nav-sText" onclick="movePage('MoveHealthStatusPage')"><span>통계기록</span></li>
-						<li class="nav-sText" onclick="movePage('MoveDoctorComment')"><span>진료기록</span></li>
-
+						<li class="nav-text"><span>게시판</span></li>
+						<li class="nav-sText" onclick="movePage('MoveBoardPage')"><span>전체글</span></li>
+						<li class="nav-sText" onclick="movePage('MoveFreeBoard')"><span>자유게시판</span></li>
+						<li class="nav-sText" onclick="movePage('MoveInfoBoard')"><span>육아정보</span></li>
 					</ul>
 				</nav>
 

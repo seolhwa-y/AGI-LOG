@@ -666,19 +666,16 @@ function insertBabyModal(){
 //아이 추가 :: 아이 추가 제출
 function insertBabyInfo(){
 	let form = document.getElementById("InsertBabyInfo");
-	
 	let bbName = document.getElementsByName("bbName")[0];
 	let bbBirthday = document.getElementsByName("bbBirthday")[0];
 	let bbHeight = document.getElementsByName("bbHeight")[0];
 	let bbWeight = document.getElementsByName("bbWeight")[0];
-	
 	//이름 글자 제한
 	if(!isCharLengthCheck(bbName.value,"1","20")){
-		alert("아이 이름은 1자~20자 사이로 입력해 주세요")
+		alert("아이 이름은 1자~20자 사이로 입력해 주세요");
 		bbName.focus();
 		return;
 	}
-	
 	form.action = "InsertBabyInfo";
 	form.method = "post";
 	

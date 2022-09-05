@@ -82,7 +82,7 @@ public class HealthDiary2 implements ServiceRule {
 
 		sb.append("<select id='babyName' class='select' onChange = 'cngHealthStatus()'>");
 		
-		if(babyList != null) {
+		if(babyList.size()!=0&&babyList != null) {
 			sb.append("<option value = '" + babyList.get(0).getBbCode() + "' disabled selected> " + babyList.get(0).getBbName() + "</option>");
 		
 			for(BabyBean bb : babyList) {

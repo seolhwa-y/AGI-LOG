@@ -1,5 +1,6 @@
 package com.agilog.services;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -42,7 +43,7 @@ public class HealthDiary implements ServiceRule {
 		}
 	}
 	
-	@Transactional
+	@Transactional(rollbackFor = SQLException.class)
 	private void deleteHealthDiaryCtl(ModelAndView mav) {
 		try {
 			HealthDiaryBean hb = (HealthDiaryBean) mav.getModel().get("healthDiaryBean");
@@ -86,7 +87,7 @@ public class HealthDiary implements ServiceRule {
 	private void moveHealthStatusPageCtl(ModelAndView mav) {
 		
 	}
-	@Transactional
+	@Transactional(rollbackFor = SQLException.class)
 	private void insertHealthDiaryCtl(ModelAndView mav) {
 		try {
 			boolean result = false;
@@ -190,7 +191,7 @@ public class HealthDiary implements ServiceRule {
 		
 	}
 	
-	@Transactional
+	@Transactional(rollbackFor = SQLException.class)
 	private void showHealthDiaryCtl(Model model) {
 		HealthDiaryBean hb = (HealthDiaryBean) model.getAttribute("healthDiaryBean");
 		try {
@@ -212,9 +213,9 @@ public class HealthDiary implements ServiceRule {
 		StringBuffer sb = new StringBuffer();
 		
 		if(babyList.size()!=0&&babyList!=null) {
-			sb.append("<select class=\"mMiniInput babyInfo\">");
+			sb.append("<select class=\'mMiniInput babyInfo\'>");
 			for(BabyBean bb:babyList) {
-				sb.append("<option value=\""+bb.getBbCode()+"\">"+bb.getBbName()+"</option>");
+				sb.append("<option value=\'"+bb.getBbCode()+"\'>"+bb.getBbName()+"</option>");
 			}
 			sb.append("</select>");
 		} else {

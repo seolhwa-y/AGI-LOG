@@ -31,16 +31,6 @@
 	<update id="updBabyPhoto" parameterType="com.agilog.beans.BabyBean" >
 		UPDATE BABY SET BB_PHOTO = #{bbPhoto} WHERE BB_SUCODE = #{suCode} AND BB_CODE = #{bbCode}
 	</update>
-	<select id="getHealthDiaryCode" resultType="string">
-		SELECT NVL((MAX(HD_CODE)+1),100001)
-		FROM HD
-	</select>
-	<insert id="insHDWeight" parameterType="com.agilog.beans.HealthDiaryBean">
-		INSERT INTO HEALTHDIARY VALUES(#{hdCode},SYSDATE,#{caCode},#{suCode},#{bbCode},#{bbWeight})
-	</insert>
-	<insert id="insHDHeight" parameterType="com.agilog.beans.HealthDiaryBean">
-		INSERT INTO HEALTHDIARY VALUES(#{hdCode},SYSDATE,#{caCode},#{suCode},#{bbCode},#{bbHeight})
-	</insert>
 	<update id="updTheme" parameterType="com.agilog.beans.AuthBean" >
 		UPDATE SU SET SU_THEME = #{suTheme} WHERE SU_CODE = #{suCode}
 	</update>

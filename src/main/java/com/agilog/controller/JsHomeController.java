@@ -82,6 +82,7 @@ public class JsHomeController {
 	@RequestMapping(value = "/InsertBabyInfo", method = RequestMethod.POST)
 	public ModelAndView insertBabyInfo(ModelAndView mav, @ModelAttribute BabyBean bb) {
 		mav.addObject(bb);
+		System.out.println("homectl"+bb);
 		this.myPage.backController(mav, 69);
 		
 		return mav;

@@ -49,13 +49,13 @@ public class DashBoard implements ServiceRule {
 				mav.addObject("accessInfo", ab);
 			}
 			
-			List<DailyDiaryPhotoBean> ddpList = this.session.selectList("getDairyDiaryPhoto");
-			
-			for(int i = 0; i < 9; i++) {
-				sb.append("<img src='"+ ddpList.get(i).getDpLink() +"' onclick=\"me('"+ ddpList.get(i).getDdCode() +"')\" class=\"todayPhoto\">");
-			}
-			
-			mav.addObject("dailyDiaryPhoto", sb.toString());
+//			List<DailyDiaryPhotoBean> ddpList = this.session.selectList("getDairyDiaryPhoto");
+//			
+//			for(int i = 0; i < 9; i++) {
+//				sb.append("<img src='"+ ddpList.get(i).getDpLink() +"' onclick=\"me('"+ ddpList.get(i).getDdCode() +"')\" class=\"todayPhoto\">");
+//			}
+//			
+//			mav.addObject("dailyDiaryPhoto", sb.toString());
 			mav.setViewName("dashBoard");
 		} catch (Exception e) {
 			e.printStackTrace();

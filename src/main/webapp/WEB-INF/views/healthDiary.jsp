@@ -110,6 +110,8 @@
             let modal = document.getElementsByClassName("modal")[0];
             let mcontent = document.getElementsByClassName("modal_content")[0];
             mcontent.innerHTML = writeForm;
+            let mhead = document.getElementsByClassName("modal_head")[0];
+            mhead.innerHTML = "${babyInfo}";
             let mfoot = document.getElementsByClassName("modal_foot")[0];
             mfoot.innerHTML="";
             //버튼
@@ -226,11 +228,11 @@
         	
         	//키
         	if(data[0].bbHeight!=null) {
-				item[0].innerHTML = "<span>키</span><span>"+data[0].height+"</span> cm";
+				item[0].innerHTML = "<span>키</span><span>"+data[0].bbHeight+"</span> cm";
 			} else item[0].innerHTML = "<span>키</span><span>정보없음</span> cm";
 			//몸무게
 			if(data[0].bbWeight!=null) {
-				item[1].innerHTML = "<span>몸무게</span><span>"+data[0].weight+"</span> kg";
+				item[1].innerHTML = "<span>몸무게</span><span>"+data[0].bbWeight+"</span> kg";
 			} else item[1].innerHTML = "<span>몸무게</span><span>정보없음</span> kg";
 			//발
 			if(data[0].foot!=null) {
