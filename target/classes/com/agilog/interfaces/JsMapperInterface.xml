@@ -36,10 +36,10 @@
 		FROM HD
 	</select>
 	<insert id="insHDWeight" parameterType="com.agilog.beans.HealthDiaryBean">
-		INSERT INTO HEALTHDIARY VALUES(#{hdCode},SYSDATE,#{hdCaCode},#{suCode},#{bbCode},#{bbWeight})
+		INSERT INTO HEALTHDIARY VALUES(#{hdCode},SYSDATE,#{caCode},#{suCode},#{bbCode},#{bbWeight})
 	</insert>
 	<insert id="insHDHeight" parameterType="com.agilog.beans.HealthDiaryBean">
-		INSERT INTO HEALTHDIARY VALUES(#{hdCode},SYSDATE,#{hdCaCode},#{suCode},#{bbCode},#{bbHeight})
+		INSERT INTO HEALTHDIARY VALUES(#{hdCode},SYSDATE,#{caCode},#{suCode},#{bbCode},#{bbHeight})
 	</insert>
 	<update id="updTheme" parameterType="com.agilog.beans.AuthBean" >
 		UPDATE SU SET SU_THEME = #{suTheme} WHERE SU_CODE = #{suCode}

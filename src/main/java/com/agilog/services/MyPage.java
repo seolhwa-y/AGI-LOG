@@ -114,13 +114,13 @@ public class MyPage implements ServiceRule {
 				hdb.setSuCode(ab.getSuCode());
 				hdb.setBbCode(babyCode);
 				hdb.setBbWeight(bb.getBbWeight());
-				hdb.setHdCaCode("01");
+				hdb.setCaCode("01");
 				/* HealthDiaryCode max+1값 가져옴 */
 				hdb.setHdCode(this.session.selectOne("getHealthDiaryCode"));
 				/* DB :: HealthDiary테이블에 아이 몸무게 INSERT */
 				if(this.converToBoolean(this.session.insert("insHDWeight",hdb))) {
 					hdb.setBbHeight(bb.getBbHeight());
-					hdb.setHdCaCode("02");
+					hdb.setCaCode("02");
 					/* DB :: HealthDiary테이블에 아이 키 INSERT */
 					if(this.converToBoolean(this.session.insert("insHDHeight",hdb))) {
 						mav.addObject("message","아이 추가 성공");
