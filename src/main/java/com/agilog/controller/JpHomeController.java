@@ -20,40 +20,14 @@ public class JpHomeController {
 	@Autowired
 	private Company company;
 
-
-
-	//의사관리 관리자페이지 이동 : 재필
-	@RequestMapping(value = "/MoveCheckManagerForDMPage", method = RequestMethod.GET)
-	public ModelAndView moveCheckManagerForDMPage(ModelAndView mav,@ModelAttribute CompanyBean cb) {
-		mav.addObject(cb);
-		this.company.backController(mav, 77);
-		
-		return mav;
-	}
-	//의사관리 관리자 인증 버튼 : 재필
-	@RequestMapping(value = "/MoveCheckManagerForDM", method = RequestMethod.GET)
-	public ModelAndView moveCheckManagerForDM(ModelAndView mav,@ModelAttribute CompanyBean cb) {
-		mav.addObject(cb);
-		this.company.backController(mav, 771);
-		
-		return mav;
-	}
 	//예약관리 관리자페이지 이동 : 재필
-	@RequestMapping(value = "/MoveCheckManagerForRMPage", method = RequestMethod.GET)
-	public ModelAndView moveCheckManagerForRMPage(ModelAndView mav,@ModelAttribute CompanyBean cb) {
+	@RequestMapping(value = "/CheckManager", method = RequestMethod.POST)
+	public ModelAndView checkManager(ModelAndView mav,@ModelAttribute CompanyBean cb) {
 		mav.addObject(cb);
 		this.company.backController(mav, 70);
 		
 		return mav;
 	}
-	//예약관리 관리자 인증 버튼 : 재필
-	@RequestMapping(value = "/MoveCheckManagerForRM", method = RequestMethod.GET)
-	public ModelAndView moveCheckManagerForRM(ModelAndView mav,@ModelAttribute CompanyBean cb) {
-		mav.addObject(cb);
-		this.company.backController(mav, 701);
-		
-		return mav;
-	}	
 	
 	//전문의 관리 페이지 이동
 	@RequestMapping(value = "/MoveDoctorManagement", method = RequestMethod.GET)
