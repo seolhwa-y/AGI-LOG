@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.agilog.interfaces.ThMapperInterface">
+	<select id="getCompanyAccessAllInfo" parameterType="com.agilog.beans.CompanyBean" resultType="com.agilog.beans.CompanyBean">
+		SELECT CO_CODE AS COCODE,CO_NAME AS CONAME, CO_EMAIL AS COEMAIL, CO_MANAGERCODE AS COMANAGERCODE FROM CO WHERE CO_CODE = #{coCode}
+	</select>
+	
+	<select id="isManagerCode" parameterType="com.agilog.beans.CompanyBean" resultType="int">
+		SELECT COUNT(*) FROM CO WHERE CO_MANAGERCODE = #{coManagerCode}
+	</select>
+</mapper>
