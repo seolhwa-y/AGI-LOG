@@ -8,6 +8,7 @@
 <script src="/res/js/agiMain.js"></script>
 <script src="https://use.fontawesome.com/releases/v6.1.2/js/all.js"></script>
 <link rel="stylesheet" href="/res/css/agiMain.css">
+<link rel="stylesheet" href="/res/css/healthDiary.css">
 
 <!-- 카카오 스크립트 -->
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
@@ -89,7 +90,6 @@ function kakaoLogout() {
 				<!-- navigator -->
 				<!-- ------------------------------------------------------------------------ -->
 
-
 				<nav class="side-menu">
 					<ul class="menus">
 						<li class="nav-text"><span>감성일기</span></li>
@@ -104,7 +104,14 @@ function kakaoLogout() {
 
 				<!-- ------------------------------------------------------------------------ -->
 			</div>
-			<div id="rightArea" class="scrollBar"></div>
+			<div id="rightArea" class="scrollBar">
+				<div id="buttonArea">
+                </div>
+                <div id="diaryArea">
+                    ${commentList}
+                </div>
+                <div class="up"><a href="#buttonArea">위로</a></div>
+			</div>
 		</div>
 		<div class="modal">
             <div class="modal_body">

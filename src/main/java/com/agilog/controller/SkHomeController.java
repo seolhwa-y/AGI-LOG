@@ -203,4 +203,12 @@ public class SkHomeController {
 		
 		return mav;
 	}
+	
+	@RequestMapping(value = "/MoveDoctorComment", method = RequestMethod.GET)
+	public ModelAndView moveDoctorComment(ModelAndView mav, @ModelAttribute AuthBean ab) {
+		mav.addObject(ab);
+		this.healthDiary.backController(mav, 76);
+		
+		return mav;
+	}
 }

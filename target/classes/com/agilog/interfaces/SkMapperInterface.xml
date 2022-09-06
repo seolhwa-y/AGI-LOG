@@ -64,4 +64,8 @@
 	<delete id="delHealthDiary" parameterType="com.agilog.beans.HealthDiaryBean">
 		DELETE FROM HD WHERE HD_BBSUCODE = #{suCode} AND HD_CODE = #{hdCode}
 	</delete>
+	<!-- 전체 건강일기 조회 -->
+	<select id="getDoctorCommentList" parameterType="com.agilog.beans.ReservationBean" resultType="com.agilog.beans.ReservationBean">
+		SELECT * FROM COMMENTLIST WHERE SUCODE = #{suCode} ORDER BY REDATE DESC
+	</select>
 </mapper>

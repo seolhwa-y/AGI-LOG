@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.agilog.beans.AuthBean;
 import com.agilog.beans.BabyBean;
 import com.agilog.beans.HealthDiaryBean;
+import com.agilog.beans.ReservationBean;
 import com.agilog.interfaces.ServiceRule;
 import com.agilog.utils.Encryption;
 import com.agilog.utils.ProjectUtils;
@@ -35,6 +36,7 @@ public class HealthDiary implements ServiceRule {
 		case 30: this.deleteHealthDiaryCtl(mav); break;
 		case 33: this.moveHealthDiaryPageCtl(mav); break;
 		case 37: this.insertHealthDiaryCtl(mav); break;
+		case 76: this.moveDoctorCommentCtl(mav); break;
 		}
 	}
 	public void backController(Model model, int serviceCode) {
@@ -185,7 +187,24 @@ public class HealthDiary implements ServiceRule {
 		
 	}
 	private void moveDoctorCommentCtl(ModelAndView mav) {
-		
+		try {
+			String page = "login";
+			//세션검사
+			AuthBean ab = (AuthBean)this.pu.getAttribute("accessInfo");
+			//세션존재 -> 해당 유저의 전체 의사소견서 가져오기
+			if(ab!=null) {
+				ReservationBean rb = new ReservationBean();
+				rb.setSuCode(ab.getSuCode());
+				List<ReservationBean> commentList = this.session.selectList("getDoctorCommentList",rb);
+				
+				mav.addObject("commentList", this.makeDoctorCommentHtml(commentList));
+				page = "healthComment";
+			}
+			
+			mav.setViewName(page);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	private void selectBabyCtl(Model model) {
 		
@@ -224,7 +243,7 @@ public class HealthDiary implements ServiceRule {
 
 		return sb.toString();
 	}
-	
+	//건강일기 리스트 html
 	private String makeHealthDiaryHtml(List<HealthDiaryBean> healthList) {
 		StringBuffer sb = new StringBuffer();
 		
@@ -243,6 +262,34 @@ public class HealthDiary implements ServiceRule {
 			sb.append("</div>");
 		}
 		
+		return sb.toString();
+	}
+	//의사소견 리스트 html
+	private String makeDoctorCommentHtml(List<ReservationBean> commentList) {
+		StringBuffer sb = new StringBuffer();
+		try {
+			for(ReservationBean rb:commentList) {
+				sb.append("<div class=\"diary "+rb.getBbCode()+"\" >");
+				sb.append("<div>");
+				sb.append("<div class=\"miniProfile\">");
+				sb.append("<img src=\"/res/img/profile_default.png\" alt=\"images\">");
+				sb.append("<div class=\"text\">");
+				sb.append("<p class=\"userId\">"+rb.getBbName()+"</p>");
+				sb.append("</div>");
+				sb.append("<div class=\"text\" style=\"margin-left:20px;\">");
+				sb.append("<p class=\"userId\">"+this.enc.aesDecode(rb.getCoName(), rb.getCoCode())+"("+rb.getDoName()+")</p>");
+				sb.append("</div>");
+				sb.append("<div class=\"text\" style=\"margin-left:10px;\">");
+				sb.append("<p class=\"userId\">진료일자:"+rb.getResDate()+"</p>");
+				sb.append("</div>");
+				sb.append("</div>");
+				sb.append("<div class=\"title\">"+rb.getDoComment()+"</div>");
+				sb.append("</div>");
+				sb.append("</div>");
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 		return sb.toString();
 	}
 	// BooleanCheck ��

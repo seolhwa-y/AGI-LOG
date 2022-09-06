@@ -329,7 +329,7 @@
                     <div id="diaryArea">
                         ${diaryList}
                     </div>
-                    <div class="up"><a href="#buttonArea">위로</a></div>
+                    <div class="up"><a href="#rightArea">위로</a></div>
                 </div>
             </div>
         </div>
