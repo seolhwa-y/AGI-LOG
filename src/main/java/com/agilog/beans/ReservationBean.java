@@ -9,7 +9,6 @@ public class ReservationBean {
 	public String bbName;
 	
 	public String resCode;
-	public String resDate;
 	public String resAccess;
 	
 	public String coCode;
@@ -20,4 +19,9 @@ public class ReservationBean {
 	
 	public String rcCode;
 	public String doComment;
+
+	private String resDate;
+	private String resCoName;
+	private String resCoCode;
+	private String resBbName;
 }

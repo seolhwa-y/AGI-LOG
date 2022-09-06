@@ -128,4 +128,9 @@ public interface JsMapperInterface {
 	public int updBabyPhoto(BabyBean bb);
 	public int insHDWeight(HealthDiaryBean hdb);
 	public int insHDHeight(HealthDiaryBean hdb);
+	public String isWriteHd(BebeCalendarBean bcb);
+	public String isWriteWd(BebeCalendarBean bcb);
+	public ReservationBean getReservationInfo(BebeCalendarBean bcb);
+	public List<ScheduleBean> getScheduleList(BebeCalendarBean bcb);
+	
 }

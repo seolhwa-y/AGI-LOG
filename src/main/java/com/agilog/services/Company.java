@@ -50,21 +50,9 @@ public class Company implements ServiceRule {
 		switch(serviceCode) {
 		
 		case 70:
-			this.moveCheckManagerForRMPage(mav);
+			this.checkManager(mav);
 			break;
-		case 701:
-			this.moveCheckManagerForRM(mav);
-			break;
-		case 702:
-			this.moveReservationManagementCtl(mav);	// Board로 페이지 이동
-			break;		
 			
-		case 77:
-			this.moveCheckManagerForDMPage(mav);
-			break;
-		case 771:
-			this.moveCheckManagerForDM(mav);
-			break;
 		case 772:
 			this.moveDoctorManagementCtl(mav);
 			break;
@@ -187,98 +175,28 @@ public class Company implements ServiceRule {
 		mav.setViewName("patientManagement");
 
 	}
-
-
-
-
-	private void moveCheckManagerForDMPage(ModelAndView mav) {
+	
+	private void checkManager(ModelAndView mav) {
 		try {
 			CompanyBean cb = ((CompanyBean) this.pu.getAttribute("companyAccessInfo"));
+			cb.setCoManagerCode(((CompanyBean)mav.getModel().get("companyBean")).getCoManagerCode());
 			if(cb != null) {
-				mav.setViewName("checkManagerForDM");
+				if(this.convertToBoolean(this.session.selectOne("isManagerCode", cb))) {
+					// 세션에 저장할 로그인 유저 정보 가져오기
+					CompanyBean company = (CompanyBean) this.session.selectList("getCompanyAccessAllInfo", cb).get(0);
+					System.out.println(company);
+					// 세션에 userCode저장
+					this.pu.setAttribute("companyAccessInfo", company);
+					mav.setViewName("reservationManagement");
+				}
 			}else {
 				mav.setViewName("companyLogin");
 				System.out.println("세션만료");
 			}
 		
 		} catch (Exception e) {e.printStackTrace();}
-	}
-	private void moveCheckManagerForDM(ModelAndView mav) {
-		//전문의 관리 페이지에서 관리자 코드 인증
-		String page = "companyLogin";
-		CompanyBean cb;
-			try {
-				cb = ((CompanyBean) this.pu.getAttribute("companyAccessInfo"));
-				CompanyBean cmb = (CompanyBean) mav.getModel().get("companyBean");
-				/* 세션 데이터가 있는 경우 */
-				if (cb != null) {
-					//CompanyBean cmb = (CompanyBean) this.session.selectList("getCompanyAccessInfo", this.pu.getAttribute("companyAccessInfo")).get(0);
-					System.out.println(cmb.getCoManagerCode());
-					System.out.println(cb.getCoManagerCode());
-			
-					if(cmb.getCoManagerCode().equals(cb.getCoManagerCode())) {
-						this.moveDoctorManagementCtl(mav);
-						mav.setViewName("doctorManagement");
-						System.out.println("관리자코드 일치");
-					}else {
-						mav.setViewName(page);
-						System.out.println("관리자코드 불일치");
-					}
-		//cmb.setcoManagerCode(this.enc.aesDecode(cmb.getCoManagerCode(), cmb.getCoCode()));		
-		// coManagerCode를 복호화 후 다시 cmb에 저장
-				} else {
-					mav.setViewName(page);
-					System.out.println("세션미확인");
-				}
-			} catch (Exception e) {	e.printStackTrace(); }	
 	}
 	
-	private void moveCheckManagerForRMPage(ModelAndView mav) {
-		try {
-			CompanyBean cb = ((CompanyBean) this.pu.getAttribute("companyAccessInfo"));
-			if(cb != null) {
-				mav.setViewName("checkManagerForRM");
-			}else {
-				mav.setViewName("companyLogin");
-				System.out.println("세션만료");
-			}
-		
-		} catch (Exception e) {e.printStackTrace();}
-	}
-	private void moveCheckManagerForRM(ModelAndView mav) {
-	String page = "companyLogin";
-	CompanyBean cb;
-		try {
-			cb = ((CompanyBean) this.pu.getAttribute("companyAccessInfo"));
-			CompanyBean cmb = (CompanyBean) mav.getModel().get("companyBean");
-			/* 세션 데이터가 있는 경우 */
-			if (cb != null) {
-				//CompanyBean cmb = (CompanyBean) this.session.selectList("getCompanyAccessInfo", this.pu.getAttribute("companyAccessInfo")).get(0);
-				System.out.println(cmb.getCoManagerCode());
-				System.out.println(cb.getCoManagerCode());
-		
-				if(cmb.getCoManagerCode().equals(cb.getCoManagerCode())) {
-					mav.setViewName("reservationManagement");
-					System.out.println("관리차코드 일치");
-				}else {
-					mav.setViewName(page);
-					System.out.println("관리자코드 불일치");
-				}
-	//cmb.setcoManagerCode(this.enc.aesDecode(cmb.getCoManagerCode(), cmb.getCoCode()));		
-	// coManagerCode를 복호화 후 다시 cmb에 저장
-			} else {
-				mav.setViewName(page);
-				System.out.println("세션미확인");
-			}
-		} catch (Exception e) {	e.printStackTrace(); }	
-	}
-  /*
-	 private void moveCheckManagerCtl(ModelAndView mav) {
-		String page = "checkManager";
-
-		mav.setViewName(page);
-	}
-   */
 	private void deleteDoctorCtl(ModelAndView mav) {
 
 	}

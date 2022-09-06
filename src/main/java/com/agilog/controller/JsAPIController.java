@@ -7,13 +7,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.agilog.beans.BabyBean;
+import com.agilog.beans.BebeCalendarBean;
 import com.agilog.beans.MyPageBean;
+import com.agilog.services.BebeCalendar;
 import com.agilog.services.MyPage;
 
 @RestController
 public class JsAPIController {
 	@Autowired
 	MyPage myPage;
+	@Autowired
+	BebeCalendar calendar;
 	
 	@SuppressWarnings("unchecked")
 	@PostMapping("/GetBabyInfo")
@@ -28,6 +32,13 @@ public class JsAPIController {
 		model.addAttribute(mpb);
 		myPage.backController(model, 66);
 		return ((MyPageBean)model.getAttribute("myPageBean")).getSuTheme();
+	}
+	@SuppressWarnings("unchecked")
+	@PostMapping("/DateDetail")
+	public BebeCalendarBean dateDetail(Model model, @ModelAttribute BebeCalendarBean bcb){
+		model.addAttribute(bcb);
+		calendar.backController(model, 48);
+		return (BebeCalendarBean)model.getAttribute("bebeCalendarBean");
 	}
 	
 }
