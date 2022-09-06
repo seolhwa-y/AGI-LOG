@@ -170,13 +170,20 @@
 		margin: 1%;
 		color: dimgray;
 	}
-
+	.mBtnO {
+    height: 2.5rem;
+    width: 13rem;
+    box-shadow: 0px 5px 0px 0px rgb(239 157 171);
+    background-color: rgb(255, 194, 204);
+    font-size: 1.1rem;
+    color: dimgray;
+	}
 	.modal_foot{
- 	position: relative;
+position: relative;
     display: flex;
     margin: 13% auto;
     justify-content: space-between;
-    width: 80%;
+    width: 70%;
 	}
 	.modal_head{
 		font-size: 3rem;
@@ -403,8 +410,8 @@ function callbackGetBabyInfo(jsonData){
 	
 	bbName.innerText = babyInfo.babyList[babyNum].bbName;
 	babyBirthDay.innerText=babyInfo.babyList[babyNum].bbBirthday;
-	bbHeight.innerText=babyInfo.babyList[babyNum].bbHeight;
-	bbWeight.innerText=babyInfo.babyList[babyNum].bbWeight;
+	bbHeight.innerText=babyInfo.babyList[babyNum].bbHeight+"cm";
+	bbWeight.innerText=babyInfo.babyList[babyNum].bbWeight+"kg";
 	
 	let num = babyNum;
 	num++;

@@ -67,6 +67,7 @@ public class MyPage implements ServiceRule {
 
 	public void backController(Model model, int serviceCode) {
 		switch (serviceCode) {
+
 		case 66:
 			this.changeThemeCtl(model);
 			break;
@@ -75,6 +76,7 @@ public class MyPage implements ServiceRule {
 			break;
 		}
 	}
+
 	/* 테마변경 */
 	@Transactional
 	private void changeThemeCtl(Model model) {

@@ -34,4 +34,26 @@
 	<update id="updTheme" parameterType="com.agilog.beans.AuthBean" >
 		UPDATE SU SET SU_THEME = #{suTheme} WHERE SU_CODE = #{suCode}
 	</update>
+	<select id="isWriteHd" parameterType="com.agilog.beans.BebeCalendarBean" resultType="string">
+		SELECT COUNT(*) 
+		FROM HD WHERE HD_BBSUCODE = '2411751690' AND TO_CHAR(HD_DATE, 'YYMMDD') = #{date}
+	</select>
+	<select id="isWriteDd" parameterType="com.agilog.beans.BebeCalendarBean" resultType="string">
+		SELECT COUNT(*)
+		FROM DD WHERE DD_SUCODE = '2411751690' AND TO_CHAR(DD_DATE, 'YYMMDD') = #{date}
+	</select>
+	<select id="getReservationInfo" parameterType="com.agilog.beans.BebeCalendarBean" resultType="com.agilog.beans.ReservationBean">
+		SELECT COCODE AS RESCOCODE,
+		       CONAME AS RESCONAME,
+		       RECODE AS RESCODE,
+		       REDATE AS RESDATE,
+		       BBNAME AS RESBBNAME
+		FROM CORE WHERE TO_CHAR(REDATE, 'YYMMDD') = #{date} AND SUCODE = #{suCode} AND STATUS ='CP'
+	</select>
+	<select id="getScheduleList" parameterType="com.agilog.beans.BebeCalendarBean" resultType="com.agilog.beans.ScheduleBean">
+		SELECT SC_CODE AS SCHEDULECODE,
+	       	   SC_DATE AS SCHEDULEDATE,
+	       	   SC_CONTENT AS SCHEDULENAME
+		FROM SC WHERE TO_CHAR(SC_DATE,'YYMMDD') = #{date} AND SC_SUCODE = #{suCode}
+	</select>
 </mapper>

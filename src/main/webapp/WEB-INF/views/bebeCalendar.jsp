@@ -21,6 +21,104 @@
     max-width: 1100px;
     margin: 0 auto;
   }
+
+	.modal{
+		color: dimgray;
+	}
+
+	.modal_foot {
+    position: relative;
+    display: flex;
+    margin: 3% auto;
+    justify-content: space-between;
+    width: 70%;
+}
+	.modal_head{
+		font-size: 3rem;
+		height: 8%;
+	}
+	.modal_content{
+		height: 75%;
+		width: 80%;
+		margin: auto;
+		
+	}
+	.modal_foot{
+	}
+	.mBtnO {
+    height: 2.5rem;
+    width: 13rem;
+    box-shadow: 0px 5px 0px 0px rgb(239 157 171);
+    background-color: rgb(255, 194, 204);
+    font-size: 1.1rem;
+    color: dimgray;
+	}
+	.mBtnX {
+    color: dimgray;
+    background: gainsboro;
+    height: 2.3rem;
+    width: 13rem;
+    box-shadow: 0px 5px 0px 0px rgb(182 182 182);
+    font-size: 1.1rem;
+	}
+	#modalTop{
+	border-bottom: solid 2px gray;
+	height: 30%;
+	width: 90%;
+	margin: 0 auto;
+	}
+	#top_title{
+		
+		height: 15%;
+		margin-top: 6%;
+		text-align: left;
+		font-size: 170%;
+	}
+	#top_content{
+		
+		height: 70%;
+		margin-top: 6%;
+		font-size: 150%;
+	}
+	#isCheckDiary{
+		
+		height: 22%;
+		width: 83%;
+		margin: 4.5% auto;
+	}
+	#reservationInfo{
+		
+		height: 22%;
+		width: 83%;
+		margin: 6% auto;
+		text-align: left;
+	}
+	#bottom_title{
+		height: 12%;
+		margin-top: 3%;
+		text-align: left;
+		font-size: 170%;
+	}
+	#bottom_content{
+		height: 80%;
+		width: 90%;
+		margin: 0 auto;
+		text-align: left;
+		font-size: 150%;
+	
+	}
+	li{
+		margin-top: 4%;
+		margin-bottom: 7%;
+		
+	}
+	#modalBottom{
+	
+	height: 62%;
+	width: 90%;
+	margin: 0 auto;
+	}
+
 </style>
 <script>
 Kakao.init('2afdabad57ed92e1cc9de5bd4baed321');
@@ -118,65 +216,34 @@ function kakaoLogout() {
       dayMaxEvents: true, // allow "more" link when too many events
       // 일정
       events: [
-        {
-          title: '이제 그만 할래요.',
-          start: '2022-09-02T17:00:00'
-        },
-        {
-          title: '지겹다...API랑 라이브러리..',
-          start: '2022-09-03',
-          end: '2022-09-05'
-        },
-        {
-          groupId: 999,
-          title: '아싸리 김태훈 복귀한다',
-          start: '2022-09-05T08:30:00'
-        },
-        {
-          groupId: 999,
-          title: '오전부터 모두의 작업 확인',
-          start: '2022-09-05T09:00:00'
-        },
-        {
-          title: '마감하자',
-          start: '2022-09-16',
-          end: '2022-09-21'
-        },
-        {
-          title: '상담갈겨 다들 화이팅',
-          start: '2022-09-05',
-          end: '2022-09-16'
-        },
-        {
-          title: '!!!!!!회식 가야지 모두!!!!',
-          start: '2022-09-23'
-        },
-        {
-          title: '경고 :: 아기로그로 이동해',
-          url: 'http://localhost/',
-          start: '2022-09-21T08:30:00'
-        },
-        {
-            title: '경고 :: 지도로 이동해',
-            url: 'http://localhost/MoveMapPage?',
-            start: '2022-09-21T08:30:00'
-          },
-        {
-            title: '경고 :: 캘린더로 이동해',
-            url: 'http://localhost/MoveCalendarPage?',
-            start: '2022-09-21T08:30:00'
-          },
-        {
-            title: '경고 :: 건강일기로 이동해',
-            url: 'http://localhost/MoveDailyDiaryPage?',
-            start: '2022-09-21T08:30:00'
-          }
-      ]
+       
+      ],
+      // 특정일자 선택했을때의 펑션
+      dateClick: function(info) {
+    	    alert('Clicked on: ' + info.dateStr);
+    	    //dateStr = 2022-09-02
+    	    //alert('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
+    	    //alert('Current view: ' + info.view.type);
+    	    // change the day's background color just for fun
+    	    //info.dayEl.style.backgroundColor = 'red';
+    	    
+    	    let clientData = "date="+info.dateStr;
+    	    alert(clientData);
+    	    postAjaxJson("DateDetail",clientData,"callBackDateDetail");
+    	  }
     });
 
     calendar.render();
   });
- 
+function callBackDateDetail(ajaxData){
+	let dateInfo = JSON.parse(ajaxData);
+	alert(dateInfo);
+	
+	let isCheckDiary = document.getElementById("isCheckDiary");
+	let resInfo = document.getElementById("reservationInfo");
+	let schList = document.gteElementById("scheduleList");
+	
+}
 </script>
 </head>
 <body onload="getInfo()">
@@ -206,15 +273,35 @@ function kakaoLogout() {
 				<div id='calendar'></div>
 			</div>
 		</div>
-		<div class="modal">
-			<div class="modal_body">
-				<div class="modal_head">
-					<i class="fa-solid fa-xmark closeBtn editBtn"></i><br />
+		<div class="modal" style="display: block;">
+            <div class="modal_body">
+				<div class="modal_head">날짜~~
+					<i class="fa-solid fa-xmark closeBtn editBtn" style="float: right;"></i><br />
 				</div>
-				<div class="modal_content"></div>
-				<div class="modal_foot"></div>
-			</div>
-		</div>
+				<div class="modal_content">
+					<div id="modalTop">
+						<div id="top_title">기록확인</div>
+						<div id="top_content">
+							<div id="isCheckDiary">데다 헬다</div>
+							<div id="reservationInfo">예약 : 2022.09.27 인천병원</div>
+						</div>
+					</div>
+					<div id="modalBottom">
+						<div id="bottom_title">기타일정</div>
+						<div id="bottom_content">
+							<ul id="scheduleList">
+								<li>일정1</li>
+								<li>일정1</li>
+								<li>일정1</li>
+								<li>일정1</li>
+								<li>일정1</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="modal_foot" id="themeModalFoot"><button class='mBtnX btn' >취소</button><button class='mBtnO btn' >변경</button></div>
+            </div>
+        </div>
 	</div>
 	<form id="serverForm"></form>
 </body>
