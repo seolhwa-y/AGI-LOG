@@ -67,6 +67,18 @@ public class JsAPIController {
 		
 		return (BebeCalendarBean)model.getAttribute("bebeCalendarBean");
 	}
+	@PostMapping("/DeleteScheduleCtl")
+	public BebeCalendarBean deleteScheduleCtl(Model model, @ModelAttribute ScheduleBean sb){
+		model.addAttribute(sb);
+		/* 개인일정 업데이트해주고 특정일 일정정보 불러오는 메소드(서비스코드 48번) 재탕하려고 빌드업 */
+		BebeCalendarBean bcb = new BebeCalendarBean();
+		bcb.setDate(sb.getScheduleDate());
+		model.addAttribute(bcb);
+		/* 개인일정 수정 */
+		calendar.backController(model, 49);
+		
+		return (BebeCalendarBean)model.getAttribute("bebeCalendarBean");
+	}
 	@PostMapping("/DeleteReservation")
 	public BebeCalendarBean deleteReservation(Model model, @ModelAttribute ReservationBean rb){
 		model.addAttribute(rb);

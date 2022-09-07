@@ -266,7 +266,7 @@ function kakaoLogout() {
           ${birthList}
     	  ${ddList}
     	  ${hdList}
-    	  ${reList}
+    	  //${reList}
     	  ${scList}
       ],
         eventDidMount: function(info) {

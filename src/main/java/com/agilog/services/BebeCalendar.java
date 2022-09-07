@@ -225,7 +225,7 @@ public class BebeCalendar implements ServiceRule {
 		try {
 		
 			AuthBean ab = (AuthBean)this.pu.getAttribute("accessInfo");
-			rb.setSuCode(ab.getSuCode());
+			rb.setResSuCode(ab.getSuCode());
 			// CC => 예약취소
 			rb.setRcCode("CC");
 
