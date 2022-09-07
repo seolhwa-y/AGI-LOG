@@ -50,7 +50,7 @@ public class MyPage implements ServiceRule {
 			this.insertBabyInfoCtl(mav);
 			break;
 		case 91:
-			this.updateProfileCtl(mav);
+			this.changeParentInfoCtl(mav);
 			break;
 		case 108:
 			this.uploadParentImageCtl(mav);
@@ -149,7 +149,7 @@ public class MyPage implements ServiceRule {
 	}
 	/* 부모 프로필 변경 */
 	@Transactional(rollbackFor = SQLException.class)
-	private void updateProfileCtl(ModelAndView mav) {
+	private void changeParentInfoCtl(ModelAndView mav) {
 
 		MyPageBean mb = ((MyPageBean)mav.getModel().get("myPageBean"));
 		try {

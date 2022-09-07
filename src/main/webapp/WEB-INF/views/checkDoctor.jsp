@@ -9,16 +9,32 @@
 <script src="https://use.fontawesome.com/releases/v6.1.2/js/all.js"></script>
 <link rel="stylesheet" href="/res/css/agiMain.css">
 <script>
+	function checkDoctor() {
+		let form = document.getElementById("serverForm");
+		
+		let doCode = document.getElementsByName("doctorCode")[0];
+		let doPassword = document.getElementsByName("doctorPassword")[0];
+	
+		form.appendChild(doCode);
+		form.appendChild(doPassword);
+		
+		
+		alert(doCode.value);
+		alert(doPassword.value);
+	
+		form.action = "CheckDoctor";
+		form.method = "post";
+		form.submit();
+	}
 	function init(){
-		if("${companyBean.coName}" != ""){
+		if("${companyAccessInfo.coName}" != ""){
 			let accessArea = document.getElementById("accessArea");
 			accessArea.innerHTML = "";
 			
-			accessArea.innerHTML = "<span> ${companyBean.coName} </span>";
+			accessArea.innerHTML = "<span> ${companyAccessInfo.coName} </span>";
 			accessArea.innerHTML += "<span onclick=\"movePage(\'CompanyLogout\')\">로그아웃</span>";
 			accessArea.innerHTML += "<span onclick=\"movePage(\'MoveMainPage\')\">일반회원</span>";	
 		}
-		
 	}
 </script>
 </head>
@@ -26,36 +42,40 @@
 	<div id="background">
 		<div id="top">
 			<div id="accessArea">
-				<span onclick="movePage('MoveCompanyLoginPage')">로그인</span>
-                <span onclick="movePage('MoveCompanyJoinPage')">회원가입</span>
-                <span onclick="movePage('MoveMainPage')">일반회원</span>
+				
 			</div>
-			<div id="logo" onclick="moveManagerPage('MoveCheckManager',1)">
+			<div id="logo" onclick="movePage('MoveReservationManagement')">
 				<img src="/res/img/agi_logo.png" alt="images">
 			</div>
 			<div id="mainMenuArea">
 				<ul id="mainMenuList">
-					<li class="mainMenu" onclick="moveManagerPage('MoveCheckManager',0)">의사관리</li>
-					<li class="mainMenu" onclick="moveManagerPage('MoveCheckManager',1)">예약관리</li>
-					<li class="mainMenu" onclick="movePage('MoveCheckDoctor')">환자관리</li>
+					<li class="mainMenu" onclick="movePage('MoveDoctorManagement')">의사관리</li>
+					<li class="mainMenu" onclick="movePage('MoveReservationManagement')">예약관리</li>
+					<li class="mainMenu" onclick="movePage('MovePatientManagement')">환자관리</li>
 				</ul>
 			</div>
 		</div>
-		<div id="middle">
-			<div id="rightArea" class="scrollBar">
-				
-			</div>
-		</div>
-		<div class="modal">
-            <div class="modal_body">
-				<div class="modal_head">
-					<i class="fa-solid fa-xmark closeBtn editBtn"></i><br />
+			<div id="middle">
+				<div id="rightArea" class="scrollBar">
+					<div id="checkCompanyTitleDiv">
+						<p id="checkCompanyTitle"><br/>담당의 정보를 입력해주세요.</p>
+							<input type="text" name="doctorCode"  class="basicInput" placeholder="담당의 코드">
+							<input type="password" name="doctorPassword"  class="basicInput" placeholder="담당의 비밀번호">
+							<button type="button" class="basicBtn btn" value="담당의 인증" onclick="checkDoctor()">확인</button>
+					
 				</div>
-				<div class="modal_content"></div>
-				<div class="modal_foot"></div>
-            </div>
-        </div>
-	</div>
+			</div>
+			<div class="modal">
+	            <div class="modal_body">
+					<div class="modal_head">
+						<i class="fa-solid fa-xmark closeBtn editBtn"></i><br />
+					</div>
+					<div class="modal_content"></div>
+					<div class="modal_foot"></div>
+	            </div>
+	       	</div>
+		</div>
+		</div>
 	<form id="serverForm"></form>
 </body>
 

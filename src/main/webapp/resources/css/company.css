@@ -48,18 +48,23 @@ td {
 	text-align: center;
 }
 #checkCompanyTitleDiv {
-	width: 20rem;
-	height: 15rem;
+	width: 40rem;
+	height: 26rem;
 	margin: auto;
-	margin-top:9rem;
+	margin-top:6rem;
 }
 #checkCompanyTitle{
 	color: rgb(121, 121, 121);
 	font-size: 2rem;
 	height: 3rem;
-	width: 15rem;
+	width: 38rem;
 	margin: 0 auto;
 	text-align: center;
+	margin-bottom:3rem;
+}
+.companyCF{
+	margin:0 auto;
+	text-align:center;
 }
 .basicInput{
 	margin:auto;
@@ -180,3 +185,40 @@ td {
 	margin: 0 auto;
     width: 16rem;
 }
+.modal_head{
+	margin-bottom:3rem;
+}
+.modal_content{
+	width:37rem;
+	height:24rem;
+	margin:0 auto;
+}
+.mJoinGroup{
+ width:32rem;
+ height:2.5rem;
+ margin:0 auto;
+ position: relative;
+ margin-top:2rem;
+ font-size:1.2rem;
+}
+.doc{
+	float:left;
+	margin-left:5px;
+	margin-top:1px;
+}
+.aDoc{
+	margin-top:3rem;
+}
+.checkPW{
+	font-size:13px;
+	height:1rem;
+}
+.isCheckPW{
+	font-size:13px;
+	height:1rem;
+	margin-left:-13.7rem;
+}
+.vp{
+	margin-left:-4rem;
+}
+

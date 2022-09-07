@@ -24,7 +24,7 @@ public class JpHomeController {
 	@RequestMapping(value = "/CheckManager", method = RequestMethod.POST)
 	public ModelAndView checkManager(ModelAndView mav,@ModelAttribute CompanyBean cb) {
 		mav.addObject(cb);
-		this.company.backController(mav, 70);
+		this.company.backController(mav, 71);
 		
 		return mav;
 	}
@@ -33,7 +33,7 @@ public class JpHomeController {
 	@RequestMapping(value = "/MoveDoctorManagement", method = RequestMethod.GET)
 	public ModelAndView moveDoctorManagementCtl(HttpServletRequest req,ModelAndView mav, @ModelAttribute CompanyBean cb) {
 		mav.addObject(cb);
-		this.company.backController(mav, 772);
+		this.company.backController(mav, 77);
 		return mav;
 	}
 	
@@ -41,25 +41,18 @@ public class JpHomeController {
 	@RequestMapping(value = "/MoveReservationManagement", method = RequestMethod.GET)
 	public ModelAndView moveReservationManagementCtl(HttpServletRequest req,ModelAndView mav, @ModelAttribute CompanyBean cb) {
 		mav.addObject(cb);
-		this.company.backController(mav, 702);
+		this.company.backController(mav, 70);
 		return mav;
 	}
 	//환자관리 페이지 이동
 	@RequestMapping(value = "/MovePatientManagement", method = RequestMethod.GET)
-	public ModelAndView movePatientManagementCtl(HttpServletRequest req,ModelAndView mav, @ModelAttribute CompanyBean cb) {
+	public ModelAndView movePatientManagementCtl(HttpServletRequest req,ModelAndView mav, @ModelAttribute DoctorBean db) {
 
-		mav.addObject(cb);
+		mav.addObject(db);
 		this.company.backController(mav, 81);
 		return mav;
 	}
-	
-	@RequestMapping(value = "/InsertDoctor", method = RequestMethod.POST)
-	public ModelAndView insertDoctor(ModelAndView mav, @ModelAttribute DoctorBean db) {
-		mav.addObject(db);
-		this.company.backController(mav, 80);
-	
-		return mav;
-	}
+
 
 	
 	

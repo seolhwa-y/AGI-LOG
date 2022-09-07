@@ -15,7 +15,7 @@
 		SELECT SU_CODE AS SUCODE, SU_NICKNAME AS SUNICKNAME FROM SU WHERE SU_CODE = #{suCode}
 	</select>
 	<select id="isCompanyMember" parameterType="com.agilog.beans.CompanyBean" resultType="com.agilog.beans.CompanyBean">
-		SELECT CO_PASSWORD FROM CO WHERE CO_CODE = #{coCode}
+		SELECT CO_PASSWORD AS COPASSWORD FROM CO WHERE CO_CODE = #{coCode}
 	</select>
 	<select id="isCompanyAccess" parameterType="com.agilog.beans.CompanyBean" resultType="string">
 		SELECT SUM(CL_ACTION) FROM COMPANYLOG WHERE CL_COCODE = #{coCode}

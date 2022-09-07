@@ -252,6 +252,7 @@ position: relative;
     width: 80%;
     top: -30%;
     }
+
 </style>
 <!-- 카카오 스크립트 -->
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
@@ -534,7 +535,7 @@ function changeParentProfile(){
 	rightWest.style.display = "none";
 }
 //아이프로필변경 :: 수정완료버튼 클릭
-function updateProfile(){
+function changeParentInfo(){
 	let nickName = document.getElementsByName("suNickName")[0];
 	let form = document.getElementById("serverForm");
 	
@@ -547,7 +548,7 @@ function updateProfile(){
 	}
 	else{
 		form.appendChild(nickName);
-		form.action = "UpdateProfile";
+		form.action = "ChangeParentInfo";
 		form.method = "post";
 		
 		form.submit();
@@ -877,7 +878,7 @@ function callBackTheme(theme){
 					</div>
 					<diV id="editConfirmBtn1">
 					<button class="subBtn mBtnG btn" onclick="parentEditCancel()">취소</button>
-					<button class="mBtnP btn" onclick="updateProfile()">수정완료</button>
+					<button class="mBtnP btn" onclick="changeParentInfo()">수정완료</button>
 					</div>
 				</div>
 			</div>
