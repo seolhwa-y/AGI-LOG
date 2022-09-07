@@ -161,17 +161,17 @@ public class Authentication implements ServiceRule {
 	@Transactional(rollbackFor = SQLException.class)
 	private void companyLogin(ModelAndView mav) {
 		CompanyBean cb = ((CompanyBean) mav.getModel().get("companyBean"));
-		String companyPw = cb.getCoPassword();
+		
+		//아이디로 패스워드 가져옴
+		CompanyBean companyPw = this.session.selectOne("isCompanyMember", cb);
 
-		// 아이디로 패스워드 가져옴
-		this.session.selectOne("isCompanyMember", cb);
-		// 암호 일치 확인 this.enc.matches(companyPw, cb.getCoPassword())
-		if (companyPw == cb.getCoPassword()) {
+		// 암호 일치 확인
+		  if (this.enc.matches(cb.getCoPassword(), companyPw.getCoPassword())) {
 			// 일치함
 			// 로그인상태인지 로그아웃상태인지 확인
 			String accessState = this.session.selectOne("isCompanyAccess", cb);
 
-			if (accessState != null) {
+		    if (accessState.equals("1")) {
 				// 로그아웃 안된 상태, 로그아웃 AccessLog찍어주기
 				cb.setClAction(-1);
 				this.session.insert("insCompanyAuthLog", cb);
@@ -184,13 +184,14 @@ public class Authentication implements ServiceRule {
 				try {
 					// 세션에 저장할 로그인 유저 정보 가져오기
 					CompanyBean company = (CompanyBean) this.session.selectList("getCompanyAccessInfo", cb).get(0);
-					System.out.println(company);
+					company.setCoName(this.enc.aesDecode(company.getCoName(), company.getCoCode()));
+
 					// 세션에 userCode저장
 					this.pu.setAttribute("companyAccessInfo", company);
 					// 병원이름 mav에 저장
 					((CompanyBean) mav.getModel().get("companyBean")).setCoName(company.getCoName());
 
-					mav.setViewName("reservationManagement");
+					mav.setViewName("checkManager");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

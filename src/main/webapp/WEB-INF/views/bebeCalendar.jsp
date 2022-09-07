@@ -117,6 +117,18 @@
 	width: 90%;
 	margin: 0 auto;
 	}
+	
+		
+	.fc-event-title {
+		display: flex;
+		align-items: center;
+	}
+	
+	/* .fc-day-today {
+    background: #FFF !important;
+    border: none !important;
+	}  */
+	
 	input[type="checkbox"]{
         display: none;
       }
@@ -226,6 +238,19 @@ function kakaoLogout() {
       //달력 일정 드래그 해서 이동 가능.
       selectable: true,
       selectMirror: true,
+      // 캘린더에서 드래그 해서 일정 생성
+      select: function(arg) {
+        var title = prompt('Event Title:');
+        if (title) {
+          calendar.addEvent({
+            title: title,
+            start: arg.start,
+            end: arg.end,
+            allDay: arg.allDay
+          })
+        }
+        calendar.unselect()
+      },
       // 일정을 클릭 했을 때 발생
       eventClick: function(arg) {
         if (confirm('일정확인???')) {
@@ -238,8 +263,59 @@ function kakaoLogout() {
       dayMaxEvents: true, // allow "more" link when too many events
       // 일정
       events: [
-       
+          ${birthList}
+    	  ${ddList}
+    	  ${hdList}
+    	  ${reList}
+    	  ${scList}
       ],
+        eventDidMount: function(info) {
+    	    const bimg = document.createElement("img");
+    		bimg.setAttribute("src","/res/img/birthday.png");
+    		bimg.setAttribute("width", "16");
+    		bimg.setAttribute("height", "16");
+    	    bimg.classList.add("dateImg");
+    	    console.log(info.el);
+    	    if(info.el.classList.item(5) == "birthDay")
+//    	    	info.el.querySelector(".fc-event-title").insertBefore(bimg,info.el.querySelector(".fc-event-title").firstChild);
+    	    	info.el.querySelector(".fc-event-title").appendChild(bimg);
+    	    
+    	    const ddimg = document.createElement("img");
+    	    ddimg.setAttribute("src","/res/img/dailydiary.png");
+    	    ddimg.setAttribute("width", "16");
+    	    ddimg.setAttribute("height", "16");
+    	    ddimg.classList.add("dateImg");
+    	    if(info.el.classList.item(8) == "dailyDiary")
+//    	    	info.el.querySelector(".fc-event-title").insertBefore(ddimg,info.el.querySelector(".fc-event-title").firstChild);
+    	    	info.el.querySelector(".fc-event-title").appendChild(ddimg);
+    	    
+    	    const hdimg = document.createElement("img");
+    	    hdimg.setAttribute("src","/res/img/healthdiary.png");
+    	    hdimg.setAttribute("width", "16");
+    	    hdimg.setAttribute("height", "16");
+    	    hdimg.classList.add("dateImg");
+    	    if(info.el.classList.item(8) == "healthDiary")
+//    	    	info.el.querySelector(".fc-event-title").insertBefore(hdimg,info.el.querySelector(".fc-event-title").firstChild);
+    	    	info.el.querySelector(".fc-event-title").appendChild(hdimg);
+    	    
+    	    const reimg = document.createElement("img");
+    	    reimg.setAttribute("src","/res/img/reservation.png");
+    	    reimg.setAttribute("width", "16");
+    	    reimg.setAttribute("height", "16");
+    	    reimg.classList.add("dateImg");
+    	    if(info.el.classList.item(8) == "reservation")
+//    	    	info.el.querySelector(".fc-event-title").insertBefore(reimg,info.el.querySelector(".fc-event-title").firstChild);
+    	    	info.el.querySelector(".fc-event-title").appendChild(reimg);
+    	    
+    	    const scimg = document.createElement("img");
+    	    scimg.setAttribute("src","/res/img/schedule.png");
+    	    scimg.setAttribute("width", "16");
+    	    scimg.setAttribute("height", "16");
+    	    scimg.classList.add("dateImg");
+    	    if(info.el.classList.item(8) == "schedule")
+//    	    	info.el.querySelector(".fc-event-title").insertBefore(scimg,info.el.querySelector(".fc-event-title").firstChild);
+    	    	info.el.querySelector(".fc-event-title").appendChild(scimg);
+    	  },
       // 특정일자 선택했을때의 펑션
       dateClick: function(info) {
     	    //alert('Clicked on: ' + info.dateStr);

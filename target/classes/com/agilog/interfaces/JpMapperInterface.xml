@@ -11,11 +11,13 @@
 		SELECT COUNT(*) FROM DO WHERE DO_CODE = #{doCode}
 	</select>
 	<!-- 의사 추가 -->
-	<select id="insDoctorInfo" parameterType="com.agilog.beans.DoctorBean">
-		INSERT INTO DO VALUES(#{doCode},#{coCode},#{doName},#{doPassword})
-	</select>
+	<insert id="insDoctorInfo" parameterType="com.agilog.beans.DoctorBean">
+		INSERT INTO DO
+			  (DO_CODE,DO_COCODE,DO_NAME, DO_PASSWORD)
+		VALUES(#{doCode},#{coCode},#{doName},#{doPassword})
+	</insert>
 	<!-- 의사 삭제 -->
-	<delete id="delDoctor" parameterType="com.agilog.beans.DoctorBean">
-		DELETE FROM DO WHERE DO_COCODE = #{coCode} AND DO_CODE = #{doCode};
+	<delete id="delDoctorInfo" parameterType="com.agilog.beans.DoctorBean">
+		DELETE FROM DO WHERE DO_COCODE = #{coCode} AND DO_CODE = #{doCode}
 	</delete>
 </mapper>

@@ -51,7 +51,7 @@ public interface JpMapperInterface {
 	public String checkDoctorCode(CompanyBean cb);
 	public int updReservation(CompanyBean cb);
 	public int insDoctorInfo(CompanyBean cb);
-	public int delDoctor(CompanyBean cb);
+	public int delDoctorInfo(CompanyBean cb);
 	public int insDoctorComment(ReservationBean rb);
 	public int updReservation(ReservationBean rb);
 	//

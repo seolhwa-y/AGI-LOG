@@ -41,6 +41,7 @@ public class HealthDiary implements ServiceRule {
 	}
 	public void backController(Model model, int serviceCode) {
 		switch(serviceCode) {
+		case 94: this.updateMyHealthDiaryCtl(model);break;
 		case 103: this.showHealthDiaryCtl(model); break;
 		}
 	}
@@ -183,9 +184,40 @@ public class HealthDiary implements ServiceRule {
 			e.printStackTrace();
 		}
 	}
-	private void updateMyHealthDiaryCtl(ModelAndView mav) {
-		
+	//건강일기 메모 수정
+	@Transactional(rollbackFor = SQLException.class)
+	private void updateMyHealthDiaryCtl(Model model) {
+		try {
+			HealthDiaryBean hb = (HealthDiaryBean) model.getAttribute("healthDiaryBean");
+			//세션검사
+			AuthBean ab = (AuthBean)this.pu.getAttribute("accessInfo");
+			//세션존재 -> 해당 유저의 해당 건강일기 메모 수정
+			if(ab!=null) {
+				hb.setSuCode(ab.getSuCode());
+				//해당 건강일기에 입력한 메모가 있음 -> 업데이트, 없음 -> 인서트
+				if(this.session.selectOne("getHealthMemo",hb)!=null) {
+					if(this.converToBoolean(this.session.update("updMyHealthDiary",hb))) {
+						model.addAttribute("memo", this.session.selectOne("getHealthMemo",hb));
+					} else {
+						HealthDiaryBean h = new HealthDiaryBean();
+						h.setMemo("실패");
+						model.addAttribute("memo", h);
+					}
+				} else {
+					if(this.converToBoolean(this.session.insert("insNewHDMemo",hb))) {
+						model.addAttribute("memo", this.session.selectOne("getHealthMemo",hb));
+					} else {
+						HealthDiaryBean h = new HealthDiaryBean();
+						h.setMemo("실패");
+						model.addAttribute("memo", h);
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
+	//진료기록 페이지 이동(진료기록 조회)
 	private void moveDoctorCommentCtl(ModelAndView mav) {
 		try {
 			String page = "login";
@@ -194,7 +226,7 @@ public class HealthDiary implements ServiceRule {
 			//세션존재 -> 해당 유저의 전체 의사소견서 가져오기
 			if(ab!=null) {
 				ReservationBean rb = new ReservationBean();
-				rb.setSuCode(ab.getSuCode());
+				rb.setResSuCode(ab.getSuCode());
 				List<ReservationBean> commentList = this.session.selectList("getDoctorCommentList",rb);
 				
 				mav.addObject("commentList", this.makeDoctorCommentHtml(commentList));
@@ -220,7 +252,7 @@ public class HealthDiary implements ServiceRule {
 			if(ab!=null) {
 				hb.setSuCode(ab.getSuCode());
 				//특정 일기코드에 대한 세부정보 가져오기
-				List<HealthDiaryBean> detail = this.session.selectList("getHealthDiaryDetail",hb);
+				HealthDiaryBean detail = this.session.selectOne("getHealthDiaryDetail",hb);
 				model.addAttribute("healthDetail", detail);
 			}
 		} catch(Exception e) {
@@ -269,15 +301,15 @@ public class HealthDiary implements ServiceRule {
 		StringBuffer sb = new StringBuffer();
 		try {
 			for(ReservationBean rb:commentList) {
-				sb.append("<div class=\"diary "+rb.getBbCode()+"\" >");
+				sb.append("<div class=\"diary "+rb.getResBbCode()+"\" >");
 				sb.append("<div>");
 				sb.append("<div class=\"miniProfile\">");
 				sb.append("<img src=\"/res/img/profile_default.png\" alt=\"images\">");
 				sb.append("<div class=\"text\">");
-				sb.append("<p class=\"userId\">"+rb.getBbName()+"</p>");
+				sb.append("<p class=\"userId\">"+rb.getResBbName()+"</p>");
 				sb.append("</div>");
 				sb.append("<div class=\"text\" style=\"margin-left:20px;\">");
-				sb.append("<p class=\"userId\">"+this.enc.aesDecode(rb.getCoName(), rb.getCoCode())+"("+rb.getDoName()+")</p>");
+				sb.append("<p class=\"userId\">"+this.enc.aesDecode(rb.getResCoName(), rb.getResCoCode())+"("+rb.getResDoName()+")</p>");
 				sb.append("</div>");
 				sb.append("<div class=\"text\" style=\"margin-left:10px;\">");
 				sb.append("<p class=\"userId\">진료일자:"+rb.getResDate()+"</p>");
