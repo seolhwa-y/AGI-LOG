@@ -110,6 +110,7 @@
 		GROUP BY TO_CHAR(SC_DATE,'YYYY-MM-DD'), SC_SUCODE
 	</select>
 	<!-- 캘린더 아이(들) 생일 조회 -->
+	<!-- 캘린더 아이(들) 생일 조회 -->
 	<select id="getBabyBirth" parameterType="com.agilog.beans.BebeCalendarBean" resultType="com.agilog.beans.BebeCalendarBean">
 		SELECT TO_CHAR(BB_BIRTHDAY,'YYYY-MM-DD') AS BABYBIRTHDAY, BB_NAME AS BABYNAME
 		FROM BB
