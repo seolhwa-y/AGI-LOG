@@ -73,7 +73,6 @@ public class BebeCalendar implements ServiceRule {
 		BebeCalendarBean bcb = (BebeCalendarBean)model.getAttribute("bebeCalendarBean");
 		try {
 			bcb.setSuCode(((AuthBean)this.pu.getAttribute("accessInfo")).getSuCode());
-			System.out.println(bcb);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -100,7 +99,7 @@ public class BebeCalendar implements ServiceRule {
 			/* 일반일정 가져오기 */
 			List<ReservationBean> rbList = new ArrayList<ReservationBean>();
 			rbList = this.session.selectList("getReservationInfo", bcb);
-			System.out.println(rbList);
+
 			if(rbList.size()!=0) {
 				bcb.setReservationInfo(rbList);
 				//병원이름 복호화
@@ -110,7 +109,7 @@ public class BebeCalendar implements ServiceRule {
 			/* 예약일정 가져오기 */
 			List<ScheduleBean> scheduleList = new ArrayList<ScheduleBean>();
 			scheduleList = this.session.selectList("getScheduleList",bcb);
-			System.out.println(scheduleList);
+
 			if(scheduleList.size()!=0) {
 				bcb.setScheduleList(scheduleList);
 			}
