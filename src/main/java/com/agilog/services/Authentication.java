@@ -343,7 +343,6 @@ public class Authentication implements ServiceRule {
 							}
 							this.pu.setAttribute("accessInfo", a);
 							mav.addObject("accessInfo", a);
-							System.out.println("여기야");
 							this.dashBoard.backController(mav, 4);
 						}
 					}

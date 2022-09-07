@@ -714,3 +714,51 @@ CREATE SYNONYM FL FOR FREEBOARDLIKE;
 CREATE SYNONYM DL FOR DAILYDIARYLIKE;
 
 CREATE SYNONYM IL FOR INFOBOARDLIKE;
+
+-- VIEW
+
+-- 건강 추세에 따른 테이블
+CREATE OR REPLACE VIEW HEALTHSTATUS AS
+SELECT  HD.HDCODE,
+        HD.SUCODE,
+        HD.HDDATE,
+        HD.AGE, -- 작성당시 아이 나이
+        BB.TOAGE, -- 현재 아이 나이
+        BB.BBCODE,
+        BB.BBNAME,
+        WEIGHT.WEIGHT AS BBWEIGHT,
+        HEIGHT.HEIGHT AS BBHEIGHT,
+        HEAD.HEAD AS HEAD
+FROM (SELECT  HD_CODE AS HDCODE,
+              HD_BBSUCODE AS SUCODE,
+              HD_BBCODE AS BBCODE,
+              HD_DATE AS HDDATE,
+              TRUNC(MONTHS_BETWEEN(HD_DATE, TO_DATE(BB_BIRTHDAY))/12) AS AGE
+      FROM HD INNER JOIN BB ON HD_BBCODE = BB_CODE AND HD_BBSUCODE = BB_SUCODE) HD 
+      INNER JOIN (SELECT BB_SUCODE AS SUCODE,
+                         BB_CODE AS BBCODE,
+                         BB_NAME AS BBNAME,
+                         TRUNC(MONTHS_BETWEEN(SYSDATE,TO_DATE(BB_BIRTHDAY))/12) AS TOAGE 
+                  FROM BB) BB ON HD.SUCODE = BB.SUCODE AND HD.BBCODE = BB.BBCODE
+      LEFT OUTER JOIN (SELECT   CA_CODE AS CACODE,
+                                CA_NAME AS CANAME,
+                                HD_CODE AS HDCODE,
+                                HD_BBSUCODE AS SUCODE,
+                                HD_VALUE AS WEIGHT
+                       FROM CA INNER JOIN HD ON CA_CODE = HD_CACODE
+                       WHERE CA_CODE = '01') WEIGHT ON WEIGHT.HDCODE = HD.HDCODE AND WEIGHT.SUCODE = HD.SUCODE
+      LEFT OUTER JOIN (SELECT   CA_CODE AS CACODE,
+                                CA_NAME AS CANAME,
+                                HD_CODE AS HDCODE,
+                                HD_BBSUCODE AS SUCODE,
+                                HD_VALUE AS HEIGHT
+                       FROM CA INNER JOIN HD ON CA_CODE = HD_CACODE
+                       WHERE CA_CODE = '02') HEIGHT ON HEIGHT.HDCODE = HD.HDCODE AND HEIGHT.SUCODE = HD.SUCODE
+      LEFT OUTER JOIN (SELECT   CA_CODE AS CACODE,
+                                CA_NAME AS CANAME,
+                                HD_CODE AS HDCODE,
+                                HD_BBSUCODE AS SUCODE,
+                                HD_VALUE AS HEAD
+                       FROM CA INNER JOIN HD ON CA_CODE = HD_CACODE
+                       WHERE CA_CODE = '03') HEAD ON HEAD.HDCODE = HD.HDCODE AND HEAD.SUCODE = HD.SUCODE
+GROUP BY HD.HDCODE, HD.SUCODE, HD.HDDATE, HD.AGE, BB.BBCODE, BB.BBNAME, BB.TOAGE, WEIGHT.WEIGHT, HEIGHT.HEIGHT, HEAD.HEAD;
