@@ -112,8 +112,8 @@ public interface JsMapperInterface {
 	public List<BebeCalendarBean> getMonthDiary(BebeCalendarBean bcb);
 	public BebeCalendarBean getReservation(BebeCalendarBean bcb);
 	public List<BebeCalendarBean> getSchedule(BebeCalendarBean bcb);
-	public int delSchecule(BebeCalendarBean bcb);
-	public int updSchedule(BebeCalendarBean bcb);
+	public int delSchecule(ScheduleBean sb);
+	public int updSchedule(ScheduleBean sb);
 	public int insSchedule(ScheduleBean sb);
 	public int delReservation(ReservationBean rb);
 	public HealthDiaryBean getHealthDiaryFeed(HealthDiaryBean hb);
@@ -132,5 +132,6 @@ public interface JsMapperInterface {
 	public String isWriteWd(BebeCalendarBean bcb);
 	public ReservationBean getReservationInfo(BebeCalendarBean bcb);
 	public List<ScheduleBean> getScheduleList(BebeCalendarBean bcb);
-	
+	public String getNewScheduleCode(ScheduleBean sb);
+	public int updateReservationStatus(ReservationBean rb);
 }
