@@ -99,11 +99,10 @@ public class BebeCalendar3 implements ServiceRule {
 		for(BebeCalendarBean bcb:birthList) {
 			sb.append("{start:'"+bcb.getBabyBirthDay()+"'");
 			sb.append(",title:'"+bcb.getBabyName()+" 생일'");
-			sb.append(",display:'background'");
-			sb.append(",backgroundColor:'rgb(255,145,145,0.5)'");
-			sb.append(",textColor:'rgb(255,255,255)'");
+			sb.append(",display:'list-item'");
+			sb.append(",borderColor:'rgb(255,145,145)'");
 			sb.append(",classNames:'birthDay'}");
-			if(idx!=birthList.size()-1) {
+			if(idx++!=birthList.size()-1) {
 				sb.append(",");
 			}
 		}
@@ -114,13 +113,16 @@ public class BebeCalendar3 implements ServiceRule {
 	private String makeEventDD(List<BebeCalendarBean> ddList) {
 		StringBuffer sb = new StringBuffer();
 		int idx = 0;
-		for(BebeCalendarBean bcb:ddList) {
-			sb.append("{start:'"+bcb.getDdDate()+"'");
-			sb.append(",display:'list-item'");
-			sb.append(",borderColor:'#ff9e80'");
-			sb.append(",classNames:'dailyDiary'}");
-			if(idx!=ddList.size()-1) {
-				sb.append(",");
+		if(ddList.size()!=0) {
+			sb.append(",");
+			for(BebeCalendarBean bcb:ddList) {
+				sb.append("{start:'"+bcb.getDdDate()+"'");
+				sb.append(",display:'list-item'");
+				sb.append(",borderColor:'#ff9e80'");
+				sb.append(",classNames:'dailyDiary'}");
+				if(idx++!=ddList.size()-1) {
+					sb.append(",");
+				}
 			}
 		}
 		
@@ -130,29 +132,34 @@ public class BebeCalendar3 implements ServiceRule {
 	private String makeEventHD(List<BebeCalendarBean> hdList) {
 		StringBuffer sb = new StringBuffer();
 		int idx = 0;
-		for(BebeCalendarBean bcb:hdList) {
-			sb.append("{start:'"+bcb.getHdDate()+"'");
-			sb.append(",display:'list-item'");
-			sb.append(",borderColor:'#8980ff'");
-			sb.append(",classNames:'healthDiary'}");
-			if(idx!=hdList.size()-1) {
-				sb.append(",");
+		if(hdList.size()!=0) {
+			sb.append(",");
+			for(BebeCalendarBean bcb:hdList) {
+				sb.append("{start:'"+bcb.getHdDate()+"'");
+				sb.append(",display:'list-item'");
+				sb.append(",borderColor:'#8980ff'");
+				sb.append(",classNames:'healthDiary'}");
+				if(idx++!=hdList.size()-1) {
+					sb.append(",");
+				}
 			}
 		}
-		
 		return sb.toString();
 	}
 	
 	private String makeEventRe(List<BebeCalendarBean> reList) {
 		StringBuffer sb = new StringBuffer();
 		int idx = 0;
-		for(BebeCalendarBean bcb:reList) {
-			sb.append("{start:'"+bcb.getResDate()+"'");
-			sb.append(",display:'list-item'");
-			sb.append(",borderColor:'#ff1717'");
-			sb.append(",classNames:'reservation'}");
-			if(idx!=reList.size()-1) {
-				sb.append(",");
+		if(reList.size()!=0) {
+			sb.append(",");
+			for(BebeCalendarBean bcb:reList) {
+				sb.append("{start:'"+bcb.getResDate()+"'");
+				sb.append(",display:'list-item'");
+				sb.append(",borderColor:'#ff1717'");
+				sb.append(",classNames:'reservation'}");
+				if(idx++!=reList.size()-1) {
+					sb.append(",");
+				}
 			}
 		}
 		
@@ -162,13 +169,16 @@ public class BebeCalendar3 implements ServiceRule {
 	private String makeEventSc(List<BebeCalendarBean> scList) {
 		StringBuffer sb = new StringBuffer();
 		int idx = 0;
-		for(BebeCalendarBean bcb:scList) {
-			sb.append("{start:'"+bcb.getScDate()+"'");
-			sb.append(",display:'list-item'");
-			sb.append(",borderColor:'#2dc347'");
-			sb.append(",classNames:'schedule'}");
-			if(idx!=scList.size()-1) {
-				sb.append(",");
+		if(scList.size()!=0) {
+			sb.append(",");
+			for(BebeCalendarBean bcb:scList) {
+				sb.append("{start:'"+bcb.getScDate()+"'");
+				sb.append(",display:'list-item'");
+				sb.append(",borderColor:'#2dc347'");
+				sb.append(",classNames:'schedule'}");
+				if(idx++!=scList.size()-1) {
+					sb.append(",");
+				}
 			}
 		}
 		
