@@ -101,7 +101,9 @@ function kakaoLogout() {
 
 				<!-- ------------------------------------------------------------------------ -->
 			</div>
-			<div id="rightArea" class="scrollBar"></div>
+			<div id="rightArea" class="scrollBar">
+				
+			</div>
 		</div>
 		<div class="modal">
             <div class="modal_body">

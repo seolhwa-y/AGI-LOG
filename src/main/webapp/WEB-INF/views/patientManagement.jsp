@@ -7,28 +7,38 @@
 <title>환자 예약목록</title><script src="/res/js/agiMain.js"></script>
 <script src="https://use.fontawesome.com/releases/v6.1.2/js/all.js"></script>
 <link rel="stylesheet" href="/res/css/agiMain.css">
+<link rel="stylesheet" href="/res/css/company.css">
 </head>
 <script>
-	function init(){
-		if("${companyBean.coName}" != ""){
-			let accessArea = document.getElementById("accessArea");
-			accessArea.innerHTML = "";
-			
-			accessArea.innerHTML = "<span> ${companyBean.coName} </span>";
-			accessArea.innerHTML += "<span onclick=\"movePage(\'CompanyLogout\')\">로그아웃</span>";
-			accessArea.innerHTML += "<span onclick=\"movePage(\'MoveMainPage\')\">일반회원</span>";	
-		}
+
+function moveHealthData(data1,data2){
+	let form = document.getElementById("serverForm");
+	
+	form.appendChild(createInput("hidden","resCode",data1,null,null));
+	form.appendChild(createInput("hidden","resBbCode",data2,null,null));
+
+	form.action = "MoveHealthDataList";
+	form.method = "post";
+	form.submit();
+}
+
+function init(){
+	if("${companyAccessInfo.coName}" != ""){
+		let accessArea = document.getElementById("accessArea");
+		accessArea.innerHTML = "";
 		
+		accessArea.innerHTML = "<span> ${companyAccessInfo.coName}님 </span>";
+		accessArea.innerHTML += "<span onclick=\"movePage(\'CompanyLogout\')\">로그아웃</span>";
+		accessArea.innerHTML += "<span onclick=\"movePage(\'MoveMainPage\')\">일반회원</span>";	
 	}
+}
 </script>
 </head>
 <body onload="init()">
 	<div id="background">
 		<div id="top">
 			<div id="accessArea">
-				<span onclick="movePage('MoveCompanyLoginPage')">로그인</span>
-                <span onclick="movePage('MoveCompanyJoinPage')">회원가입</span>
-                <span onclick="movePage('MoveMainPage')">일반회원</span>
+
 			</div>
 				<div id="logo" onclick="movePage('MoveCompanyLoginPage')">
 				<img src="/res/img/agi_logo.png" alt="images">
@@ -37,14 +47,18 @@
 				<ul id="mainMenuList">
 					<li class="mainMenu" onclick="movePage('MoveDoctorManagement')">의사관리</li>
 					<li class="mainMenu" onclick="movePage('MoveReservationManagement')">예약관리</li>
-					<li class="mainMenu" onclick="movePage('MovePatientManagement')">환자관리</li>
+					<li class="mainMenu" onclick="movePage('MoveCheckDoctor')">환자관리</li>
 				</ul>
 			</div>
 		</div>
 		<div id="middle">
 			<div id="rightArea" class="scrollBar">
-				
+			<div id="doctorMgrTitleDiv">
+					<p id="doctorMgrTitle">환자 관리</p>
+				</div>
+				<div id="doctorList">${patient}</div>
 			</div>
+		
 		</div>
 		<div class="modal">
             <div class="modal_body">
