@@ -56,13 +56,13 @@ public class Company2 implements ServiceRule {
 				//예약빈 세팅
 				ReservationBean rb = (ReservationBean) mav.getModel().get("reservationBean");
 				rb.setResCoCode(cb.getCoCode());
-				System.out.println("닥터 코드 체크 : " + rb.getDoCode());
+				System.out.println("닥터 코드 체크 : " + rb.getResDoCode());
 				System.out.println("카테고리 코드 체크 : " + rb.getRcCode());
 				System.out.println("예약 코드 체크 : " + rb.getResCode());
 				System.out.println("컴패니 코드 체크 : " + rb.getResCoCode());
 				
 				//닥터 코드가 있으면 닥터 코드를 포함하여 업데이트, 없으면 닥터 코드를 제외한 업데이트
-				if (rb.getDoCode() != null) {
+				if (rb.getResDoCode() != null) {
 					System.out.println("rd 진입 체크");
 					this.session.update("updRDRes", rb);
 				} else {
