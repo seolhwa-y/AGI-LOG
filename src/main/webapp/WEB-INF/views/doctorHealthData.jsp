@@ -4,32 +4,31 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>예약관리</title><script src="/res/js/agiMain.js"></script>
+<title>환자 예약목록</title><script src="/res/js/agiMain.js"></script>
 <script src="https://use.fontawesome.com/releases/v6.1.2/js/all.js"></script>
 <link rel="stylesheet" href="/res/css/agiMain.css">
+<link rel="stylesheet" href="/res/css/company.css">
+</head>
 <script>
-	function init(){
-		if("${companyBean.coName}" != ""){
-			let accessArea = document.getElementById("accessArea");
-			accessArea.innerHTML = "";
-			
-			accessArea.innerHTML = "<span> ${companyBean.coName} </span>";
-			accessArea.innerHTML += "<span onclick=\"movePage(\'CompanyLogout\')\">로그아웃</span>";
-			accessArea.innerHTML += "<span onclick=\"movePage(\'MoveMainPage\')\">일반회원</span>";	
-		}
+function init(){
+	if("${companyAccessInfo.coName}" != ""){
+		let accessArea = document.getElementById("accessArea");
+		accessArea.innerHTML = "";
 		
+		accessArea.innerHTML = "<span> ${companyAccessInfo.coName}님 </span>";
+		accessArea.innerHTML += "<span onclick=\"movePage(\'CompanyLogout\')\">로그아웃</span>";
+		accessArea.innerHTML += "<span onclick=\"movePage(\'MoveMainPage\')\">일반회원</span>";	
 	}
+}
 </script>
 </head>
 <body onload="init()">
 	<div id="background">
 		<div id="top">
 			<div id="accessArea">
-				<span onclick="movePage('MoveCompanyLoginPage')">로그인</span>
-                <span onclick="movePage('MoveCompanyJoinPage')">회원가입</span>
-                <span onclick="movePage('MoveMainPage')">일반회원</span>
+
 			</div>
-			<div id="logo" onclick="movePage('MoveCheckManager')">
+				<div id="logo" onclick="movePage('MoveCompanyLoginPage')">
 				<img src="/res/img/agi_logo.png" alt="images">
 			</div>
 			<div id="mainMenuArea">
@@ -42,8 +41,10 @@
 		</div>
 		<div id="middle">
 			<div id="rightArea" class="scrollBar">
-				
+			
+				<div id="doctorList">${healthDataList}</div>
 			</div>
+		
 		</div>
 		<div class="modal">
             <div class="modal_body">
