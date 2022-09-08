@@ -1,5 +1,6 @@
 package com.agilog.services;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -128,6 +129,22 @@ public class Authentication implements ServiceRule {
 		}
 		mav.addObject(ab);
 		if (this.convertToBoolean(this.session.insert("insSocialUser", ab))) {
+			/* 회원가입 성공시 유저별로 /res/img/유저코드로 폴더 생성*/
+			String path = "C:\\Users\\js94\\git\\agi-log\\src\\main\\webapp\\resources\\img\\"+ab.getSuCode();
+			File uploadPath = new File(path);
+			if (!uploadPath.exists()) uploadPath.mkdirs();
+		
+			uploadPath = new File(path+"\\profile");
+			if (!uploadPath.exists()) uploadPath.mkdirs();
+			
+			uploadPath = new File(path+"\\board");
+			if (!uploadPath.exists()) uploadPath.mkdirs();
+			
+			uploadPath = new File(path+"\\dailydiary");
+			if (!uploadPath.exists()) uploadPath.mkdirs();
+			
+			
+			
 			if (type) {
 				this.kakaoLoginCtl(mav);
 			} else {
