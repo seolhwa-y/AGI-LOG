@@ -19,6 +19,7 @@
   #calendar {
     max-width: 1100px;
     margin: 0 auto;
+    max-height: 720px;
   }
 
 	.modal{
@@ -166,6 +167,9 @@
       .schInput{
       	height: 30px;
       }
+      .dateImg {
+      	margin-right: 6px;
+      }
 </style>
 <script>
 Kakao.init('2afdabad57ed92e1cc9de5bd4baed321');
@@ -229,33 +233,28 @@ function kakaoLogout() {
       headerToolbar: {
         left: 'prev,next today',
         center: 'title',
-        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+        right: 'dayGridMonth'
       },
       // 초기 날짜 :: 설정 안하면 투데이로 보인다.
       initialDate: '2022-09-03', 
       // 일간 주간 캘린더 이동
-      navLinks: true, 
+      navLinks: false, 
       //달력 일정 드래그 해서 이동 가능.
-      selectable: true,
-      selectMirror: true,
+      selectable: false,
+      selectMirror: false,
+      eventOrder: '-title',
       // 캘린더에서 드래그 해서 일정 생성
       select: function(arg) {
-        var title = prompt('Event Title:');
-        if (title) {
-          calendar.addEvent({
-            title: title,
-            start: arg.start,
-            end: arg.end,
-            allDay: arg.allDay
-          })
-        }
-        calendar.unselect()
+       
       },
       // 일정을 클릭 했을 때 발생
-      eventClick: function(arg) {
-        if (confirm('일정확인???')) {
-          /* arg.event.remove() */
-        }
+      eventClick: function(info) {
+    	  let modalTitle = document.getElementById("modalTitle");
+  	      let clientData = "date="+info.event.startStr;
+  	    
+  	      modalTitle.innerText = info.event.startStr;
+  	    
+  	      postAjaxJson("DateDetail",clientData,"showDateDetail");
       },
       // 수정 가능 여부
       editable: true,
@@ -266,7 +265,7 @@ function kakaoLogout() {
           ${birthList}
     	  ${ddList}
     	  ${hdList}
-    	  //${reList}
+    	  ${reList}
     	  ${scList}
       ],
         eventDidMount: function(info) {
@@ -275,10 +274,9 @@ function kakaoLogout() {
     		bimg.setAttribute("width", "16");
     		bimg.setAttribute("height", "16");
     	    bimg.classList.add("dateImg");
-    	    console.log(info.el);
-    	    if(info.el.classList.item(5) == "birthDay")
-//    	    	info.el.querySelector(".fc-event-title").insertBefore(bimg,info.el.querySelector(".fc-event-title").firstChild);
-    	    	info.el.querySelector(".fc-event-title").appendChild(bimg);
+    	    if(info.el.classList.item(8) == "birthDay")
+    	    	info.el.querySelector(".fc-event-title").insertBefore(bimg,info.el.querySelector(".fc-event-title").firstChild);
+//    	    	info.el.querySelector(".fc-event-title").appendChild(bimg);
     	    
     	    const ddimg = document.createElement("img");
     	    ddimg.setAttribute("src","/res/img/dailydiary.png");
@@ -367,12 +365,10 @@ function showDateDetail(ajaxData){
 		//예약내역 있을 때
 		resInfo.innerHTML = "예약 : "+dateInfo.reservationInfo[0].resCoName+"&nbsp&nbsp<i class=\"fa-solid fa-trash-can delBtn\" onclick=\"deleteReservation(\'"+dateInfo.reservationInfo[0].resCode+","+dateInfo.reservationInfo[0].resDate+","+dateInfo.reservationInfo[0].resCoName+"\')\"></i>";
 	}
-	alert(resInfoCheck);
 	// 개인일정여부에 따라 내용 표시
 	schList.innerHTML="";
 	let schInfoCheck = [];
 	schInfoCheck = dateInfo.scheduleList;
-	alert(schInfoCheck);
 	if(schInfoCheck == null){
 		//개인일정 없을 때 +버튼만 안에넣어줌
 		schList.innerHTML += "<li><i class=\"fa-solid fa-square-plus updBtn\" onclick=\"insSch(\'"+dateInfo.date+"\')\"></i></li>";
@@ -411,7 +407,6 @@ function modalClose(){
 // 에약일정 삭제
 function deleteReservation(resInfo){
 	//code,date,coName
-	alert(resInfo);
 	let info = [];
 	info = resInfo.split(",");
 	
@@ -419,7 +414,6 @@ function deleteReservation(resInfo){
 	if(delConfirm){
 		//확인 누름
 		let clientData = "resCode="+info[0]+"&resDate="+info[1];
-		alert(clientData);
 		postAjaxJson("DeleteReservation",clientData,"showDateDetail");
 	}else{
 		//취소 누름
