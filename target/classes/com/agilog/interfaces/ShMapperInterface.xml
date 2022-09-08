@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.agilog.interfaces.ShMapperInterface">
+	<!-- 대쉬보드 감성일기 사진 불러오기 -->
 	<select id="getDairyDiaryPhoto" resultType="com.agilog.beans.DailyDiaryPhotoBean">
 		<![CDATA[  
 			SELECT  DDLIKE, 
@@ -19,4 +20,18 @@
 			WHERE RANKING <= 9
 		 ]]> 
 	</select>
+	
+	<!-- 건강일기 아이 나이별 추세 불러오기 -->
+	<select id="getHealthStatusList" parameterType="com.agilog.beans.HealthDiaryBean" resultType="com.agilog.beans.HealthDiaryBean">
+			SELECT  DENSE_RANK() OVER (ORDER BY AGE DESC) AS RNK,
+			        AGE,
+			        SUCODE,
+			        BBCODE,
+			        BBHEIGHT,
+			        BBWEIGHT,
+			        HEAD
+			FROM HEALTHSTATUS 
+			WHERE SUCODE = #{suCode} AND BBCODE = #{bbCode}
+			ORDER BY AGE DESC
+	</select>	
 </mapper>

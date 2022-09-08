@@ -13,6 +13,8 @@
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 <!-- 네이버 스크립트 -->
 <script	src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
+<!-- 글쓰기 스크립트 -->
+<script type="text/javascript" src="/res/se2/js/service/HuskyEZCreator.js" charset="utf-8"></script>
 <script>
 Kakao.init('2afdabad57ed92e1cc9de5bd4baed321');
 function getInfo() {
@@ -59,7 +61,38 @@ function kakaoLogout() {
 		Kakao.Auth.setAccessToken(undefined)
 	}
 }
+
+function submitContents(elClickedObj) {
+	let form = document.getElementById("serverForm");
+	oEditors.getById["ir1"].exec("UPDATE_CONTENTS_FIELD", []);	// 에디터의 내용이 textarea에 적용됩니다.
+	
+	let fbTitle = document.getElementById("fbTitle").value;
+	let fbContent = document.getElementById("ir1").value;
+
+	// 에디터의 내용에 대한 값 검증
+	if(fbTitle == "") {
+		alert("제목을 입력해 주세요");
+		return;
+	}
+	
+	if(fbContent == "") {
+		alert("내용을 입력해 주세요");
+		return;
+	}
+
+	//폼에 값 추가
+	form.appendChild(createInput("hidden","fbTitle",fbTitle,null,null));
+	form.appendChild(createInput("hidden","fbContent",fbContent,null,null));
+	
+	form.action = "InsertPost";
+	form.method = "post";
+	form.submit();
+}
 </script>
+
+<style>
+</style>
+
 </head>
 <body onload="getInfo()">
 </head>
@@ -86,7 +119,24 @@ function kakaoLogout() {
 		</div>
 		<div id="middle">
 			<div id="rightArea" class="scrollBar">
-				
+				<input type="text" id="fbTitle" placeholder="제목을 입력해 주세요"/>
+				<textarea name="ir1" id="ir1" rows="10" cols="165"></textarea>
+				<script type="text/javascript">
+					var oEditors = [];
+					nhn.husky.EZCreator.createInIFrame({
+					 oAppRef: oEditors,
+					 elPlaceHolder: "ir1",
+					 sSkinURI: "/res/se2/SmartEditor2Skin.html",
+					 fCreator: "createSEditor2"
+					});
+				</script>
+				<form action="sample/viewer/index.php" method="post">
+					<textarea name="ir1" id="ir1" rows="10" cols="100" style="width:766px; height:412px; display:none;"></textarea>
+					<p>
+						<input type="button" onclick="submitContents(this);" value="작성" />
+						<input type="button" value="취소" />
+					</p>
+				</form>
 			</div>
 		</div>
 		<div class="modal">

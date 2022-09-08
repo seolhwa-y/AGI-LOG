@@ -13,6 +13,8 @@ import com.agilog.beans.BebeCalendarBean;
 import com.agilog.beans.BoardBean;
 import com.agilog.beans.DailyDiaryBean;
 import com.agilog.beans.MyPageBean;
+import com.agilog.beans.PostBean;
+import com.agilog.beans.ReservationBean;
 import com.agilog.services.Authentication;
 import com.agilog.services.BebeCalendar;
 import com.agilog.services.BebeMap;
@@ -21,6 +23,8 @@ import com.agilog.services.Company;
 import com.agilog.services.DailyDiary;
 import com.agilog.services.DashBoard;
 import com.agilog.services.MyPage;
+import com.agilog.services2.Board2;
+import com.agilog.services2.Company2;
 
 @Controller
 public class ThHomeController {
@@ -29,7 +33,7 @@ public class ThHomeController {
 	@Autowired
 	DashBoard dashBoard;
 	@Autowired
-	Company company;
+	Company2 company;
 	@Autowired
 	DailyDiary dailyDiary;
 	@Autowired
@@ -37,9 +41,24 @@ public class ThHomeController {
 	@Autowired
 	BebeCalendar bebeCalendar;
 	@Autowired
-	Board board;
+	Board2 board;
 	@Autowired
 	MyPage myPage;
 
+	@RequestMapping(value = "/UpdateReservation", method = RequestMethod.POST)
+	public ModelAndView updateReservation(ModelAndView mav, @ModelAttribute ReservationBean rb) {
+		System.out.println("컨트롤러 진입 체크1");
+		mav.addObject(rb);
+		System.out.println("컨트롤러 진입 체크2");
+		this.company.backController(mav, 72);
+		return mav;
+	}
+	
+	@RequestMapping(value = "/MoveWritePage", method = RequestMethod.POST)
+	public ModelAndView moveWritePage(ModelAndView mav) {
+		System.out.println("컨트롤러 진입 체크1");
+		this.board.backController(mav, 57);
+		return mav;
+	}
 	
 }

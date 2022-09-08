@@ -21,5 +21,9 @@ public interface ThMapperInterface {
 
 	public CompanyBean getCompanyAccessAllInfo(CompanyBean cb);
 	public int isManagerCode(CompanyBean cb);
-
+	public ReservationBean getResInfo(CompanyBean cb);
+	public int updRDRes(ReservationBean rb);
+	public int updCPRes(ReservationBean rb);
+	public int getFbCode(PostBean pb);
+	public int insFbPost(PostBean pb);
 }

@@ -67,7 +67,8 @@ public class JsAPIController {
 		
 		return (BebeCalendarBean)model.getAttribute("bebeCalendarBean");
 	}
-	@PostMapping("/DeleteScheduleCtl")
+	//하이
+	@PostMapping("/DeleteSchedule")
 	public BebeCalendarBean deleteScheduleCtl(Model model, @ModelAttribute ScheduleBean sb){
 		model.addAttribute(sb);
 		/* 개인일정 업데이트해주고 특정일 일정정보 불러오는 메소드(서비스코드 48번) 재탕하려고 빌드업 */

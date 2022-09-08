@@ -275,11 +275,16 @@ function getInfo() {
 	/* 테마 사용자값으로 설정 */
 	let middle = document.getElementById("middle");
 	//let sideMenu = document.querySelector(".side-menu");
-
+	let cover1 = document.getElementById("cover1");
+	let cover2 = document.getElementById("cover2");
+	
 	let color = "${mypageInfo.suTheme}".split(":");
 	
 	middle.style.background = color[0];
+	cover1.style.background = color[0];
+	cover2.style.background = color[0];
 	//sideMenu.style.background= color[1];
+
 	
 	if("${message}"!= ""){
 		alert("${message}");
@@ -815,12 +820,14 @@ function changeTheme(num){
 function callBackTheme(theme){
 	let middle = document.getElementById("middle");
 	let sideMenu = document.querySelector(".side-menu");
-	alert(theme);
+	let cover1 = document.getElementById("cover1");
+	let cover2 = document.getElementById("cover2");
+	
 	let color = theme.split(":");
-	alert(color[0]+"앤드"+color[1]);
 	
 	middle.style.background = color[0];
-	//sideMenu.style.background= color[1];
+	cover1.style.background = color[0];
+	cover2.style.background = color[0];
 	
 	themeModalClose();
 }

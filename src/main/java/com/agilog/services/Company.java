@@ -248,9 +248,11 @@ public class Company implements ServiceRule {
 
 	}
 
+	
 	//환자 리스트 EL작업
 	private String makePatientList(List<ReservationBean> patientList) {
 		StringBuffer sb = new StringBuffer();
+		
 		sb.append("<table class=\"doctorMgr\">" );
 		sb.append("<tr>");
 		sb.append("<th>진료 날짜</th>");
