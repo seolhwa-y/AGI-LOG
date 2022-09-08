@@ -8,21 +8,21 @@
 <script src="/res/js/agiMain.js"></script>
 <script src="https://use.fontawesome.com/releases/v6.1.2/js/all.js"></script>
 <link rel="stylesheet" href="/res/css/agiMain.css">
+<link rel="stylesheet" href="/res/css/company.css">
 <script>
 	function checkDoctor() {
 		let form = document.getElementById("serverForm");
-		
-		let doCode = document.getElementsByName("doctorCode")[0];
-		let doPassword = document.getElementsByName("doctorPassword")[0];
+		let doCode = document.getElementsByName("doctorCode")[0].value;
+		let doPassword = document.getElementsByName("doctorPassword")[0].value;
 	
-		form.appendChild(doCode);
-		form.appendChild(doPassword);
-		
-		
-		alert(doCode.value);
-		alert(doPassword.value);
 	
-		form.action = "CheckDoctor";
+		let clientData = "doCode="+doCode+"&doPassword="+doPassword;
+		
+
+		form.appendChild(createInput("hidden","doCode",doCode,null,null));
+		form.appendChild(createInput("hidden","doPassword",doPassword,null,null));
+		
+		form.action = "MovePatientManagement";
 		form.method = "post";
 		form.submit();
 	}
@@ -31,7 +31,7 @@
 			let accessArea = document.getElementById("accessArea");
 			accessArea.innerHTML = "";
 			
-			accessArea.innerHTML = "<span> ${companyAccessInfo.coName} </span>";
+			accessArea.innerHTML = "<span> ${companyAccessInfo.coName}님 </span>";
 			accessArea.innerHTML += "<span onclick=\"movePage(\'CompanyLogout\')\">로그아웃</span>";
 			accessArea.innerHTML += "<span onclick=\"movePage(\'MoveMainPage\')\">일반회원</span>";	
 		}
@@ -51,7 +51,7 @@
 				<ul id="mainMenuList">
 					<li class="mainMenu" onclick="movePage('MoveDoctorManagement')">의사관리</li>
 					<li class="mainMenu" onclick="movePage('MoveReservationManagement')">예약관리</li>
-					<li class="mainMenu" onclick="movePage('MovePatientManagement')">환자관리</li>
+					<li class="mainMenu" onclick="movePage('MoveCheckDoctor')">환자관리</li>
 				</ul>
 			</div>
 		</div>
@@ -59,10 +59,11 @@
 				<div id="rightArea" class="scrollBar">
 					<div id="checkCompanyTitleDiv">
 						<p id="checkCompanyTitle"><br/>담당의 정보를 입력해주세요.</p>
-							<input type="text" name="doctorCode"  class="basicInput" placeholder="담당의 코드">
-							<input type="password" name="doctorPassword"  class="basicInput" placeholder="담당의 비밀번호">
-							<button type="button" class="basicBtn btn" value="담당의 인증" onclick="checkDoctor()">확인</button>
-					
+							<div class="companyCF">
+								<input type="text" name="doctorCode"  class="basicInput" placeholder="담당의 코드">
+								<input type="password" name="doctorPassword"  class="basicInput" placeholder="담당의 비밀번호">
+								<button type="button" class="basicBtn btn" value="담당의 인증" onclick="checkDoctor()">확인</button>
+							</div>
 				</div>
 			</div>
 			<div class="modal">

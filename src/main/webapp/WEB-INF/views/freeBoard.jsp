@@ -101,7 +101,9 @@ function kakaoLogout() {
 
 				<!-- ------------------------------------------------------------------------ -->
 			</div>
-			<div id="rightArea" class="scrollBar"></div>
+			<div id="rightArea" class="scrollBar">
+				<input type="button" value="글쓰기" onClick="movePagePost('MoveWritePage')">
+			</div>
 		</div>
 		<div class="modal">
             <div class="modal_body">

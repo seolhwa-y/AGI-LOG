@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.agilog.beans.CompanyBean;
 import com.agilog.beans.DoctorBean;
+import com.agilog.beans.ReservationBean;
 import com.agilog.services.Company;
 
 @Controller
@@ -28,6 +29,14 @@ public class JpHomeController {
 		
 		return mav;
 	}
+	//환자관리 의사인증 페이지 이동 : 재필
+	@RequestMapping(value = "/IntoCheckDoctor", method = RequestMethod.GET)
+	public ModelAndView intoCheckDoctor(ModelAndView mav,@ModelAttribute CompanyBean cb) {
+		mav.addObject(cb);
+		mav.setViewName("checkDoctor");
+		return mav;
+	}
+	
 	
 	//전문의 관리 페이지 이동
 	@RequestMapping(value = "/MoveDoctorManagement", method = RequestMethod.GET)
@@ -45,11 +54,17 @@ public class JpHomeController {
 		return mav;
 	}
 	//환자관리 페이지 이동
-	@RequestMapping(value = "/MovePatientManagement", method = RequestMethod.GET)
-	public ModelAndView movePatientManagementCtl(HttpServletRequest req,ModelAndView mav, @ModelAttribute DoctorBean db) {
-
+	@RequestMapping(value = "/MovePatientManagement", method = RequestMethod.POST)
+	public ModelAndView movePatientManagementCtl(ModelAndView mav, @ModelAttribute DoctorBean db) {
 		mav.addObject(db);
 		this.company.backController(mav, 81);
+		return mav;
+	}
+	//환자관리 페이지 이동
+	@RequestMapping(value = "/MoveHealthDataList", method = RequestMethod.POST)
+	public ModelAndView moveHealthDataList(ModelAndView mav, @ModelAttribute ReservationBean rb) {
+		mav.addObject(rb);
+		this.company.backController(mav, 800);
 		return mav;
 	}
 
