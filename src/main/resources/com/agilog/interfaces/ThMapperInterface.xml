@@ -9,4 +9,22 @@
 	<select id="isManagerCode" parameterType="com.agilog.beans.CompanyBean" resultType="int">
 		SELECT COUNT(*) FROM CO WHERE CO_MANAGERCODE = #{coManagerCode}
 	</select>
+	<select id="getResInfo" parameterType="com.agilog.beans.CompanyBean" resultType="com.agilog.beans.ReservationBean">
+		SELECT * FROM RESINFO WHERE COCODE = #{coCode}
+	</select>
+	<update id="updRDRes" parameterType="com.agilog.beans.ReservationBean">
+		UPDATE RE SET RE_RCCODE = #{rcCode}, RE_DOCODE = #{doCode}
+		WHERE RE_CODE = #{resCode} AND RE_DOCOCODE = #{resCoCode}
+	</update>
+	<update id="updCPRes" parameterType="com.agilog.beans.ReservationBean">
+		UPDATE RE SET RE_RCCODE = #{rcCode}
+		WHERE RE_CODE = #{resCode} AND RE_DOCOCODE = #{resCoCode}
+	</update>
+	<select id="getFbCode" parameterType="com.agilog.beans.PostBean" resultType="int">
+		SELECT MAX(FB_CODE) FROM FREEBOARD
+	</select>
+	<insert id="insFbPost" parameterType="com.agilog.beans.PostBean">
+		INSERT INTO FREEBOARD(FB_CODE, FB_DATE, FB_SUCODE, FB_TITLE, FB_CONTENT, FB_VIEW, FB_LIKE) 
+		VALUES(#{fbCode}, DEFAULT, #{fbSuCode}, #{fbTitle}, #{fbContent}, DEFAULT, DEFAULT)
+	</insert>
 </mapper>

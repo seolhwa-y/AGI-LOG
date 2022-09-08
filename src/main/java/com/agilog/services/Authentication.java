@@ -190,7 +190,7 @@ public class Authentication implements ServiceRule {
 					// 병원이름 mav에 저장
 					((CompanyBean) mav.getModel().get("companyBean")).setCoName(company.getCoName());
 
-					mav.setViewName("reservationManagement");
+					mav.setViewName("checkManager");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

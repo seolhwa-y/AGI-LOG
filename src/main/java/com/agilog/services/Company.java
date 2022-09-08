@@ -184,12 +184,19 @@ public class Company implements ServiceRule {
 				if(this.convertToBoolean(this.session.selectOne("isManagerCode", cb))) {
 					// 세션에 저장할 로그인 유저 정보 가져오기
 					CompanyBean company = (CompanyBean) this.session.selectList("getCompanyAccessAllInfo", cb).get(0);
-					System.out.println(company);
+					System.out.println("체크 매니저 진입 체크 : "+company);
 					// 세션에 userCode저장
 					this.pu.setAttribute("companyAccessInfo", company);
+					
+					mav.addObject("resInfo", this.makeHTMLCReservation(this.session.selectList("getDoctorInfo", cb), this.session.selectList("getResInfo", cb)));
 					mav.setViewName("reservationManagement");
 				}
-			}else {
+				else {
+					mav.addObject("message", "매니저 코드가 일치하지 않습니다. 다시 입력해주세요.");
+					mav.setViewName("redirect:/");
+				}
+			}
+			else {
 				mav.setViewName("companyLogin");
 				System.out.println("세션만료");
 			}
@@ -235,9 +242,70 @@ public class Company implements ServiceRule {
 		return sb.toString();
 	}
 
-	private String makeHTMLCReservation(List<CompanyBean> companyList, List<ReservationBean> reservationList) {
+	private String makeHTMLCReservation(List<DoctorBean> doctorList, List<ReservationBean> reservationList) {
 		StringBuffer sb = new StringBuffer();
-
+		int idx = 0;
+		int idx2 = 0;
+			sb.append("<table id=\"reservationTable\">\n");
+			sb.append("<tr>\n");
+			sb.append("<th>예약일</th>\n");
+			sb.append("<th>환자명</th>\n");
+			sb.append("<th>담당의</th>\n");
+			sb.append("<th>예약상태</th>\n");
+			sb.append("<th>상태변경</th>\n");
+			sb.append("</tr>\n");
+			sb.append("<tr>\n");
+			for(ReservationBean rb : reservationList) {
+				sb.append("<tr>\n");
+				sb.append("<td>\n" + rb.getResDate() + "</td>\n");
+				sb.append("<td>\n" + rb.getResBbName() + "</td>\n");
+				switch(rb.getRcCode()) {
+				case "RD" :
+					sb.append("<td>\n");
+					sb.append("<select name = 'selectDoctor'>\n");
+					for (DoctorBean db : doctorList) {
+						sb.append("<option value='"+ db.getDoCode() +"'>\n" + db.getDoName() + "</option>\n");
+					}
+					sb.append("</td>\n");
+					sb.append("<td>\n");
+					sb.append("<select name = 'selectResState'>\n");
+					sb.append("<option disabled selected>예약중</option>\n");
+					sb.append("<option value='CP'>예약완료</option>\n");
+					sb.append("<option value='CC'>예약취소</option>\n");
+					sb.append("</td>\n");
+					sb.append("<td><input type='button' value='저장' onClick=\"updateReservation('" + rb.getResCode() + "','" + idx + "','" + idx2 + "')\"></td>\n");
+					idx++;
+					idx2++;
+					break;
+				case "CP" :
+					sb.append("<td>\n" + rb.getDoName() + "</td>\n");
+					sb.append("<td>\n");
+					sb.append("<select name = 'selectResState'>\n");
+					sb.append("<option disabled selected>예약완료</option>\n");
+					sb.append("<option value='CC'>예약취소</option>\n");
+					sb.append("</td>\n");
+					sb.append("<td><input type='button' value='저장' onClick=\"updateReservation('" + rb.getResCode() + "','" + idx + "', '')\"></td>\n");
+					idx++;
+					break;
+				case "CC" :
+					sb.append("<td></td>\n");
+					sb.append("<td>\n");
+					sb.append("<option disabled selected>예약취소</option>\n");
+					sb.append("</td>\n");
+					sb.append("<td></td>\n");
+					break;
+				case "MC" :
+					sb.append("<td>\n" + rb.getDoName() + "</td>\n");
+					sb.append("<td>\n");
+					sb.append("<option disabled selected>진료 완료</option>\n");
+					sb.append("</td>\n");
+					sb.append("<td></td>\n");
+					break;
+				default:
+				}
+				sb.append("</tr>\n");
+			}
+			sb.append("</div>\n");
 		return sb.toString();
 	}
 
