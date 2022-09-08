@@ -320,7 +320,17 @@ function getInfo() {
 	//C:\Users\js94\git\agi-log\src\main\webapp\resources\img\2411751690\2411751690.jpg
 	//file:///C://Users/js94/git/agi-log/src/main/webapp/resources/img/2411751690/2411751690.jpg
 	//    /Users
-	pImage.innerHTML = "<img class='profileImage' src=\'"+"/Users/js94/git/agi-log/src/main/webapp"+"${mypageInfo.suPhoto}"+"\'>";
+	//                                        /res/img/2409449450/DD/1.jpg
+	//											/resources/img/2411751690/2411751690.jpg
+	//alert("${mypageInfo.suPhoto}");
+	//부모사진이 없으면 기본이미지 띄워줌
+	if(!"${mypageInfo.suPhoto}" == ""){
+		pImage.innerHTML = "<img class='profileImage' src=\'"+"${mypageInfo.suPhoto}"+"\'>";
+	}else{ 
+		pImage.innerHTML = "<img class='profileImage' src='/res/img/profile_default.png'>";
+	}
+	
+	pImage.innerHTML = "<img class='profileImage' src=\'"+"${mypageInfo.suPhoto}"+"\'>";
 	parentName.innerText="${mypageInfo.suName}";
 	parentNickName.innerText="${mypageInfo.suNickName}";
 	
@@ -330,11 +340,11 @@ function getInfo() {
 	let bbHeight = document.getElementById("bbHeight");
 	let bbWeight = document.getElementById("bbWeight");
 
-	//아이사진이 없으면 안띄워줌
+	//아이사진이 없으면 기본이미지 띄워줌
 	if(!"${mypageInfo.babyList[0].bbPhoto}" == ""){
-		bImage.innerHTML = "<img class='profileImage' src='"+"/Users/js94/git/agi-log/src/main/webapp"+"${mypageInfo.babyList[0].bbPhoto}"+"'>";
-	}else{
-		bImage.innerHTML ="";
+		bImage.innerHTML = "<img class='profileImage' src='"+"${mypageInfo.babyList[0].bbPhoto}"+"'>";
+	}else{ 
+		bImage.innerHTML = "<img class='profileImage' src='"+"/res/img/profile_default.png"+"'>";
 	}
 	bbName.innerText="${mypageInfo.babyList[0].bbName}";
 	babyBirthDay.innerText="${mypageInfo.babyList[0].bbBirthday}";
@@ -407,11 +417,10 @@ function callbackGetBabyInfo(jsonData){
 	let bbWeight = document.getElementById("bbWeight");
 	
 	if(!babyInfo.babyList[babyNum].bbPhoto == ""){
+		babyImage.innerHTML = "<img class=\"profileImage\" src='"+babyInfo.babyList[1].bbPhoto+"'>";
+	}else{					
 
-		babyImage.innerHTML = "<img class=\"profileImage\" src='"+"/Users/js94/git/agi-log/src/main/webapp"+babyInfo.babyList[1].bbPhoto+"'>";
-	}else{
-
-		babyImage.innerHTML = "";
+		babyImage.innerHTML = "<img class='profileImage' src='/res/img/profile_default.png'>";
 	}
 	
 	bbName.innerText = babyInfo.babyList[babyNum].bbName;
@@ -455,9 +464,9 @@ function changeBaby(number){
 			let bbWeight = document.getElementById("bbWeight");
 			
 			if(!babyInfo.babyList[babyNum].bbPhoto == ""){
-				babyImage.innerHTML = "<img class=\"profileImage\" src='"+"/Users/js94/git/agi-log/src/main/webapp"+babyInfo.babyList[babyNum].bbPhoto+"'>";
+				babyImage.innerHTML = "<img class=\"profileImage\" src='"+babyInfo.babyList[babyNum].bbPhoto+"'>";
 			}else{
-				babyImage.innerHTML = "";
+				babyImage.innerHTML = "<img class='profileImage' src='/res/img/profile_default.png'>";
 			}
 
 			bbName.innerText = babyInfo.babyList[babyNum].bbName;
@@ -493,9 +502,9 @@ function changeBaby(number){
 		let bbWeight = document.getElementById("bbWeight");
 
 		if(!babyInfo.babyList[babyNum].bbPhoto == ""){
-			babyImage.innerHTML = "<img class=\"profileImage\" src='"+"/Users/js94/git/agi-log/src/main/webapp"+babyInfo.babyList[babyNum].bbPhoto+"'>";
+			babyImage.innerHTML = "<img class=\"profileImage\" src='"+babyInfo.babyList[babyNum].bbPhoto+"'>";
 		}else{
-			babyImage.innerHTML = "";
+			babyImage.innerHTML = "<img class='profileImage' src='/res/img/profile_default.png'>";
 		}		
 		bbName.innerText = babyInfo.babyList[babyNum].bbName;
 		babyBirthDay.innerText=babyInfo.babyList[babyNum].bbBirthday;
@@ -539,7 +548,7 @@ function changeParentProfile(){
 	leftWest.style.display = "none";
 	rightWest.style.display = "none";
 }
-//아이프로필변경 :: 수정완료버튼 클릭
+//부모프로필변경 :: 수정완료버튼 클릭
 function changeParentInfo(){
 	let nickName = document.getElementsByName("suNickName")[0];
 	let form = document.getElementById("serverForm");
@@ -772,7 +781,6 @@ function selectTheme(num){
 	for(idx=0;idx<10;idx++){
 		if(idx == num){
 			if(child[num].classList.contains("checked")){
-				alert("시발");
 				child[num].classList.remove("checked");
 				theme = num;
 				modalFoot.innerHTML="<button class=\'mBtnX\' onclick=\'themeModalClose()\'>취소</button><button class=\'mBtnO\' onclick=\'changeTheme(\'0\')\'>변경</button>";

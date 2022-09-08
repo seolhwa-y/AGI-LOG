@@ -46,9 +46,13 @@ public interface JpMapperInterface {
 	public AuthBean getAccessInfo(AuthBean ab);
 	//
 	public List<DoctorBean> getDoctorInfo(DoctorBean db);
+	public List<ReservationBean> getPatientInfoList(ReservationBean rb);
 	public List<ReservationBean> getReservationInfo(ReservationBean rb);
 	public List<ReservationBean> getReservationCategory(ReservationBean rb);
+	public List<HealthDiaryBean> getHealthDataList(HealthDiaryBean hb);
 	public String checkDoctorCode(CompanyBean cb);
+	public String isDoctorMember(DoctorBean db);
+	public int isDoctorCode(DoctorBean db);
 	public int updReservation(CompanyBean cb);
 	public int insDoctorInfo(CompanyBean cb);
 	public int delDoctorInfo(CompanyBean cb);

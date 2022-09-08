@@ -61,7 +61,21 @@ public class DailyDiary implements ServiceRule {
 	}
 
 	private void moveMyDailyDiaryPageCtl(ModelAndView mav) {
-
+		AuthBean ab;
+		try {
+			ab = (AuthBean) this.pu.getAttribute("accessInfo");
+			if (ab != null) {
+				if (ab.getSuCode().length() == 10) {
+					ab.setType("kakao");
+				} else {
+					ab.setType("naver");
+				}
+				mav.addObject("accessInfo", ab);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		mav.setViewName("myDailyDiary");
 	}
 
 	private void insertDailyDiaryCtl(ModelAndView mav) {

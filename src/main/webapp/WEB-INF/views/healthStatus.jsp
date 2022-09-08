@@ -5,6 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>통계기록</title>
+
 <script src="/res/js/agiMain.js"></script>
 <script src="https://use.fontawesome.com/releases/v6.1.2/js/all.js"></script>
 <link rel="stylesheet" href="/res/css/agiMain.css">
@@ -71,7 +72,7 @@ function kakaoLogout() {
 /*****************차트******************/
 
 function lineChart(data, check){
-	// 만나이(7개) :: 0, 1, 2, 3, 4, 5, 6
+	// 만나이(7개) :: 0, 1, 2, 3, 4, 5, 6, 7
 	// 평균 데이터 삽입 :: 키, 몸무게, 머리둘레
 	// 표현 데이터 삽입 :: 키, 몸무게, 머리둘레
 	/* 표준 데이터
@@ -109,9 +110,9 @@ function lineChart(data, check){
 	var chart = bb
 			.generate({
 				data : {
-					columns : [["평균 머리둘레", 33.9, 44.9, 47.2, 48.8, 49.6, 50.2, 50, 9 ],
-								["평균 키", 49.1, 74, 85.7, 95.4, 101.9, 108.4, 114.7, 120.8 ],
-								["평균 몸무게", 3.2, 8.9, 11.5, 14.2, 16.3, 18.4, 20.7 ]],
+					columns : [["평균 머리둘레", 34.1, 45.5, 48.1, 49.2, 49.9, 50.2, 50.5 ],
+								["평균 키", 49.6, 77, 88.2, 95.6, 102.7, 109.4, 115.5, 122.4 ],
+								["평균 몸무게", 3.2, 9.8, 12.5, 14.3, 16.3, 18.4, 20.7, 23.9 ]],
 					type : "line", // for ESM specify as: line()
 				},
 				bindto : "#lineChart"
@@ -122,7 +123,7 @@ function lineChart(data, check){
 		chart.load({
 			columns : [[ "머리둘레", head[0], head[1], head[2], head[3], head[4], head[5], head[6], head[7] ]]
 		});
-	}, 1500);
+	}, 1000);
 	
 	// 몸무게 표현
 	setTimeout(function() {
@@ -136,7 +137,7 @@ function lineChart(data, check){
 		chart.load({
 			columns : [[ "키", height[0], height[1], height[2], height[3], height[4], height[5], height[6], height[7] ]]
 		});
-	}, 1000);
+	}, 2000);
 
 /* 	// 평균 머리둘레 제거
 	setTimeout(function() {
@@ -183,6 +184,13 @@ function cngLineChert(ajax) {
 }
 
 </script>
+<style>
+    #lineChart {
+    	margin : 0;
+        width: 100%;
+        height:90%;
+    }
+</style>
 </head>
 <body onload="getInfo()">
 </head>
@@ -229,7 +237,7 @@ function cngLineChert(ajax) {
 				<!-- ------------------------------------------------------------------------ -->
 			</div>
 			<div id="rightArea" class="scrollBar">
-			    <div id="lineChart">
+			    <div id="lineChart" >
 			    	<!-- 차트 영역 -->
 			    </div>
 				<div>

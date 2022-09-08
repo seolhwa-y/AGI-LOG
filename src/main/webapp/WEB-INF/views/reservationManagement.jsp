@@ -19,6 +19,40 @@
 		}
 		
 	}
+	
+	function updateReservation(resCode, idx, idx2) {
+		let form = document.getElementById("serverForm");
+
+		alert(resCode + "," + idx + "," + idx2);
+		let rcCode = document.getElementsByName("selectResState")[idx];
+		let rcCode2 = rcCode.options[rcCode.selectedIndex].value;
+		
+		form.appendChild(createInput("hidden","resCode",resCode,null,null));
+
+		let hidden1 = document.createElement("input");
+		hidden1.type = "hidden";
+		hidden1.name = "rcCode";
+		hidden1.value = rcCode2;
+		 
+		form.appendChild(hidden1);
+		
+		if (idx2 != "") {
+			alert("실행체크");
+			let doCode = document.getElementsByName("selectDoctor")[idx2];
+			let doCode2 = doCode.options[doCode.selectedIndex].value;
+			
+			let hidden2 = document.createElement("input");
+			hidden2.type = "hidden";
+			hidden2.name = "doCode";
+			hidden2.value = doCode2;
+			
+			form.appendChild(hidden2);
+		}
+
+		form.action = "UpdateReservation";
+		form.method = "post";
+		form.submit();
+	}
 </script>
 </head>
 <body onload="init()">
@@ -36,13 +70,13 @@
 				<ul id="mainMenuList">
 					<li class="mainMenu" onclick="movePage('MoveDoctorManagement')">의사관리</li>
 					<li class="mainMenu" onclick="movePage('MoveReservationManagement')">예약관리</li>
-					<li class="mainMenu" onclick="movePage('MovePatientManagement')">환자관리</li>
+					<li class="mainMenu" onclick="movePage('MoveCheckDoctor')">환자관리</li>
 				</ul>
 			</div>
 		</div>
 		<div id="middle">
 			<div id="rightArea" class="scrollBar">
-				
+				${resInfo}
 			</div>
 		</div>
 		<div class="modal">

@@ -67,6 +67,7 @@ public class JsAPIController {
 		
 		return (BebeCalendarBean)model.getAttribute("bebeCalendarBean");
 	}
+	//하이
 	@PostMapping("/DeleteSchedule")
 	public BebeCalendarBean deleteScheduleCtl(Model model, @ModelAttribute ScheduleBean sb){
 		model.addAttribute(sb);

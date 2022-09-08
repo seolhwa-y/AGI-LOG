@@ -103,7 +103,26 @@ function kakaoLogout() {
 
 				<!-- ------------------------------------------------------------------------ -->
 			</div>
-			<div id="rightArea" class="scrollBar"></div>
+			<div id="rightArea" class="scrollBar">
+				<div>
+					<select>
+						<option value = "newList">최신순</option>
+						<option value = "oldList">오래된순</option>
+						<option value = "likeList">좋아요순</option>
+						<option value = "viewList">조회순</option>
+					</select>
+				</div>
+				<div>
+					<input type="button" value="검색" />
+					<input type="text" placeholder="#해시태그 검색" />
+				</div>
+				<div>
+					<input type="button" value="글쓰기" />
+				</div>
+				<div id="allFeeds">
+					
+				</div>
+			</div>
 		</div>
 		<div class="modal">
             <div class="modal_body">

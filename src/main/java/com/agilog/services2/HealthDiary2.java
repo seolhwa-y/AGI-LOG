@@ -140,7 +140,7 @@ public class HealthDiary2 implements ServiceRule {
 		for(HealthDiaryBean hdb : healthList) {
 			i++;
 			
-			for(ii = 1; ii < 7; ii++) {
+			for(ii = 1; ii < 8; ii++) {
 				// 해당 나이가 있을 때 :: 같은 나이가 있을 때를 대비하여 변수에 담아서 비교
 				if(healthList.get(i).getAge() == ii) {
 					// 키 1차원 배열 :: 1단계 3항식
@@ -154,12 +154,7 @@ public class HealthDiary2 implements ServiceRule {
 					// 머리둘레 1차원 배열 :: 1단계 3항식
 					hd = (healthList.get(i).getHead() != null)? Integer.parseInt(healthList.get(i).getHead()) : 0;
 					head[ii] = head[ii] < hd ? hd : head[ii];
-				} else {
-					// 해당 나이가 없을 떄
-					height[ii] = 0;
-					weight[ii] = 0;
-					head[ii] = 0;
-				}
+				} 
 				// 배열 -> 문자 -> MAP
 				sStatus = Arrays.toString(height);
 				map.put("heightList", sStatus);

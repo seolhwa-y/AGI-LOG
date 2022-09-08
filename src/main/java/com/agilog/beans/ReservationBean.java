@@ -20,4 +20,8 @@ public class ReservationBean {
 	private String resCoName;
 	private String resCoCode;
 	private String resBbName;
+	//예약상태
+	private String resAction;
+	private String resActionName;
+	private String resMemo;
 }

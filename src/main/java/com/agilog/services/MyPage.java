@@ -224,6 +224,7 @@ public class MyPage implements ServiceRule {
 					mpb.setSuName(this.enc.aesDecode(mpb.getSuName(),suCode));
 					
 				}
+				ab.setSuNickName(mpb.getSuNickName());
 				mav.addObject("accessInfo", ab);
 				mav.setViewName("myPage");
 				/* 내 아기정보 전부 가져오기 */
@@ -280,22 +281,22 @@ public class MyPage implements ServiceRule {
 			String suCode = bb.getSuCode();
 			String babyCode = bb.getBbCode();
 			/* 저장 폴더 경로 설정 */
-			String path = "C:\\Users\\js94\\git\\agi-log\\src\\main\\webapp\\resources\\img\\"+suCode+"\\"+babyCode;
+			String path = "C:\\Users\\js94\\git\\agi-log\\src\\main\\webapp\\resources\\img\\"+suCode+"\\profile\\";
 			
 			/* 확장자 뽑아내서 파일이름(부모코드 만들어주기 */
 			int pos = file.getOriginalFilename().lastIndexOf(".");
 			String ext = file.getOriginalFilename().substring(pos);
 			String fileName = bb.getBbCode()+ext; //유저코드 + 확장자 
 			
-			/* 파일저장 */
+			/* 파일저장 
 			File uploadPath = new File(path);
-			if (!uploadPath.exists()) uploadPath.mkdirs();//폴더 없다면 생성
+			if (!uploadPath.exists()) uploadPath.mkdirs();//폴더 없다면 생성*/
 			
 			File realPath = new File(path,fileName);//최종 경로로 파일 저장
 			file.transferTo(realPath);
 			
 			
-			String babyPhoto = "/resources/img/"+suCode+"/"+babyCode+"/"+fileName;
+			String babyPhoto = "/res/img/"+suCode+"/profile/"+fileName;
 			bb.setBbPhoto(babyPhoto);
 			/* DB에 파일 저장한 경로 INSERT */
 			if(this.converToBoolean((this.session.update("updBabyPhoto",bb)))){
@@ -324,24 +325,24 @@ public class MyPage implements ServiceRule {
 		String suCode = mb.getSuCode();
 		/* 저장 폴더 경로 설정 */
 		//String path = "C:\\upload\\profile\\"+suCode;
-		String path = "C:\\Users\\js94\\git\\agi-log\\src\\main\\webapp\\resources\\img\\"+suCode;
+		String path = "C:\\Users\\js94\\git\\agi-log\\src\\main\\webapp\\resources\\img\\"+suCode+"\\profile\\";
 		
 		//String path = "/res/img/"+suCode;
-		/* 확장자 뽑아내서 파일이름(아이코드)만들어주기 */
+		/* 확장자 뽑아내서 파일이름 만들어주기 */
 		int pos = file.getOriginalFilename().lastIndexOf(".");
 		String ext = file.getOriginalFilename().substring(pos);
 		String fileName = mb.getSuCode()+ext; //유저코드 + 확장자
 		
 		try {
-			/* 파일저장 */
+			/* 파일저장 
 			File uploadPath = new File(path);//폴더 없다면 생성
-			if (!uploadPath.exists()) uploadPath.mkdirs();
+			if (!uploadPath.exists()) uploadPath.mkdirs();*/
 			
 			File realPath = new File(path,fileName);//최종 경로로 파일 저장
 			file.transferTo(realPath);
 			
 			/* DB에 파일 저장한 경로 INSERT */
-			String suPhoto = "/resources/img/"+suCode+"/"+fileName;
+			String suPhoto = "/res/img/"+suCode+"/profile/"+fileName;
 			AuthBean ab = new AuthBean();
 			ab.setSuCode(suCode);
 			ab.setSuPhoto(suPhoto);
