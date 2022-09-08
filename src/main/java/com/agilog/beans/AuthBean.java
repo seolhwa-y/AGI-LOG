@@ -1,5 +1,7 @@
 package com.agilog.beans;
 
+import java.util.List;
+
 import lombok.Data;
 
 @Data
@@ -15,5 +17,7 @@ public class AuthBean {
 	private int alAction;
 	
 	private String type;
+	
+	private List<BabyBean> babyList;
 	
 }

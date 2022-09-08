@@ -19,7 +19,6 @@
 		$file = new stdClass;
 		$file->name = date("YmdHis").mt_rand().".".$filename_ext;
 		$file->content = file_get_contents("php://input");
-
 		
 		//헬프치자
 		$uploadDir = '/res/img/';

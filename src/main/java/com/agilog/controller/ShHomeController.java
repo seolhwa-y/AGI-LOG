@@ -48,6 +48,7 @@ public class ShHomeController {
 	@Autowired
 	HealthDiary2 healthDiary;
 
+	// 기업 회원가입 페이지 이동
 	@RequestMapping(value = "/MoveCompanyJoinPage", method = RequestMethod.GET)
 	public ModelAndView moveCompanyJoinPage(ModelAndView mav, @ModelAttribute AuthBean auth) {
 		this.auth.backController(mav, 13);
@@ -55,6 +56,7 @@ public class ShHomeController {
 		return mav;
 	}
 	
+	// 기업 회원가입 완료
 	@RequestMapping(value = "/CompanyJoin", method = RequestMethod.POST)
 	public ModelAndView companyJoin(ModelAndView mav, @ModelAttribute CompanyBean cb) {
 		mav.addObject("companyBean", cb);
@@ -63,13 +65,12 @@ public class ShHomeController {
 		return mav;
 	}
 	
-	@SuppressWarnings("unchecked")
+	// 건강일기 추세 페이지 이동
 	@RequestMapping(value = "/MoveHealthStatusPage", method = RequestMethod.POST)
 	public ModelAndView moveHealthStatusPage(ModelAndView mav, @ModelAttribute HealthDiaryBean hdb) {
 		mav.addObject("healthDiaryBean", hdb);
 		this.healthDiary.backController(mav, 21);
 		
-		// 리턴값 :: 아이 건강 추세 내용(키, 몸무게 등 나이별로 또는 일자 별로), 아이 셀렉트리스트
 		return mav;
 	}
 	

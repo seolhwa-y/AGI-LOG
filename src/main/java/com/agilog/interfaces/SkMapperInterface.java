@@ -1,5 +1,8 @@
 package com.agilog.interfaces;
 
+import java.util.List;
+
+import com.agilog.beans.BebeCalendarBean;
 import com.agilog.beans.HealthDiaryBean;
 
 public interface SkMapperInterface {
@@ -18,4 +21,12 @@ public interface SkMapperInterface {
 
 	public HealthDiaryBean getHealthDiaryDetail(HealthDiaryBean hb);
 	
+	public HealthDiaryBean getHealthMemo(HealthDiaryBean hb);
+	public int insNewHDMemo(HealthDiaryBean hb);
+	
+	public List<BebeCalendarBean> checkWriteDD(BebeCalendarBean bcb);
+	public List<BebeCalendarBean> checkWriteHD(BebeCalendarBean bcb);
+	public List<BebeCalendarBean> checkReservation(BebeCalendarBean bcb);
+	public List<BebeCalendarBean> checkSchedule(BebeCalendarBean bcb);
+	public List<BebeCalendarBean> getBabyBirth(BebeCalendarBean bcb);
 }

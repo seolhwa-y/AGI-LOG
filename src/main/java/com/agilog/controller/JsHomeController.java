@@ -63,7 +63,7 @@ public class JsHomeController {
 		return mav;
 	}
 	
-	@RequestMapping(value = "/UpdateProfile", method = RequestMethod.POST)
+	@RequestMapping(value = "/ChangeParentInfo", method = RequestMethod.POST)
 	public ModelAndView updateProfile(ModelAndView mav, @ModelAttribute MyPageBean mb) {
 		mav.addObject(mb);
 	

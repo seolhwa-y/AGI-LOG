@@ -9,4 +9,5 @@ public class ScheduleBean {
 	private String scheduleName;
 	private String scheduleDate;
 	private String scheduleCode;
+	private String suCode;
 }

@@ -26,6 +26,7 @@ import com.agilog.services.DailyDiary;
 import com.agilog.services.DashBoard;
 import com.agilog.services.HealthDiary;
 import com.agilog.services.MyPage;
+import com.agilog.services3.BebeCalendar3;
 
 @Controller
 public class SkHomeController {
@@ -42,7 +43,7 @@ public class SkHomeController {
 	@Autowired
 	BebeMap bebeMap;
 	@Autowired
-	BebeCalendar bebeCalendar;
+	BebeCalendar3 bebeCalendar3;
 	@Autowired
 	Board board;
 	@Autowired
@@ -104,7 +105,7 @@ public class SkHomeController {
 	@RequestMapping(value = "/MoveCalendarPage", method = RequestMethod.GET)
 	public ModelAndView moveCalendarPage(ModelAndView mav, @ModelAttribute BebeCalendarBean bcb) {
 		mav.addObject(bcb);
-		this.bebeCalendar.backController(mav, 7);
+		this.bebeCalendar3.backController(mav, 7);
 
 		return mav;
 	}

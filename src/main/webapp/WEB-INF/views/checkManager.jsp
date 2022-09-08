@@ -18,7 +18,20 @@
 			accessArea.innerHTML += "<span onclick=\"movePage(\'CompanyLogout\')\">로그아웃</span>";
 			accessArea.innerHTML += "<span onclick=\"movePage(\'MoveMainPage\')\">일반회원</span>";	
 		}
+	}
+	
+	function checkManager() {
+		let form = document.getElementById("serverForm");
 		
+		let coManagerCode = document.getElementsByName("coManagerCode")[0];
+
+		form.appendChild(coManagerCode);
+		
+		alert(coManagerCode.value);
+
+		form.action = "CheckManager";
+		form.method = "post";
+		form.submit();
 	}
 </script>
 </head>
@@ -43,6 +56,8 @@
 		</div>
 		<div id="middle">
 			<div id="rightArea" class="scrollBar">
+				<input type="text" name="coManagerCode">
+				<input type="button" value="관리자 인증" onclick="checkManager()">
 				
 			</div>
 		</div>

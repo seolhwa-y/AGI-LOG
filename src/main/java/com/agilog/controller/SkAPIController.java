@@ -43,7 +43,6 @@ public class SkAPIController {
 	@Autowired
 	MyPage myPage;
 	
-	@SuppressWarnings("unchecked")
 	@PostMapping("/CheckPersonalOverlap")
 	public String checkPersonalOverlap(Model model, HttpServletRequest req, @ModelAttribute AuthBean ab) {
 		model.addAttribute("code",req.getParameter("code"));
@@ -52,11 +51,17 @@ public class SkAPIController {
 		return (String)model.getAttribute("check");
 	}
 	
-	@SuppressWarnings("unchecked")
 	@PostMapping("/ShowHealthDiary")
-	public List<HealthDiaryBean> showHealthDiary(Model model, @ModelAttribute HealthDiaryBean hb) {
+	public HealthDiaryBean showHealthDiary(Model model, @ModelAttribute HealthDiaryBean hb) {
 		model.addAttribute(hb);
 		this.healthDiary.backController(model, 103);
-		return (List<HealthDiaryBean>)model.getAttribute("healthDetail");
+		return (HealthDiaryBean)model.getAttribute("healthDetail");
+	}
+	
+	@PostMapping("/UpdateMyHealthDiary")
+	public HealthDiaryBean updateMyHealthDiary(Model model, @ModelAttribute HealthDiaryBean hb) {
+		model.addAttribute(hb);
+		this.healthDiary.backController(model, 94);
+		return (HealthDiaryBean)model.getAttribute("memo");
 	}
 }

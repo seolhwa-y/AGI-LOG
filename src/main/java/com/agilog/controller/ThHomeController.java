@@ -61,11 +61,4 @@ public class ThHomeController {
 		return mav;
 	}
 	
-	@RequestMapping(value = "/InsertPost", method = RequestMethod.POST)
-	public ModelAndView insertPost(ModelAndView mav, @ModelAttribute PostBean pb) {
-		System.out.println("컨트롤러 진입 체크1");
-		mav.addObject(pb);
-		this.board.backController(mav, 65);
-		return mav;
-	}
 }

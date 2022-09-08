@@ -27,4 +27,7 @@ public class HealthDiaryBean {
 	private String caCode;
 	private String caName;
 	private String caType;
+	
+	private int age;
+	private int rnk;
 }

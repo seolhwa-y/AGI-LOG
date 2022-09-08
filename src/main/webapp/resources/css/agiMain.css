@@ -7,9 +7,12 @@
     font-style: normal;
 }
 
+
 * {
     font-family: 'twayair';
-    color: #616161;
+}
+body{
+	color: #616161;
 }
 
 #background {
@@ -576,23 +579,23 @@ input {
 .mDelBtn:hover,
 .closeBtn:hover,
 .delBtn:hover {
-    color: red;
+    color: red !important;
 }
 
 .mDelBtn:active,
 .closeBtn:active,
 .delBtn:active {
-    text-shadow: 2px 2px 8px #FF0000;
+    text-shadow: 2px 2px 8px #FF0000 !important;
 }
 
 .mUpdBtn:hover,
 .updBtn:hover {
-    color: green;
+    color: green !important;
 }
 
 .mUpdBtn:active,
 .updBtn:active {
-    text-shadow: 2px 2px 8px green;
+    text-shadow: 2px 2px 8px green !important;
 }
 
 .mDelBtn,

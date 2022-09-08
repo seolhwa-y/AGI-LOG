@@ -43,112 +43,82 @@ public class Company implements ServiceRule {
 
 	// Controller
 	public void backController(ModelAndView mav, int serviceCode) {
-		/*
-		 * try {
-			if(this.pu.getAttribute("accessInfo")!=null) {
-		 */
+		try {
+			if(this.pu.getAttribute("companyAccessInfo")!=null) {
 		switch(serviceCode) {
 		
-		case 70:
+		case 71:
 			this.checkManager(mav);
 			break;
-			
-		case 772:
+		case 77:
 			this.moveDoctorManagementCtl(mav);
 			break;
-			
-		case 81:
-			this.movePatientManagement(mav);
+		case 70:
+			this.moveReservationManagementCtl(mav);
 			break;
-			
-		case 80:
-			this.insertDoctor(mav);
+		case 81:
+			this.movePatientManagementCtl(mav);
 			break;
 		default:
 			break;
-		}	
-	}
+		}
+		}else {
+			// landing page로 이동
+			mav.setViewName("companyLogin");
+		}
+	} catch (Exception e) {e.printStackTrace();}
+}
 
 	public void backController(Model model, int serviceCode) {
 		switch (serviceCode) {
 		case 79:
-			this.checkDoctorCodeOverlap(model);
+			this.checkDoctorCodeCtl(model);
 			break;
-			case 202:
-			this.deleteDoctor(model);	
+		case 78:
+			this.deleteDoctorCtl(model);	
 			break;
-		}
+		case 80:
+			this.insertDoctorCtl(model);
+			break;}
 	}
 	
-	
-	private void deleteDoctor(Model model) {
-		CompanyBean cb = (CompanyBean) model.getAttribute("companyBean");
-		System.out.println("의사정보" +cb);
-		
-	}
-
+	//의사 추가
 	@Transactional(propagation = Propagation.REQUIRED)
-	private void insertDoctor(ModelAndView mav) {
-		String page = "doctorManagement", message = "등록에 실패했습니다.";
-		DoctorBean db = (DoctorBean) mav.getModel().get("doctorBean");
+	private void insertDoctorCtl(Model model) {
+
+		DoctorBean db = (DoctorBean)model.getAttribute("doctorBean");
 		try {
 			CompanyBean compb = (CompanyBean)this.pu.getAttribute("companyAccessInfo");
 			System.out.println("세션 :" + compb);
-			db.setCoCode(compb.getCoCode());
-			System.out.println("의사 병원코드 : " + db);
-			} catch (Exception e1) {e1.printStackTrace();}
-	
-		System.out.println("코드 들어있나?"+db);
-
-		try {
-			db.setDoPassword(this.enc.encode(db.getDoPassword()));
-		} catch (Exception e) {e.printStackTrace();}
-		mav.addObject(db);
-		if (this.convertToBoolean(this.session.insert("insDoctorInfo", db))) {
-			message = "등록에 성공했습니다.";
-			mav.setViewName(page);
-		}
-
-		mav.setViewName("redirect:/");
-		mav.addObject("message", message);
-	}
-	
-	private void checkDoctorCodeOverlap(Model model) {
-		System.out.println("중복체크 메소드 진입");
-		String code = (String) model.getAttribute("code");
-		DoctorBean db = (DoctorBean) model.getAttribute("doctorBean");
-		int result = 0;
-		switch (code) {
-		case "0":
 			
-			break;
-		case "1":
-			result = Integer.parseInt(this.session.selectOne("checkDoctorCode", db).toString());
-			System.out.println(result);
-			break;
-		}
-		if (this.convertToBoolean(result)) {
-			model.addAttribute("check", "no");
-		} else {
-			model.addAttribute("check", "ok");
-		}
-	}
+			db.setCoCode(compb.getCoCode());
+			db.setDoPassword(this.enc.encode(db.getDoPassword()));
+			
+			this.session.insert("insDoctorInfo",db);
+			model.addAttribute("doctor",this.session.selectList("getDoctorInfo", db));
+			
+			
+		} catch (Exception e1) {e1.printStackTrace();}
 
-	//페이지 이동 메소드 라인
+	}
 
 	//전문의 관리 페이지 이동
 	private void moveDoctorManagementCtl(ModelAndView mav) {
 		try {
+			if(((CompanyBean)(this.pu.getAttribute("companyAccessInfo"))).getCoManagerCode() != null) {
+							
 			CompanyBean compb = (CompanyBean)this.pu.getAttribute("companyAccessInfo");
 			CompanyBean cb = new CompanyBean();
-
+			
 			cb.setCoCode(compb.getCoCode());
 			/* 내가 받은 프로젝트의 데이터를 html에 만들고 EL로 저장 */
 			mav.addObject("doctor",this.makeDoctorList(this.session.selectList("getDoctorInfo", cb)));
-		} catch (Exception e) {e.printStackTrace();}
-		// Board로 페이지 이동
-		mav.setViewName("doctorManagement");
-
+			mav.setViewName("doctorManagement");	
+			}else {
+				mav.setViewName("checkManager");
+				
+			}
+		} catch (Exception e1) {e1.printStackTrace();}
 	}
 
 
@@ -170,12 +140,44 @@ public class Company implements ServiceRule {
 	}
 
 	//환자관리 페이지 이동
-	private void movePatientManagement(ModelAndView mav) {
-
-		mav.setViewName("patientManagement");
-
-	}
+	@SuppressWarnings("unused")
+	private void movePatientManagementCtl(ModelAndView mav) {
+		String page = "checkDoctor";
+		
+		DoctorBean auth = (DoctorBean) mav.getModel().get("doctornBean");
+		CompanyBean cb;
+		try {
+			cb = (CompanyBean)this.pu.getAttribute("companyAccessInfo");
+			System.out.println("세션 :" + cb);
+		} catch (Exception e) {e.printStackTrace();}
 	
+		
+		/*db.setCoCode(cb.getCoCode());
+		
+		if (this.enc.matches(db.getDoPassword(), this.session.selectOne("isMember", auth))) {
+	
+		try {
+			CompanyBean cb = ((CompanyBean) this.pu.getAttribute("companyAccessInfo"));
+			cb.setCoManagerCode(((CompanyBean)mav.getModel().get("companyBean")).getCoManagerCode());
+			
+			if(cb != null) {
+				if(this.convertToBoolean(this.session.selectOne("isDoctorCode", cb))) {
+					
+					mav.setViewName("patientManagement");
+				}
+			}else{
+				mav.setViewName(page);
+				System.out.println("세션만료");
+			}
+		
+		} catch (Exception e) {e.printStackTrace();}
+		*/
+	}
+
+
+
+
+	@SuppressWarnings("unused")
 	private void checkManager(ModelAndView mav) {
 		try {
 			CompanyBean cb = ((CompanyBean) this.pu.getAttribute("companyAccessInfo"));
@@ -184,6 +186,7 @@ public class Company implements ServiceRule {
 				if(this.convertToBoolean(this.session.selectOne("isManagerCode", cb))) {
 					// 세션에 저장할 로그인 유저 정보 가져오기
 					CompanyBean company = (CompanyBean) this.session.selectList("getCompanyAccessAllInfo", cb).get(0);
+					company.setCoName(this.enc.aesDecode(company.getCoName(), company.getCoCode()));
 					System.out.println("체크 매니저 진입 체크 : "+company);
 					// 세션에 userCode저장
 					this.pu.setAttribute("companyAccessInfo", company);
@@ -203,20 +206,46 @@ public class Company implements ServiceRule {
 		
 		} catch (Exception e) {e.printStackTrace();}
 	}
-	
-	private void deleteDoctorCtl(ModelAndView mav) {
-
+	//의사 삭제
+	private void deleteDoctorCtl(Model model) {
+		DoctorBean db = (DoctorBean)model.getAttribute("doctorBean");
+		System.out.println("의사정보" +db);
+		
+		try {
+			db.setCoCode(((CompanyBean)this.pu.getAttribute("companyAccessInfo")).getCoCode());
+		
+			this.session.delete("delDoctorInfo", db);
+			model.addAttribute("doctor",this.session.selectList("getDoctorInfo", db));
+		} catch (Exception e) {e.printStackTrace();}
 	}
-
+	//의사 코드 중복검사
 	private void checkDoctorCodeCtl(Model model) {
-
+		System.out.println("중복체크 메소드 진입");
+		String code = (String) model.getAttribute("code");
+		DoctorBean db = (DoctorBean) model.getAttribute("doctorBean");
+		int result = 0;
+		switch (code) {
+		case "0":
+			
+			break;
+		case "1":
+			result = Integer.parseInt(this.session.selectOne("checkDoctorCode", db).toString());
+			System.out.println(result);
+			break;
+		}
+		if (this.convertToBoolean(result)) {
+			model.addAttribute("check", "no");
+		} else {
+			model.addAttribute("check", "ok");
+		}
 	}
+	
 	private void insertDoctorCommentCtl(ModelAndView mav) {
 
 	}
 
 
-
+	//의사 리스트 EL작업
 	private String makeDoctorList(List<DoctorBean> doctorList) {
 		StringBuffer sb = new StringBuffer();
 	
@@ -233,7 +262,7 @@ public class Company implements ServiceRule {
 			sb.append("<td>" + db.getDoName() + "</td>");
 			sb.append("<td><button class=\"delBtn\">");
 			sb.append("<i class=\"fa-solid fa-trash-can delBtn editBtn\" "
-					+ "onClick=\"deleteDoctor("+ db.getCoCode() + db.getDoCode() +")\"></i>삭제</button>");
+					+ "onClick=\"deleteDoctor("+ db.getDoCode() +")\"></i>삭제</button>");
 			sb.append("</td>");
 			sb.append("</tr>");
 		}
