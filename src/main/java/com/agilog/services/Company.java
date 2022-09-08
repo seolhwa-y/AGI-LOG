@@ -187,19 +187,27 @@ public class Company implements ServiceRule {
 					// 세션에 저장할 로그인 유저 정보 가져오기
 					CompanyBean company = (CompanyBean) this.session.selectList("getCompanyAccessAllInfo", cb).get(0);
 					company.setCoName(this.enc.aesDecode(company.getCoName(), company.getCoCode()));
+<<<<<<< HEAD
 					System.out.println("체크 매니저 진입 체크 : "+company);
+=======
+					System.out.println(company);
+>>>>>>> branch 'main' of https://github.com/seolhwa-y/agi-log.git
 					// 세션에 userCode저장
 					this.pu.setAttribute("companyAccessInfo", company);
 					
 					mav.addObject("resInfo", this.makeHTMLCReservation(this.session.selectList("getDoctorInfo", cb), this.session.selectList("getResInfo", cb)));
 					mav.setViewName("reservationManagement");
 				}
+<<<<<<< HEAD
 				else {
 					mav.addObject("message", "매니저 코드가 일치하지 않습니다. 다시 입력해주세요.");
 					mav.setViewName("redirect:/");
 				}
 			}
 			else {
+=======
+			}else{
+>>>>>>> branch 'main' of https://github.com/seolhwa-y/agi-log.git
 				mav.setViewName("companyLogin");
 				System.out.println("세션만료");
 			}

@@ -66,6 +66,7 @@
 	</delete>
 	<!-- 전체 진료기록 조회 -->
 	<select id="getDoctorCommentList" parameterType="com.agilog.beans.ReservationBean" resultType="com.agilog.beans.ReservationBean">
+<<<<<<< HEAD
 		SELECT * FROM COMMENTLIST WHERE SUCODE = #{resSuCode} ORDER BY RESDATE DESC
 	</select>
 	<!-- 특정 건강일기 메모 수정 -->
@@ -110,6 +111,51 @@
 		GROUP BY TO_CHAR(SC_DATE,'YYYY-MM-DD'), SC_SUCODE
 	</select>
 	<!-- 캘린더 아이(들) 생일 조회 -->
+=======
+		SELECT * FROM COMMENTLIST WHERE SUCODE = #{resSuCode} ORDER BY REDATE DESC
+	</select>
+	<!-- 특정 건강일기 메모 수정 -->
+	<update id="updMyHealthDiary" parameterType="com.agilog.beans.HealthDiaryBean" >
+		UPDATE HD SET HD_VALUE = #{memo} WHERE HD_CODE = #{hdCode} AND HD_BBSUCODE = #{suCode} AND HD_CACODE = '10'
+	</update>
+	<!-- 특정 건강일기 새로운 메모 삽입 -->
+	<insert id="insNewHDMemo" parameterType="com.agilog.beans.HealthDiaryBean" >
+		INSERT INTO HD(HD_CODE,HD_DATE,HD_CACODE,HD_BBSUCODE,HD_BBCODE,HD_VALUE) 
+		VALUES(#{hdCode},TO_DATE(#{hdDate},'YYYYMMDDHH24MISS'),'10',#{suCode},#{bbCode},#{memo})
+	</insert>
+	<!-- 건강일기 메모 조회 -->
+	<select id="getHealthMemo" parameterType="com.agilog.beans.HealthDiaryBean" resultType="com.agilog.beans.HealthDiaryBean">
+		SELECT HDCODE, MEMO FROM DETAILHEALTHDIARY WHERE HDCODE = #{hdCode} AND SUCODE = #{suCode} AND MEMO IS NOT NULL
+	</select>
+	<!-- 캘린더 건강일기 작성여부 조회 -->
+	<select id="checkWriteHD" parameterType="com.agilog.beans.BebeCalendarBean" resultType="com.agilog.beans.BebeCalendarBean">
+		SELECT COUNT(HD_CODE) AS HEALTHDIARY, TO_CHAR(HD_DATE,'YYYY-MM-DD') AS HDDATE, HD_BBSUCODE 
+		FROM HD
+		WHERE HD_BBSUCODE = #{suCode}
+		GROUP BY TO_CHAR(HD_DATE,'YYYY-MM-DD'), HD_BBSUCODE
+	</select>
+	<!-- 캘린더 감성일기 작성여부 조회 -->
+	<select id="checkWriteDD" parameterType="com.agilog.beans.BebeCalendarBean" resultType="com.agilog.beans.BebeCalendarBean">
+		SELECT COUNT(DD_CODE) AS DAILYDIARY, TO_CHAR(DD_DATE,'YYYY-MM-DD') AS DDDATE, DD_SUCODE 
+		FROM DD 
+		WHERE DD_SUCODE = #{suCode}
+		GROUP BY TO_CHAR(DD_DATE,'YYYY-MM-DD'), DD_SUCODE
+	</select>
+	<!-- 캘린더 예약 여부 조회 -->
+	<select id="checkReservation" parameterType="com.agilog.beans.BebeCalendarBean" resultType="com.agilog.beans.BebeCalendarBean">
+		SELECT COUNT(RE_CODE) AS RESERVATION, TO_CHAR(RE_DATE,'YYYY-MM-DD') AS REDATE, RE_BBSUCODE
+		FROM RE
+		WHERE RE_BBSUCODE  = #{suCode} AND RE_RCCODE = 'CP'
+		GROUP BY TO_CHAR(RE_DATE,'YYYY-MM-DD'), RE_BBSUCODE
+	</select>
+	<!-- 캘린더 일정 여부 조회 -->
+	<select id="checkSchedule" parameterType="com.agilog.beans.BebeCalendarBean" resultType="com.agilog.beans.BebeCalendarBean">
+		SELECT COUNT(SC_CODE) AS SCHEDULE, TO_CHAR(SC_DATE,'YYYY-MM-DD') AS SCDATE, SC_SUCODE
+		FROM SC
+		WHERE SC_SUCODE = #{suCode}
+		GROUP BY TO_CHAR(SC_DATE,'YYYY-MM-DD'), SC_SUCODE
+	</select>
+>>>>>>> branch 'main' of https://github.com/seolhwa-y/agi-log.git
 	<!-- 캘린더 아이(들) 생일 조회 -->
 	<select id="getBabyBirth" parameterType="com.agilog.beans.BebeCalendarBean" resultType="com.agilog.beans.BebeCalendarBean">
 		SELECT TO_CHAR(BB_BIRTHDAY,'YYYY-MM-DD') AS BABYBIRTHDAY, BB_NAME AS BABYNAME

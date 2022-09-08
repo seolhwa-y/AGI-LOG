@@ -215,7 +215,7 @@
         	let data = JSON.parse(ajaxData);
         	let modal = document.getElementsByClassName("modal")[0];
         	let mhead = document.getElementsByClassName("modal_head")[0];
-        	mhead.innerHTML = "<span>"+data[0].bbName+"</span><i class='fa-solid fa-xmark closeBtn editBtn' onclick='cancel()'></i><br />";
+        	mhead.innerHTML = "<span>"+data.bbName+"</span><i class='fa-solid fa-xmark closeBtn editBtn' onclick='cancel()'></i><br />";
         	let mcontent = document.getElementsByClassName("modal_content")[0];
             mcontent.innerHTML = writeForm;
             let mfoot = document.getElementsByClassName("modal_foot")[0];
@@ -225,49 +225,90 @@
             let item = document.getElementsByClassName("item");
         	let hdMemo = document.getElementById("hdMemo");
         	modal.style.display = "block";
-        	
+        	mcontent.appendChild(createInput("hidden","hdDate",data.hdDate,null,null));
+        	mcontent.appendChild(createInput("hidden","bbCode",data.bbCode,null,null));
         	//키
-        	if(data[0].bbHeight!=null) {
-				item[0].innerHTML = "<span>키</span><span>"+data[0].bbHeight+"</span> cm";
+        	if(data.bbHeight!=null) {
+				item[0].innerHTML = "<span>키</span><span>"+data.bbHeight+"</span> cm";
 			} else item[0].innerHTML = "<span>키</span><span>정보없음</span> cm";
 			//몸무게
-			if(data[0].bbWeight!=null) {
-				item[1].innerHTML = "<span>몸무게</span><span>"+data[0].bbWeight+"</span> kg";
+			if(data.bbWeight!=null) {
+				item[1].innerHTML = "<span>몸무게</span><span>"+data.bbWeight+"</span> kg";
 			} else item[1].innerHTML = "<span>몸무게</span><span>정보없음</span> kg";
 			//발
-			if(data[0].foot!=null) {
-				item[2].innerHTML = "<span>발사이즈</span><span>"+data[0].foot+"</span> cm";
+			if(data.foot!=null) {
+				item[2].innerHTML = "<span>발사이즈</span><span>"+data.foot+"</span> cm";
 			} else item[2].innerHTML = "<span>발사이즈</span><span>정보없음</span> cm";
 			//머리
-			if(data[0].head!=null) {
-				item[3].innerHTML = "<span>머리둘레</span><span>"+data[0].head+"</span> cm";
+			if(data.head!=null) {
+				item[3].innerHTML = "<span>머리둘레</span><span>"+data.head+"</span> cm";
 			} else item[3].innerHTML = "<span>머리둘레</span><span>정보없음</span> cm";
 			//체온
-			if(data[0].temperature!=null) {
-				item[4].innerHTML = "<span>체온</span><span>"+data[0].temperature+"</span> C";
+			if(data.temperature!=null) {
+				item[4].innerHTML = "<span>체온</span><span>"+data.temperature+"</span> C";
 			} else item[4].innerHTML = "<span>체온</span><span>정보없음</span> C";
 			//수면시간
-			if(data[0].sleep!=null) {
-				item[5].innerHTML = "<span>수면시간</span><span>"+data[0].sleep+"</span>";
+			if(data.sleep!=null) {
+				item[5].innerHTML = "<span>수면시간</span><span>"+data.sleep+"</span>";
 			} else item[5].innerHTML = "<span>수면시간</span><span>정보없음</span>";
 			//배변량
-			if(data[0].defecation!=null) {
-				item[6].innerHTML = "<span>배변량</span><span>"+data[0].defecation+"</span>";
+			if(data.defecation!=null) {
+				item[6].innerHTML = "<span>배변량</span><span>"+data.defecation+"</span>";
 			} else item[6].innerHTML = "<span>배변량</span><span>정보없음</span>";
 			//배변상태
-			if(data[0].defstatus!=null) {
-				item[7].innerHTML = "<span>배변상태</span><span>"+data[0].defstatus+"</span>";
+			if(data.defstatus!=null) {
+				item[7].innerHTML = "<span>배변상태</span><span>"+data.defstatus+"</span>";
 			} else item[7].innerHTML = "<span>배변상태</span><span>정보없음</span>";
 			//식사량
-			if(data[0].meal!=null) {
-				item[8].innerHTML = "<span>식사량</span><span>"+data[0].meal+"</span>";
+			if(data.meal!=null) {
+				item[8].innerHTML = "<span>식사량</span><span>"+data.meal+"</span>";
 			} else item[8].innerHTML = "<span>식사량</span><span>정보없음</span>";
 			//메모
-			if(data[0].memo!=null) {
-				hdMemo.innerHTML = "<div style='margin: 10px 0;'>메모</div><textarea name='memo' class='mMemoInput' readonly>"+data[0].memo+"</textarea>";
-			} else hdMemo.innerHTML = "<div style='margin: 10px 0;'>메모</div><textarea name='memo' class='mMemoInput' readonly>정보없음</textarea>";
+			if(data.memo!=null) {
+				hdMemo.innerHTML = "<div style='margin: 10px 0;'>메모<i class='fa-solid fa-pen mUpdBtn editBtn' onclick='updForm("+data.hdCode+")'></i></div><textarea name='memo' class='mMemoInput' readonly>"+data.memo+"</textarea>";
+			} else hdMemo.innerHTML = "<div style='margin: 10px 0;'>메모<i class='fa-solid fa-pen mUpdBtn editBtn' onclick='updForm("+data.hdCode+")'></div><textarea name='memo' class='mMemoInput' readonly>정보없음</textarea>";
         }
-        
+        //수정 활성화
+        function updForm(hdCode) {
+        	let mfoot = document.getElementsByClassName("modal_foot")[0];
+            mfoot.innerHTML="";
+            //취소 시 띄워줄 원본 저장
+            const origin = document.getElementsByClassName("modal_body")[0].innerHTML;
+            //메모 수정버튼 없애기
+			document.getElementsByClassName("mUpdBtn")[0].remove();
+            //메모 readonly속성 삭제
+            let memo = document.getElementsByName("memo")[0];
+            memo.removeAttribute("readonly");
+            if(memo.value=="정보없음")
+            	memo.value="";
+            //버튼
+            let mBtnX = createInput("button",null,"취소","mBtnX",null);
+            let mBtnO = createInput("button",null,"수정","mBtnO",null);
+            mBtnX.addEventListener("click",function() {
+            	document.getElementsByClassName("modal_body")[0].innerHTML = origin;
+            });
+            mBtnO.addEventListener("click",function() {
+            	updateMyHealthDiary(hdCode, memo.value, origin);
+            });
+            mfoot.appendChild(mBtnX);
+            mfoot.appendChild(mBtnO);
+        }
+        //메모 수정
+        function updateMyHealthDiary(hdCode,memo,origin) {
+        	document.getElementsByClassName("modal_body")[0].innerHTML = origin;
+        	let hdDate = document.getElementsByName("hdDate")[0].value;
+        	let bbCode = document.getElementsByName("bbCode")[0].value;
+        	let clientData = "hdCode="+hdCode+"&memo="+memo+"&hdDate="+hdDate+"&bbCode="+bbCode;
+        	postAjaxJson("UpdateMyHealthDiary",clientData,"cShowMemo");
+        }
+        function cShowMemo(ajaxData) {
+        	let hdMemo = document.getElementById("hdMemo");
+        	let data = JSON.parse(ajaxData);
+        	if(data.memo!="실패") {
+        		hdMemo.innerHTML = "<div style='margin: 10px 0;'>메모<i class='fa-solid fa-pen mUpdBtn editBtn' onclick='updForm("+data.hdCode+")'></i></div><textarea name='memo' class='mMemoInput' readonly>"+data.memo+"</textarea>";
+        	} else alert("수정 실패");
+        }
+        //건강일기 삭제
         function deleteHealthDiary(hdCode) {
         	let form = document.getElementById("serverForm");
         	let result = confirm("삭제하시겠습니까?");

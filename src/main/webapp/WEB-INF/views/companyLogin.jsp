@@ -8,14 +8,18 @@
 <script src="/res/js/agiMain.js"></script>
 <script src="https://use.fontawesome.com/releases/v6.1.2/js/all.js"></script>
 <link rel="stylesheet" href="/res/css/agiMain.css">
+<link rel="stylesheet" href="/res/css/company.css">
 
 <script>
+	function init(){
+		if("${message}" != ""){
+			alert("${message}");
+		}
+	}
 	function companyLogin(){
 		let form = document.getElementById("serverForm");
 		let id = document.getElementsByName("coCode")[0];
 		let pw = document.getElementsByName("coPassword")[0];
-		alert(id.value);
-		alert(pw.value);
 		
 		form.appendChild(id);
 		form.appendChild(pw);
@@ -29,13 +33,12 @@
 	}
 </script>
 </head>
-<body>
+<body onload="init()">
 	<div id="background">
 		<div id="top">
 			<div id="accessArea">
 				<span onclick="movePage('MoveCompanyLoginPage')">로그인</span>
                 <span onclick="movePage('MoveCompanyJoinPage')">회원가입</span>
-                <span onclick="movePage('MoveMainPage')">일반회원</span>
 			</div>
 			<div id="logo" onclick="moveManagerPage('MoveCheckManager',1)">
 				<img src="/res/img/agi_logo.png" alt="images">
@@ -50,9 +53,14 @@
 		</div>
 		<div id="middle">
 			<div id="rightArea" class="scrollBar">
-				<input type="text" name="coCode">
-				<input type="password" name="coPassword">
-				<input type="button" value="로그인" onclick="companyLogin()">
+				<div id="checkCompanyTitleDiv">
+					<p id="checkCompanyTitle">기업 로그인</p>
+					<div class="companyCF">
+						<input type="text" name="coCode" class="basicInput" placeholder="기업 아이디">
+						<input type="password" name="coPassword" class="basicInput" placeholder="기업 비밀번호">
+						<input type="button" value="로그인" class="basicBtn btn" onclick="companyLogin()">
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class="modal">

@@ -252,6 +252,7 @@ position: relative;
     width: 80%;
     top: -30%;
     }
+
 </style>
 <!-- 카카오 스크립트 -->
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
@@ -274,11 +275,16 @@ function getInfo() {
 	/* 테마 사용자값으로 설정 */
 	let middle = document.getElementById("middle");
 	//let sideMenu = document.querySelector(".side-menu");
-
+	let cover1 = document.getElementById("cover1");
+	let cover2 = document.getElementById("cover2");
+	
 	let color = "${mypageInfo.suTheme}".split(":");
 	
 	middle.style.background = color[0];
+	cover1.style.background = color[0];
+	cover2.style.background = color[0];
 	//sideMenu.style.background= color[1];
+
 	
 	if("${message}"!= ""){
 		alert("${message}");
@@ -534,7 +540,7 @@ function changeParentProfile(){
 	rightWest.style.display = "none";
 }
 //아이프로필변경 :: 수정완료버튼 클릭
-function updateProfile(){
+function changeParentInfo(){
 	let nickName = document.getElementsByName("suNickName")[0];
 	let form = document.getElementById("serverForm");
 	
@@ -547,7 +553,7 @@ function updateProfile(){
 	}
 	else{
 		form.appendChild(nickName);
-		form.action = "UpdateProfile";
+		form.action = "ChangeParentInfo";
 		form.method = "post";
 		
 		form.submit();
@@ -814,12 +820,14 @@ function changeTheme(num){
 function callBackTheme(theme){
 	let middle = document.getElementById("middle");
 	let sideMenu = document.querySelector(".side-menu");
-	alert(theme);
+	let cover1 = document.getElementById("cover1");
+	let cover2 = document.getElementById("cover2");
+	
 	let color = theme.split(":");
-	alert(color[0]+"앤드"+color[1]);
 	
 	middle.style.background = color[0];
-	//sideMenu.style.background= color[1];
+	cover1.style.background = color[0];
+	cover2.style.background = color[0];
 	
 	themeModalClose();
 }
@@ -877,7 +885,7 @@ function callBackTheme(theme){
 					</div>
 					<diV id="editConfirmBtn1">
 					<button class="subBtn mBtnG btn" onclick="parentEditCancel()">취소</button>
-					<button class="mBtnP btn" onclick="updateProfile()">수정완료</button>
+					<button class="mBtnP btn" onclick="changeParentInfo()">수정완료</button>
 					</div>
 				</div>
 			</div>
