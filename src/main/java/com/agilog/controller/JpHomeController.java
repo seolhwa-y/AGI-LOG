@@ -11,15 +11,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.agilog.beans.BoardBean;
 import com.agilog.beans.CompanyBean;
 import com.agilog.beans.DoctorBean;
+import com.agilog.beans.PostBean;
 import com.agilog.beans.ReservationBean;
 import com.agilog.services.Company;
+import com.agilog.services3.Board3;
 
 @Controller
 public class JpHomeController {
 	@Autowired
 	private Company company;
+	@Autowired
+	private Board3 board;
 
 	//예약관리 관리자페이지 이동 : 재필
 	@RequestMapping(value = "/CheckManager", method = RequestMethod.POST)
@@ -47,12 +52,12 @@ public class JpHomeController {
 	}
 	
 	//예약관리 페이지 이동
-	@RequestMapping(value = "/MoveReservationManagement", method = RequestMethod.GET)
+	/*@RequestMapping(value = "/MoveReservationManagement", method = RequestMethod.GET)
 	public ModelAndView moveReservationManagementCtl(HttpServletRequest req,ModelAndView mav, @ModelAttribute CompanyBean cb) {
 		mav.addObject(cb);
 		this.company.backController(mav, 70);
 		return mav;
-	}
+	}*/
 	//환자관리 페이지 이동
 	@RequestMapping(value = "/MovePatientManagement", method = RequestMethod.POST)
 	public ModelAndView movePatientManagementCtl(ModelAndView mav, @ModelAttribute DoctorBean db) {
@@ -60,15 +65,45 @@ public class JpHomeController {
 		this.company.backController(mav, 81);
 		return mav;
 	}
-	//환자관리 페이지 이동
+	//환자관리 -> 건강기록지 페이지 이동
 	@RequestMapping(value = "/MoveHealthDataList", method = RequestMethod.POST)
 	public ModelAndView moveHealthDataList(ModelAndView mav, @ModelAttribute ReservationBean rb) {
 		mav.addObject(rb);
 		this.company.backController(mav, 800);
 		return mav;
 	}
-
-
+	//의사 소견 입력 작업
+	@RequestMapping(value = "/UpdateDoctorComment", method = RequestMethod.POST)
+	public ModelAndView updDoctorComment(ModelAndView mav, @ModelAttribute ReservationBean rb) {
+		mav.addObject(rb);
+		this.company.backController(mav, 84);
+		return mav;
+	}
+	
+	
+	
+	
+	//육아정보 게시판
+	@RequestMapping(value = "/MoveInfoBoard", method = RequestMethod.GET)
+	public ModelAndView moveInfoBoardPage(ModelAndView mav, @ModelAttribute PostBean pb) {
+		mav.addObject(pb);
+		this.board.backController(mav, 56);
+		return mav;
+	}
+	//게시판 글 내용 보기
+	@RequestMapping(value = "/MoveShowPost", method = RequestMethod.POST)
+	public ModelAndView MoveShowPostCtl(ModelAndView mav, @ModelAttribute PostBean pb) {
+		mav.addObject(pb);
+		this.board.backController(mav, 58);
+		return mav;
+	}
+		//게시판조회 정렬
+	@RequestMapping(value = "/MoveSortPost", method = RequestMethod.POST)
+	public ModelAndView moveSortPost(ModelAndView mav, @ModelAttribute PostBean pb) {
+		mav.addObject(pb);
+		this.board.backController(mav, 500);
+		return mav;
+	}
 	
 	
 	

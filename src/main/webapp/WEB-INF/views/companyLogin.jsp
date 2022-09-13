@@ -20,9 +20,15 @@
 		let form = document.getElementById("serverForm");
 		let id = document.getElementsByName("coCode")[0];
 		let pw = document.getElementsByName("coPassword")[0];
+		let btn = document.getElementsByClassName("basicBtn btn")[0];
+		
+		let companyCF = document.getElementsByClassName("companyCF")[0];
+
+		companyCF.appendChild(form);
 		
 		form.appendChild(id);
 		form.appendChild(pw);
+		form.appendChild(btn);
 		
 		console.log(form);
 		

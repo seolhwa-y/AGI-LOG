@@ -27,11 +27,6 @@
 		let coManagerCode = document.getElementsByName("coManagerCode")[0];
 
 		form.appendChild(coManagerCode);
-<<<<<<< HEAD
-		
-		alert(coManagerCode.value);
-=======
->>>>>>> branch 'main' of https://github.com/seolhwa-y/agi-log.git
 
 		form.action = "CheckManager";
 		form.method = "post";
@@ -58,18 +53,13 @@
 		</div>
 		<div id="middle">
 			<div id="rightArea" class="scrollBar">
-<<<<<<< HEAD
-				<input type="text" name="coManagerCode">
-				<input type="button" value="관리자 인증" onclick="checkManager()">
-				
-=======
 				<div id="checkCompanyTitleDiv">
 					<p id="checkCompanyTitle"><br/>관리자 코드를 입력해주세요.</p>
 						<div class="companyCF">
 							<input type="text" name="coManagerCode"  class="basicInput" placeholder="관리자 코드">
 							<button type="button" class="basicBtn btn" value="관리자 인증" onclick="checkManager()">확인</button>
 						</div>
->>>>>>> branch 'main' of https://github.com/seolhwa-y/agi-log.git
+				</div>
 			</div>
 		</div>
 		<div class="modal">

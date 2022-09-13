@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.agilog.beans.AuthBean;
@@ -61,4 +62,11 @@ public class ThHomeController {
 		return mav;
 	}
 	
+	@RequestMapping(value = "/InsertPost", method = RequestMethod.POST)
+	public ModelAndView insertPost(ModelAndView mav, @ModelAttribute PostBean pb) {
+		System.out.println("컨트롤러 진입 체크1");
+		mav.addObject(pb);
+		this.board.backController(mav, 65);
+		return mav;
+	}
 }

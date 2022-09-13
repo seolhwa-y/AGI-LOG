@@ -11,12 +11,13 @@
 </head>
 <script>
 
-function moveHealthData(data1,data2){
+function moveHealthData(data1,data2,data3){
 	let form = document.getElementById("serverForm");
 	
 	form.appendChild(createInput("hidden","resCode",data1,null,null));
 	form.appendChild(createInput("hidden","resBbCode",data2,null,null));
-
+	form.appendChild(createInput("hidden","resDate",data3,null,null));
+	
 	form.action = "MoveHealthDataList";
 	form.method = "post";
 	form.submit();
@@ -47,7 +48,7 @@ function init(){
 				<ul id="mainMenuList">
 					<li class="mainMenu" onclick="movePage('MoveDoctorManagement')">의사관리</li>
 					<li class="mainMenu" onclick="movePage('MoveReservationManagement')">예약관리</li>
-					<li class="mainMenu" onclick="movePage('MoveCheckDoctor')">환자관리</li>
+					<li class="mainMenu" onclick="movePage('IntoCheckDoctor')">환자관리</li>
 				</ul>
 			</div>
 		</div>

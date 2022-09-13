@@ -7,6 +7,7 @@ public class PostBean {
 	private String fbCode;
 	private String fbDate;
 	private String fbSuCode;
+	private String fbSuName;
 	private String fbTitle;
 	private String fbContent;
 	private int fbView;
