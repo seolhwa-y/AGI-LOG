@@ -7,6 +7,7 @@
 <title>예약관리</title><script src="/res/js/agiMain.js"></script>
 <script src="https://use.fontawesome.com/releases/v6.1.2/js/all.js"></script>
 <link rel="stylesheet" href="/res/css/agiMain.css">
+<link rel="stylesheet" href="/res/css/company.css">
 <script>
 	function init(){
 		if("${companyBean.coName}" != ""){
@@ -41,11 +42,9 @@
 			let doCode = document.getElementsByName("selectDoctor")[idx2];
 			let doCode2 = doCode.options[doCode.selectedIndex].value;
 			
-			alert(doCode2);
-			
 			let hidden2 = document.createElement("input");
 			hidden2.type = "hidden";
-			hidden2.name = "resDoCode";
+			hidden2.name = "doCode";
 			hidden2.value = doCode2;
 			
 			form.appendChild(hidden2);
@@ -72,7 +71,7 @@
 				<ul id="mainMenuList">
 					<li class="mainMenu" onclick="movePage('MoveDoctorManagement')">의사관리</li>
 					<li class="mainMenu" onclick="movePage('MoveReservationManagement')">예약관리</li>
-					<li class="mainMenu" onclick="movePage('MoveCheckDoctor')">환자관리</li>
+					<li class="mainMenu" onclick="movePage('IntoCheckDoctor')">환자관리</li>
 				</ul>
 			</div>
 		</div>

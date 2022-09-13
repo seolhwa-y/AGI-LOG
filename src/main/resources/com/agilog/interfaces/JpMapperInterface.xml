@@ -24,6 +24,11 @@
 			  (DO_CODE,DO_COCODE,DO_NAME, DO_PASSWORD)
 		VALUES(#{doCode},#{coCode},#{doName},#{doPassword})
 	</insert>
+	<!-- 의사 소견 입력 -->
+	<update id="updDoctorComment" parameterType="com.agilog.beans.ReservationBean">
+		UPDATE RE SET RE_COMMENT = #{doComment}, RE_RCCODE = 'MC' WHERE RE_CODE = #{resCode}
+	</update>
+	
 	<!-- 의사 삭제 -->
 	<delete id="delDoctorInfo" parameterType="com.agilog.beans.DoctorBean">
 		DELETE FROM DO WHERE DO_COCODE = #{coCode} AND DO_CODE = #{doCode}
@@ -35,7 +40,8 @@
 	   		  RESACCESS,
 	   		  BB_CODE AS RESBBCODE,
 	   		  BB_NAME AS RESBBNAME,
-	   		  RESACTIONNAME
+	   		  RESACTIONNAME,
+	   		  DOCOMMENT
 	   FROM RESERVATIONFORDOC 
 	   INNER JOIN BB ON RESBBSUCODE = BB_SUCODE AND RESBBCODE = BB_CODE
 	   WHERE RESDOCODE = #{doCode}
@@ -43,8 +49,43 @@
 	<!-- 환자 건강기록 전체 조회 -->
 	<select id="getHealthDataList" parameterType="com.agilog.beans.ReservationBean" resultType="com.agilog.beans.HealthDiaryBean">
 	 SELECT * FROM HEALTHDATAFORDOC
-	 WHERE RESCODE = #{resCode} AND RESBBCODE = #{resBbCode}
+	 WHERE RESCODE = #{resCode} AND BBCODE = #{resBbCode}
+	 ORDER BY HDDATE DESC
 	</select>
 	
-
+	
+	<!-- 육아정보 게시판 리스트 불러오기 -->
+	<select id="getBebeInfo" parameterType="com.agilog.beans.PostBean" resultType="com.agilog.beans.PostBean">
+	    SELECT IB_CODE AS IBCODE,
+		   TO_CHAR(IB_DATE, 'yyyy.mm.dd') AS IBDATE,
+		   IB_TITLE AS IBTITLE,
+		   IB_CONTENT AS IBCONTENT,
+		   IB_VIEW AS IBVIEW,
+		   IB_LIKE AS IBLIKE
+		FROM INFOBOARD
+		ORDER BY IBDATE DESC
+	</select>
+	<!-- 육아정보 게시판 리스트 불러오기 오래된 순 정렬 -->
+	<select id="getBebeInfoOld" parameterType="com.agilog.beans.PostBean" resultType="com.agilog.beans.PostBean">
+	    SELECT IB_CODE AS IBCODE,
+		   TO_CHAR(IB_DATE, 'yyyy.mm.dd') AS IBDATE,
+		   IB_TITLE AS IBTITLE,
+		   IB_CONTENT AS IBCONTENT,
+		   IB_VIEW AS IBVIEW,
+		   IB_LIKE AS IBLIKE
+		FROM INFOBOARD
+		ORDER BY IBDATE ASC
+	</select>
+	<!-- 정보게시판 게시글 보기 -->
+	<select id="getBebePost" parameterType="com.agilog.beans.PostBean" resultType="com.agilog.beans.PostBean">
+	   SELECT IB_CODE AS IBCODE,
+		      IB_DATE AS IBDATE,
+		      IB_TITLE AS IBTITLE,
+		      IB_CONTENT AS IBCONTENT,
+		      IB_VIEW AS IBVIEW,
+		      IB_LIKE AS IBLIKES
+	   FROM INFOBOARD
+	   WHERE IB_CODE = #{ibCode}
+	</select>
+	
 </mapper>

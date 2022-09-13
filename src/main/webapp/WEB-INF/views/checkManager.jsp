@@ -27,7 +27,7 @@
 		let coManagerCode = document.getElementsByName("coManagerCode")[0];
 
 		form.appendChild(coManagerCode);
-		
+
 		form.action = "CheckManager";
 		form.method = "post";
 		form.submit();

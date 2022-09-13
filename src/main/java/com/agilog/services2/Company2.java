@@ -69,7 +69,7 @@ public class Company2 implements ServiceRule {
 					System.out.println("cp 진입 체크");
 					this.session.update("updCPRes", rb);
 				}
-				
+
 				//새 표 작성 후 페이지 리다이렉트
 				mav.addObject("resInfo", this.makeHTMLCReservation(this.session.selectList("getDoctorInfo", cb), this.session.selectList("getResInfo", cb)));
 				mav.setViewName("reservationManagement");
