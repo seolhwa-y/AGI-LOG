@@ -69,8 +69,8 @@ function kakaoLogout() {
                 <span onclick="movePage('MoveJoinPage')">회원가입</span>
                 <span onclick="movePage('MoveCompanyLoginPage')">기업회원</span>
 			</div>
-			<div id="logo" onclick="movePage('MoveMainPage')">
-				<img src="/res/img/agi_logo.png" alt="images">
+			<div id="logo" onclick="movePage('MoveMainPage')"><span id="txt">아기-로그</span>
+				<img src="/res/img/logo.png" alt="images">
 			</div>
 			<div id="mainMenuArea">
 				<ul id="mainMenuList">

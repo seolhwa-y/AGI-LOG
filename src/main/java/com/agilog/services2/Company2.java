@@ -138,7 +138,7 @@ public class Company2 implements ServiceRule {
 					idx2++;
 					break;
 				case "CP" :
-					sb.append("<td>\n" + rb.getDoName() + "</td>\n");
+					sb.append("<td>\n" + rb.getResDoName() + "</td>\n");
 					sb.append("<td>\n");
 					sb.append("<select name = 'selectResState'>\n");
 					sb.append("<option disabled selected>예약완료</option>\n");
@@ -155,7 +155,7 @@ public class Company2 implements ServiceRule {
 					sb.append("<td></td>\n");
 					break;
 				case "MC" :
-					sb.append("<td>\n" + rb.getDoName() + "</td>\n");
+					sb.append("<td>\n" + rb.getResDoName() + "</td>\n");
 					sb.append("<td>\n");
 					sb.append("<option disabled selected>진료 완료</option>\n");
 					sb.append("</td>\n");

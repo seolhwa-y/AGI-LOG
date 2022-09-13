@@ -128,20 +128,23 @@ public class Company implements ServiceRule {
 
 	//예약관리 페이지 이동
 	private void moveReservationManagementCtl(ModelAndView mav) {
-		/*try {
-			CompanyBean compb = (CompanyBean)this.pu.getAttribute("companyAccessInfo");
-			CompanyBean cb = new CompanyBean();
+        try {
+              CompanyBean cb = ((CompanyBean) this.pu.getAttribute("companyAccessInfo"));
+              if(cb != null) {
+            	  if(cb.getCoManagerCode()!=null) {
+            		  mav.addObject("resInfo", this.makeHTMLCReservation(this.session.selectList("getDoctorInfo", cb), this.session.selectList("getResInfo", cb)));
+            		  mav.setViewName("reservationManagement");
+                  } else {
+                	  mav.setViewName("checkManager");
+                  }
+              }
+              else {
+                  mav.setViewName("companyLogin");
+                  System.out.println("세션만료");
+              }
 
-			cb.setCoCode(compb.getCoCode());
-		 */
-		/* 내가 받은 프로젝트의 데이터를 html에 만들고 EL로 저장 */
-		//	mav.addObject("doctor",this.makeHTMLDoctor(this.session.selectList("getCompanyAccessInfo", cb)));
-		//	} catch (Exception e) {e.printStackTrace();}
-		// Board로 페이지 이동
-
-		mav.setViewName("reservationManagement");
-
-	}
+          } catch (Exception e) {e.printStackTrace();}
+  }
 	
 	//환자정보 불러오기 인증 및 EL 출력
 	private void movePatientManagementCtl(ModelAndView mav) {
@@ -185,22 +188,24 @@ public class Company implements ServiceRule {
 	private void checkManager(ModelAndView mav) {
 		try {
 			CompanyBean cb = ((CompanyBean) this.pu.getAttribute("companyAccessInfo"));
-			cb.setCoManagerCode(((CompanyBean)mav.getModel().get("companyBean")).getCoManagerCode());
 			if(cb != null) {
-				if(this.convertToBoolean(this.session.selectOne("isManagerCode", cb))) {
-					// 세션에 저장할 로그인 유저 정보 가져오기
-					CompanyBean company = (CompanyBean) this.session.selectList("getCompanyAccessAllInfo", cb).get(0);
-					company.setCoName(this.enc.aesDecode(company.getCoName(), company.getCoCode()));
-					System.out.println("체크 매니저 진입 체크 : "+company);
-					// 세션에 userCode저장
-					this.pu.setAttribute("companyAccessInfo", company);
-					
-					mav.addObject("resInfo", this.makeHTMLCReservation(this.session.selectList("getDoctorInfo", cb), this.session.selectList("getResInfo", cb)));
-					mav.setViewName("reservationManagement");
-				}
-				else {
-					mav.addObject("message", "매니저 코드가 일치하지 않습니다. 다시 입력해주세요.");
-					mav.setViewName("redirect:/");
+				if(((CompanyBean)mav.getModel().get("companyBean")).getCoManagerCode()!=null) {
+					cb.setCoManagerCode(((CompanyBean)mav.getModel().get("companyBean")).getCoManagerCode());
+					if(this.convertToBoolean(this.session.selectOne("isManagerCode", cb))) {
+						// 세션에 저장할 로그인 유저 정보 가져오기
+						CompanyBean company = (CompanyBean) this.session.selectList("getCompanyAccessAllInfo", cb).get(0);
+						company.setCoName(this.enc.aesDecode(company.getCoName(), company.getCoCode()));
+						System.out.println("체크 매니저 진입 체크 : "+company);
+						// 세션에 userCode저장
+						this.pu.setAttribute("companyAccessInfo", company);
+						mav.addObject("coCode",cb.getCoManagerCode());
+						mav.addObject("resInfo", this.makeHTMLCReservation(this.session.selectList("getDoctorInfo", cb), this.session.selectList("getResInfo", cb)));
+						mav.setViewName("reservationManagement");
+					}
+					else {
+						mav.addObject("message", "매니저 코드가 일치하지 않습니다. 다시 입력해주세요.");
+						mav.setViewName("redirect:/");
+					}
 				}
 			}
 			else {

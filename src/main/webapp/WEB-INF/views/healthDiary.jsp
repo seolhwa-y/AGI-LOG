@@ -37,8 +37,9 @@
             //아이 정보가 있는 경우 전처리(전체보기 옵션 삽입,아이 변경 시 이벤트 추가)
             if (document.getElementsByClassName("saveBtn")[0] == undefined) {
                 let babyInfo = document.getElementsByClassName("babyInfo")[0];
-                babyInfo.insertBefore(createOption(), babyInfo.firstChild);
+                //babyInfo.insertBefore(createOption(), babyInfo.firstChild);
                 babyInfo.addEventListener("change", selectBaby);
+                selectBaby();
             }
             //일기 작성 실패 메시지
             if("${fail}"!="") {
@@ -198,7 +199,7 @@
         	let s = (sHour*60)+Number(sleep.split(":")[1]);
         	let w = (wHour*60)+Number(wake.split(":")[1]);
         	
-        	return Math.trunc((w-s)/60) + "h" + Math.round((Math.round((w-s)%60))/10)*10+"m";
+        	return Math.trunc((w-s)/60) + "H " + Math.round((Math.round((w-s)%60))/10)*10+"m";
         }
         //현재 시간
 /*      let today = new Date();   
@@ -229,39 +230,39 @@
         	mcontent.appendChild(createInput("hidden","bbCode",data.bbCode,null,null));
         	//키
         	if(data.bbHeight!=null) {
-				item[0].innerHTML = "<span>키</span><span>"+data.bbHeight+"</span> cm";
-			} else item[0].innerHTML = "<span>키</span><span>정보없음</span> cm";
+				item[0].innerHTML = "<span>키</span><span class='data'>"+data.bbHeight+"</span><span class='unit'>cm</span>";
+			} else item[0].innerHTML = "<span>키</span><span>정보없음</span><span class='unit'>cm</span>";
 			//몸무게
 			if(data.bbWeight!=null) {
-				item[1].innerHTML = "<span>몸무게</span><span>"+data.bbWeight+"</span> kg";
-			} else item[1].innerHTML = "<span>몸무게</span><span>정보없음</span> kg";
+				item[1].innerHTML = "<span>몸무게</span><span class='data'>"+data.bbWeight+"</span><span class='unit'>kg</span>";
+			} else item[1].innerHTML = "<span>몸무게</span><span>정보없음</span><span class='unit'>kg</span>";
 			//발
 			if(data.foot!=null) {
-				item[2].innerHTML = "<span>발사이즈</span><span>"+data.foot+"</span> cm";
-			} else item[2].innerHTML = "<span>발사이즈</span><span>정보없음</span> cm";
+				item[2].innerHTML = "<span>발사이즈</span><span class='data'>"+data.foot+"</span><span class='unit'>cm</span>";
+			} else item[2].innerHTML = "<span>발사이즈</span><span>정보없음</span><span class='unit'>cm</span>";
 			//머리
 			if(data.head!=null) {
-				item[3].innerHTML = "<span>머리둘레</span><span>"+data.head+"</span> cm";
-			} else item[3].innerHTML = "<span>머리둘레</span><span>정보없음</span> cm";
+				item[3].innerHTML = "<span>머리둘레</span><span class='data'>"+data.head+"</span><span class='unit'>cm</span>";
+			} else item[3].innerHTML = "<span>머리둘레</span><span>정보없음</span><span class='unit'>cm</span>";
 			//체온
 			if(data.temperature!=null) {
-				item[4].innerHTML = "<span>체온</span><span>"+data.temperature+"</span> C";
-			} else item[4].innerHTML = "<span>체온</span><span>정보없음</span> C";
+				item[4].innerHTML = "<span>체온</span><span class='data'>"+data.temperature+"</span><span class='unit'>℃</span>";
+			} else item[4].innerHTML = "<span>체온</span><span>정보없음</span><span class='unit'>℃</span>";
 			//수면시간
 			if(data.sleep!=null) {
-				item[5].innerHTML = "<span>수면시간</span><span>"+data.sleep+"</span>";
+				item[5].innerHTML = "<span>수면시간</span><span class='data'>"+data.sleep+"</span>";
 			} else item[5].innerHTML = "<span>수면시간</span><span>정보없음</span>";
 			//배변량
 			if(data.defecation!=null) {
-				item[6].innerHTML = "<span>배변량</span><span>"+data.defecation+"</span>";
+				item[6].innerHTML = "<span>배변량</span><span class='data'>"+data.defecation+"</span>";
 			} else item[6].innerHTML = "<span>배변량</span><span>정보없음</span>";
 			//배변상태
 			if(data.defstatus!=null) {
-				item[7].innerHTML = "<span>배변상태</span><span>"+data.defstatus+"</span>";
+				item[7].innerHTML = "<span>배변상태</span><span class='data'>"+data.defstatus+"</span>";
 			} else item[7].innerHTML = "<span>배변상태</span><span>정보없음</span>";
 			//식사량
 			if(data.meal!=null) {
-				item[8].innerHTML = "<span>식사량</span><span>"+data.meal+"</span>";
+				item[8].innerHTML = "<span>식사량</span><span class='data'>"+data.meal+"</span>";
 			} else item[8].innerHTML = "<span>식사량</span><span>정보없음</span>";
 			//메모
 			if(data.memo!=null) {
@@ -332,8 +333,8 @@
                     <span onclick="movePage('MoveJoinPage')">회원가입</span>
                     <span onclick="movePage('MoveCompanyLoginPage')">기업회원</span>
                 </div>
-                <div id="logo" onclick="movePage('MoveMainPage')">
-                    <img src="/res/img/agi_logo.png" alt="images">
+                <div id="logo" onclick="movePage('MoveMainPage')"><span id="txt">아기-로그</span>
+                    <img src="/res/img/logo.png" alt="images">
                 </div>
                 <div id="mainMenuArea">
                     <ul id="mainMenuList">
@@ -376,20 +377,21 @@
         </div>
         <div class="modal">
             <div class="modal_body">
+            <img id="hdClip" src="/res/img/clip.png"/>
                 <div class="modal_head">
                     ${babyInfo}
                     <i class="fa-solid fa-xmark closeBtn editBtn" onclick="cancel()"></i><br />
                 </div>
                 <div class="modal_content">
                     <div class="row">
-                        <div class="item"><span>키</span><input type="number" class="mMiniInput hi" name="bbHeight" /> cm</div>
-                        <div class="item"><span>몸무게</span><input type="number" class="mMiniInput hi" name="bbWeight" /> kg</div>
+                        <div class="item"><span>키</span><input type="number" class="mMiniInput hi" name="bbHeight" /><span class='unit'>cm</span></div>
+                        <div class="item"><span>몸무게</span><input type="number" class="mMiniInput hi" name="bbWeight" /><span class='unit'>kg</span></div>
                     </div>
                     <div class="row">
-                        <div class="item"><span>발사이즈</span><input type="number" class="mMiniInput hi" name="foot" /> cm</div>
-                        <div class="item"><span>머리둘레</span><input type="number" class="mMiniInput hi" name="head" /> cm</div>
+                        <div class="item"><span>발사이즈</span><input type="number" class="mMiniInput hi" name="foot" /><span class='unit'>cm</span></div>
+                        <div class="item"><span>머리둘레</span><input type="number" class="mMiniInput hi" name="head" /><span class='unit'>cm</span></div>
                     </div>
-                    <div class="item"><span>체온</span><input type="number" class="mMiniInput hi" name="temperature" /> C</div>
+                    <div class="item"><span>체온</span><input type="number" class="mMiniInput hi" name="temperature" /><span class='unit'>℃</span></div>
                     <div class="item">
                         <span>수면시간</span>
                         <input type="text" class="timepicker mMiniSelect" />~

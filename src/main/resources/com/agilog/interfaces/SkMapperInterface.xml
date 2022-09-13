@@ -110,10 +110,75 @@
 		GROUP BY TO_CHAR(SC_DATE,'YYYY-MM-DD'), SC_SUCODE
 	</select>
 	<!-- 캘린더 아이(들) 생일 조회 -->
-	<!-- 캘린더 아이(들) 생일 조회 -->
 	<select id="getBabyBirth" parameterType="com.agilog.beans.BebeCalendarBean" resultType="com.agilog.beans.BebeCalendarBean">
 		SELECT TO_CHAR(BB_BIRTHDAY,'YYYY-MM-DD') AS BABYBIRTHDAY, BB_NAME AS BABYNAME
 		FROM BB
 		WHERE BB_SUCODE = #{suCode}
 	</select>
+	
+	<!-- 감성일기 좋아요 -->
+	<!-- 해당유저 해당감성일기 좋아요 내역 확인 -->
+	<select id="isDdLike" parameterType="com.agilog.beans.DailyDiaryBean" resultType="int">
+		SELECT COUNT(*) FROM DL WHERE DL_DDCODE = #{ddCode} AND DL_SUCODE = #{suCode}
+	</select>
+	<!-- 해당감성일기 좋아요 내역 저장 -->
+	<insert id="insDdLike" parameterType="com.agilog.beans.DailyDiaryBean" >
+		INSERT INTO DL VALUES(#{ddCode}, #{ddSuCode}, #{ddDate}, #{suCode})
+	</insert>
+	<!-- 해당감성일기 좋아요 내역 삭제 -->
+	<delete id="delDdLike" parameterType="com.agilog.beans.DailyDiaryBean" >
+		DELETE FROM DL WHERE DL_DDCODE = #{ddCode} AND DL_DDSUCODE = #{ddSuCode} AND DL_DDDATE = #{ddDate} AND DL_SUCODE = #{suCode}
+	</delete>
+	<!-- 해당감성일기 좋아요 수 조회 -->
+	<select id="getDdLike" parameterType="com.agilog.beans.DailyDiaryBean" resultType="int">
+		SELECT COUNT(*) AS LIKES FROM DL WHERE DL_DDCODE = #{ddCode} AND DL_DDSUCODEE = #{ddSuCode} AND DL_DDDATE = #{ddDate}
+	</select>
+	<!-- 해당감성일기 좋아요 수 업데이트 -->
+	<update id="updDdLike" parameterType="com.agilog.beans.DailyDiaryBean" >
+		UPDATE DD SET DD_LIKE = #{likes} WHERE DD_CODE = #{ddCode} AND DD_SUCODE = #{ddSuCode} AND DD_DATE = #{ddDate}
+	</update>
+	
+	<!-- 자유게시판 좋아요 -->
+	<!-- 해당유저 해당게시글 좋아요 내역 확인 -->
+	<select id="isFbLike" parameterType="com.agilog.beans.PostBean" resultType="int">
+		SELECT COUNT(*) FROM FL WHERE FL_FBCODE = #{fbCode} AND FL_SUCODE = #{suCode}
+	</select>
+	<!-- 해당게시글 좋아요 내역 저장 -->
+	<insert id="insFbLike" parameterType="com.agilog.beans.PostBean" >
+		INSERT INTO FL VALUES(#{fbCode}, #{fbSuCode}, #{fbDate}, #{suCode})
+	</insert>
+	<!-- 해당게시글 좋아요 내역 삭제 -->
+	<delete id="delFbLike" parameterType="com.agilog.beans.PostBean" >
+		DELETE FROM FL WHERE FL_FBCODE = #{fbCode} AND FL_FBSUCODE = #{fbSuCode} AND FL_FBDATE = #{fbDate} AND FL_SUCODE = #{suCode}
+	</delete>
+	<!-- 해당게시글 좋아요 수 조회 -->
+	<select id="getFdLike" parameterType="com.agilog.beans.PostBean" resultType="int">
+		SELECT COUNT(*) AS LIKES FROM FL WHERE WHERE FL_FBCODE = #{fbCode} AND FL_FBSUCODE = #{fbSuCode} AND FL_FBDATE = #{fbDate}
+	</select>
+	<!-- 해당게시글 좋아요 수 업데이트 -->
+	<update id="updFdLike" parameterType="com.agilog.beans.PostBean" >
+		UPDATE FB SET FB_LIKE = #{likes} WHERE FB_CODE = #{fbCode} AND FB_SUCODE = #{fbSuCode} AND FB_DATE = #{fbDate}
+	</update>
+	
+	<!-- 정보게시판 좋아요 -->
+	<!-- 해당유저 해당게시글 좋아요 내역 확인 -->
+	<select id="isIbLike" parameterType="com.agilog.beans.PostBean" resultType="int">
+		SELECT COUNT(*) FROM IL WHERE IL_IBCODE = #{ibCode} AND IL_SUCODE = #{suCode}
+	</select>
+	<!-- 해당게시글 좋아요 내역 저장 -->
+	<insert id="insIbLike" parameterType="com.agilog.beans.PostBean" >
+		INSERT INTO IL VALUES(#{ibCode}, #{ibDate}, #{suCode})
+	</insert>
+	<!-- 해당게시글 좋아요 내역 삭제 -->
+	<delete id="delIbLike" parameterType="com.agilog.beans.PostBean" >
+		DELETE FROM IL WHERE IL_IBCODE = #{ibCode} AND IL_IBDATE = #{ibDate} AND IL_SUCODE = #{suCode}
+	</delete>
+	<!-- 해당게시글 좋아요 수 조회 -->
+	<select id="getIbLike" parameterType="com.agilog.beans.PostBean" resultType="int">
+		SELECT COUNT(*) AS LIKES FROM IL WHERE WHERE IL_IBCODE = #{ibCode} AND IL_IBDATE = #{ibDate}
+	</select>
+	<!-- 해당게시글 좋아요 수 업데이트 -->
+	<update id="updIbLike" parameterType="com.agilog.beans.PostBean" >
+		UPDATE IB SET IB_LIKE = #{likes} WHERE IB_CODE = #{ibCode} AND IB_DATE = #{ibDate}
+	</update>
 </mapper>

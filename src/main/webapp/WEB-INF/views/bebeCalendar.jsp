@@ -16,160 +16,169 @@
 <!-- 네이버 스크립트 -->
 <script	src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
 <style>
-  #calendar {
-    max-width: 1100px;
-    margin: 0 auto;
-    max-height: 720px;
-  }
-
-	.modal{
-		color: dimgray;
-	}
-
-	.modal_foot {
-    position: relative;
-    display: flex;
-    margin: 3% auto;
-    justify-content: space-between;
-    width: 70%;
+#calendar {
+	max-width: 1100px;
+	margin: 0 auto;
+	max-height: 700px;
 }
-	.modal_head{
-		font-size: 3rem;
-		height: 8%;
-	}
-	.modal_content{
-		height: 75%;
-		width: 80%;
-		margin: 9% auto;
-		
-	}
-	.modal_foot{
-	}
-	.mBtnO {
-    height: 2.5rem;
-    width: 13rem;
-    box-shadow: 0px 5px 0px 0px rgb(239 157 171);
-    background-color: rgb(255, 194, 204);
-    font-size: 1.1rem;
-    color: dimgray;
-	}
-	.mBtnX {
-    color: dimgray;
-    background: gainsboro;
-    height: 2.3rem;
-    width: 13rem;
-    box-shadow: 0px 5px 0px 0px rgb(182 182 182);
-    font-size: 1.1rem;
-	}
-	#modalTop{
+#rightArea {
+	padding: 0.1% 0;
+}
+
+.modal {
+	color: dimgray;
+}
+
+.modal_foot {
+	position: relative;
+	display: flex;
+	margin: 3% auto;
+	justify-content: space-between;
+	width: 70%;
+}
+
+.modal_head {
+	font-size: 3rem;
+	height: 8%;
+}
+
+.modal_content {
+	height: 75%;
+	width: 80%;
+	margin: 9% auto;
+}
+
+.modal_foot {
+	
+}
+
+.mBtnO {
+	height: 2.5rem;
+	width: 13rem;
+	box-shadow: 0px 5px 0px 0px rgb(239, 157, 171);
+	background-color: rgb(255, 194, 204);
+	font-size: 1.1rem;
+	color: dimgray;
+}
+
+.mBtnX {
+	color: dimgray;
+	background: gainsboro;
+	height: 2.3rem;
+	width: 13rem;
+	box-shadow: 0px 5px 0px 0px rgb(182, 182, 182);
+	font-size: 1.1rem;
+}
+
+#modalTop {
 	border-bottom: solid 2px gray;
 	height: 30%;
 	width: 90%;
 	margin: 0 auto;
-	}
-	#top_title{
-		
-		height: 15%;
-		margin-top: 6%;
-		text-align: left;
-		font-size: 170%;
-	}
-	#top_content{
-		
-		height: 70%;
-		margin-top: 6%;
-		font-size: 150%;
-	}
-	#isCheckDiary{
-		
-		height: 22%;
-		width: 83%;
-		margin: 4.5% auto;
-	}
-	#reservationInfo{
-		
-		height: 22%;
-		width: 83%;
-		margin: 6% auto;
-		text-align: left;
-	}
-	#bottom_title{
-		height: 12%;
-		margin-top: 3%;
-		text-align: left;
-		font-size: 170%;
-	}
-	#bottom_content{
-		height: 80%;
-		width: 90%;
-		margin: 0 auto;
-		text-align: left;
-		font-size: 150%;
-	
-	}
-	.schList{
-		margin-top: 4%;
-		margin-bottom: 7%;
-		
-	}
-	#modalBottom{
-	
+}
+
+#top_title {
+	height: 15%;
+	margin-top: 6%;
+	text-align: left;
+	font-size: 170%;
+}
+
+#top_content {
+	height: 70%;
+	margin-top: 6%;
+	font-size: 150%;
+}
+
+#isCheckDiary {
+	height: 22%;
+	width: 83%;
+	margin: 4.5% auto;
+}
+
+#reservationInfo {
+	height: 22%;
+	width: 83%;
+	margin: 6% auto;
+	text-align: left;
+}
+
+#bottom_title {
+	height: 12%;
+	margin-top: 3%;
+	text-align: left;
+	font-size: 170%;
+}
+
+#bottom_content {
+	height: 80%;
+	width: 90%;
+	margin: 0 auto;
+	text-align: left;
+	font-size: 150%;
+}
+
+.schList {
+	margin-top: 4%;
+	margin-bottom: 7%;
+}
+
+#modalBottom {
 	height: 62%;
 	width: 90%;
 	margin: 0 auto;
-	}
-	
-		
-	.fc-event-title {
-		display: flex;
-		align-items: center;
-	}
-	
-	/* .fc-day-today {
+}
+
+.fc-event-title {
+	display: flex;
+	align-items: center;
+}
+
+/* .fc-day-today {
     background: #FFF !important;
     border: none !important;
 	}  */
-	
-	input[type="checkbox"]{
-        display: none;
-      }
-	  input[type="checkbox"] + label{
-        display: inline-block;
-        width: 20px;
-        height: 20px;
-        border:3px solid #707070;
-        
-        position:relative;
-        top:6px;
+input[type="checkbox"] {
+	display: none;
+}
 
-      }
-	  input[type="checkbox"]:checked + label{
-		width: 20px;
-    height: 20px;
-    position: relative;
+input[type="checkbox"]+label {
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	border: 3px solid #707070;
+	position: relative;
+	top: 6px;
+}
+
+input[type="checkbox"]:checked+label {
+	width: 20px;
+	height: 20px;
+	position: relative;
 	top: 8.5px;
-        
-      }
-	  input[type="checkbox"]:checked + label::after{
-        content: '✔';
-    	font-size: 25px;
-    	
-    	position: relative;
-    	color: green;
-    	top: -8px;
-        
-      }
-      .schBtn {
-	    height: 30px;
-	    margin-top: 3px;
-	    position: absolute;
-		}
-      .schInput{
-      	height: 30px;
-      }
-      .dateImg {
-      	margin-right: 6px;
-      }
+}
+
+input[type="checkbox"]:checked+label::after {
+	content: '✔';
+	font-size: 25px;
+	position: relative;
+	color: green;
+	top: -8px;
+}
+
+.schBtn {
+	height: 30px;
+	margin-top: 3px;
+	position: absolute;
+}
+
+.schInput {
+	height: 30px;
+}
+
+.dateImg {
+	margin-right: 6px;
+}
 </style>
 <script>
 Kakao.init('2afdabad57ed92e1cc9de5bd4baed321');
@@ -487,8 +496,8 @@ function insertSchedule(schDate){
 				<span onclick="movePage('MoveJoinPage')">회원가입</span>
 				<span onclick="movePage('MoveCompanyLoginPage')">기업회원</span>
 			</div>
-			<div id="logo" onclick="movePage('MoveMainPage')">
-				<img src="/res/img/agi_logo.png" alt="images">
+			<div id="logo" onclick="movePage('MoveMainPage')"><span id="txt">아기-로그</span>
+				<img src="/res/img/logo.png" alt="images">
 			</div>
 			<div id="mainMenuArea">
 				<ul id="mainMenuList">

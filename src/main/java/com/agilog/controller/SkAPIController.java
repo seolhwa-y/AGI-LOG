@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.agilog.beans.AuthBean;
+import com.agilog.beans.DailyDiaryBean;
 import com.agilog.beans.HealthDiaryBean;
+import com.agilog.beans.PostBean;
 import com.agilog.services.Authentication;
 import com.agilog.services.BebeCalendar;
 import com.agilog.services.BebeMap;
@@ -21,6 +23,8 @@ import com.agilog.services.DailyDiary;
 import com.agilog.services.DashBoard;
 import com.agilog.services.HealthDiary;
 import com.agilog.services.MyPage;
+import com.agilog.services.SkBoard;
+import com.agilog.services.SkDailyDiary;
 
 @RestController
 public class SkAPIController {
@@ -39,7 +43,9 @@ public class SkAPIController {
 	@Autowired
 	BebeCalendar bebeCalendar;
 	@Autowired
-	Board board;
+	SkBoard board;
+	@Autowired
+	SkDailyDiary dd;
 	@Autowired
 	MyPage myPage;
 	
@@ -63,5 +69,19 @@ public class SkAPIController {
 		model.addAttribute(hb);
 		this.healthDiary.backController(model, 94);
 		return (HealthDiaryBean)model.getAttribute("memo");
+	}
+	
+	@PostMapping("/DailyDiaryLike")
+	public DailyDiaryBean dailyDiaryLike(Model model, @ModelAttribute DailyDiaryBean ddb) {
+		model.addAttribute(ddb);
+		this.dd.backController(model, 110);
+		return (DailyDiaryBean)model.getAttribute("ddLike");
+	}
+	
+	@PostMapping("/FreeBoardLike")
+	public PostBean freeBoardLike(Model model, @ModelAttribute PostBean pb) {
+		model.addAttribute(pb);
+		this.board.backController(model, 111);
+		return (PostBean)model.getAttribute("fbLike");
 	}
 }

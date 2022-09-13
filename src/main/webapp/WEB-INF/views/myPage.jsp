@@ -9,6 +9,9 @@
 <script src="https://use.fontawesome.com/releases/v6.1.2/js/all.js"></script>
 <link rel="stylesheet" href="/res/css/agiMain.css">
 <style>
+#middle {
+	display: block;
+}
 	.mBtnP {
     height: 2.3rem;
     width: 8rem;
@@ -86,9 +89,9 @@
 	}
 	.profile{
 		border:  1px solid #C0C0C0;
-		width: 90%;
-		height: 36%;
-		border-radius: 100px;
+		width: 200px;
+		height: 200px;
+		border-radius: 100%;
 		margin: 3% 3%;
 		margin-bottom: 17%;
 	}
@@ -215,7 +218,7 @@ position: relative;
 	max-width: 100%;
     max-height: 100%;
     width: 100%;
-    border-radius: 100px;}
+    border-radius: 100%;}
     
     svg:not(:host).svg-inline--fa, svg:not(:root).svg-inline--fa {
     overflow: visible;
@@ -324,10 +327,10 @@ function getInfo() {
 	//											/resources/img/2411751690/2411751690.jpg
 	//alert("${mypageInfo.suPhoto}");
 	//부모사진이 없으면 기본이미지 띄워줌
-	if(!"${mypageInfo.suPhoto}" == ""){
+	if("${mypageInfo.suPhoto}" != ""){
 		pImage.innerHTML = "<img class='profileImage' src=\'"+"${mypageInfo.suPhoto}"+"\'>";
 	}else{ 
-		pImage.innerHTML = "<img class='profileImage' src='/res/img/profile_default.png'>";
+		pImage.innerHTML = "<img class='profileImage' src='"+"/res/img/profile_default.png"+"'>";
 	}
 	
 	pImage.innerHTML = "<img class='profileImage' src=\'"+"${mypageInfo.suPhoto}"+"\'>";
@@ -851,8 +854,8 @@ function callBackTheme(theme){
                 <span onclick="movePage('MoveJoinPage')">회원가입</span>
                 <span onclick="movePage('MoveCompanyLoginPage')">기업회원</span>
 			</div>
-			<div id="logo" onclick="movePage('MoveMainPage')">
-				<img src="/res/img/agi_logo.png" alt="images">
+			<div id="logo" onclick="movePage('MoveMainPage')"><span id="txt">아기-로그</span>
+				<img src="/res/img/logo.png" alt="images">
 			</div>
 			<div id="mainMenuArea">
 				<ul id="mainMenuList">

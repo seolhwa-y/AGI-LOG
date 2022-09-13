@@ -259,12 +259,12 @@ public class HealthDiary implements ServiceRule {
 			e.printStackTrace();
 		}
 	}
-	
+	//아기 목록html
 	private String makeBabySelect(List<BabyBean> babyList) {
 		StringBuffer sb = new StringBuffer();
 		
 		if(babyList.size()!=0&&babyList!=null) {
-			sb.append("<select class=\'mMiniInput babyInfo\'>");
+			sb.append("<select class=\'mMiniSelect babyInfo\'>");
 			for(BabyBean bb:babyList) {
 				sb.append("<option value=\'"+bb.getBbCode()+"\'>"+bb.getBbName()+"</option>");
 			}
@@ -286,7 +286,8 @@ public class HealthDiary implements ServiceRule {
 			sb.append("<div class=\"miniProfile\">");
 			sb.append("<img src=\"/res/img/profile_default.png\" alt=\"images\">");
 			sb.append("<div class=\"text\">");
-			sb.append("<p class=\"userId\">"+hb.getBbName()+"</p>");
+			sb.append("<span class=\"userId\">"+hb.getBbName()+"</span>");
+			sb.append("<span class=\"userId\">"+hb.getHdDate()+"</span>");
 			sb.append("</div>");
 			sb.append("</div>");
 			sb.append("<div class=\"title\">"+hb.getHdDate()+"</div>");
@@ -306,7 +307,7 @@ public class HealthDiary implements ServiceRule {
 				sb.append("<div class=\"miniProfile\">");
 				sb.append("<img src=\"/res/img/profile_default.png\" alt=\"images\">");
 				sb.append("<div class=\"text\">");
-				sb.append("<p class=\"userId\">"+rb.getResBbName()+"</p>");
+				sb.append("<span class=\"userId\">"+rb.getResBbName()+"</span>");
 				sb.append("</div>");
 				sb.append("<div class=\"text\" style=\"margin-left:20px;\">");
 				sb.append("<p class=\"userId\">"+this.enc.aesDecode(rb.getResCoName(), rb.getResCoCode())+"("+rb.getResDoName()+")</p>");
