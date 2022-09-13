@@ -59,6 +59,7 @@
 							<input type="text" name="coManagerCode"  class="basicInput" placeholder="관리자 코드">
 							<button type="button" class="basicBtn btn" value="관리자 인증" onclick="checkManager()">확인</button>
 						</div>
+				</div>
 			</div>
 		</div>
 		<div class="modal">
