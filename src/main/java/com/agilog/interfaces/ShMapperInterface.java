@@ -21,8 +21,52 @@ import com.agilog.beans.ScheduleBean;
 public interface ShMapperInterface {
 	// 메인 : 감성일기 피드 사진 불러오기
 	public List<DailyDiaryPhotoBean> getDairyDiaryPhoto();
+	
+	
 	// 건강 추세 : 아이 리스트 불러오기
 	public List<BabyBean> getTotalBabyCode(AuthBean ab);
 	// 건강 추세 : 내 아이 건강 데이터 나이별로 가져오기
 	public List<HealthDiaryBean> getHealthStatusList(AuthBean ab);
+	
+	
+	// 게시판 댓글 코드 MAX + 1  ::  나중에 시퀀스 사용하기
+	public String getFcCode(PostCommentBean pcb);
+	// 게시판 댓글 조회
+	public List<PostCommentBean> getPostCommentList(PostCommentBean pcb);
+	// 게시판 댓글 등록
+	public int insPostCommnet(PostCommentBean pcb);
+	// 게시판 댓글 수정
+	public int updPostComment(PostCommentBean pcb);
+	// 게시판 댓글 삭제
+	public int delPostComment(PostCommentBean pcb);
+	
+	
+	// 감성일기 댓글 코드 MAX + 1  ::  나중에 시퀀스 사용하기
+	public String getDcCode(DailyDiaryCommentBean ddcb);
+	// 감성일기 댓글 조회
+	public List<DailyDiaryCommentBean> getDailyDiaryComment(DailyDiaryCommentBean ddcb);
+	// 감성일기 댓글 등록
+	public int insDailyDiaryComment(DailyDiaryCommentBean ddcb);
+	// 감성일기 댓글 수정
+	public int updDailyDiaryComment(DailyDiaryCommentBean ddcb);
+	// 감성일기 댓글 삭제
+	public int delDailyDiaryComment(DailyDiaryCommentBean ddcb);
+	
+	
+	// 지도 댓글 코드 MAX + 1  ::  나중에 시퀀스 사용하기
+	public String getMcCode(BebeMapCommentBean bmcb);
+	// 지도 댓글 조회
+	public List<BebeMapCommentBean> getMapCommentList(BebeMapCommentBean bmcb);
+	// 지도 댓글 등록
+	public int insMapComment(BebeMapCommentBean bmcb);
+	// 지도 댓글 수정
+	public int updMapComment(BebeMapCommentBean bmcb);
+	// 지도 댓글 삭제
+	public int delMapComment(BebeMapCommentBean bmcb);
+	
+	
+	// 지도 예약 가능 일정 조회
+	public List<ReservationBean> getReservationList(ReservationBean rb);
+	// 지도 예약일정 등록
+	public int insReservationList(ReservationBean rb);
 }

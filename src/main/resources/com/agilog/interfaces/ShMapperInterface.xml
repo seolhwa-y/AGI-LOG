@@ -23,15 +23,126 @@
 	
 	<!-- 건강일기 아이 나이별 추세 불러오기 -->
 	<select id="getHealthStatusList" parameterType="com.agilog.beans.HealthDiaryBean" resultType="com.agilog.beans.HealthDiaryBean">
-			SELECT  DENSE_RANK() OVER (ORDER BY AGE DESC) AS RNK,
-			        AGE,
-			        SUCODE,
-			        BBCODE,
-			        BBHEIGHT,
-			        BBWEIGHT,
-			        HEAD
-			FROM HEALTHSTATUS 
-			WHERE SUCODE = #{suCode} AND BBCODE = #{bbCode}
-			ORDER BY AGE DESC
+		SELECT  DENSE_RANK() OVER (ORDER BY AGE DESC) AS RNK,
+			    AGE,
+			    SUCODE,
+			    BBCODE,
+			    BBHEIGHT,
+			    BBWEIGHT,
+			    HEAD
+		FROM HEALTHSTATUS 
+		WHERE SUCODE = #{suCode} AND BBCODE = #{bbCode}
+		ORDER BY AGE DESC
 	</select>	
+	
+	<!-- 자유게시판 댓글 코드 MAX + 1 -->
+	<select id="getFcCode" parameterType="com.agilog.beans.PostCommentBean" resultType="string">
+		SELECT TO_CHAR(TO_NUMBER(MAX(FC_CODE))+1) AS FCCODE
+		FROM FC
+		WHERE FC_SUCODE = #{fcSuCode}
+	</select>
+	
+	<!-- 자유게시판 댓글 리스트 조회 -->
+	<select id="getPostCommentList" parameterType="com.agilog.beans.PostCommentBean" resultType="com.agilog.beans.PostCommentBean">
+		SELECT	*
+		FROM FREEBOARDCOMMENTLIST
+		WHERE FCFBCODE = #{fcFbCode} AND FCFBSUCODE = #{fcFbSuCode} AND FCFBDATE = #{fcFbDate}
+	</select>
+	
+	<!-- 자유게시판 댓글 등록 -->
+	<insert id="insPostComment" parameterType="com.agilog.beans.PostCommentBean">
+		INSERT INTO FC(FC_CODE, FC_FBCODE, FC_FBSUCODE, FC_FBDATE, FC_SUCODE, FC_DATE, FC_CONTENT)
+		VALUES (#{fcCode}, #{fcFbCode}, #{fcFbSuCode}, TO_DATE(#{fcFbDate}, 'YYYYMMDDHH24MISS'), #{fcSuCode}, DEFAULT, #{fcContent})
+	</insert>
+	
+	<!-- 자유게시판 댓글 수정 -->
+	<update id="updPostComment" parameterType="com.agilog.beans.PostCommentBean">
+		UPDATE FC SET FC_DATE = DEFAULT, FC_CONTENT = #{fcContent}
+		WHERE FC_CODE = #{fcCode} AND FC_FBCODE = #{fcFbCode} AND FC_FBSUCODE = #{fcFbSuCode} AND FC_SUCODE = #{fcSuCode}
+	</update>
+	
+	<!-- 자유게시판 댓글 삭제 -->
+	<delete id="delPostComment" parameterType="com.agilog.beans.PostCommentBean">
+		DELETE FC
+		WHERE FC_CODE = #{fcCode} AND FC_FBCODE = #{fcFbCode} AND FC_FBSUCODE = #{fcFbSuCode} AND FC_SUCODE = #{fcSuCode}
+	</delete>
+	
+	<!-- 감성일기 댓글 코드 MAX + 1 -->
+	<select id="getDcCode" parameterType="com.agilog.beans.DailyDiaryCommentBean" resultType="string">
+		SELECT TO_CHAR(TO_NUMBER(MAX(DC_CODE))+1) AS DCCODE
+		FROM DC
+		WHERE DC_SUCODE = #{dcSuCode}
+	</select>
+	
+	<!-- 감성일기 댓글 리스트 조회 -->
+ 	<select id="getDailyDiaryComment" parameterType="com.agilog.beans.DailyDiaryCommentBean" resultType="com.agilog.beans.DailyDiaryCommentBean">
+		SELECT	*
+		FROM DAILYDIARYCOMMENTLIST
+		WHERE DCDDCODE = #{dcDdCode} AND DCDDSUCODE = #{dcDdSuCode} AND DCDDDATE = #{dcDdDate}
+	</select> 
+	
+	<!-- 감성일기 댓글 등록 -->
+ 	<insert id="insDailyDiaryComment" parameterType="com.agilog.beans.DailyDiaryCommentBean">
+		INSERT INTO DC(DC_CODE, DC_DATE, DC_DDCODE, DC_DDSUCODE, DC_DDDATE, DC_SUCODE, DC_CONTENT)
+		VALUES (#{dcCode}, DEFAULT, #{dcDdCode}, #{dcDdSuCode}, TO_DATE(#{dcDdDate}, 'YYYYMMDDHH24MISS'), #{dcSuCode}, #{dcContent})
+	</insert> 
+	
+	<!-- 감성일기 댓글 수정 -->
+ 	<update id="updDailyDiaryComment" parameterType="com.agilog.beans.DailyDiaryCommentBean">
+		UPDATE DC SET DC_DATE = DEFAULT, DC_CONTENT = #{dcContent}
+		WHERE DC_CODE = #{dcCode} AND DC_DDCODE = #{dcDdCode} AND DC_DDSUCODE = #{dcDdSuCode} AND DC_SUCODE = #{dcSuCode}
+	</update> 
+	
+	<!-- 감성일기 댓글 삭제 -->
+ 	<delete id="delDailyDiaryComment" parameterType="com.agilog.beans.DailyDiaryCommentBean">
+		DELETE DC
+		WHERE DC_CODE = #{dcCode} AND DC_DDCODE = #{dcDdCode} AND DC_DDSUCODE = #{dcDdSuCode} AND DC_SUCODE = #{dcSuCode}
+	</delete> 
+	
+	<!-- 지도 댓글 코드 MAX + 1 -->
+	<select id="getMcCode" parameterType="com.agilog.beans.BebeMapCommentBean" resultType="string">
+		SELECT TO_CHAR(TO_NUMBER(MAX(MC_CODE))+1) AS MCCODE
+		FROM MC
+		WHERE MC_SUCODE = #{mcSuCode}
+	</select>
+	
+	<!-- 지도 댓글 리스트 조회 -->
+ 	<select id="getMapCommentList" parameterType="com.agilog.beans.BebeMapCommentBean" resultType="com.agilog.beans.BebeMapCommentBean">
+		SELECT	*
+		FROM MAPCOMMENTLIST
+		WHERE COCODE = #{coCode}
+	</select>
+	
+	<!-- 지도 댓글 등록 -->
+ 	<insert id="insMapComment" parameterType="com.agilog.beans.BebeMapCommentBean">
+		INSERT INTO MC (MC_CODE, MC_DATE, MC_COCODE, MC_SUCODE, MC_CONTENT)
+		VALUES (#{mcCode}, DEFAULT, #{coCode}, #{suCode}, #{mcContent})
+	</insert>
+	
+	<!-- 지도 댓글 수정 -->
+	<update id="updMapComment" parameterType="com.agilog.beans.BebeMapCommentBean">
+		UPDATE MC SET MC_DATE = DEFAULT, MC_CONTENT = #{mcContent}
+		WHERE MC_CODE = #{mcCode} AND MC_DATE = #{mcDate} AND MC_COCODE = #{coCode} AND MC_SUCODE = #{suCode}
+	</update>
+	
+	<!-- 지도 댓글 삭제 -->
+	<delete id="delMapComment" parameterType="com.agilog.beans.BebeMapCommentBean">
+		DELETE MC
+		WHERE MC_CODE = #{mcCode} AND MC_DATE = #{mcDate} AND MC_COCODE = #{coCode} AND MC_SUCODE = #{suCode}
+	</delete>
+	
+	<!-- 지도에서 예약시 데이터 조회 :: 일정 -->
+	<select id="getReservationList" parameterType="com.agilog.beans.ReservationBean" resultType="com.agilog.beans.ReservationBean">
+		SELECT * 
+		FROM ISRESERVATION ISRES
+		WHERE ISRES.COCODE = #{resCoCode} AND ISRES.DOCODE = #{resDoCode} AND ISRES.RESDATE = #{resDate}, 'YYYYMMDDHH24'
+	</select>
+	
+	
+	<!-- 지도에서 병원 예약 완료 후 예약내역 등록 -->
+ 	<insert id="insReservationList" parameterType="com.agilog.beans.ReservationBean">
+		INSERT INTO RE (RE_CODE, RE_DATE, RE_ACCESS, RE_DOCOCODE, RE_DOCODE, RE_RCCODE, RE_BBSUCODE, RE_BBCODE, RE_COMMENT)
+		VALUES (#{resCode}, TO_DATE(#{resDate}, 'YYYYMMDDHH24MISS'), #{resAccess}, #{resCoCode}, #{resDoCode}, DEFAULT, #{resSuCode}, #{resBbCode}, NULL)
+	</insert>
+	
 </mapper>

@@ -107,7 +107,7 @@ function lineChart(data, check){
 	console.log("lineChart_head :: " + head);
 
 	// 아이 나이 평균 데이
-	var chart = bb
+	let chart = bb
 			.generate({
 				data : {
 					columns : [["평균 머리둘레", 34.1, 45.5, 48.1, 49.2, 49.9, 50.2, 50.5 ],
@@ -164,8 +164,8 @@ function lineChart(data, check){
 //셀렉트 박스 선택시 아이 추세 변경
 function cngHealthStatus() {
 	// 선택된 아기의 코드
-	var babyCode = document.getElementById("babyName").value;
-	var clientData = "bbCode=" + babyCode;
+	let babyCode = document.getElementById("babyName").value;
+	const clientData = "bbCode=" + babyCode;
 	
 	console.log("현재 선택된 아이 코드 : " + babyCode);
 	
