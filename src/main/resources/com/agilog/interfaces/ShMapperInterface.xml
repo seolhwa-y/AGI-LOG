@@ -138,7 +138,6 @@
 		WHERE ISRES.COCODE = #{resCoCode} AND ISRES.DOCODE = #{resDoCode} AND ISRES.RESDATE = #{resDate}, 'YYYYMMDDHH24'
 	</select>
 	
-	
 	<!-- 지도에서 병원 예약 완료 후 예약내역 등록 -->
  	<insert id="insReservationList" parameterType="com.agilog.beans.ReservationBean">
 		INSERT INTO RE (RE_CODE, RE_DATE, RE_ACCESS, RE_DOCOCODE, RE_DOCODE, RE_RCCODE, RE_BBSUCODE, RE_BBCODE, RE_COMMENT)
