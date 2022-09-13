@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.agilog.interfaces.JsMapperInterface">
+	<select id="getMyInfo" parameterType="string" resultType="com.agilog.beans.MyPageBean">
+		SELECT SU_CODE AS SUCODE, SU_NAME AS SUNAME, SU_NICKNAME AS SUNICKNAME, SU_EMAIL AS SUEMAIL, SU_PHONE AS SUPHONE ,SU_PHOTO AS SUPHOTO ,SU_THEME AS SUTHEME FROM SU WHERE SU_CODE = #{suCode}
+	</select>
+	<select id="getBabyInfoList" parameterType="string" resultType="com.agilog.beans.BabyBean">
+		SELECT BB_CODE AS BBCODE, BB_SUCODE AS SUCODE, BB_NAME AS BBNAME, TO_CHAR(BB_BIRTHDAY,'YYYY-MM-DD') AS BBBIRTHDAY, BBWEIGHT, BBHEIGHT,BB_PHOTO AS BBPHOTO
+		FROM BB LEFT OUTER JOIN BABYRECENTWEIGHT ON (BB_CODE = WBABYCODE AND BB_SUCODE = WSUCODE)
+        LEFT OUTER JOIN BABYRECENTHEIGHT ON (BB_CODE = HBABYCODE AND BB_SUCODE = HSUCODE)
+		WHERE BB_SUCODE = #{suCode} 
+		ORDER BY BBCODE
+	</select>
+	<update id="updProFile" parameterType="com.agilog.beans.MyPageBean">
+		UPDATE SU SET SU_NICKNAME = #{suNickName} WHERE SU_CODE = #{suCode}
+	</update>
+	<update id="updBabyBirthday" parameterType="com.agilog.beans.BabyBean">
+		UPDATE BABY SET  BB_BIRTHDAY = TO_DATE(#{bbBirthday},'YY-MM-DD') WHERE BB_SUCODE = #{suCode} AND BB_CODE = #{bbCode}
+	</update>
+	<select id="getNewBabyCode" parameterType="com.agilog.beans.AuthBean" resultType="string">
+		SELECT CONCAT(LTRIM(NVL(TO_CHAR(MAX(BB_CODE)+1,'00'),' 01')), '') AS BABYCODE
+		FROM BB WHERE BB_SUCODE = #{suCode}
+	</select>
+	<insert id="insBabyInfo" parameterType="com.agilog.beans.BabyBean" >
+		INSERT INTO BB VALUES(#{bbCode},#{suCode},#{bbName},TO_DATE(#{bbBirthday},'YY-MM-DD'),'')
+	</insert>
+	<update id="updSocialUserPhoto" parameterType="com.agilog.beans.AuthBean" >
+		UPDATE SU SET SU_PHOTO = #{suPhoto} WHERE SU_CODE = #{suCode}
+	</update>
+	<update id="updBabyPhoto" parameterType="com.agilog.beans.BabyBean" >
+		UPDATE BABY SET BB_PHOTO = #{bbPhoto} WHERE BB_SUCODE = #{suCode} AND BB_CODE = #{bbCode}
+	</update>
+	<update id="updTheme" parameterType="com.agilog.beans.AuthBean" >
+		UPDATE SU SET SU_THEME = #{suTheme} WHERE SU_CODE = #{suCode}
+	</update>
+	<select id="isWriteHd" parameterType="com.agilog.beans.BebeCalendarBean" resultType="string">
+		SELECT COUNT(*) 
+		FROM HD WHERE HD_BBSUCODE =  #{suCode} AND TO_CHAR(HD_DATE, 'YYYY-MM-DD') = #{date}
+	</select>
+	<select id="isWriteDd" parameterType="com.agilog.beans.BebeCalendarBean" resultType="string">
+		SELECT COUNT(*)
+		FROM DD WHERE DD_SUCODE =  #{suCode} AND TO_CHAR(DD_DATE, 'YYYY-MM-DD') = #{date}
+	</select>
+	<select id="getReservationInfo" parameterType="com.agilog.beans.BebeCalendarBean" resultType="com.agilog.beans.ReservationBean">
+		SELECT COCODE AS RESCOCODE,
+		       CONAME AS RESCONAME,
+		       RECODE AS RESCODE,
+		       TO_CHAR(REDATE,'YYYY-MM-DD') AS RESDATE,
+		       BBNAME AS RESBBNAME
+		FROM CORE WHERE TO_CHAR(REDATE, 'YYYY-MM-DD') = #{date} AND SUCODE = #{suCode} AND STATUS ='CP'
+	</select>
+	<select id="getScheduleList" parameterType="com.agilog.beans.BebeCalendarBean" resultType="com.agilog.beans.ScheduleBean">
+		SELECT SC_CODE AS SCHEDULECODE,
+		       TO_CHAR(SC_DATE,'YYYY-MM-DD') AS SCHEDULEDATE,
+		       SC_CONTENT AS SCHEDULENAME
+		FROM SC WHERE TO_CHAR(SC_DATE,'YYYY-MM-DD') = #{date} AND SC_SUCODE = #{suCode}
+	</select>
+	<select id="getNewScheduleCode" parameterType="com.agilog.beans.ScheduleBean" resultType="string">
+		SELECT NVL(MAX(SC_CODE)+1 , (REPLACE(#{scheduleDate}, '-', '')|| '01'))
+		FROM SC WHERE SC_SUCODE = #{suCode} AND TO_CHAR(SC_DATE,'YYYY-MM-DD')=#{scheduleDate}
+	</select>
+	<select id="insSchedule" parameterType="com.agilog.beans.ScheduleBean" >
+		INSERT INTO SC VALUES(#{scheduleCode},#{scheduleDate},#{suCode},#{scheduleName})
+	</select>
+	<update id="updSchedule" parameterType="com.agilog.beans.ScheduleBean">
+		UPDATE SC SET SC_CONTENT = #{scheduleName} WHERE SC_CODE = #{scheduleCode} AND TO_CHAR(SC_DATE,'YYYY-MM-DD') = #{scheduleDate} AND SC_SUCODE = #{suCode}
+	</update>
+	<delete id="delSchedule" parameterType="com.agilog.beans.ScheduleBean">
+		DELETE FROM SC WHERE SC_CODE = #{scheduleCode} AND SC_SUCODE = #{suCode}
+	</delete>
+	<update id="updateReservationStatus" parameterType="com.agilog.beans.ReservationBean">
+		UPDATE RE SET RE_RCCODE = #{rcCode} WHERE RE_CODE = #{resCode} AND TO_CHAR(RE_DATE,'YYYY-MM-DD') = #{resDate} AND RE_BBSUCODE = #{suCode} AND RE_RCCODE = 'CP'
+	</update>
+</mapper>

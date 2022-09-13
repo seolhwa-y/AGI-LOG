@@ -128,18 +128,18 @@ public class Company implements ServiceRule {
 
 	//예약관리 페이지 이동
 	private void moveReservationManagementCtl(ModelAndView mav) {
-		/*try {
-			CompanyBean compb = (CompanyBean)this.pu.getAttribute("companyAccessInfo");
-			CompanyBean cb = new CompanyBean();
-
-			cb.setCoCode(compb.getCoCode());
-		 */
-		/* 내가 받은 프로젝트의 데이터를 html에 만들고 EL로 저장 */
-		//	mav.addObject("doctor",this.makeHTMLDoctor(this.session.selectList("getCompanyAccessInfo", cb)));
-		//	} catch (Exception e) {e.printStackTrace();}
-		// Board로 페이지 이동
-
-		mav.setViewName("reservationManagement");
+		try {
+			CompanyBean cb = ((CompanyBean) this.pu.getAttribute("companyAccessInfo"));
+			if(cb != null) {
+				mav.addObject("resInfo", this.makeHTMLCReservation(this.session.selectList("getDoctorInfo", cb), this.session.selectList("getResInfo", cb)));
+				mav.setViewName("reservationManagement");
+			}
+			else {
+				mav.setViewName("companyLogin");
+				System.out.println("세션만료");
+			}
+		
+		} catch (Exception e) {e.printStackTrace();}
 
 	}
 	

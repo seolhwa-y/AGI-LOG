@@ -41,9 +41,11 @@
 			let doCode = document.getElementsByName("selectDoctor")[idx2];
 			let doCode2 = doCode.options[doCode.selectedIndex].value;
 			
+			alert(doCode2);
+			
 			let hidden2 = document.createElement("input");
 			hidden2.type = "hidden";
-			hidden2.name = "doCode";
+			hidden2.name = "resDoCode";
 			hidden2.value = doCode2;
 			
 			form.appendChild(hidden2);

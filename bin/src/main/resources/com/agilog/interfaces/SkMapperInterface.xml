@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.agilog.interfaces.SkMapperInterface">
+	<!-- 전체 아이정보 조회 -->
+	<select id="getTotalBabyCode" parameterType="com.agilog.beans.AuthBean" resultType="com.agilog.beans.BabyBean">
+		SELECT * FROM TOTALBABYINFO WHERE SUCODE = #{suCode}
+	</select>
+	<!-- 전체 건강일기 조회 -->
+	<select id="getHealthDiary" parameterType="com.agilog.beans.AuthBean" resultType="com.agilog.beans.HealthDiaryBean">
+		SELECT * FROM HEALTHDIARYLIST WHERE SUCODE = #{suCode} ORDER BY HDDATE DESC
+	</select>
+	<!-- 새 건강일기 코드 조회 -->
+	<select id="getHealthDiaryCode" parameterType="com.agilog.beans.HealthDiaryBean" resultType="String">
+		SELECT NVL(TO_CHAR(TO_NUMBER(MAX(HD_CODE))+1),'100001')
+				AS HDCODE FROM HD WHERE HD_BBSUCODE = #{suCode}
+	</select>
+	<!-- 건강일기 항목별 삽입 (10) -->
+	<insert id="insHDWeight" parameterType="com.agilog.beans.HealthDiaryBean" >
+		INSERT INTO HD(HD_CODE,HD_DATE,HD_CACODE,HD_BBSUCODE,HD_BBCODE,HD_VALUE) 
+		VALUES(#{hdCode},DEFAULT,#{caCode},#{suCode},#{bbCode},#{bbWeight})
+	</insert>
+	<insert id="insHDHeight" parameterType="com.agilog.beans.HealthDiaryBean" >
+		INSERT INTO HD(HD_CODE,HD_DATE,HD_CACODE,HD_BBSUCODE,HD_BBCODE,HD_VALUE) 
+		VALUES(#{hdCode},DEFAULT,#{caCode},#{suCode},#{bbCode},#{bbHeight})
+	</insert>
+	<insert id="insHDHead" parameterType="com.agilog.beans.HealthDiaryBean" >
+		INSERT INTO HD(HD_CODE,HD_DATE,HD_CACODE,HD_BBSUCODE,HD_BBCODE,HD_VALUE) 
+		VALUES(#{hdCode},DEFAULT,#{caCode},#{suCode},#{bbCode},#{head})
+	</insert>
+	<insert id="insHDFoot" parameterType="com.agilog.beans.HealthDiaryBean" >
+		INSERT INTO HD(HD_CODE,HD_DATE,HD_CACODE,HD_BBSUCODE,HD_BBCODE,HD_VALUE) 
+		VALUES(#{hdCode},DEFAULT,#{caCode},#{suCode},#{bbCode},#{foot})
+	</insert>
+	<insert id="insHDTemp" parameterType="com.agilog.beans.HealthDiaryBean" >
+		INSERT INTO HD(HD_CODE,HD_DATE,HD_CACODE,HD_BBSUCODE,HD_BBCODE,HD_VALUE) 
+		VALUES(#{hdCode},DEFAULT,#{caCode},#{suCode},#{bbCode},#{temperature})
+	</insert>
+	<insert id="insHDSleep" parameterType="com.agilog.beans.HealthDiaryBean" >
+		INSERT INTO HD(HD_CODE,HD_DATE,HD_CACODE,HD_BBSUCODE,HD_BBCODE,HD_VALUE) 
+		VALUES(#{hdCode},DEFAULT,#{caCode},#{suCode},#{bbCode},#{sleep})
+	</insert>
+	<insert id="insHDdefecation" parameterType="com.agilog.beans.HealthDiaryBean" >
+		INSERT INTO HD(HD_CODE,HD_DATE,HD_CACODE,HD_BBSUCODE,HD_BBCODE,HD_VALUE) 
+		VALUES(#{hdCode},DEFAULT,#{caCode},#{suCode},#{bbCode},#{defecation})
+	</insert>
+	<insert id="insHDDefstatus" parameterType="com.agilog.beans.HealthDiaryBean" >
+		INSERT INTO HD(HD_CODE,HD_DATE,HD_CACODE,HD_BBSUCODE,HD_BBCODE,HD_VALUE) 
+		VALUES(#{hdCode},DEFAULT,#{caCode},#{suCode},#{bbCode},#{defstatus})
+	</insert>
+	<insert id="insHDMeal" parameterType="com.agilog.beans.HealthDiaryBean" >
+		INSERT INTO HD(HD_CODE,HD_DATE,HD_CACODE,HD_BBSUCODE,HD_BBCODE,HD_VALUE) 
+		VALUES(#{hdCode},DEFAULT,#{caCode},#{suCode},#{bbCode},#{meal})
+	</insert>
+	<insert id="insHDMemo" parameterType="com.agilog.beans.HealthDiaryBean" >
+		INSERT INTO HD(HD_CODE,HD_DATE,HD_CACODE,HD_BBSUCODE,HD_BBCODE,HD_VALUE) 
+		VALUES(#{hdCode},DEFAULT,#{caCode},#{suCode},#{bbCode},#{memo})
+	</insert>
+	<!-- 특정 건강일기 디테일 조회 -->
+	<select id="getHealthDiaryDetail" parameterType="com.agilog.beans.HealthDiaryBean" resultType="com.agilog.beans.HealthDiaryBean">
+		SELECT * FROM DETAILHEALTHDIARY WHERE HDCODE=#{hdCode} AND SUCODE = #{suCode}
+	</select>
+	<!-- 특정 건강일기 삭제 -->
+	<delete id="delHealthDiary" parameterType="com.agilog.beans.HealthDiaryBean">
+		DELETE FROM HD WHERE HD_BBSUCODE = #{suCode} AND HD_CODE = #{hdCode}
+	</delete>
+	<!-- 전체 진료기록 조회 -->
+	<select id="getDoctorCommentList" parameterType="com.agilog.beans.ReservationBean" resultType="com.agilog.beans.ReservationBean">
+		SELECT * FROM COMMENTLIST WHERE SUCODE = #{resSuCode} ORDER BY RESDATE DESC
+	</select>
+	<!-- 특정 건강일기 메모 수정 -->
+	<update id="updMyHealthDiary" parameterType="com.agilog.beans.HealthDiaryBean" >
+		UPDATE HD SET HD_VALUE = #{memo} WHERE HD_CODE = #{hdCode} AND HD_BBSUCODE = #{suCode} AND HD_CACODE = '10'
+	</update>
+	<!-- 특정 건강일기 새로운 메모 삽입 -->
+	<insert id="insNewHDMemo" parameterType="com.agilog.beans.HealthDiaryBean" >
+		INSERT INTO HD(HD_CODE,HD_DATE,HD_CACODE,HD_BBSUCODE,HD_BBCODE,HD_VALUE) 
+		VALUES(#{hdCode},TO_DATE(#{hdDate},'YYYYMMDDHH24MISS'),'10',#{suCode},#{bbCode},#{memo})
+	</insert>
+	<!-- 건강일기 메모 조회 -->
+	<select id="getHealthMemo" parameterType="com.agilog.beans.HealthDiaryBean" resultType="com.agilog.beans.HealthDiaryBean">
+		SELECT HDCODE, MEMO FROM DETAILHEALTHDIARY WHERE HDCODE = #{hdCode} AND SUCODE = #{suCode} AND MEMO IS NOT NULL
+	</select>
+	<!-- 캘린더 건강일기 작성여부 조회 -->
+	<select id="checkWriteHD" parameterType="com.agilog.beans.BebeCalendarBean" resultType="com.agilog.beans.BebeCalendarBean">
+		SELECT COUNT(HD_CODE) AS HEALTHDIARY, TO_CHAR(HD_DATE,'YYYY-MM-DD') AS HDDATE, HD_BBSUCODE 
+		FROM HD
+		WHERE HD_BBSUCODE = #{suCode}
+		GROUP BY TO_CHAR(HD_DATE,'YYYY-MM-DD'), HD_BBSUCODE
+	</select>
+	<!-- 캘린더 감성일기 작성여부 조회 -->
+	<select id="checkWriteDD" parameterType="com.agilog.beans.BebeCalendarBean" resultType="com.agilog.beans.BebeCalendarBean">
+		SELECT COUNT(DD_CODE) AS DAILYDIARY, TO_CHAR(DD_DATE,'YYYY-MM-DD') AS DDDATE, DD_SUCODE 
+		FROM DD 
+		WHERE DD_SUCODE = #{suCode}
+		GROUP BY TO_CHAR(DD_DATE,'YYYY-MM-DD'), DD_SUCODE
+	</select>
+	<!-- 캘린더 예약 여부 조회 -->
+	<select id="checkReservation" parameterType="com.agilog.beans.BebeCalendarBean" resultType="com.agilog.beans.BebeCalendarBean">
+		SELECT COUNT(RE_CODE) AS RESERVATION, TO_CHAR(RE_DATE,'YYYY-MM-DD') AS REDATE, RE_BBSUCODE
+		FROM RE
+		WHERE RE_BBSUCODE  = #{suCode} AND RE_RCCODE = 'CP'
+		GROUP BY TO_CHAR(RE_DATE,'YYYY-MM-DD'), RE_BBSUCODE
+	</select>
+	<!-- 캘린더 일정 여부 조회 -->
+	<select id="checkSchedule" parameterType="com.agilog.beans.BebeCalendarBean" resultType="com.agilog.beans.BebeCalendarBean">
+		SELECT COUNT(SC_CODE) AS SCHEDULE, TO_CHAR(SC_DATE,'YYYY-MM-DD') AS SCDATE, SC_SUCODE
+		FROM SC
+		WHERE SC_SUCODE = #{suCode}
+		GROUP BY TO_CHAR(SC_DATE,'YYYY-MM-DD'), SC_SUCODE
+	</select>
+	<!-- 캘린더 아이(들) 생일 조회 -->
+	<!-- 캘린더 아이(들) 생일 조회 -->
+	<select id="getBabyBirth" parameterType="com.agilog.beans.BebeCalendarBean" resultType="com.agilog.beans.BebeCalendarBean">
+		SELECT TO_CHAR(BB_BIRTHDAY,'YYYY-MM-DD') AS BABYBIRTHDAY, BB_NAME AS BABYNAME
+		FROM BB
+		WHERE BB_SUCODE = #{suCode}
+	</select>
+</mapper>

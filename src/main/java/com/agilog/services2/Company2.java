@@ -69,7 +69,7 @@ public class Company2 implements ServiceRule {
 					System.out.println("cp 진입 체크");
 					this.session.update("updCPRes", rb);
 				}
-
+				
 				//새 표 작성 후 페이지 리다이렉트
 				mav.addObject("resInfo", this.makeHTMLCReservation(this.session.selectList("getDoctorInfo", cb), this.session.selectList("getResInfo", cb)));
 				mav.setViewName("reservationManagement");
@@ -138,7 +138,7 @@ public class Company2 implements ServiceRule {
 					idx2++;
 					break;
 				case "CP" :
-					sb.append("<td>\n" + rb.getDoName() + "</td>\n");
+					sb.append("<td>\n" + rb.getResDoName() + "</td>\n");
 					sb.append("<td>\n");
 					sb.append("<select name = 'selectResState'>\n");
 					sb.append("<option disabled selected>예약완료</option>\n");
@@ -155,7 +155,7 @@ public class Company2 implements ServiceRule {
 					sb.append("<td></td>\n");
 					break;
 				case "MC" :
-					sb.append("<td>\n" + rb.getDoName() + "</td>\n");
+					sb.append("<td>\n" + rb.getResDoName() + "</td>\n");
 					sb.append("<td>\n");
 					sb.append("<option disabled selected>진료 완료</option>\n");
 					sb.append("</td>\n");
