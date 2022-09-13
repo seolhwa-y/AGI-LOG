@@ -7,6 +7,7 @@
 <title>예약관리</title><script src="/res/js/agiMain.js"></script>
 <script src="https://use.fontawesome.com/releases/v6.1.2/js/all.js"></script>
 <link rel="stylesheet" href="/res/css/agiMain.css">
+<link rel="stylesheet" href="/res/css/company.css">
 <script>
 function init() {
 	if ("${companyAccessInfo.coName}" != "") {

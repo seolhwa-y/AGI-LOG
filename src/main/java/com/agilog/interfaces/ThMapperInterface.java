@@ -26,4 +26,5 @@ public interface ThMapperInterface {
 	public int updCPRes(ReservationBean rb);
 	public int getFbCode(PostBean pb);
 	public int insFbPost(PostBean pb);
+	public List<PostBean> getPostList(PostBean pb);
 }

@@ -8,7 +8,7 @@
 <script src="/res/js/agiMain.js"></script>
 <script src="https://use.fontawesome.com/releases/v6.1.2/js/all.js"></script>
 <link rel="stylesheet" href="/res/css/agiMain.css">
-
+<link rel="stylesheet" href="/res/css/infoBoard.css">
 <!-- 카카오 스크립트 -->
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 <!-- 네이버 스크립트 -->
@@ -59,6 +59,9 @@ function kakaoLogout() {
 		Kakao.Auth.setAccessToken(undefined)
 	}
 }
+function likeBtn(){
+	
+}
 </script>
 </head>
 <body onload="getInfo()">
@@ -102,7 +105,9 @@ function kakaoLogout() {
 				<!-- ------------------------------------------------------------------------ -->
 			</div>
 			<div id="rightArea" class="scrollBar">
-				
+				<div class="postContent">
+					${content}
+				</div>
 			</div>
 		</div>
 		<div class="modal">

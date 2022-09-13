@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -17,6 +18,8 @@ import com.agilog.beans.CompanyBean;
 import com.agilog.beans.DailyDiaryBean;
 import com.agilog.beans.HealthDiaryBean;
 import com.agilog.beans.MyPageBean;
+import com.agilog.beans.PostBean;
+import com.agilog.beans.ReservationBean;
 import com.agilog.services.Authentication;
 import com.agilog.services.BebeCalendar;
 import com.agilog.services.BebeMap;
@@ -26,6 +29,7 @@ import com.agilog.services.DailyDiary;
 import com.agilog.services.DashBoard;
 import com.agilog.services.MyPage;
 import com.agilog.services2.HealthDiary2;
+import com.agilog.services3.Board3;
 
 @Controller
 public class ShHomeController {
@@ -47,6 +51,8 @@ public class ShHomeController {
 	MyPage myPage;
 	@Autowired
 	HealthDiary2 healthDiary;
+	@Autowired
+	Board3 board3;
 
 	// 기업 회원가입 페이지 이동
 	@RequestMapping(value = "/MoveCompanyJoinPage", method = RequestMethod.GET)
@@ -70,6 +76,24 @@ public class ShHomeController {
 	public ModelAndView moveHealthStatusPage(ModelAndView mav, @ModelAttribute HealthDiaryBean hdb) {
 		mav.addObject("healthDiaryBean", hdb);
 		this.healthDiary.backController(mav, 21);
+		
+		return mav;
+	}
+	
+	// 게시판 글보기 이동
+	@RequestMapping(value = "/MoveShowPost", method = RequestMethod.POST)
+	public ModelAndView moveShowPost(ModelAndView mav, @ModelAttribute PostBean pb) {
+		mav.addObject("postBean", pb);
+		this.board3.backController(mav, 58);
+		
+		return mav;
+	}
+	
+	// 지도 예약완료
+	@RequestMapping(value = "/Reservation", method = RequestMethod.POST)
+	public ModelAndView reservation(ModelAndView mav, @ModelAttribute ReservationBean rb){
+		mav.addObject("reservationBean", rb);
+		this.bebeMap.backController(mav, 44);
 		
 		return mav;
 	}

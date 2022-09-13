@@ -11,12 +11,13 @@
 </head>
 <script>
 
-function moveHealthData(data1,data2){
+function moveHealthData(data1,data2,data3){
 	let form = document.getElementById("serverForm");
 	
 	form.appendChild(createInput("hidden","resCode",data1,null,null));
 	form.appendChild(createInput("hidden","resBbCode",data2,null,null));
-
+	form.appendChild(createInput("hidden","resDate",data3,null,null));
+	
 	form.action = "MoveHealthDataList";
 	form.method = "post";
 	form.submit();

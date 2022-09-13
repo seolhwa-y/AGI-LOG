@@ -60,8 +60,12 @@ public class Company implements ServiceRule {
 				case 81:
 					this.movePatientManagementCtl(mav);
 					break;
+				case 84:
+					this.updDoctorComment(mav);
+					break;
 				case 800:
 					this.moveHealthDataList(mav);
+					break;
 				default:
 					break;
 				}
@@ -180,7 +184,7 @@ public class Company implements ServiceRule {
 		System.out.println("예약정보" +rb);
 		//cb.setCoManagerCode(((CompanyBean)mav.getModel().get("companyBean")).getCoManagerCode());
 		
-		mav.addObject("healthDataList", this.makeHealthData(this.session.selectList("getHealthDataList", rb)));
+		mav.addObject("healthDataList", this.makeHealthData(this.session.selectList("getHealthDataList", rb), rb));
 		mav.setViewName("doctorHealthData");
 	}
 
@@ -249,8 +253,23 @@ public class Company implements ServiceRule {
 		}
 	}
 
-	private void insertDoctorCommentCtl(ModelAndView mav) {
+	private void updDoctorComment(ModelAndView mav) {
+		ReservationBean rb = (ReservationBean) mav.getModel().get("reservationBean");
+		
+			if(rb.getDoComment()!="" || rb.getDoComment()!=null) {
+				
+				if(this.convertToBoolean(this.session.update("updDoctorComment",rb))){
+					System.out.println("업데이트성공");
+					mav.addObject("message", "소견서를 성공적으로 작성했습니다.");
+					mav.setViewName("checkDoctor");
+					
+				}else {
+					System.out.println("업데이트실패");
+					mav.addObject("message", "소견서 작성에 실패했습니다.");
+					mav.setViewName("checkDoctor");
 
+				}
+			}
 	}
 
 	
@@ -258,19 +277,27 @@ public class Company implements ServiceRule {
 	private String makePatientList(List<ReservationBean> patientList) {
 		StringBuffer sb = new StringBuffer();
 		
-		sb.append("<table class=\"doctorMgr\">" );
+		sb.append("<table class=\"doctorMgrH\">" );
 		sb.append("<tr>");
-		sb.append("<th>진료 날짜</th>");
-		sb.append("<th>환자 이름</th>");
-		sb.append("<th>진료 상태</th>");
+		sb.append("<th class=\"doctorMgrM\">진료 날짜</th>");
+		sb.append("<th class=\"doctorMgrM\">환자 이름</th>");
+		sb.append("<th class=\"doctorMgrM\">진료 상태</th>");
 		sb.append("</tr>");
 		for(int idx=0; idx<patientList.size(); idx++) {
 			ReservationBean rb = (ReservationBean)patientList.get(idx);
-			sb.append("<tr onClick=\"moveHealthData("+ rb.getResCode() + rb.getResBbCode() +")\">");
-			sb.append("<td>" + rb.getResDate() + "</td>");
-			sb.append("<td>" + rb.getResBbName() + "</td>");
-			sb.append("<td>" + rb.getResActionName() + "</td>");
+			sb.append("<tr onClick=\"moveHealthData('"+ rb.getResCode() +"','"+ rb.getResBbCode() +"','"+ rb.getResDate()+"')\">");
+			sb.append("<td class=\"doctorMgrB\">" + rb.getResDate() + "</td>");
+			sb.append("<td class=\"doctorMgrB\">" + rb.getResBbName() + "</td>");
+			sb.append("<td class=\"doctorMgrB\">" + rb.getResActionName() + "</td>");
 			sb.append("</tr>");
+			if(rb.getDoComment() != null) {
+				sb.append("<tr>");
+				sb.append("<th class=\"doctorMgrCM\" colspan=\"3\">의사 소견서</th>");
+				sb.append("</tr>");
+				sb.append("<tr>");
+				sb.append("<td class=\"doctorMgrC\" colspan=\"3\">" + rb.getDoComment() + "</td>");
+				sb.append("</tr>");
+			}
 		}
 		sb.append("</table>");
 		
@@ -281,20 +308,20 @@ public class Company implements ServiceRule {
 	private String makeDoctorList(List<DoctorBean> doctorList) {
 		StringBuffer sb = new StringBuffer();
 
-		sb.append("<table class=\"doctorMgr\">" );
+		sb.append("<table class=\"doctorMgrH\">" );
 		sb.append("<tr>");
-		sb.append("<th>직원코드</th>");
-		sb.append("<th>직원이름</th>");
-		sb.append("<th>관리</th>");
+		sb.append("<th class=\"doctorMgrM\">직원코드</th>");
+		sb.append("<th class=\"doctorMgrM\">직원이름</th>");
+		sb.append("<th class=\"doctorMgrM\">관리</th>");
 		sb.append("</tr>");
 		for(int idx=0; idx<doctorList.size(); idx++) {
 			DoctorBean db = ((DoctorBean)doctorList.get(idx));
 			sb.append("<tr>");
-			sb.append("<td>" + db.getDoCode() + "</td>");
-			sb.append("<td>" + db.getDoName() + "</td>");
-			sb.append("<td><button class=\"delBtn\">");
+			sb.append("<td class=\"doctorMgrB\">" + db.getDoCode() + "</td>");
+			sb.append("<td class=\"doctorMgrB\">" + db.getDoName() + "</td>");
+			sb.append("<td class=\"doctorMgrB\"><button class=\"delBtn\">");
 			sb.append("<i class=\"fa-solid fa-trash-can delBtn editBtn\" "
-					+ "onClick=\"deleteDoctor("+ db.getDoCode() +")\"></i>삭제</button>");
+					+ "onClick=\"deleteDoctor("+ db.getDoCode() +")\"></i>Delete</button>");
 			sb.append("</td>");
 			sb.append("</tr>");
 		}
@@ -303,49 +330,53 @@ public class Company implements ServiceRule {
 		return sb.toString();
 	}
 	//건강기록 EL작업
-	private String makeHealthData(List<HealthDiaryBean> HealthDataList) {
+	private String makeHealthData(List<HealthDiaryBean> HealthDataList,ReservationBean resBean) {
 		StringBuffer sb = new StringBuffer();
 		
-		sb.append("<div id=\"doctorMgrTitleDiv\">" );
-		sb.append("<p id=\"doctorMgrTitle\">건강 기록지</p></div>");
-		sb.append("<table class=\"doctorMgr\">" );
-		sb.append("<tr>");
-		sb.append("<th colspan=\"11\">날짜</th>");
-		sb.append("</tr>");
-		sb.append("<tr>");
-		sb.append("<th>날짜</th>");
-		sb.append("<th>키</th>");
-		sb.append("<th>몸무게</th>");
-		sb.append("<th>발사이즈</th>");
-		sb.append("<th>머리둘레</th>");
-		sb.append("<th>체온</th>");
-		sb.append("<th>수면시간</th>");
-		sb.append("<th>배변량</th>");
-		sb.append("<th>배변상태</th>");
-		sb.append("<th>식사량</th>");
-		sb.append("<th>메모</th>");
-		sb.append("</tr>");
-		System.out.println("리스트 : "+ HealthDataList.size());
-		for(int idx=0; idx<HealthDataList.size(); idx++) {
+		for(int idx=0; idx<7; idx++) {
 			HealthDiaryBean hdb = ((HealthDiaryBean)HealthDataList.get(idx));
-			sb.append("<tr>");
-			sb.append("<td>" + hdb.getHdDate() + "</td>");
-			sb.append("<td>" + hdb.getBbHeight() + "</td>");
-			sb.append("<td>" + hdb.getBbWeight() + "</td>");
-			sb.append("<td>" + hdb.getFoot() + "</td>");
-			sb.append("<td>" + hdb.getHead() + "</td>");
-			sb.append("<td>" + hdb.getTemperature() + "</td>");
-			sb.append("<td>" + hdb.getSleep() + "</td>");
-			sb.append("<td>" + hdb.getDefecation() + "</td>");
-			sb.append("<td>" + hdb.getDefstatus() + "</td>");
-			sb.append("<td>" + hdb.getMeal() + "</td>");
-			sb.append("<td>" + hdb.getMemo() + "</td>");
-			sb.append("</tr>");
-			System.out.println("리스트 : " +hdb);
-			System.out.println("리스트1 : " +hdb.getAge());
+			if(idx==0) {
+				sb.append("<div id=\"doctorMgrTitleDiv\">" );
+				sb.append("<p id=\"doctorMgrTitle\">건강 기록지</p></div>");
+				sb.append("<table class=\"patientMgrH\">" );
+				sb.append("<tr>");
+				sb.append("<th colspan=\"11\" class=\"patientMrgS\">예약날짜 : "+ resBean.getResDate() +"</th>");
+				sb.append("</tr>");
+				sb.append("<tr>");
+				sb.append("<th class=\"patientMgrM\">날짜</th>");
+				sb.append("<th class=\"patientMgrM\">키</th>");
+				sb.append("<th class=\"patientMgrM\">몸무게</th>");
+				sb.append("<th class=\"patientMgrM\">발사이즈</th>");
+				sb.append("<th class=\"patientMgrM\">머리둘레</th>");
+				sb.append("<th class=\"patientMgrM\">체온</th>");
+				sb.append("<th class=\"patientMgrM\">수면시간</th>");
+				sb.append("<th class=\"patientMgrM\">배변량</th>");
+				sb.append("<th class=\"patientMgrM\">배변상태</th>");
+				sb.append("<th class=\"patientMgrM\">식사량</th>");
+				sb.append("<th class=\"patientMgrM\">메모</th>");
+				sb.append("</tr>");
+			}else {
+				sb.append("<tr>");
+				sb.append("<td class=\"patientMgrB\">" + hdb.getHdDate() + "</td>");
+				sb.append("<td class=\"patientMgrB\">" + hdb.getBbHeight() + "&nbsp;cm</td>");
+				sb.append("<td class=\"patientMgrB\">" + hdb.getBbWeight() + "&nbsp;kg</td>");
+				sb.append("<td class=\"patientMgrB\">" + hdb.getFoot() + "&nbsp;mm</td>");
+				sb.append("<td class=\"patientMgrB\">" + hdb.getHead() + "&nbsp;inch</td>");
+				sb.append("<td class=\"patientMgrB\">" + hdb.getTemperature() + "&nbsp;&deg;c</td>");
+				sb.append("<td class=\"patientMgrB\">" + hdb.getSleep() + "</td>");
+				sb.append("<td class=\"patientMgrB\">" + hdb.getDefecation() + "</td>");
+				sb.append("<td class=\"patientMgrB\">" + hdb.getDefstatus() + "</td>");
+				sb.append("<td class=\"patientMgrB\">" + hdb.getMeal() + "</td>");
+				sb.append("<td class=\"patientMgrB m\">" + hdb.getMemo() + "</td>");
+				sb.append("</tr>");
+			}
 		}
-		sb.append("</table>");
-
+			sb.append("</table><br/>");
+			
+			sb.append("<div class=\"docCo\">의사소견 입력<br/><br/>");
+			sb.append("<input type=\"text\" name=\"doctorComment\" class=\"commentInput\" placeholder=\"내용을 입력하세요.\"/>");
+			sb.append("<button class=\"submitBtn btn\" "
+					+ "onClick=\"updDoctorComment('"+ resBean.getResCode()+"','"+ resBean.getDoComment() + "')\">입력</button></div>");
 		return sb.toString();
 	}
 

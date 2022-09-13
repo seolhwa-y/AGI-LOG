@@ -13,7 +13,7 @@
 		SELECT * FROM RESINFO WHERE COCODE = #{coCode}
 	</select>
 	<update id="updRDRes" parameterType="com.agilog.beans.ReservationBean">
-		UPDATE RE SET RE_RCCODE = #{rcCode}, RE_DOCODE = #{doCode}
+		UPDATE RE SET RE_RCCODE = #{rcCode}, RE_DOCODE = #{resDoCode}
 		WHERE RE_CODE = #{resCode} AND RE_DOCOCODE = #{resCoCode}
 	</update>
 	<update id="updCPRes" parameterType="com.agilog.beans.ReservationBean">
@@ -27,4 +27,7 @@
 		INSERT INTO FREEBOARD(FB_CODE, FB_DATE, FB_SUCODE, FB_TITLE, FB_CONTENT, FB_VIEW, FB_LIKE) 
 		VALUES(#{fbCode}, DEFAULT, #{fbSuCode}, #{fbTitle}, #{fbContent}, DEFAULT, DEFAULT)
 	</insert>
+	<select id="getPostList" parameterType="com.agilog.beans.PostBean" resultType="com.agilog.beans.PostBean">
+		SELECT FB_CODE, FB_DATE, FB_SUCODE
+	</select>
 </mapper>

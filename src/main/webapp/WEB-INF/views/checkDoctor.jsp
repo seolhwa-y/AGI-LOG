@@ -35,6 +35,9 @@
 			accessArea.innerHTML += "<span onclick=\"movePage(\'CompanyLogout\')\">로그아웃</span>";
 			accessArea.innerHTML += "<span onclick=\"movePage(\'MoveMainPage\')\">일반회원</span>";	
 		}
+		if("${message}" != ""){
+			alert("${message}");
+		}
 	}
 </script>
 </head>

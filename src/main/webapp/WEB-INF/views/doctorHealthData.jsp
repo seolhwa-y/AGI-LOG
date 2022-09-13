@@ -20,6 +20,17 @@ function init(){
 		accessArea.innerHTML += "<span onclick=\"movePage(\'MoveMainPage\')\">일반회원</span>";	
 	}
 }
+function updDoctorComment(data1,data2) {
+	let form = document.getElementById("serverForm");
+	let doComment = document.getElementsByName("doctorComment")[0].value;
+	
+	form.appendChild(createInput("hidden","doComment",doComment,null,null));
+	form.appendChild(createInput("hidden","resCode",data1,null,null));
+	
+	form.action = "UpdateDoctorComment";
+	form.method = "post";
+	form.submit();
+}
 </script>
 </head>
 <body onload="init()">
@@ -44,7 +55,8 @@ function init(){
 		<div id="middle">
 			<div id="rightArea" class="scrollBar">
 			
-				<div id="doctorList">${healthDataList}</div>
+				<div id="healthList">${healthDataList}</div>
+
 			</div>
 		
 		</div>
