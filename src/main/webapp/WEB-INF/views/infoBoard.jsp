@@ -8,7 +8,7 @@
 <script src="/res/js/agiMain.js"></script>
 <script src="https://use.fontawesome.com/releases/v6.1.2/js/all.js"></script>
 <link rel="stylesheet" href="/res/css/agiMain.css">
-
+<link rel="stylesheet" href="/res/css/infoBoard.css">
 <!-- 카카오 스크립트 -->
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 <!-- 네이버 스크립트 -->
@@ -59,6 +59,32 @@ function kakaoLogout() {
 		Kakao.Auth.setAccessToken(undefined)
 	}
 }
+function boardContent(data1){
+	let form = document.getElementById("serverForm");
+	
+	form.appendChild(createInput("hidden","ibCode",data1,null,null));
+
+
+	form.action = "MoveShowPost";
+	form.method = "post";
+	form.submit();
+}
+function changeSort(){
+	let form = document.getElementById("serverForm");
+	
+	let postSelect = document.getElementById("infoBoardSelect");
+
+	//option값을 저장
+	var optionValue = postSelect.options[postSelect.selectedIndex].value;
+	var optionText = postSelect.options[postSelect.selectedIndex].text;
+		
+	alert(optionValue);
+	
+	optionValue.action = "MoveSortPost";
+	optionValue.method = "post";
+	optionValue.submit();
+	
+}
 </script>
 </head>
 <body onload="getInfo()">
@@ -101,7 +127,12 @@ function kakaoLogout() {
 
 				<!-- ------------------------------------------------------------------------ -->
 			</div>
-			<div id="rightArea" class="scrollBar"></div>
+			<div id="rightArea" class="scrollBar">
+				<div class="infoBoard">
+					<div class="infoBoardH">육아정보 게시판</div>
+					${bebeBoardList}
+				</div>
+			</div>
 		</div>
 		<div class="modal">
             <div class="modal_body">

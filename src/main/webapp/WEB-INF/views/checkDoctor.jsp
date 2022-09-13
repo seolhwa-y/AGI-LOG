@@ -35,6 +35,9 @@
 			accessArea.innerHTML += "<span onclick=\"movePage(\'CompanyLogout\')\">로그아웃</span>";
 			accessArea.innerHTML += "<span onclick=\"movePage(\'MoveMainPage\')\">일반회원</span>";	
 		}
+		if("${message}" != ""){
+			alert("${message}");
+		}
 	}
 </script>
 </head>
@@ -51,7 +54,7 @@
 				<ul id="mainMenuList">
 					<li class="mainMenu" onclick="movePage('MoveDoctorManagement')">의사관리</li>
 					<li class="mainMenu" onclick="movePage('MoveReservationManagement')">예약관리</li>
-					<li class="mainMenu" onclick="movePage('MoveCheckDoctor')">환자관리</li>
+					<li class="mainMenu" onclick="movePage('IntoCheckDoctor')">환자관리</li>
 				</ul>
 			</div>
 		</div>
