@@ -109,8 +109,7 @@ public class Authentication implements ServiceRule {
 		}
 	}
 
-	
-//	네이버는 금지!!!!!
+	//회원가입
 	@Transactional(rollbackFor = SQLException.class)
 	private void socialJoin(ModelAndView mav) {
 		AuthBean ab = (AuthBean) mav.getModel().get("authBean");
@@ -121,9 +120,20 @@ public class Authentication implements ServiceRule {
 		}
 
 		try {
-			ab.setSuName(this.enc.aesEncode(ab.getSuName(), ab.getSuCode()));
-			ab.setSuEmail(this.enc.aesEncode(ab.getSuEmail(), ab.getSuCode()));
-			ab.setSuPhone(this.enc.aesEncode(ab.getSuPhone(), ab.getSuCode()));
+			if(ab.getSuCode().length()>10)
+				ab.setSuName(this.enc.aesEncode(ab.getSuName(), ab.getSuCode().substring(0, 24)));
+			else 
+				ab.setSuName(this.enc.aesEncode(ab.getSuName(), ab.getSuCode()));
+			
+			if(ab.getSuCode().length()>10)
+				ab.setSuEmail(this.enc.aesEncode(ab.getSuEmail(), ab.getSuCode().substring(0, 24)));
+			else 
+				ab.setSuEmail(this.enc.aesEncode(ab.getSuEmail(), ab.getSuCode()));
+			
+			if(ab.getSuCode().length()>10)
+				ab.setSuPhone(this.enc.aesEncode(ab.getSuPhone(), ab.getSuCode().substring(0, 24)));
+			else 
+				ab.setSuPhone(this.enc.aesEncode(ab.getSuPhone(), ab.getSuCode()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -142,8 +152,6 @@ public class Authentication implements ServiceRule {
 			
 			uploadPath = new File(path+"\\dailydiary");
 			if (!uploadPath.exists()) uploadPath.mkdirs();
-			
-			
 			
 			if (type) {
 				this.kakaoLoginCtl(mav);
@@ -255,14 +263,12 @@ public class Authentication implements ServiceRule {
 	private void moveCompanyPageCtl(ModelAndView mav) {
 		mav.setViewName("companyLogin");
 	}
-
+	//회원가입 정보입력 페이지 이동
 	private void moveJoinFormPageCtl(ModelAndView mav) {
 		AuthBean ab = (AuthBean) mav.getModel().get("authBean");
 		String page = "login";
 		if (ab.getSuCode() != null) {
-			int result = Integer.parseInt(this.session.selectOne("isMember", ab).toString());
-
-			if (this.convertToBoolean(result)) {
+			if (this.convertToBoolean(this.session.selectOne("isMember", ab))) {
 				mav.addObject("message", "이미 가입된 회원입니다.");
 				page = "login";
 			} else {
@@ -294,7 +300,8 @@ public class Authentication implements ServiceRule {
 	private void moveCompanyJoinPageCtl(ModelAndView mav) {
 		mav.setViewName("companyJoin");
 	}
-
+	
+	//네이버 로그인
 	@Transactional(rollbackFor = SQLException.class)
 	private void naverLoginCtl(ModelAndView mav) {
 		try {
@@ -303,8 +310,7 @@ public class Authentication implements ServiceRule {
 				this.dashBoard.backController(mav, 4);
 			} else {
 				AuthBean ab = (AuthBean) mav.getModel().get("authBean");
-				int result = Integer.parseInt(this.session.selectOne("isMember", ab).toString());
-				if (this.convertToBoolean(result)) {
+				if (this.convertToBoolean(this.session.selectOne("isMember", ab))) {
 					action = this.session.selectOne("isAccess", ab);
 					if (action != null && Integer.parseInt(action) > 0) {
 						ab.setAlAction(-1);
@@ -321,20 +327,20 @@ public class Authentication implements ServiceRule {
 							}
 							this.pu.setAttribute("accessInfo", a);
 							mav.addObject("accessInfo", a);
-							page = "dashBoard";
+							this.dashBoard.backController(mav, 4);
 						}
 					}
 				} else {
 					mav.addObject("message", "가입된 회원이 아닙니다.");
-					page = "login";
+					mav.setViewName(page);
 				}
 			}
-			mav.setViewName(page);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-
+	
+	//카카오 로그인
 	@Transactional(rollbackFor = SQLException.class)
 	private void kakaoLoginCtl(ModelAndView mav) {
 		try {
@@ -343,8 +349,7 @@ public class Authentication implements ServiceRule {
 				this.dashBoard.backController(mav, 4);
 			} else {
 				AuthBean ab = (AuthBean) mav.getModel().get("authBean");
-				int result = Integer.parseInt(this.session.selectOne("isMember", ab).toString());
-				if (this.convertToBoolean(result)) {
+				if (this.convertToBoolean(this.session.selectOne("isMember", ab))) {
 					String action = this.session.selectOne("isAccess", ab);
 					if (action != null && Integer.parseInt(action) > 0) {
 						ab.setAlAction(-1);

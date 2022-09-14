@@ -18,7 +18,7 @@ import com.agilog.beans.ReservationBean;
 import com.agilog.beans.ScheduleBean;
 
 public interface MapperInterface {
-	public String isMember(AuthBean ab);
+	public int isMember(AuthBean ab);
 	public int isAccess(AuthBean ab);
 	public int insAuthLog(AuthBean ab);
 	public AuthBean getUserEmail(String userEmail);

@@ -1,7 +1,10 @@
 package com.agilog.services;
 
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Date;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,9 +76,16 @@ public class HealthDiary implements ServiceRule {
 			AuthBean ab = (AuthBean)this.pu.getAttribute("accessInfo");
 			//세션존재 -> 해당유저의 전체 아기&전체 건강일기 가져오기
 			if(ab!=null) {
+				if (ab.getSuCode().length() == 10) {
+					ab.setType("kakao");
+				} else {
+					ab.setType("naver");
+				}
+				mav.addObject("accessInfo", ab);
 				//아기정보
 				List<BabyBean> babyList = this.session.selectList("getTotalBabyCode",ab);
-				mav.addObject("babyInfo", this.makeBabySelect(babyList));
+				if(babyList.size()!=0&&babyList!=null)
+					mav.addObject("babyInfo", this.makeBabySelect(babyList));
 				//건강일기
 				List<HealthDiaryBean> healthList = this.session.selectList("getHealthDiary",ab);
 				mav.addObject("diaryList", this.makeHealthDiaryHtml(healthList));
@@ -263,36 +273,51 @@ public class HealthDiary implements ServiceRule {
 	private String makeBabySelect(List<BabyBean> babyList) {
 		StringBuffer sb = new StringBuffer();
 		
-		if(babyList.size()!=0&&babyList!=null) {
-			sb.append("<select class=\'mMiniSelect babyInfo\'>");
-			for(BabyBean bb:babyList) {
-				sb.append("<option value=\'"+bb.getBbCode()+"\'>"+bb.getBbName()+"</option>");
-			}
-			sb.append("</select>");
-		} else {
-			sb.append("<button class=\"saveBtn\" onclick=\"movePage('MoveMyPage')\">아이등록</button>");
+		sb.append("<select class=\'mMiniSelect babyInfo\'>");
+		for(BabyBean bb:babyList) {
+			sb.append("<option value=\'"+bb.getBbCode()+"\'>"+bb.getBbName()+"</option>");
 		}
-
+		sb.append("</select>");
+		
 		return sb.toString();
 	}
+	
 	//건강일기 리스트 html
 	private String makeHealthDiaryHtml(List<HealthDiaryBean> healthList) {
 		StringBuffer sb = new StringBuffer();
+		SimpleDateFormat form = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		SimpleDateFormat msdf = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss");
+		SimpleDateFormat sdf = new SimpleDateFormat("MM월dd일 hh시");
+		Date d;
 		
 		for(HealthDiaryBean hb:healthList) {
+			try {
 			sb.append("<div class=\"diary "+hb.getBbCode()+"\" >");
 			sb.append("<i class=\"fa-solid fa-trash-can delBtn editBtn\" onclick=\"deleteHealthDiary("+hb.getHdCode()+")\"></i>");
 			sb.append("<div onclick=\"showHealthDiary("+hb.getHdCode()+")\">");
 			sb.append("<div class=\"miniProfile\">");
-			sb.append("<img src=\"/res/img/profile_default.png\" alt=\"images\">");
+			if(hb.getBbPhoto()!=null) {
+				sb.append("<img src=\""+hb.getBbPhoto()+"\" alt=\"images\">");				
+			} else {
+				sb.append("<img src=\"/res/img/profile_default.png\" alt=\"images\">");
+			}
 			sb.append("<div class=\"text\">");
 			sb.append("<span class=\"userId\">"+hb.getBbName()+"</span>");
-			sb.append("<span class=\"userId\">"+hb.getHdDate()+"</span>");
+			
+			d = form.parse(hb.getHdDate());
+			sb.append("<span class=\"userId\">"+msdf.format(d)+"</span>");
+			
 			sb.append("</div>");
 			sb.append("</div>");
-			sb.append("<div class=\"title\">"+hb.getHdDate()+"</div>");
+			
+			d = form.parse(hb.getHdDate());
+			sb.append("<div class=\"title\">"+sdf.format(d)+"  "+hb.getBbName()+"의 건강기록</div>");
+			
 			sb.append("</div>");
 			sb.append("</div>");
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		return sb.toString();

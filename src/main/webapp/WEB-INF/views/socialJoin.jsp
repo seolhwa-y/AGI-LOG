@@ -72,57 +72,31 @@
 				<script
 					src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js"
 					charset="utf-8"></script>
-
 				<script>
 					var naverLogin = new naver.LoginWithNaverId({
 						clientId : "GgJuJh_y9P_xFKb5fSQj", //내 애플리케이션 정보에 cliendId를 입력해줍니다.
-						/* callbackUrl : "http://localhost:80/joincallback.jsp", // 내 애플리케이션 API설정의 Callback URL 을 입력해줍니다. */
-						
 						callbackUrl : "http://localhost/MoveJoinPage?", // 내 애플리케이션 API설정의 Callback URL 을 입력해줍니다.
-						
 						isPopup : false,
 						callbackHandle : true
 					});
 
 					naverLogin.init();
-
 				</script>
-
-<!-- 	네이버는 금지!!!!! -->
-					<script type="text/javascript"
-						src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js"
-						charset="utf-8"></script>
-					<script type="text/javascript"
-						src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+					<script type="text/javascript"msrc="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
+					<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 					<script type="text/javascript">
-						var naver_id_login = new naver_id_login(
-								"GgJuJh_y9P_xFKb5fSQj",
-								"http://localhost/MoveJoinPage?");
+						var naver_id_login = new naver_id_login( "GgJuJh_y9P_xFKb5fSQj", "http://localhost/MoveJoinPage?");
 						// 네이버 사용자 프로필 조회
-						naver_id_login
-								.get_naver_userprofile("naverSignInCallback()");
+						naver_id_login.get_naver_userprofile("naverSignInCallback()");
 						// 네이버 사용자 프로필 조회 이후 프로필 정보를 처리할 callback function
 						function naverSignInCallback() {
-							// 접근 토큰 값 출력
-							alert(naver_id_login.oauthParams.access_token);
-							alert(naver_id_login.getProfileData('email'));
-							alert(naver_id_login.getProfileData('nickname'));
-							alert(naver_id_login.getProfileData('age'));
-
 							let form = document.getElementById("serverForm");
 							form.action = "MoveJoinFormPage";
 							form.method = "post";
 
-							form.appendChild(createInput("hidden", "suCode",
-									naver_id_login.oauthParams.access_token,
-									null, null));
-							form.appendChild(createInput("hidden", "suEmail",
-									naver_id_login.getProfileData('email'),
-									null, null));
-							form.appendChild(createInput("hidden",
-									"suNickName", naver_id_login
-											.getProfileData('nickname'), null,
-									null));
+							form.appendChild(createInput("hidden", "suCode", naver_id_login.getProfileData('id'), null, null));
+							form.appendChild(createInput("hidden", "suEmail", naver_id_login.getProfileData('email'),null, null));
+							form.appendChild(createInput("hidden", "suNickName", naver_id_login.getProfileData('nickname'), null,null));
 
 							form.submit();
 						}

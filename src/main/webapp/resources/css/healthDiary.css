@@ -18,6 +18,9 @@
 .writeBtn {
 	width: auto;
 }
+.saveBtn {
+	width: auto;
+}
 
 /* modal */
 #hdClip {
@@ -34,7 +37,7 @@
 	height: 8%;
 	padding: 2% 5%;
 	box-sizing: border-box;
-	font-size: 1.5rem;
+	font-size: 1.8rem;
 	font-weight: 800;
 }
 
@@ -67,7 +70,7 @@
 	display: flex;
 	width: 300px;
 	align-items: center;
-	font-size: 1.3rem;
+	font-size: 1.2rem;
 }
 
 .item span {
@@ -75,6 +78,7 @@
 }
 
 .item .data {
+	background-color: rgb(229 229 229);
 	font-size: 1.5rem;
 }
 
@@ -100,7 +104,6 @@
 	margin: 0 auto;
 	padding: 2% 5%;
 	box-sizing: border-box;
-	width: 85%;
 	height: 8%;
 	align-items: center;
 	justify-content: space-between;

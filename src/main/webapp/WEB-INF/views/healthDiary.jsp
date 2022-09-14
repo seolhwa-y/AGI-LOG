@@ -35,11 +35,18 @@
                 accessArea.innerHTML += "<span onclick=\"movePage('MoveCompanyLoginPage')\">기업회원</span>";
             }
             //아이 정보가 있는 경우 전처리(전체보기 옵션 삽입,아이 변경 시 이벤트 추가)
-            if (document.getElementsByClassName("saveBtn")[0] == undefined) {
+            if (document.getElementsByClassName("babyInfo")[0] != undefined) {
                 let babyInfo = document.getElementsByClassName("babyInfo")[0];
                 //babyInfo.insertBefore(createOption(), babyInfo.firstChild);
                 babyInfo.addEventListener("change", selectBaby);
                 selectBaby();
+            } else {
+            	let btnArea = document.getElementById("buttonArea");
+            	let btn = createInput("button",null,"아이등록","saveBtn",null);
+            	btn.addEventListener("click",function() {
+            		movePage("MoveMyPage");
+            	});
+            	btnArea.insertBefore(btn, btnArea.firstChild);
             }
             //일기 작성 실패 메시지
             if("${fail}"!="") {
@@ -62,8 +69,8 @@
             openPopUp();
             setTimeout(function () {
                 closePopUp();
+                logout();
             }, 1000);
-            logout();
         }
         function kakaoLogout() {
             if (Kakao.Auth.getAccessToken()) {
@@ -112,7 +119,11 @@
             let mcontent = document.getElementsByClassName("modal_content")[0];
             mcontent.innerHTML = writeForm;
             let mhead = document.getElementsByClassName("modal_head")[0];
-            mhead.innerHTML = "${babyInfo}";
+        	mhead.innerHTML = "<i class='fa-solid fa-xmark closeBtn editBtn' onclick='cancel()'></i><br />";
+        	let orgh = mhead.innerHTML;
+            if(document.getElementsByClassName("babyInfo")[0] != undefined){
+            	mhead.innerHTML = orgh+"${babyInfo}";
+            }
             let mfoot = document.getElementsByClassName("modal_foot")[0];
             mfoot.innerHTML="";
             //버튼
