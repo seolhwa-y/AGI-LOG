@@ -70,13 +70,15 @@ public class HealthDiary2 implements ServiceRule {
 				map.put("babyList",this.makeSelectBaby(babyList)); 
 				
 				hdb.setSuCode(ab.getSuCode());
-				hdb.setBbCode(babyList.get(0).getBbCode());
-				
-				// 아이 건강정보 나이별로 가져오기
-				List<HealthDiaryBean> healthList = this.session.selectList("getHealthStatusList", hdb);
-				map = this.healthStatusList(healthList, map); 
-				
-				mav.addObject("babyStatusList", map);
+				if(babyList.size()!=0) {
+					hdb.setBbCode(babyList.get(0).getBbCode());
+					
+					// 아이 건강정보 나이별로 가져오기
+					List<HealthDiaryBean> healthList = this.session.selectList("getHealthStatusList", hdb);
+					map = this.healthStatusList(healthList, map); 
+					
+					mav.addObject("babyStatusList", map);
+				}
 				mav.setViewName("healthStatus");
 		} catch (Exception e) {
 			e.printStackTrace();

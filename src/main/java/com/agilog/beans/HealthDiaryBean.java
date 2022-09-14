@@ -8,6 +8,7 @@ public class HealthDiaryBean {
 	
 	private String bbCode;
 	private String bbName;
+	private String bbPhoto;
 	
 	private String hdCode;
 	private String hdDate;

@@ -206,11 +206,11 @@ function closePopUp() {
 }
 
 function naverLogout() {
-	openPopUp();
-	setTimeout(function() {
-		closePopUp();
-	}, 1000);
-	logout();
+    openPopUp();
+    setTimeout(function () {
+        closePopUp();
+        logout();
+    }, 1000);
 }
 function kakaoLogout() {
 	if (Kakao.Auth.getAccessToken()) {
@@ -258,12 +258,17 @@ function kakaoLogout() {
       },
       // 일정을 클릭 했을 때 발생
       eventClick: function(info) {
-    	  let modalTitle = document.getElementById("modalTitle");
-  	      let clientData = "date="+info.event.startStr;
-  	    
-  	      modalTitle.innerText = info.event.startStr;
-  	    
-  	      postAjaxJson("DateDetail",clientData,"showDateDetail");
+		if(info.el.classList.item(8) == "birthDay") {
+			
+		}
+		else {
+			let modalTitle = document.getElementById("modalTitle");
+			let clientData = "date="+info.event.startStr;
+	  	    
+			modalTitle.innerText = info.event.startStr;
+	  	    
+			postAjaxJson("DateDetail",clientData,"showDateDetail");
+		}
       },
       // 수정 가능 여부
       editable: true,

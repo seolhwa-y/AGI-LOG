@@ -118,6 +118,13 @@ public class SkHomeController {
 		return mav;
 	}
 	
+	@RequestMapping(value = "/MoveNaverLogin", method = RequestMethod.GET)
+	public ModelAndView moveNaverLogin(ModelAndView mav, @ModelAttribute AuthBean auth) {
+		mav.setViewName("callBack");
+		
+		return mav;
+	}
+	
 	@RequestMapping(value = "/NaverLogin", method = RequestMethod.POST)
 	public ModelAndView naverLogin(ModelAndView mav, @ModelAttribute AuthBean auth) {
 		mav.addObject(auth);

@@ -10,21 +10,25 @@
 <link rel="stylesheet" href="/res/css/agiMain.css">
 <link rel="stylesheet" href="/res/css/joinForm.css">
 <script>
-
+	let check = false;
 	function checkOverlap() {
 		//0:? 1:닉네임
 		let nickName = document.getElementsByName("suNickName")[1];
 		let clientData = "code=1&suNickName="+nickName.value;
-		alert(clientData);
 		postAjaxJson("CheckPersonalOverlap",clientData,"callBackOverlap");
 	}
 	function callBackOverlap(ajaxData) {
 		if(ajaxData=="ok"){
-			alert(ajaxData);
+			alert("사용가능");
+			check = true;
 		}
 		else {
 			alert(ajaxData);
+			check = false;
 		}
+	}
+	function change() {
+		check = false;
 	}
 	function next(num) {
 		switch (num) {
@@ -107,7 +111,7 @@
 		let nick = document.getElementsByName("suNickName")[1].value;
 		
 		if(name.length > 11 && name.length == 0){
-			alert("이름을 확인해주세요");
+			alert("이름은 10자 이내로 입력해주세요");
 			return;
 		}
 		if(phone.length > 12 && phone.length == 0){
@@ -115,7 +119,11 @@
 			return;
 		}
 		if(nick.length > 9 && nick.length == 0){
-			alert("닉네임은 8자리까지 가능합니다");
+			alert("닉네임은 8자리까지 입력 가능합니다");
+			return;
+		}
+		if(!check) {
+			alert("닉네임 중복확인을 해주세요");
 			return;
 		}
 		form.appendChild(createInput("hidden","suEmail",email,null,null));
@@ -127,38 +135,6 @@
 		form.submit();
 	}
 </script>
-
-
-<!-- 	<script type="text/javascript"
-		src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js"
-		charset="utf-8"></script>
-	<script type="text/javascript"
-		src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-	<script type="text/javascript">
-	var naver_id_login = new naver_id_login("GgJuJh_y9P_xFKb5fSQj",
-	"http://localhost/MoveJoinFormPage");
-	// 네이버 사용자 프로필 조회
-	naver_id_login.get_naver_userprofile("naverSignInCallback()");
-	// 네이버 사용자 프로필 조회 이후 프로필 정보를 처리할 callback function
-	function naverSignInCallback() { 
-	// 접근 토큰 값 출력
-	alert(naver_id_login.oauthParams.access_token);
-		alert(naver_id_login.getProfileData('email'));
-	alert(naver_id_login.getProfileData('nickname'));
-	
-	let form = document.getElementById("serverForm");
-	form.action="MoveJoinFormPage";
-	form.method="post";
-	
-	form.appendChild(createInput("hidden","suCode",naver_id_login.oauthParams.access_token,null,null));
-	form.appendChild(createInput("hidden","suEmail",naver_id_login.getProfileData('email'),null,null));
-	form.appendChild(createInput("hidden","suNickName",naver_id_login.getProfileData('nickname'),null,null));
-	
-	 form.submit(); 
-	} 
-	</script> -->
-
-
 </head>
 <body onload="init()">
 	<div id="background">

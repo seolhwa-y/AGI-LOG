@@ -47,11 +47,11 @@ function closePopUp() {
 }
 
 function naverLogout() {
-	openPopUp();
-	setTimeout(function() {
-		closePopUp();
-	}, 1000);
-	logout();
+    openPopUp();
+    setTimeout(function () {
+        closePopUp();
+        logout();
+    }, 1000);
 }
 
 function kakaoLogout() {
