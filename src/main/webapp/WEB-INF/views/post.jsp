@@ -62,6 +62,95 @@ function kakaoLogout() {
 function likeBtn(){
 	
 }
+
+/* 게시글 댓글 작업 */
+	// 댓글 수정 버튼
+function updateInput(fbCode, fbSuCode, fcCode, fcDate, fbDate){
+	let fcContent = document.getElementsByClassName(fcDate)[0];
+	
+	fcContent.innerHTML = "";
+	fcContent.innerHTML += "<input class ='updFbComment commentInput'>";
+	fcContent.innerHTML += "<button class='submitBtn btn' onClick='updateBoardComment(" + fbCode + "," + fbSuCode + "," + fcCode + "," + fcDate + "," + fbDate +")'>확인</button>";
+}
+
+
+// 자유게시판 댓글 전부 AJAX
+// 1. 등록 완료
+function insertBoardComment(fbCode, fbSuCode, fbDate) {
+	const fbComment = document.getElementsByClassName("fbComment")[0].value;
+	const clientData = "fcFbCode=" + fbCode + "&fcFbSuCode=" + fbSuCode + "&fcFbDate=" + fbDate + "&fcContent=" + fbComment;
+	
+	postAjaxJson("InsertBoardComment", clientData, "postComment");
+}
+
+// 2. 수정 완료
+function updateBoardComment(fbCode, fbSuCode, fcCode, fcDate, fbDate) {
+	const updFbComment = document.getElementsByClassName("updFbComment")[0].value;
+	
+	const clientData = "fcFbCode=" + fbCode + "&fcCode=" + fcCode + "&fcFbSuCode=" + fbSuCode + "&fcDate=" + fcDate + "&fcContent=" + updFbComment + "&fcFbDate=" + fbDate;
+	postAjaxJson("UpdateBoardComment", clientData, "postComment");
+}
+
+// 3. 삭제 완료
+function deleteBoardComment(fbCode, fbSuCode, fcCode, fcDate, fbDate) {
+	console.log(fbCode, fbSuCode, fcCode, fcDate);
+	
+	const clientData = "fcFbCode=" + fbCode + "&fcCode=" + fcCode + "&fcFbSuCode=" + fbSuCode + "&fcDate=" + fcDate + "&fcFbDate=" + fbDate;
+	
+    // 경고
+    swal({
+        title: "진짜로 삭제하십니까?",
+        text: "삭제하면 되돌릴 수 없습니다.",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    })
+        .then((willDelete) => {
+            if (willDelete) {
+            	postAjaxJson("DeleteBoardComment", clientData, "postComment");
+            } else {
+                swal("삭제를 취소하셨습니다.");
+            }
+    });
+}
+
+// CALLBACK
+function postComment(ajaxData) {
+	const ajax = JSON.parse(ajaxData);
+	const fbComment = ajax.fbComment;
+	const suCode = ajax.suCode;
+	console.log(ajax);
+
+	document.getElementsByClassName("fbComment")[0].value = "";
+	let commentList = document.getElementById("commentList");
+	
+	commentList.innerHTML = "";
+
+	for(i = 0; i < fbComment.length; i++){
+		commentList.innerHTML += "<div class = 'comment " + i + "'>";
+		// 프로필 사진이 없을 경우 기본 이미지
+		if(fbComment[i].suPhoto != null) {
+			commentList.innerHTML += "<img class='profileImage' src=" + fbComment[i].suPhoto + ">";
+		} else {
+			commentList.innerHTML += "<img class='profileImage' src='/res/img/profile_default.png'>";
+		}
+		
+		// 닉네임
+		commentList.innerHTML += "<div class = 'suNickname'>" + fbComment[i].suNickname + "</div>";
+
+		// 댓글 내용
+		commentList.innerHTML += "<div class='fcContent'" + fbComment[i].fcDate + ">" + fbComment[i].fcContent + "</div>";
+
+		// 수정 삭제 버튼
+		if(suCode === fbComment[i].fcSuCode) {
+			commentList.innerHTML += "<i class='fa-solid fa-pen updBtn editBtn' onClick='updateInput(" + fbComment[i].fcFbCode + "," + fbComment[i].fcFbSuCode + "," + fbComment[i].fcCode + "," + fbComment[i].fcDate +")'></i>";
+			commentList.innerHTML += "<i class='fa-solid fa-trash-can delBtn editBtn' onClick='deleteBoardComment(" + fbComment[i].fcFbCode + "," + fbComment[i].fcFbSuCode + "," + fbComment[i].fcCode + "," + fbComment[i].fcDate +")'></i>";
+		}
+		commentList.innerHTML += "</div>";
+	}
+	
+	swal("요청", "요청하신 작업을 완료하였습니다!", "success", { button: "완료"});
+}
 </script>
 </head>
 <body onload="getInfo()">
@@ -107,6 +196,10 @@ function likeBtn(){
 			<div id="rightArea" class="scrollBar">
 				<div class="postContent">
 					${content}
+				</div>
+				<div>
+					<!-- 댓글 내용 불러오기 -->
+					${fbComment}
 				</div>
 			</div>
 		</div>

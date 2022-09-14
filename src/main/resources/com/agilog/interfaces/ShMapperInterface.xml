@@ -99,6 +99,20 @@
 		WHERE DC_CODE = #{dcCode} AND DC_DDCODE = #{dcDdCode} AND DC_DDSUCODE = #{dcDdSuCode} AND DC_SUCODE = #{dcSuCode}
 	</delete> 
 	
+	<!-- 지도에서 만든 마커는 우리랑 연계되어 있는가? -->
+	<select id="getCoCode" parameterType="com.agilog.beans.CompanyBean" resultType="string">
+		SELECT CO_CODE AS COCODE
+		FROM CO
+		WHERE CO_NAME = #{coName} AND CO_ADDRESS = #{coAddress}
+	</select>
+	
+	<!-- 지도 댓글 리스트 조회 -->
+ 	<select id="getMapCommentList" parameterType="com.agilog.beans.CompanyBean" resultType="com.agilog.beans.BebeMapCommentBean">
+		SELECT	*
+		FROM MAPCOMMENTLIST
+		WHERE COCODE = #{coCode}
+	</select>
+	
 	<!-- 지도 댓글 코드 MAX + 1 -->
 	<select id="getMcCode" parameterType="com.agilog.beans.BebeMapCommentBean" resultType="string">
 		SELECT TO_CHAR(TO_NUMBER(MAX(MC_CODE))+1) AS MCCODE
@@ -106,29 +120,22 @@
 		WHERE MC_SUCODE = #{mcSuCode}
 	</select>
 	
-	<!-- 지도 댓글 리스트 조회 -->
- 	<select id="getMapCommentList" parameterType="com.agilog.beans.BebeMapCommentBean" resultType="com.agilog.beans.BebeMapCommentBean">
-		SELECT	*
-		FROM MAPCOMMENTLIST
-		WHERE COCODE = #{coCode}
-	</select>
-	
 	<!-- 지도 댓글 등록 -->
  	<insert id="insMapComment" parameterType="com.agilog.beans.BebeMapCommentBean">
 		INSERT INTO MC (MC_CODE, MC_DATE, MC_COCODE, MC_SUCODE, MC_CONTENT)
-		VALUES (#{mcCode}, DEFAULT, #{coCode}, #{suCode}, #{mcContent})
+		VALUES (#{mcCode}, DEFAULT, #{coCode}, #{mcSuCode}, #{mcContent})
 	</insert>
 	
 	<!-- 지도 댓글 수정 -->
 	<update id="updMapComment" parameterType="com.agilog.beans.BebeMapCommentBean">
 		UPDATE MC SET MC_DATE = DEFAULT, MC_CONTENT = #{mcContent}
-		WHERE MC_CODE = #{mcCode} AND MC_DATE = #{mcDate} AND MC_COCODE = #{coCode} AND MC_SUCODE = #{suCode}
+		WHERE MC_CODE = #{mcCode} AND MC_DATE = TO_DATE(#{mcDate}, 'YYYYMMDDHH24MISS') AND MC_COCODE = #{coCode} AND MC_SUCODE = #{mcSuCode}
 	</update>
 	
 	<!-- 지도 댓글 삭제 -->
 	<delete id="delMapComment" parameterType="com.agilog.beans.BebeMapCommentBean">
 		DELETE MC
-		WHERE MC_CODE = #{mcCode} AND MC_DATE = #{mcDate} AND MC_COCODE = #{coCode} AND MC_SUCODE = #{suCode}
+		WHERE MC_CODE = #{mcCode} AND MC_DATE = TO_DATE(#{mcDate}, 'YYYYMMDDHH24MISS') AND MC_COCODE = #{coCode} AND MC_SUCODE = #{mcSuCode}
 	</delete>
 	
 	<!-- 지도에서 예약시 데이터 조회 :: 일정 -->

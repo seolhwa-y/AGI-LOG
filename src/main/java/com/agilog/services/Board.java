@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.agilog.beans.AuthBean;
 import com.agilog.beans.BoardBean;
+import com.agilog.beans.PostBean;
 import com.agilog.interfaces.ServiceRule;
 import com.agilog.utils.Encryption;
 import com.agilog.utils.Paging;
@@ -29,9 +30,19 @@ public class Board implements ServiceRule {
 	}
 
 	public void backController(ModelAndView mav, int serviceCode) {
+		
 		switch (serviceCode) {
 		case 8:
 			this.moveBoardPageCtl(mav);
+			break;
+		case 58 :
+			this.moveShowPostCtl(mav);
+			break;
+		case 56:
+			this.moveInfoBoardCtl(mav);
+			break;
+		case 500:
+			this.changeSortCtl(mav);
 			break;
 		}
 	}
@@ -58,8 +69,28 @@ public class Board implements ServiceRule {
 		mav.setViewName("totalBoard");
 	}
 
-	private void changeSortCtl(Model model) {
-
+	/*private void changeSortCtl(Model model) {
+		
+	}*/
+	private void changeSortCtl(ModelAndView mav) {
+		PostBean pb = (PostBean) mav.getModel().get("postBean");
+		System.out.println(pb);
+		
+		if(pb.getIbSort() == "newList") {
+			//최신순 가져오기
+			mav.addObject("bebeBoardList", this.makeBoardList(this.session.selectList("getBebeInfo", pb)));
+		}else if(pb.getIbSort().equals("oldList")){
+			//오래된순 가져오기
+			mav.addObject("bebeBoardList", this.makeBoardList(this.session.selectList("getBebeInfoOld", pb)));
+		}else if(pb.getIbSort().equals("likeList")){
+			//좋아요순 가져오기
+			mav.addObject("bebeBoardList", this.makeBoardList(this.session.selectList("getBebeInfoLike", pb)));
+		}else if(pb.getIbSort().equals("viewList")){
+			//조회수순 가져오기
+			mav.addObject("bebeBoardList", this.makeBoardList(this.session.selectList("getBebeInfoView", pb)));
+		}
+		
+		mav.setViewName("infoBoard");
 	}
 
 	private void changeListCtl(ModelAndView mav) {
@@ -75,7 +106,9 @@ public class Board implements ServiceRule {
 	}
 
 	private void moveInfoBoardCtl(ModelAndView mav) {
-
+		PostBean pb = (PostBean) mav.getModel().get("postBean");
+		mav.addObject("bebeBoardList", this.makeBoardList(this.session.selectList("getBebeInfo", pb)));
+		mav.setViewName("infoBoard");
 	}
 
 	private void moveWritePageCtl(ModelAndView mav) {
@@ -83,7 +116,32 @@ public class Board implements ServiceRule {
 	}
 
 	private void moveShowPostCtl(ModelAndView mav) {
+		PostBean pb = (PostBean) mav.getModel().get("postBean");
 
+		mav.addObject("content",this.makePostView(this.session.selectList("getBebePost",pb)));
+		mav.setViewName("post");
+	}
+	//정보게시판 게시글 EL 작업
+	private String makePostView(List<PostBean> bebePost) {
+		StringBuffer sb = new StringBuffer();
+		//if(bebePost.size() !=0) {
+		for(int idx=0; idx<1; idx++) {
+				PostBean pb = (PostBean)bebePost.get(idx);
+			sb.append("<div class=\"pTitle\">" + pb.getIbTitle() + "</div>");
+			sb.append("<div class=\"pHead\">");
+			sb.append("<div class=\"pDate\">작성일&ensp;<small class=\"sDate\">" + pb.getIbDate() +"</small></div>");
+			sb.append("<div class=\"pView\">조회수&ensp;<small class=\"sView\">" + pb.getIbView() + "</small></div>");
+			sb.append("<div class=\"pLike\">좋아요&ensp;<small class=\"sLike\">" + pb.getIbLike() + "</small></div>");
+			sb.append("</div>");
+			sb.append("<div class=\"pBody\">");
+			sb.append("<div class=\"pContent\"> " + pb.getIbContent() + " </div>");	
+			sb.append("</div>");
+			sb.append("<button class=\"likeBtn\" onClick=\"likeBtn()\">좋아요</button>");
+			sb.append("<button class=\"backList\" onClick=\"movePage('MoveInfoBoard')\">목록</button>");
+			}
+		sb.append("</div");
+		//}
+		return sb.toString();
 	}
 
 	private void searchPostCtl(ModelAndView mav) {
@@ -114,9 +172,51 @@ public class Board implements ServiceRule {
 
 	}
 
-	private String makeBoardList(List<BoardBean> boardList) {
+	private String makeBoardList(List<PostBean> bebeBoardList) {
 		StringBuffer sb = new StringBuffer();
-
+		sb.append("<select id=\"infoBoardSelect\" onChange=\"changeSort()\">");
+			sb.append("<option value = \"newList\">최신순</option>");
+			sb.append("<option value = \"oldList\">오래된순</option>");
+			sb.append("<option value = \"likeList\">좋아요순</option>");
+			sb.append("<option value = \"viewList\">조회수순</option>");
+		sb.append("</select>");
+		
+		sb.append("<table class=\"infoTable\">");
+			sb.append("<tr>");
+			sb.append("<th class=\"infoBoardM no\">No.</th>");
+			sb.append("<th class=\"infoBoardM title\">제목</th>");
+			sb.append("<th class=\"infoBoardM date\">작성일</th>");
+			sb.append("<th class=\"infoBoardM like\">좋아요</th>");
+			sb.append("<th class=\"infoBoardM view\">조회수</th>");
+			sb.append("</tr>");
+			for(int idx=0; idx<bebeBoardList.size(); idx++) {
+				PostBean pb = (PostBean)bebeBoardList.get(idx);
+				int max = bebeBoardList.size();
+				sb.append("<tr class=\"selectBoard\" onClick=\"boardContent("+ pb.getIbCode() +")\">");
+				sb.append("<td class=\"infoBoardB\">"+ (max-idx) +"</td>");
+				sb.append("<td class=\"infoBoardTitle\">"+ pb.getIbTitle() +"</td>");
+				sb.append("<td class=\"infoBoardB\">"+ pb.getIbDate() +"</td>");
+				sb.append("<td class=\"infoBoardB\">"+ pb.getIbLike() +"</td>");
+				sb.append("<td class=\"infoBoardB\">"+ pb.getIbView() +"</td>");
+				sb.append("</tr>");
+			//this.page.makePageGroup();	
+			}
+		sb.append("</table>");
+		/*-----------------페이징 실험---------------------*/
+		//전체글의 수
+		int total = bebeBoardList.size();
+		System.out.println("전체글 수 : " + total);
+		//12 -> 2page     29 ->  3page ...
+		
+		//마지막 페이지 구하기
+		int lastpage = (int)(Math.ceil((double)total/10));
+		System.out.println("마지막 페이지 : " + lastpage);
+		//pageNum
+		//String pageNum = request
+		//페이징 html출력
+		for(int i=1; i<=lastpage; i++) {
+			sb.append("<a href='MoveInfoBoard?pageNum="+i+"'>" + i + "</a>");
+		}
 		return sb.toString();
 	}
 
