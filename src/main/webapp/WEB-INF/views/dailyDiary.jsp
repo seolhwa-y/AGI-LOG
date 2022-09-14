@@ -301,7 +301,7 @@ function modalClose(){
 	modalHead.innerHTML = "";
 	modalContent.innerHTML = "";
 	modalFoot.innerHTML = "";
-
+}
 
 /* 감성일기 댓글 작업 */
 	// 모달켜기
@@ -404,57 +404,9 @@ function dailyDiaryComment(ajaxData) {
 	modalBody.innerHTML += "</div>";
 	
 	swal("요청", "요청하신 작업을 완료하였습니다!", "success", { button: "완료"});
-
-//글쓰기 :: 모달창 구성
-function moveWriteFeed(){
-	let modal = document.querySelector(".modal");
-	let modalHead = document.querySelector(".modal_head");
-	let modalContent = document.querySelector(".modal_content");
-	let modalFoot = document.querySelector(".modal_foot");
-
-
-	modal.style.display = "block";
-	modalHead.innerHTML = "<div class='insBabyTitle'>일기 쓰기</div>";
-	modalContent.innerHTML = "<table class='insWriteTable'><tr><td class='tdName'><span class='name'>내  용 :</span></td><td class='tdValue'><input class='mMiniInput name'type='textarea' name='ddContent' placeholder='내용을 입력하세요' required></td></tr>"
-							+"<tr><td></td></tr>"
-							+"<tr><td class='tdName'><span class='name'>공개 여부 :</span></td><td class='tdValue'><input class='statusCheck' type='radio' name='ddStatus' value='1' checked>공개<input class='statusCheck' type='radio' name='ddStatus' value='0'>비공개</td></tr></table>";
-	modalFoot.innerHTML = "<button class='mBtnX' onclick='modalClose()'>취소</button><button class='mBtnO' onclick='insertDailyDiary()'>등록</button>";
-
 }
 
-//일기 등록 :: 일기 등록버튼 클릭
-function insertDailyDiary(){
-	let form = document.getElementById("serverForm");
-	let ddContent = document.getElementsByName("ddContent")[0].value;
-	let ddStatus = document.getElementsByName("ddStatus");
-	
-	for(idx = 0; idx < ddStatus.length; idx++) {
-		if(ddStatus[idx].checked) {
-			form.appendChild(createInput("hidden","ddStatus",ddStatus[idx].value,null,null));
-		}
-	}
 
-	form.appendChild(createInput("hidden","ddContent",ddContent,null,null));
-
-	form.action = "InsertDailyDiary";
-	form.method = "post";
-	
-	form.submit();
-	modalClose();
-}
-
-//모달닫기
-function modalClose(){
-	let modal = document.querySelector(".modal");
-	let modalHead = document.querySelector(".modal_head");
-	let modalContent = document.querySelector(".modal_content");
-	let modalFoot = document.querySelector(".modal_foot");
-	
-	modal.style.display="none";
-	modalHead.innerHTML = "";
-	modalContent.innerHTML = "";
-	modalFoot.innerHTML = "";
-}
 </script>
 </head>
 <body onload="getInfo()">
