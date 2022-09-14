@@ -82,7 +82,6 @@ public class JsHomeController {
 	@RequestMapping(value = "/InsertBabyInfo", method = RequestMethod.POST)
 	public ModelAndView insertBabyInfo(ModelAndView mav, @ModelAttribute BabyBean bb) {
 		mav.addObject(bb);
-		System.out.println("homectl"+bb);
 		this.myPage.backController(mav, 69);
 		
 		return mav;
@@ -99,6 +98,13 @@ public class JsHomeController {
 		mav.addObject("file",file);
 		mav.addObject(bb);
 		this.myPage.backController(mav, 109);
+		
+		return mav;
+	}
+	@RequestMapping(value = "/MoveMyDailyDiaryPage", method = RequestMethod.GET)
+	public ModelAndView moveDoctorComment(ModelAndView mav, @ModelAttribute AuthBean ab) {
+		mav.addObject(ab);
+		this.dailyDiary.backController(mav, 32);
 		
 		return mav;
 	}
