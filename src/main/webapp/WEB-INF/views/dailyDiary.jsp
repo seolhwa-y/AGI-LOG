@@ -13,6 +13,179 @@
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 <!-- 네이버 스크립트 -->
 <script	src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
+<style>
+	ul {
+    list-style: none;
+	}
+	.feed {
+		float: left;
+		margin-left: 2%;
+		margin-right: 6%;
+		margin-bottom: 2%;
+	}
+
+	#rightArea{
+		width: 85%;
+		height: 100%;
+		overflow-x:hidden;
+		padding: 0.4% 0 0 0;
+	}
+	#rightArea_top{
+		width: 100%;
+    	height: 5%;
+    	padding: 1% 5%;
+    	margin-left: 3px;
+	}
+	#rightArea_middle{
+		margin-top: 1%;
+		width: 100%;
+		height: 89%;
+		overflow-x:hidden;
+		overflow-y: scroll;
+	}
+	.like{
+	    color: red;
+	    font-size: 130%;
+	    float: right;
+	    margin-right: 4%;
+	}
+	.feed{
+		width: 25%;
+		height: 389px;
+		border-radius: 5px;
+		background-color: white;
+		box-shadow: 4px 4px 10px;
+	}
+	.feed_top{
+		width: 100%;
+		height: 70%;
+		border-bottom: 1px solid #616161;
+	}
+	.feed_bottom{
+
+		width: 90%;
+		height: 23%;
+		margin: 3% auto;
+		font-size: 140%;
+	}
+	#sortArea{ 
+
+		float: left;
+		height: 95%;
+		width: 10%;
+	}
+	#hashTagArea{
+
+		float: left;
+		height: 95%;
+		width: 19%;
+		margin-left: 4%;
+	}
+	#writeFeedArea{
+
+		float: right;
+		height: 95%;
+		width: 10%;
+		margin-right: 7%;
+	}
+	#sort{
+		height: 100%;
+		width: 100%;
+		font-size: 140%;
+	}
+	#hashTag{
+		height: 90%;
+		width: 100%;
+		font-size: 140%;
+	}
+	#writeFeed{
+		height: 90%;
+		width: 100%;
+		font-size: 140%;
+	}
+	#feed_top ,img{
+		width: 100%;
+    	height: 100%;
+		border-radius: 5px 5px 0 0;
+	}
+	#feedDate{
+		margin-bottom: 3%;
+		border-bottom: 1px solid dimgray;
+	}
+	#searchHashTag{
+		border: solid 1px black;
+		width: 5%;
+		height: 100%;
+		margin-left: 2%;
+		font-size: 110%;
+	}
+	
+	/* 모달창 */
+	
+	.insWriteTable{
+		margin-left: 1%;
+		margin-top: 3rem;
+		font-size: 1.5rem;
+		
+	}
+	.tdValue{
+		text-align: left;
+		padding-top: 4%;
+	}
+	.tdName{
+		padding-top: 4%;
+		text-align: center;
+		width : 7rem;
+	}
+	.mBasicInput {
+    width: 30rem;
+    height: 2rem;
+	}
+	.mMiniInput {
+    height: 20rem;
+    width: 30rem;
+	}
+	.statusCheck {
+	
+	}
+	.modal{
+		color: dimgray;
+	}
+	.name{
+		font-size: 1.4rem;
+		margin: 1%;
+		color: dimgray;
+	}
+	.mBtnO {
+    height: 2.5rem;
+    width: 20rem;
+    box-shadow: 0px 5px 0px 0px rgb(239 157 171);
+    background-color: rgb(255, 194, 204);
+    font-size: 1.1rem;
+    color: dimgray;
+    margin-left: 20%;
+	}
+	.modal_foot{
+	position: relative;
+    display: flex;
+    margin: 5% auto;
+    justify-content: space-between;
+    width: 70%;
+	}
+	.modal_head{
+		font-size: 3rem;
+		height: 8%;
+	}
+	.modal_content{
+		height: 70%;
+	}
+	.close{
+		float:right;
+	}
+	.dateInput{
+		width: 70%;
+	}
+</style>
 <script>
 Kakao.init('2afdabad57ed92e1cc9de5bd4baed321');
 function getInfo() {
@@ -27,6 +200,9 @@ function getInfo() {
 		} else ;
 		accessArea.innerHTML += "<span onclick=\"movePage('MoveCompanyLoginPage')\">기업회원</span>";
 	}
+
+	let feedList = document.getElementById("feedList");
+	feedList.innerHTML = "${allDailyDiaryList}";
 }
 function openPopUp() {
 	testPopUp = window
@@ -67,11 +243,6 @@ function kakaoLogout() {
 		document.getElementsByClassName("modal")[0].style.display = "block";
 		let clientData = "";
 		postAjaxJson("ShowDailyDiary", clientData, "dailyDiaryComment");
-}
-// 모달끄기
-function noneee() {
-	alert("bye");
-	document.getElementsByClassName("modal")[0].style.display = "none";
 }
 	
 // 댓글 수정 버튼
@@ -166,6 +337,56 @@ function dailyDiaryComment(ajaxData) {
 	modalBody.innerHTML += "</div>";
 	
 	swal("요청", "요청하신 작업을 완료하였습니다!", "success", { button: "완료"});
+
+//글쓰기 :: 모달창 구성
+function moveWriteFeed(){
+	let modal = document.querySelector(".modal");
+	let modalHead = document.querySelector(".modal_head");
+	let modalContent = document.querySelector(".modal_content");
+	let modalFoot = document.querySelector(".modal_foot");
+
+
+	modal.style.display = "block";
+	modalHead.innerHTML = "<div class='insBabyTitle'>일기 쓰기</div>";
+	modalContent.innerHTML = "<table class='insWriteTable'><tr><td class='tdName'><span class='name'>내  용 :</span></td><td class='tdValue'><input class='mMiniInput name'type='textarea' name='ddContent' placeholder='내용을 입력하세요' required></td></tr>"
+							+"<tr><td></td></tr>"
+							+"<tr><td class='tdName'><span class='name'>공개 여부 :</span></td><td class='tdValue'><input class='statusCheck' type='radio' name='ddStatus' value='1' checked>공개<input class='statusCheck' type='radio' name='ddStatus' value='0'>비공개</td></tr></table>";
+	modalFoot.innerHTML = "<button class='mBtnX' onclick='modalClose()'>취소</button><button class='mBtnO' onclick='insertDailyDiary()'>등록</button>";
+
+}
+
+//일기 등록 :: 일기 등록버튼 클릭
+function insertDailyDiary(){
+	let form = document.getElementById("serverForm");
+	let ddContent = document.getElementsByName("ddContent")[0].value;
+	let ddStatus = document.getElementsByName("ddStatus");
+	
+	for(idx = 0; idx < ddStatus.length; idx++) {
+		if(ddStatus[idx].checked) {
+			form.appendChild(createInput("hidden","ddStatus",ddStatus[idx].value,null,null));
+		}
+	}
+
+	form.appendChild(createInput("hidden","ddContent",ddContent,null,null));
+
+	form.action = "InsertDailyDiary";
+	form.method = "post";
+	
+	form.submit();
+	modalClose();
+}
+
+//모달닫기
+function modalClose(){
+	let modal = document.querySelector(".modal");
+	let modalHead = document.querySelector(".modal_head");
+	let modalContent = document.querySelector(".modal_content");
+	let modalFoot = document.querySelector(".modal_foot");
+	
+	modal.style.display="none";
+	modalHead.innerHTML = "";
+	modalContent.innerHTML = "";
+	modalFoot.innerHTML = "";
 }
 </script>
 </head>
@@ -212,23 +433,25 @@ function dailyDiaryComment(ajaxData) {
 				<!-- ------------------------------------------------------------------------ -->
 			</div>
 			<div id="rightArea" class="scrollBar">
-				<div>
-					<select>
-						<option value = "newList">최신순</option>
-						<option value = "oldList">오래된순</option>
-						<option value = "likeList">좋아요순</option>
-						<option value = "viewList">조회순</option>
-					</select>
+				<div id="rightArea_top">
+					<div id="sortArea">
+						<select id="sort">
+							<option value = "newList">최신순</option>
+							<option value = "oldList">오래된순</option>
+							<option value = "likeList">좋아요순</option>
+							<option value = "viewList">조회순</option>
+						</select>
+					</div>
+					<div id="hashTagArea">
+						<input id="hashTag" type="text" placeholder=" # 해시태그">
+					</div>
+					<input id="searchHashTag" class="writeBtn btn" type="button" value="검색">
+					<div id="writeFeedArea">
+						<input id="writeFeed"type="button" class="writeBtn btn" value="글쓰기" >
+					</div>
 				</div>
-				<div>
-					<input type="button" value="검색" />
-					<input type="text" placeholder="#해시태그 검색" />
-				</div>
-				<div>
-					<input type="button" value="글쓰기" />
-				</div>
-				<div id="allFeeds">
-					
+				<div id="rightArea_middle" class="scrollBar">
+					<ul id="feedList"></ul>
 				</div>
 			</div>
 		</div>
