@@ -1,7 +1,5 @@
 package com.agilog.controller;
 
-import java.util.Locale;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,15 +14,15 @@ import com.agilog.beans.CompanyBean;
 import com.agilog.beans.DoctorBean;
 import com.agilog.beans.PostBean;
 import com.agilog.beans.ReservationBean;
+import com.agilog.services.Board;
 import com.agilog.services.Company;
-import com.agilog.services3.Board3;
 
 @Controller
 public class JpHomeController {
 	@Autowired
 	private Company company;
 	@Autowired
-	private Board3 board;
+	private Board board;
 
 	//예약관리 관리자페이지 이동 : 재필
 	@RequestMapping(value = "/CheckManager", method = RequestMethod.POST)
@@ -52,12 +50,12 @@ public class JpHomeController {
 	}
 	
 	//예약관리 페이지 이동
-	/*@RequestMapping(value = "/MoveReservationManagement", method = RequestMethod.GET)
+	@RequestMapping(value = "/MoveReservationManagement", method = RequestMethod.GET)
 	public ModelAndView moveReservationManagementCtl(HttpServletRequest req,ModelAndView mav, @ModelAttribute CompanyBean cb) {
 		mav.addObject(cb);
 		this.company.backController(mav, 70);
 		return mav;
-	}*/
+	}
 	//환자관리 페이지 이동
 	@RequestMapping(value = "/MovePatientManagement", method = RequestMethod.POST)
 	public ModelAndView movePatientManagementCtl(ModelAndView mav, @ModelAttribute DoctorBean db) {
@@ -104,7 +102,13 @@ public class JpHomeController {
 		this.board.backController(mav, 500);
 		return mav;
 	}
-	
+	//전체 게시판 조회
+	@RequestMapping(value = "/MoveBoardPage", method = RequestMethod.GET)
+	public ModelAndView moveBoardPage(ModelAndView mav, @ModelAttribute PostBean pb) {
+		mav.addObject(pb);
+		this.board.backController(mav, 8);
+		return mav;
+	}
 	
 	
 }

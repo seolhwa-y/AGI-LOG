@@ -71,19 +71,17 @@ function boardContent(data1){
 }
 function changeSort(){
 	let form = document.getElementById("serverForm");
-	
 	let postSelect = document.getElementById("infoBoardSelect");
-
 	//option값을 저장
-	var optionValue = postSelect.options[postSelect.selectedIndex].value;
+	var ibSort = postSelect.options[postSelect.selectedIndex].value;
 	var optionText = postSelect.options[postSelect.selectedIndex].text;
-		
-	alert(optionValue);
+
+	form.appendChild(createInput("hidden","ibSort",ibSort,null,null));
+
 	
-	optionValue.action = "MoveSortPost";
-	optionValue.method = "post";
-	optionValue.submit();
-	
+	form.action = "MoveSortPost";
+	form.method = "post";
+	form.submit();
 }
 </script>
 </head>
