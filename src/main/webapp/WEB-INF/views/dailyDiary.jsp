@@ -13,6 +13,179 @@
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 <!-- 네이버 스크립트 -->
 <script	src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
+<style>
+	ul {
+    list-style: none;
+	}
+	.feed {
+		float: left;
+		margin-left: 2%;
+		margin-right: 6%;
+		margin-bottom: 2%;
+	}
+
+	#rightArea{
+		width: 85%;
+		height: 100%;
+		overflow-x:hidden;
+		padding: 0.4% 0 0 0;
+	}
+	#rightArea_top{
+		width: 100%;
+    	height: 5%;
+    	padding: 1% 5%;
+    	margin-left: 3px;
+	}
+	#rightArea_middle{
+		margin-top: 1%;
+		width: 100%;
+		height: 89%;
+		overflow-x:hidden;
+		overflow-y: scroll;
+	}
+	.like{
+	    color: red;
+	    font-size: 130%;
+	    float: right;
+	    margin-right: 4%;
+	}
+	.feed{
+		width: 25%;
+		height: 389px;
+		border-radius: 5px;
+		background-color: white;
+		box-shadow: 4px 4px 10px;
+	}
+	.feed_top{
+		width: 100%;
+		height: 70%;
+		border-bottom: 1px solid #616161;
+	}
+	.feed_bottom{
+
+		width: 90%;
+		height: 23%;
+		margin: 3% auto;
+		font-size: 140%;
+	}
+	#sortArea{ 
+
+		float: left;
+		height: 95%;
+		width: 10%;
+	}
+	#hashTagArea{
+
+		float: left;
+		height: 95%;
+		width: 19%;
+		margin-left: 4%;
+	}
+	#writeFeedArea{
+
+		float: right;
+		height: 95%;
+		width: 10%;
+		margin-right: 7%;
+	}
+	#sort{
+		height: 100%;
+		width: 100%;
+		font-size: 140%;
+	}
+	#hashTag{
+		height: 90%;
+		width: 100%;
+		font-size: 140%;
+	}
+	#writeFeed{
+		height: 90%;
+		width: 100%;
+		font-size: 140%;
+	}
+	#feed_top ,img{
+		width: 100%;
+    	height: 100%;
+		border-radius: 5px 5px 0 0;
+	}
+	#feedDate{
+		margin-bottom: 3%;
+		border-bottom: 1px solid dimgray;
+	}
+	#searchHashTag{
+		border: solid 1px black;
+		width: 5%;
+		height: 100%;
+		margin-left: 2%;
+		font-size: 110%;
+	}
+	
+	/* 모달창 */
+	
+	.insWriteTable{
+		margin-left: 1%;
+		margin-top: 3rem;
+		font-size: 1.5rem;
+		
+	}
+	.tdValue{
+		text-align: left;
+		padding-top: 4%;
+	}
+	.tdName{
+		padding-top: 4%;
+		text-align: center;
+		width : 7rem;
+	}
+	.mBasicInput {
+    width: 30rem;
+    height: 2rem;
+	}
+	.mMiniInput {
+    height: 20rem;
+    width: 30rem;
+	}
+	.statusCheck {
+	
+	}
+	.modal{
+		color: dimgray;
+	}
+	.name{
+		font-size: 1.4rem;
+		margin: 1%;
+		color: dimgray;
+	}
+	.mBtnO {
+    height: 2.5rem;
+    width: 20rem;
+    box-shadow: 0px 5px 0px 0px rgb(239 157 171);
+    background-color: rgb(255, 194, 204);
+    font-size: 1.1rem;
+    color: dimgray;
+    margin-left: 20%;
+	}
+	.modal_foot{
+	position: relative;
+    display: flex;
+    margin: 5% auto;
+    justify-content: space-between;
+    width: 70%;
+	}
+	.modal_head{
+		font-size: 3rem;
+		height: 8%;
+	}
+	.modal_content{
+		height: 70%;
+	}
+	.close{
+		float:right;
+	}
+	.dateInput{
+		width: 70%;
+	}
+</style>
 <script>
 Kakao.init('2afdabad57ed92e1cc9de5bd4baed321');
 function getInfo() {
@@ -27,6 +200,9 @@ function getInfo() {
 		} else ;
 		accessArea.innerHTML += "<span onclick=\"movePage('MoveCompanyLoginPage')\">기업회원</span>";
 	}
+
+	let feedList = document.getElementById("feedList");
+	feedList.innerHTML = "${allDailyDiaryList}";
 }
 function openPopUp() {
 	testPopUp = window
@@ -58,6 +234,159 @@ function kakaoLogout() {
 		})
 		Kakao.Auth.setAccessToken(undefined)
 	}
+}
+
+/* 감성일기 댓글 작업 */
+	// 모달켜기
+	function clickee() {
+	alert("hi");
+		document.getElementsByClassName("modal")[0].style.display = "block";
+		let clientData = "";
+		postAjaxJson("ShowDailyDiary", clientData, "dailyDiaryComment");
+}
+	
+// 댓글 수정 버튼
+function updateInput(ddCode, ddSuCode, dcCode, dcDate, ddDate){
+	let dcContent = document.getElementsByClassName(dcDate)[0];
+	
+	dcContent.innerHTML = "";
+	dcContent.innerHTML += "<input class ='updDbComment commentInput'>";
+	dcContent.innerHTML += "<button class='submitBtn btn' onClick='updateDailyDiaryComment(" + ddCode + "," + ddSuCode + "," + dcCode + "," + dcDate + "," + ddDate +")'>확인</button>";
+
+}
+
+// 감성일기 댓글 전부 AJAX
+// 1. 댓글 등록
+function insertDailyDiaryComment(ddCode, ddSuCode, ddDate) {
+	const ddComment = document.getElementsByClassName("ddComment")[0].value;
+	const clientData = "dcDdCode=" + ddCode + "&dcDdSuCode=" + ddSuCode + "&dcDdDate=" + ddDate + "&dcContent=" + ddComment;
+	postAjaxJson("InsertDailyDiaryComment", clientData, "dailyDiaryComment");
+}
+
+// 2. 댓글 수정
+function updateDailyDiaryComment(ddCode, ddSuCode, dcCode, dcDate, ddDate) {
+	const updDbComment = document.getElementsByClassName("updDbComment")[0].value;
+	const clientData = "dcDdCode=" + ddCode + "&dcCode=" + dcCode + "&dcDdSuCode=" + ddSuCode + "&dcDate=" + dcDate + "&dcContent=" + updDbComment + "&dcDdDate=" + ddDate;
+
+	postAjaxJson("UpdateDailyDiaryComment", clientData, "dailyDiaryComment");
+}
+
+// 3. 댓글 삭제
+function deleteDailyDiaryComment(ddCode, ddSuCode, dcCode, dcDate, ddDate) {
+	const clientData = "dcDdCode=" + ddCode + "&dcCode=" + dcCode + "&dcDdSuCode=" + ddSuCode + "&dcDate=" + dcDate + "&dcDdDate=" + ddDate;
+	postAjaxJson("DeleteDailyDiaryComment", clientData, "dailyDiaryComment");
+	
+    // 경고
+    swal({
+        title: "진짜로 삭제하십니까?",
+        text: "삭제하면 되돌릴 수 없습니다.",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    })
+        .then((willDelete) => {
+            if (willDelete) {
+        		postAjaxJson("DeleteDailyDiaryComment", clientData, "dailyDiaryComment");
+            } else {
+                swal("삭제를 취소하셨습니다.");
+            }
+        });
+}
+
+// CALLBACK
+function dailyDiaryComment(ajaxData) {
+	const ajax = JSON.parse(ajaxData);
+	const suCode = ajax.suCode;
+	const ddComment = ajax.ddComment;
+	console.log(ajax);
+	
+	let modalBody = document.getElementsByClassName("modal_content")[0];
+	modalBody.innerHTML = "";
+	
+	
+	modalBody.innerHTML += "<div><hr></div>";
+	modalBody.innerHTML += "<div>";
+	modalBody.innerHTML += "<input class=\"ddComment mEditInput\" />";
+	modalBody.innerHTML += "<button class=\"mMiniBtn btn\" onClick=\"insertDailyDiaryComment("+ ddComment[0].dcDdCode + "," + ddComment[0].dcDdSuCode + "," + ddComment[0].dcDdDate + ")\">확인</button>";
+	modalBody.innerHTML += "</div>";
+	modalBody.innerHTML += "<div id='commentList'>";
+	
+	
+	for(i = 0; i < ddComment.length; i++) {
+		modalBody.innerHTML += "<div class = 'comment " + i + "'>";
+		// 프로필 사진이 없을 경우 기본 이미지
+		if(ddComment[i].suPhoto != null) {
+			modalBody.innerHTML += "<img class='profileImage' src=" + ddComment[i].suPhoto + ">";
+		} else {
+			modalBody.innerHTML += "<img class='profileImage' src='/res/img/profile_default.png'>";
+		}
+	
+		// 닉네임
+		modalBody.innerHTML += "<div class = 'suNickname'>" +  ddComment[i].suNickname + "</div>";
+	
+		// 댓글 내용
+		modalBody.innerHTML += "<div class='dcContent " + ddComment[i].dcDate + "'>" + ddComment[i].dcContent + "</div>";
+		
+		// 수정 삭제 버튼
+		if(suCode === ddComment[i].dcSuCode) {
+			modalBody.innerHTML += "<i class='fa-solid fa-pen updBtn editBtn' onClick='updateInput(" + ddComment[i].dcDdCode + "," + ddComment[i].dcDdSuCode + "," + ddComment[i].dcCode + "," + ddComment[i].dcDate + "," + ddComment[i].dcDdDate +")'></i>";
+			modalBody.innerHTML += "<i class='fa-solid fa-trash-can delBtn editBtn' onClick='deleteDailyDiaryComment(" + ddComment[i].dcDdCode + "," + ddComment[i].dcDdSuCode + "," + ddComment[i].dcCode + "," + ddComment[i].dcDate + "," + ddComment[i].dcDdDate +")'></i>";
+		} 
+		modalBody.innerHTML += "</div>";
+	}
+	modalBody.innerHTML += "</div>";
+	
+	swal("요청", "요청하신 작업을 완료하였습니다!", "success", { button: "완료"});
+
+//글쓰기 :: 모달창 구성
+function moveWriteFeed(){
+	let modal = document.querySelector(".modal");
+	let modalHead = document.querySelector(".modal_head");
+	let modalContent = document.querySelector(".modal_content");
+	let modalFoot = document.querySelector(".modal_foot");
+
+
+	modal.style.display = "block";
+	modalHead.innerHTML = "<div class='insBabyTitle'>일기 쓰기</div>";
+	modalContent.innerHTML = "<table class='insWriteTable'><tr><td class='tdName'><span class='name'>내  용 :</span></td><td class='tdValue'><input class='mMiniInput name'type='textarea' name='ddContent' placeholder='내용을 입력하세요' required></td></tr>"
+							+"<tr><td></td></tr>"
+							+"<tr><td class='tdName'><span class='name'>공개 여부 :</span></td><td class='tdValue'><input class='statusCheck' type='radio' name='ddStatus' value='1' checked>공개<input class='statusCheck' type='radio' name='ddStatus' value='0'>비공개</td></tr></table>";
+	modalFoot.innerHTML = "<button class='mBtnX' onclick='modalClose()'>취소</button><button class='mBtnO' onclick='insertDailyDiary()'>등록</button>";
+
+}
+
+//일기 등록 :: 일기 등록버튼 클릭
+function insertDailyDiary(){
+	let form = document.getElementById("serverForm");
+	let ddContent = document.getElementsByName("ddContent")[0].value;
+	let ddStatus = document.getElementsByName("ddStatus");
+	
+	for(idx = 0; idx < ddStatus.length; idx++) {
+		if(ddStatus[idx].checked) {
+			form.appendChild(createInput("hidden","ddStatus",ddStatus[idx].value,null,null));
+		}
+	}
+
+	form.appendChild(createInput("hidden","ddContent",ddContent,null,null));
+
+	form.action = "InsertDailyDiary";
+	form.method = "post";
+	
+	form.submit();
+	modalClose();
+}
+
+//모달닫기
+function modalClose(){
+	let modal = document.querySelector(".modal");
+	let modalHead = document.querySelector(".modal_head");
+	let modalContent = document.querySelector(".modal_content");
+	let modalFoot = document.querySelector(".modal_foot");
+	
+	modal.style.display="none";
+	modalHead.innerHTML = "";
+	modalContent.innerHTML = "";
+	modalFoot.innerHTML = "";
 }
 </script>
 </head>
@@ -104,23 +433,25 @@ function kakaoLogout() {
 				<!-- ------------------------------------------------------------------------ -->
 			</div>
 			<div id="rightArea" class="scrollBar">
-				<div>
-					<select>
-						<option value = "newList">최신순</option>
-						<option value = "oldList">오래된순</option>
-						<option value = "likeList">좋아요순</option>
-						<option value = "viewList">조회순</option>
-					</select>
+				<div id="rightArea_top">
+					<div id="sortArea">
+						<select id="sort">
+							<option value = "newList">최신순</option>
+							<option value = "oldList">오래된순</option>
+							<option value = "likeList">좋아요순</option>
+							<option value = "viewList">조회순</option>
+						</select>
+					</div>
+					<div id="hashTagArea">
+						<input id="hashTag" type="text" placeholder=" # 해시태그">
+					</div>
+					<input id="searchHashTag" class="writeBtn btn" type="button" value="검색">
+					<div id="writeFeedArea">
+						<input id="writeFeed"type="button" class="writeBtn btn" value="글쓰기" >
+					</div>
 				</div>
-				<div>
-					<input type="button" value="검색" />
-					<input type="text" placeholder="#해시태그 검색" />
-				</div>
-				<div>
-					<input type="button" value="글쓰기" />
-				</div>
-				<div id="allFeeds">
-					
+				<div id="rightArea_middle" class="scrollBar">
+					<ul id="feedList"></ul>
 				</div>
 			</div>
 		</div>

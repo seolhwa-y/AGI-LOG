@@ -81,7 +81,7 @@ public class ShHomeController {
 	}
 	
 	// 게시판 글보기 이동
-	@RequestMapping(value = "/ShowFreePost", method = RequestMethod.POST)
+	@RequestMapping(value = "ShowFreePostCtl", method = RequestMethod.POST)
 	public ModelAndView showFreePostCtl(ModelAndView mav, @ModelAttribute PostBean pb) {
 		mav.addObject("postBean", pb);
 		this.board3.backController(mav, 580);

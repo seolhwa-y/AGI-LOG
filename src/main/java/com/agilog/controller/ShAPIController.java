@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.agilog.beans.BebeMapCommentBean;
+import com.agilog.beans.CompanyBean;
 import com.agilog.beans.DailyDiaryCommentBean;
 import com.agilog.beans.HealthDiaryBean;
 import com.agilog.beans.PostCommentBean;
@@ -137,11 +138,11 @@ public class ShAPIController {
 	// 지도 정보 확인 후 댓글 불러오기
 	@SuppressWarnings("unchecked")
 	@PostMapping("/ViewCompanyInfo")
-	public HashMap<String, Object> viewCompanyInfo(Model model, @ModelAttribute BebeMapCommentBean bmcb){
-		model.addAttribute(bmcb);
+	public HashMap<String, Object> viewCompanyInfo(Model model, @ModelAttribute CompanyBean cb){
+		model.addAttribute(cb);
 		this.bebeMap.backController(model, 42);
 		
-		return (HashMap<String, Object>)model.getAttribute("bebeMapBean");
+		return (HashMap<String, Object>)model.getAttribute("mcCommentList");
 	}
 	
 	// 지도 댓글 등록

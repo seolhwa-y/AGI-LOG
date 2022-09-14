@@ -222,9 +222,11 @@
         	// 검색 결과 목록과 마커를 표출하는 함수입니다
         	function displayPlaces(places) {
 
-        		var listEl = document.getElementById('placesList'), menuEl = document
-        				.getElementById('menu_wrap'), fragment = document
-        				.createDocumentFragment(), bounds = new kakao.maps.LatLngBounds(), listStr = '';
+        		var listEl = document.getElementById('placesList'), 
+	        		menuEl = document.getElementById('menu_wrap'), 
+	        		fragment = document.createDocumentFragment(), 
+	        		bounds = new kakao.maps.LatLngBounds(), 
+	        		listStr = '';
 
         		// 검색 결과 목록에 추가된 항목들을 제거합니다
         		removeAllChildNods(listEl);
@@ -235,8 +237,8 @@
         		for (var i = 0; i < places.length; i++) {
 
         			// 마커를 생성하고 지도에 표시합니다
-        			var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x), marker = addMarker(
-        					placePosition, i), itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
+        			var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x), 
+        			marker = addMarker(placePosition, i), itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
 
         			// 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
         			// LatLngBounds 객체에 좌표를 추가합니다
@@ -245,9 +247,7 @@
         			// 마커와 검색결과 항목에 click 했을 때
         			// 해당 장소에 인포윈도우에 장소명을 표시합니다
         			// mouseover 했을 때는 인포윈도우를 닫습니다
-        			(function(marker, title, address, phone) {
-        				kakao.maps.event.addListener(marker, 'click', function() {
-
+        			(function(marker, title, address, phone) {kakao.maps.event.addListener(marker, 'click', function() {  
         					displayInfowindow(marker, title, address, phone);
         				});
 
@@ -262,8 +262,7 @@
         				itemEl.onmouseout = function() {
         					infowindow.close();
         				};
-        			})(marker, places[i].place_name, places[i].address_name,
-        					places[i].phone);
+        			})(marker, places[i].place_name, places[i].road_address_name, places[i].phone);
 
         			fragment.appendChild(itemEl);
         		}
@@ -364,16 +363,72 @@
         	// 검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수입니다
         	// 인포윈도우에 장소명을 표시합니다
         	function displayInfowindow(marker, title, address, phone) {
-        		var content = '<div style="width:20rem; height: 20rem;text-align:center; padding:6px 0;">'
-        				+ '<div>'+ title + '</div>'
-        				+ '<div>'+ address + '</div>'
-        				+ '<div>'+ phone + '</div>'
-        				+ "<input type = 'button' value = '예약'  onClick = \"showReservation(\'" + title + ',' + address + ',' + phone + "\')\">"
-        				+ '<div>댓글리스트 불러와라</div>' 
-        				+ '</div>';
-
+        		let clientData = "coName=" + title + "&coAddress=" + address + "&coPhone=" + phone;
+        		
+        		markers = marker;
+        		postAjaxJson("ViewCompanyInfo", clientData, "callDisplayInfo");
+        	
+        		let content = '<div class = "infoWindow" style="width:20rem; height: 20rem; text-align:center; padding:6px 0;">';
+    			content	+= '<div>'+ title + '</div>';
+    			content	+= '<div>'+ address + '</div>';
+    			content	+= '<div>'+ phone + '</div>';
+		    	content += '</div>'; 
+		    	content += "<input type = 'button' value = '예약'  onClick = \"postAjaxJson(ViewCompanyInfo\'" + "," + clientData + "," + "callDisplayInfo\')\">"; 
+		    	
         		infowindow.setContent(content);
         		infowindow.open(map, marker);
+        	}
+        	
+        	
+        	// 마크 눌렀을 때 CALLBACK
+        	function callDisplayInfo(ajaxData) {
+        		if(ajaxData == null) {
+        			alert("예약 불가능");
+        		} else {
+            		const mcCommentList = JSON.parse(ajaxData);
+            		const suCode = mcCommentList.suCode;
+            		const mcComment = mcCommentList.mcComment;
+        			
+	    			let infoWindow = document.getElementsByClassName("infoWindow")[0];
+	    			
+	 	        	if(suCode != null) {
+		        		infoWindow.innerHTML += "<input type = 'button' value = '예약'  onClick = \"showReservation(\'" + mcComment[0].coCode + "\')\">";
+		        	} 
+					
+	    			infoWindow.innerHTML += "<div><hr></div>"
+	    								 + "<div>"
+						    			 + "<input class=\"mcContent mEditInput\" />"
+						    			 + "<button class=\"mMiniBtn btn\" onClick=\"insertMapComment("+ mcComment[0].coCode + ")\">확인</button>"
+						    			 + "</div>"
+	    								 + "<div id='commentList'>";
+	    			
+	    			for(i = 0; i < mcComment.length; i++) {
+	    				infoWindow.innerHTML += "<div class = 'comment " + i + "'>";
+	    				// 프로필 사진이 없을 경우 기본 이미지
+	    				if(mcComment[i].suPhoto != null) {
+	    					infoWindow.innerHTML += "<img class='profileImage' src=" + ddComment[i].suPhoto + ">";
+	    				} else {
+	    					infoWindow.innerHTML += "<img class='profileImage' src='/res/img/profile_default.png'>";
+	    				}
+	    			
+	    				// 닉네임
+	    				infoWindow.innerHTML += "<div class = 'suNickname'>" +  mcComment[i].suNickname + "</div>";
+	    			
+	    				// 댓글 내용
+	    				infoWindow.innerHTML += "<div class='dcContent " + mcComment[i].mcDate + "'>" + mcComment[i].mcContent + "</div>";
+	    				
+	    				// 수정 삭제 버튼
+	    				if(suCode === mcComment[i].mcSuCode) {
+	    					infoWindow.innerHTML += "<i class='fa-solid fa-pen updBtn editBtn' onClick='updateInput(" + mcComment[i].coCode + "," + mcComment[i].mcCode + "," + mcComment[i].mcDate + "," + mcComment[i].mcSuCode + ")'></i>";
+	    					infoWindow.innerHTML += "<i class='fa-solid fa-trash-can delBtn editBtn' onClick='deleteMapComment(" + mcComment[i].coCode + "," + mcComment[i].mcCode + "," + mcComment[i].mcDate + "," + mcComment[i].mcSuCode + ")'></i>";
+	    				} 
+	    				infoWindow.innerHTML += "</div>";
+	    			}
+	    			infoWindow.innerHTML += "</div>";
+	        		infowindow.setContent(infoWindow);
+	        		console.log(mcComment);
+        		}
+    			swal("요청", "요청하신 작업을 완료하였습니다!", "success", { button: "완료"});
         	}
 
         	// 검색결과 목록의 자식 Element를 제거하는 함수입니다
@@ -385,9 +440,10 @@
 
         	// 예약하기 (정보 가지고 DB 접근) 모달 띄우기
         	function showReservation(title, address, phone) {
-        		document.getElementsByClassName("modal")[0].style.display = "block";
-        		let modalBody = document.getElementsByClassName("modal_content")[0];
-        		modalBody.innerText = title, address, phone;
+
+        		
+        		let clientData = "coName=" + title + "&coAddress=" + address + "&coPhone=" + phone;
+        		postAjaxJson("ShowReservation", clientData, "callReservation");
         	}
 
         	// DB에서 가져온 정보로 모달 꾸미기 (아이선택, 의사선택, 캘린더(예약 가능, 불가능), 시간선택, 예약완료)
@@ -395,7 +451,10 @@
         		alert(ajaxData);
         		const ajax = JSON.parse(ajaxData);
         		alert(ajax);
-
+        		
+        		document.getElementsByClassName("modal")[0].style.display = "block";
+        		let modalBody = document.getElementsByClassName("modal_content")[0];
+        		modalBody.innerText = ajax;
         	}
 
         	// 예약완료
@@ -403,30 +462,88 @@
 
         	}
 
-        	// 댓글 등록
-        	function insertMapComment() {
+        	// 댓글 수정 버튼
+        	function updateInput(coCode, mcCode, mcDate, mcSuCode){
+        		let mcContent = document.getElementsByClassName(mcDate)[0];
 
+        		mcContent.innerHTML = "";
+        		mcContent.innerHTML += "<input class ='updMcComment commentInput'>";
+        		mcContent.innerHTML += "<button class='submitBtn btn' onClick='updateMapComment(" + coCode + "," + mcCode + "," + mcDate + "," + mcSuCode +")'>확인</button>";
+        	}
+        	
+        	// 댓글 등록
+        	function insertMapComment(coCode) {
+        		const mcContent = document.getElementsByClassName("mcContent")[0].value;
+        		const clientData = "coCode=" + coCode + "&mcContent=" + mcContent;
+        		
+        		postAjaxJson("InsertCompanyComment", clientData, "mapComment");
         	}
 
         	// 댓글 수정
-        	function updateMapComment() {
+        	function updateMapComment(coCode, mcCode, mcDate, mcSuCode) {
+        		const updMcComment = document.getElementsByClassName("updMcComment")[0].value;
+        		const clientData = "coCode=" + coCode + "&mcCode=" + mcCode + "&mcDate=" + mcDate + "&mcSuCode=" + mcSuCode + "&mcContent=" + updMcComment;
 
+        		postAjaxJson("UpdateCompanyComment", clientData, "mapComment");
         	}
 
         	// 댓글 삭제
-        	function deleteMapComment() {
-
+        	function deleteMapComment(coCode, mcCode, mcDate, mcSuCode) {
+        		const clientData = "coCode=" + coCode + "&mcCode=" + mcCode + "&mcDate=" + mcDate + "&mcSuCode=" + mcSuCode;
+        		
+        		// 경고
+        	    swal({
+        	        title: "진짜로 삭제하십니까?",
+        	        text: "삭제하면 되돌릴 수 없습니다.",
+        	        icon: "warning",
+        	        buttons: true,
+        	        dangerMode: true,
+        	    })
+        	        .then((willDelete) => {
+        	            if (willDelete) {
+        	            	postAjaxJson("DeleteCompanyComment", clientData, "mapComment");
+        	            } else {
+        	                swal("삭제를 취소하셨습니다.");
+        	            }
+        	    });
         	}
 
-        	// CALLBACK
+        	// 댓글 기능 :: CALLBACK
         	function mapComment(ajaxData) {
-        		alert(ajaxData);
-        		const ajax = JSON.parse(ajaxData);
-        		alert(ajax);
+        		const mcCommentList = JSON.parse(ajaxData);
+        		const suCode = mcCommentList.suCode;
+        		const mcComment = mcCommentList.mcComment;
+        		
+    			let commentList = document.getElementById("commentList");
+    			commentList.innerHTML = "";
+    			
+        		for(i = 0; i < mcComment.length; i++) {
 
-        		swal("요청", "요청하신 작업을 완료하였습니다!", "success", {
-        			button : "완료"
-        		});
+	 	        	
+        			commentList.innerHTML = "<div class = 'comment " + i + "'>";
+    				// 프로필 사진이 없을 경우 기본 이미지
+    				if(mcComment[i].suPhoto != null) {
+    					commentList.innerHTML += "<img class='profileImage' src=" + ddComment[i].suPhoto + ">";
+    				} else {
+    					commentList.innerHTML += "<img class='profileImage' src='/res/img/profile_default.png'>";
+    				}
+    			
+    				// 닉네임
+    				commentList.innerHTML += "<div class = 'suNickname'>" +  mcComment[i].suNickname + "</div>";
+    			
+    				// 댓글 내용
+    				commentList.innerHTML += "<div class='dcContent " + mcComment[i].mcDate + "'>" + mcComment[i].mcContent + "</div>";
+    				
+    				// 수정 삭제 버튼
+    				if(suCode === mcComment[i].mcSuCode) {
+    					commentList.innerHTML += "<i class='fa-solid fa-pen updBtn editBtn' onClick='updateInput(" + mcComment[i].coCode + "," + mcComment[i].mcCode + "," + mcComment[i].mcDate + "," + mcComment[i].mcSuCode + ")'></i>";
+    					commentList.innerHTML += "<i class='fa-solid fa-trash-can delBtn editBtn' onClick='deleteMapComment(" + mcComment[i].coCode + "," + mcComment[i].mcCode + "," + mcComment[i].mcDate + "," + mcComment[i].mcSuCode + ")'></i>";
+    				} 
+    				commentList.innerHTML += "</div>";
+    			}
+        		commentList.innerHTML += "</div>";
+
+        		swal("요청", "요청하신 작업을 완료하였습니다!", "success", {button : "완료"});
         	}
             </script>
         </div>
