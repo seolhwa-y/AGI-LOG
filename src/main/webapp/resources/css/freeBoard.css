@@ -1,0 +1,150 @@
+@charset "UTF-8";
+.freeBoard{
+	width: 79.3rem;
+    height: 44rem;
+}
+.freeTable{
+	background-color:white;
+	margin:0 auto;
+	margin-top: 1.4rem;
+	border-collapse:collapse;
+}
+.freeBoardH{
+	font-size:2rem;
+	width:14rem;
+	padding: 44px;
+}
+.freeBoardM{
+	font-size:1.2rem;
+	padding: 9px;
+	border: solid 2px;
+    background-color: #cfcfcf;
+}
+.no{
+	width:5rem;
+}
+.title{
+	width:43rem;
+	word-spacing: 6rem;
+}
+.date{
+	width:10rem;
+}
+.like{
+	width:5rem;
+}
+.view{
+	width:7rem;
+}
+.thead{
+	text-align: left;
+}
+
+.freeBoardB{
+	font-size: 1.1rem;
+    text-align: center;
+    border:solid 2px;
+    padding:6px;
+}
+.freeBoardTitle{
+	font-size: 1.1rem;
+    text-align: left;
+    border:solid 2px;
+    padding:6px;
+}
+#freeBoardSelect{
+	width: 6rem;
+    height: 1.5rem;
+    font-size: 1rem;
+    float: right;
+    margin-right: 1.4rem;
+    margin-top: -1rem;
+}
+.selectBoard{
+	background-color:white;
+	cursor: pointer;
+}
+.selectBoard:hover{
+    background-color:#bbb;
+    transition: all 0.3s;
+}
+
+.postContent{
+	background-color:white;
+	margin: 0 auto;
+	margin-top: 1rem;
+	width: 79rem;
+    height: 43rem;
+}
+.pTitle{
+	margin: 0 auto;
+    width: 49rem;
+    text-align: center;
+    font-size: 1.5rem;
+    padding: 21px;
+}
+.pHead{
+	width: 75rem;
+    height: 1.3rem;
+    font-size: 1.2rem;
+    margin: 0 auto;
+    padding: 18px;
+    border: 1px solid;
+    border-width: 2px 0px 2px 0px;
+}
+.pDate{
+	width: 16rem;
+    text-align: center;
+    float: left;
+    margin-left: 19rem;
+}
+.sDate{
+	color:grey;
+}
+.pView{
+	width: 11rem;
+    text-align: center;
+    float: left;
+}
+.sView{
+	color: #0F71C6
+}
+.pLike{
+	width: 11rem;
+	margin-left: 1rem;
+	float: left;
+}
+.sLike{
+	color: orangered;
+}
+.pBody{
+	width: 73rem;
+    padding: 2rem;
+    border: 1px solid;
+    border-width: 0px 0px 2px 0px;
+    margin: 0 auto;
+    margin-top: 1.3rem;
+}
+.pContent{
+	background-color:white;
+}
+.likeBtn{
+	font-size: 15px;
+    padding: 5px 9px 3px;
+    border-radius: 3px;
+    border: 1px solid #BDBDBD;
+    float:right;
+    margin-top: 1rem;
+    margin-right: 1.3rem;
+    cursor:pointer;
+}
+.backList{
+	font-size: 15px;
+    padding: 5px 9px 3px;
+    border-radius: 3px;
+    border: 1px solid #BDBDBD;
+    float:left;
+    margin-top: 1rem;
+    margin-left: 1.3rem;
+    cursor:pointer;
+}

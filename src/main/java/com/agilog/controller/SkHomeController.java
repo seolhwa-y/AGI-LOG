@@ -110,14 +110,6 @@ public class SkHomeController {
 		return mav;
 	}
 
-	@RequestMapping(value = "/MoveBoardPage", method = RequestMethod.GET)
-	public ModelAndView moveBoardPage(ModelAndView mav, @ModelAttribute BoardBean bb) {
-		mav.addObject(bb);
-		this.board.backController(mav, 8);
-
-		return mav;
-	}
-
 	@RequestMapping(value = "/MoveMyPage", method = RequestMethod.GET)
 	public ModelAndView moveMyPage(ModelAndView mav, @ModelAttribute MyPageBean mb) {
 		mav.addObject(mb);

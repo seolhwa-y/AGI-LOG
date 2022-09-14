@@ -30,32 +30,11 @@ public class Board implements ServiceRule {
 
 	public void backController(ModelAndView mav, int serviceCode) {
 		switch (serviceCode) {
-		case 8:
-			this.moveBoardPageCtl(mav);
-			break;
 		}
 	}
 
 	public void backController(Model model, int serviceCode) {
 
-	}
-
-	private void moveBoardPageCtl(ModelAndView mav) {
-		AuthBean ab;
-		try {
-			ab = (AuthBean) this.pu.getAttribute("accessInfo");
-			if (ab != null) {
-				if (ab.getSuCode().length() == 10) {
-					ab.setType("kakao");
-				} else {
-					ab.setType("naver");
-				}
-				mav.addObject("accessInfo", ab);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		mav.setViewName("totalBoard");
 	}
 
 	private void changeSortCtl(Model model) {

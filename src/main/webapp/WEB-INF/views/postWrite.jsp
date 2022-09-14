@@ -222,7 +222,7 @@ function deleteFile(num) {
 		<div id="middle">
 			<div id="rightArea" class="scrollBar">
 				<input type="text" id="fbTitle" placeholder="제목을 입력해 주세요"/>
-				<textarea name="ir1" id="ir1" rows="10" cols="165"></textarea>
+				<textarea name="ir1" id="ir1" rows="30" cols="165"></textarea>
 				<script type="text/javascript">
 					var oEditors = [];
 					nhn.husky.EZCreator.createInIFrame({

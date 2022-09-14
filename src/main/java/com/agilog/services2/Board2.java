@@ -2,7 +2,15 @@ package com.agilog.services2;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,12 +47,18 @@ public class Board2 {
 		 */
 		switch(serviceCode) {
 
+		case 8:
+			this.moveBoardPageCtl(mav);
+			break;
 		case 57:
 			this.moveWritePageCtl(mav);
 			break;
-		/*case 65:
+		case 581:
+			this.moveShowFbPostCtl(mav);
+			break;
+		case 65:
 			this.insertPostCtl(mav);
-			break;*/
+			break;
 		default:
 			break;
 		}	
@@ -62,9 +76,24 @@ public class Board2 {
 	public void backController(Model model, int serviceCode) {
 		
 	}
-	
+
 	private void moveBoardPageCtl(ModelAndView mav) {
-		
+		AuthBean ab;
+		try {
+			ab = (AuthBean) this.pu.getAttribute("accessInfo");
+			if (ab != null) {
+				if (ab.getSuCode().length() == 10) {
+					ab.setType("kakao");
+				} else {
+					ab.setType("naver");
+				}
+				mav.addObject("accessInfo", ab);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		mav.addObject("freeBoardList", this.makeBoardList(this.session.selectList("getFbPostList")));
+		mav.setViewName("freeBoard");
 	}
 	
 	private void changeSortCtl(Model model) {
@@ -103,8 +132,11 @@ public class Board2 {
 		}
 	}
 	
-	private void moveShowPostCtl(ModelAndView mav) {
+	private void moveShowFbPostCtl(ModelAndView mav) {
+		PostBean pb = (PostBean) mav.getModel().get("postBean");
 		
+		mav.addObject("content",this.makePostView(this.session.selectOne("getFbPostContent", pb)));
+		mav.setViewName("post");
 	}
 	
 	private void searchPostCtl(ModelAndView mav) {
@@ -197,7 +229,7 @@ public class Board2 {
 		System.out.println("타이틀 체크 : " + pb.getFbTitle());
 		System.out.println("컨텐츠 체크 : " + pb.getFbContent());
 
-		mav.addObject("freeBoardList", this.makeBoardList(this.session.selectList("getPostList", pb)));
+		mav.addObject("freeBoardList", this.makeBoardList(this.session.selectList("getFbPostList")));
 		mav.setViewName("freeBoard");
 	}
 	
@@ -210,25 +242,22 @@ public class Board2 {
 	}
 	
 	//정보게시판 게시글 EL 작업
-	private String makePostView(List<PostBean> bebePost) {
+	private String makePostView(PostBean pb) {
 		StringBuffer sb = new StringBuffer();
-		//if(bebePost.size() !=0) {
-		for(int idx=0; idx<1; idx++) {
-				PostBean pb = (PostBean)bebePost.get(idx);
-			sb.append("<div class=\"pTitle\">" + pb.getIbTitle() + "</div>");
-			sb.append("<div class=\"pHead\">");
-			sb.append("<div class=\"pDate\">작성일&ensp;<small class=\"sDate\">" + pb.getFbDate() +"</small></div>");
-			sb.append("<div class=\"pView\">조회수&ensp;<small class=\"sView\">" + pb.getFbView() + "</small></div>");
-			sb.append("<div class=\"pLike\">좋아요&ensp;<small class=\"sLike\">" + pb.getFbLike() + "</small></div>");
-			sb.append("</div>");
-			sb.append("<div class=\"pBody\">");
-			sb.append("<div class=\"pContent\"> " + pb.getFbContent() + " </div>");	
-			sb.append("</div>");
-			sb.append("<button class=\"likeBtn\" onClick=\"likeBtn()\">좋아요</button>");
-			sb.append("<button class=\"backList\" onClick=\"movePage('MoveInfoBoard')\">목록</button>");
-			}
+		
+		sb.append("<div class=\"pTitle\">" + pb.getFbTitle() + "</div>");
+		sb.append("<div class=\"pHead\">");
+		sb.append("<div class=\"pDate\">작성일&ensp;<small class=\"sDate\">" + pb.getFbDate() +"</small></div>");
+		sb.append("<div class=\"pView\">조회수&ensp;<small class=\"sView\">" + pb.getFbView() + "</small></div>");
+		sb.append("<div class=\"pLike\">좋아요&ensp;<small class=\"sLike\">" + pb.getFbLike() + "</small></div>");
+		sb.append("</div>");
+		sb.append("<div class=\"pBody\">");
+		sb.append("<div class=\"pContent\"> " + pb.getFbContent() + " </div>");	
+		sb.append("</div>");
+		sb.append("<button class=\"likeBtn\" onClick=\"likeBtn()\">좋아요</button>");
+		sb.append("<button class=\"backList\" onClick=\"movePage('MoveBoardPage')\">목록</button>");
 		sb.append("</div");
-		//}
+		
 		return sb.toString();
 	}
 	//정보게시판 목록 EL 작업
@@ -245,6 +274,7 @@ public class Board2 {
 			sb.append("<tr>");
 			sb.append("<th class=\"fbBoardM no\">No.</th>");
 			sb.append("<th class=\"fbBoardM title\">제목</th>");
+			sb.append("<th class=\"fbBoardM writer\">작성자</th>");
 			sb.append("<th class=\"fbBoardM date\">작성일</th>");
 			sb.append("<th class=\"fbBoardM like\">좋아요</th>");
 			sb.append("<th class=\"fbBoardM view\">조회수</th>");
@@ -255,6 +285,14 @@ public class Board2 {
 				sb.append("<tr class=\"selectBoard\" onClick=\"boardContent("+ pb.getFbCode() +")\">");
 				sb.append("<td class=\"fbBoardB\">"+ (max-idx) +"</td>");
 				sb.append("<td class=\"fbBoardTitle\">"+ pb.getFbTitle() +"</td>");
+				try {
+					sb.append("<td class=\"fbBoardWriter\">"+ this.enc.aesDecode(pb.getFbSuName(), pb.getFbSuCode()) +"</td>");
+				} catch (InvalidKeyException | UnsupportedEncodingException | NoSuchAlgorithmException
+						| NoSuchPaddingException | InvalidAlgorithmParameterException | IllegalBlockSizeException
+						| BadPaddingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				sb.append("<td class=\"fbBoardB\">"+ pb.getFbDate() +"</td>");
 				sb.append("<td class=\"fbBoardB\">"+ pb.getFbLike() +"</td>");
 				sb.append("<td class=\"fbBoardB\">"+ pb.getFbView() +"</td>");

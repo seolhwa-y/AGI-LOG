@@ -65,7 +65,7 @@ function boardContent(data1){
 	form.appendChild(createInput("hidden","ibCode",data1,null,null));
 
 
-	form.action = "MoveShowPost";
+	form.action = "MoveShowFbPost";
 	form.method = "post";
 	form.submit();
 }

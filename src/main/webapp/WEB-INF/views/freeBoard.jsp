@@ -8,6 +8,7 @@
 <script src="/res/js/agiMain.js"></script>
 <script src="https://use.fontawesome.com/releases/v6.1.2/js/all.js"></script>
 <link rel="stylesheet" href="/res/css/agiMain.css">
+<link rel="stylesheet" href="/res/css/freeBoard.css">
 
 <!-- 카카오 스크립트 -->
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
@@ -59,6 +60,32 @@ function kakaoLogout() {
 		Kakao.Auth.setAccessToken(undefined)
 	}
 }
+function boardContent(data1){
+	let form = document.getElementById("serverForm");
+	
+	form.appendChild(createInput("hidden","fbCode",data1,null,null));
+
+
+	form.action = "MoveShowFbPost";
+	form.method = "post";
+	form.submit();
+}
+function changeSort(){
+	let form = document.getElementById("serverForm");
+	
+	let postSelect = document.getElementById("infoBoardSelect");
+
+	//option값을 저장
+	var optionValue = postSelect.options[postSelect.selectedIndex].value;
+	var optionText = postSelect.options[postSelect.selectedIndex].text;
+		
+	alert(optionValue);
+	
+	optionValue.action = "MoveSortPost";
+	optionValue.method = "post";
+	optionValue.submit();
+	
+}
 </script>
 </head>
 <body onload="getInfo()">
@@ -102,6 +129,10 @@ function kakaoLogout() {
 				<!-- ------------------------------------------------------------------------ -->
 			</div>
 			<div id="rightArea" class="scrollBar">
+				<div class="freeBoard">
+					<div class="freeBoardH">자유 게시판</div>
+					${freeBoardList}
+				</div>
 				<input type="button" value="글쓰기" onClick="movePagePost('MoveWritePage')">
 			</div>
 		</div>

@@ -81,10 +81,10 @@ public class ShHomeController {
 	}
 	
 	// 게시판 글보기 이동
-	@RequestMapping(value = "/MoveShowPost", method = RequestMethod.POST)
+	@RequestMapping(value = "/MoveShowPost2", method = RequestMethod.POST)
 	public ModelAndView moveShowPost(ModelAndView mav, @ModelAttribute PostBean pb) {
 		mav.addObject("postBean", pb);
-		this.board3.backController(mav, 58);
+		this.board3.backController(mav, 580);
 		
 		return mav;
 	}
