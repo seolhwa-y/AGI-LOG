@@ -52,19 +52,21 @@ public interface ShMapperInterface {
 	// 감성일기 댓글 삭제
 	public int delDailyDiaryComment(DailyDiaryCommentBean ddcb);
 	
+	// 지도 기업 연계 정보 조회
+	public String getCoCode(CompanyBean cb);
+	// 지도 댓글 조회
+	public List<BebeMapCommentBean> getMapCommentList(CompanyBean cb);
 	
 	// 지도 댓글 코드 MAX + 1  ::  나중에 시퀀스 사용하기
 	public String getMcCode(BebeMapCommentBean bmcb);
-	// 지도 댓글 조회
-	public List<BebeMapCommentBean> getMapCommentList(BebeMapCommentBean bmcb);
+
 	// 지도 댓글 등록
 	public int insMapComment(BebeMapCommentBean bmcb);
 	// 지도 댓글 수정
 	public int updMapComment(BebeMapCommentBean bmcb);
 	// 지도 댓글 삭제
 	public int delMapComment(BebeMapCommentBean bmcb);
-	
-	
+
 	// 지도 예약 가능 일정 조회
 	public List<ReservationBean> getReservationList(ReservationBean rb);
 	// 지도 예약일정 등록

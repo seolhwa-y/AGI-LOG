@@ -59,6 +59,114 @@ function kakaoLogout() {
 		Kakao.Auth.setAccessToken(undefined)
 	}
 }
+
+/* 감성일기 댓글 작업 */
+	// 모달켜기
+	function clickee() {
+	alert("hi");
+		document.getElementsByClassName("modal")[0].style.display = "block";
+		let clientData = "";
+		postAjaxJson("ShowDailyDiary", clientData, "dailyDiaryComment");
+}
+// 모달끄기
+function noneee() {
+	alert("bye");
+	document.getElementsByClassName("modal")[0].style.display = "none";
+}
+	
+// 댓글 수정 버튼
+function updateInput(ddCode, ddSuCode, dcCode, dcDate, ddDate){
+	let dcContent = document.getElementsByClassName(dcDate)[0];
+	
+	dcContent.innerHTML = "";
+	dcContent.innerHTML += "<input class ='updDbComment commentInput'>";
+	dcContent.innerHTML += "<button class='submitBtn btn' onClick='updateDailyDiaryComment(" + ddCode + "," + ddSuCode + "," + dcCode + "," + dcDate + "," + ddDate +")'>확인</button>";
+
+}
+
+// 감성일기 댓글 전부 AJAX
+// 1. 댓글 등록
+function insertDailyDiaryComment(ddCode, ddSuCode, ddDate) {
+	const ddComment = document.getElementsByClassName("ddComment")[0].value;
+	const clientData = "dcDdCode=" + ddCode + "&dcDdSuCode=" + ddSuCode + "&dcDdDate=" + ddDate + "&dcContent=" + ddComment;
+	postAjaxJson("InsertDailyDiaryComment", clientData, "dailyDiaryComment");
+}
+
+// 2. 댓글 수정
+function updateDailyDiaryComment(ddCode, ddSuCode, dcCode, dcDate, ddDate) {
+	const updDbComment = document.getElementsByClassName("updDbComment")[0].value;
+	const clientData = "dcDdCode=" + ddCode + "&dcCode=" + dcCode + "&dcDdSuCode=" + ddSuCode + "&dcDate=" + dcDate + "&dcContent=" + updDbComment + "&dcDdDate=" + ddDate;
+
+	postAjaxJson("UpdateDailyDiaryComment", clientData, "dailyDiaryComment");
+}
+
+// 3. 댓글 삭제
+function deleteDailyDiaryComment(ddCode, ddSuCode, dcCode, dcDate, ddDate) {
+	const clientData = "dcDdCode=" + ddCode + "&dcCode=" + dcCode + "&dcDdSuCode=" + ddSuCode + "&dcDate=" + dcDate + "&dcDdDate=" + ddDate;
+	postAjaxJson("DeleteDailyDiaryComment", clientData, "dailyDiaryComment");
+	
+    // 경고
+    swal({
+        title: "진짜로 삭제하십니까?",
+        text: "삭제하면 되돌릴 수 없습니다.",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    })
+        .then((willDelete) => {
+            if (willDelete) {
+        		postAjaxJson("DeleteDailyDiaryComment", clientData, "dailyDiaryComment");
+            } else {
+                swal("삭제를 취소하셨습니다.");
+            }
+        });
+}
+
+// CALLBACK
+function dailyDiaryComment(ajaxData) {
+	const ajax = JSON.parse(ajaxData);
+	const suCode = ajax.suCode;
+	const ddComment = ajax.ddComment;
+	console.log(ajax);
+	
+	let modalBody = document.getElementsByClassName("modal_content")[0];
+	modalBody.innerHTML = "";
+	
+	
+	modalBody.innerHTML += "<div><hr></div>";
+	modalBody.innerHTML += "<div>";
+	modalBody.innerHTML += "<input class=\"ddComment mEditInput\" />";
+	modalBody.innerHTML += "<button class=\"mMiniBtn btn\" onClick=\"insertDailyDiaryComment("+ ddComment[0].dcDdCode + "," + ddComment[0].dcDdSuCode + "," + ddComment[0].dcDdDate + ")\">확인</button>";
+	modalBody.innerHTML += "</div>";
+	modalBody.innerHTML += "<div id='commentList'>";
+	
+	
+	for(i = 0; i < ddComment.length; i++) {
+		modalBody.innerHTML += "<div class = 'comment " + i + "'>";
+		// 프로필 사진이 없을 경우 기본 이미지
+		if(ddComment[i].suPhoto != null) {
+			modalBody.innerHTML += "<img class='profileImage' src=" + ddComment[i].suPhoto + ">";
+		} else {
+			modalBody.innerHTML += "<img class='profileImage' src='/res/img/profile_default.png'>";
+		}
+	
+		// 닉네임
+		modalBody.innerHTML += "<div class = 'suNickname'>" +  ddComment[i].suNickname + "</div>";
+	
+		// 댓글 내용
+		modalBody.innerHTML += "<div class='dcContent " + ddComment[i].dcDate + "'>" + ddComment[i].dcContent + "</div>";
+		
+		// 수정 삭제 버튼
+		if(suCode === ddComment[i].dcSuCode) {
+			modalBody.innerHTML += "<i class='fa-solid fa-pen updBtn editBtn' onClick='updateInput(" + ddComment[i].dcDdCode + "," + ddComment[i].dcDdSuCode + "," + ddComment[i].dcCode + "," + ddComment[i].dcDate + "," + ddComment[i].dcDdDate +")'></i>";
+			modalBody.innerHTML += "<i class='fa-solid fa-trash-can delBtn editBtn' onClick='deleteDailyDiaryComment(" + ddComment[i].dcDdCode + "," + ddComment[i].dcDdSuCode + "," + ddComment[i].dcCode + "," + ddComment[i].dcDate + "," + ddComment[i].dcDdDate +")'></i>";
+		} 
+		modalBody.innerHTML += "</div>";
+	}
+	modalBody.innerHTML += "</div>";
+	
+	swal("요청", "요청하신 작업을 완료하였습니다!", "success", { button: "완료"});
+}
 </script>
 </head>
 <body onload="getInfo()">
