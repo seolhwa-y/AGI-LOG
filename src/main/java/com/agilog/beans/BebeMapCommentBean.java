@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class BebeMapCommentBean {
-	private String suNickName;
+	private String suNickname;
 	private String suPhoto;
 	
 	private String coCode;

@@ -277,12 +277,14 @@ Kakao.init('2afdabad57ed92e1cc9de5bd4baed321');
 function getInfo() {
 	/* 테마 사용자값으로 설정 */
 	let middle = document.getElementById("middle");
+	let body = document.getElementById("body");
 	//let sideMenu = document.querySelector(".side-menu");
 	let cover1 = document.getElementById("cover1");
 	let cover2 = document.getElementById("cover2");
 	
 	let color = "${mypageInfo.suTheme}".split(":");
 	
+	body.style.background = color[0];
 	middle.style.background = color[0];
 	cover1.style.background = color[0];
 	cover2.style.background = color[0];
@@ -830,12 +832,14 @@ function changeTheme(num){
 }
 function callBackTheme(theme){
 	let middle = document.getElementById("middle");
+	let body = document.getElementById("body");
 	let sideMenu = document.querySelector(".side-menu");
 	let cover1 = document.getElementById("cover1");
 	let cover2 = document.getElementById("cover2");
 	
 	let color = theme.split(":");
 	
+	body.style.background = color[0];
 	middle.style.background = color[0];
 	cover1.style.background = color[0];
 	cover2.style.background = color[0];
@@ -846,7 +850,7 @@ function callBackTheme(theme){
 </head>
 <body onload="getInfo()">
 </head>
-<body>
+<body id="body">
 	<div id="background">
 		<div id="top">
 			<div id="accessArea">

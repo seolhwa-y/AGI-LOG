@@ -59,7 +59,7 @@ public interface JsMapperInterface {
 	public int insReservationList(ReservationBean rb);
 	//
 	public List<DailyDiaryBean> getDailyDiaryList();
-	public DailyDiaryBean getDailyDiaryFeed(DailyDiaryBean ddb);
+	public DailyDiaryBean getDailyDiaryFeed();
 	public List<DailyDiaryCommentBean> getFeedComment(DailyDiaryCommentBean ddcb);
 	public List<DailyDiaryBean> getMyDailyDiary(AuthBean ab);
 	public int insDailyDiary(DailyDiaryBean ddb);

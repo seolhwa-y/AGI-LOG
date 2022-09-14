@@ -31,13 +31,16 @@ public class DailyDiary implements ServiceRule {
 		case 5:
 			this.moveDailyDiaryPageCtl(mav);
 			break;
+		case 32:
+			this.moveMyDailyDiaryPageCtl(mav);
+			break;
 		}
 	}
 
 	public void backController(Model model, int serviceCode) {
 
 	}
-
+	// 감성일기-전체피드 페이지로 이동
 	private void moveDailyDiaryPageCtl(ModelAndView mav) {
 		AuthBean ab;
 		try {
@@ -48,18 +51,20 @@ public class DailyDiary implements ServiceRule {
 				} else {
 					ab.setType("naver");
 				}
-				mav.addObject("accessInfo", ab);
+				mav.addObject("accessInfo", ab);				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		// db에서 최신순으로 전체피드 가져옴
+		mav.addObject("allDailyDiaryList", this.makeDialyFeed(this.session.selectList("getDailyDiaryFeed")));
 		mav.setViewName("dailyDiary");
 	}
 
 	private void showDailyDiaryCtl(Model model) {
 
 	}
-
+	//감성일기-내피드 페이지 이동
 	private void moveMyDailyDiaryPageCtl(ModelAndView mav) {
 		AuthBean ab;
 		try {
@@ -71,11 +76,15 @@ public class DailyDiary implements ServiceRule {
 					ab.setType("naver");
 				}
 				mav.addObject("accessInfo", ab);
+				// db에서 내가 작성한 감성일기들을 최신순으로 가져옴
+				mav.addObject("myDailyDiaryFeed",this.makeDialyFeed(this.session.selectList("getMyDailyDiary",ab)));
+				mav.setViewName("myDailyDiary");
+			}else {
+				mav.setViewName("login");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		mav.setViewName("myDailyDiary");
 	}
 
 	private void insertDailyDiaryCtl(ModelAndView mav) {
@@ -116,7 +125,31 @@ public class DailyDiary implements ServiceRule {
 
 	private String makeDialyFeed(List<DailyDiaryBean> feedList) {
 		StringBuffer sb = new StringBuffer();
-
+		
+		for(DailyDiaryBean fl : feedList) {
+			sb.append("<li class=\'feed\'>");
+			sb.append("<div class=\'feed_top\'>");
+			
+			if(fl.getDpLink()!=null) {
+				sb.append("<img src=\'"+fl.getDpLink()+"\'>");
+			}else {
+				sb.append("<img src=\'/res/img/non_photo.png\'>");
+			}
+	
+			sb.append("<div class=\'like\'>❤ "+fl.getLikes()+"</div>");
+			sb.append("</div>");
+			sb.append("<div class=\'feed_bottom\'>");
+			sb.append("<div id=\'feedDate\'>"+ fl.getDdDate()+"</div>");
+			if(fl.getDdContent().length()>32) {
+				sb.append(fl.getDdContent().substring(0,25)+"...</div>");
+			}else {
+				sb.append(fl.getDdContent()+"</div>");
+			}
+			
+			sb.append("</li>");
+			 
+		}
+		
 		return sb.toString();
 	}
 

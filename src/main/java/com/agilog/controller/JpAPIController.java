@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.agilog.beans.CompanyBean;
 import com.agilog.beans.DoctorBean;
+import com.agilog.beans.PostBean;
 import com.agilog.services.Authentication;
 import com.agilog.services.Company;
 import com.agilog.services.DashBoard;

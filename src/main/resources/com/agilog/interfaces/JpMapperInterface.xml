@@ -76,6 +76,28 @@
 		FROM INFOBOARD
 		ORDER BY IBDATE ASC
 	</select>
+		<!-- 육아정보 게시판 리스트 불러오기 좋아요 순 정렬 -->
+	<select id="getBebeInfoLike" parameterType="com.agilog.beans.PostBean" resultType="com.agilog.beans.PostBean">
+	    SELECT IB_CODE AS IBCODE,
+		   TO_CHAR(IB_DATE, 'yyyy.mm.dd') AS IBDATE,
+		   IB_TITLE AS IBTITLE,
+		   IB_CONTENT AS IBCONTENT,
+		   IB_VIEW AS IBVIEW,
+		   IB_LIKE AS IBLIKE
+		FROM INFOBOARD
+		ORDER BY IBLIKE DESC
+	</select>
+		<!-- 육아정보 게시판 리스트 불러오기 조회수 순 정렬 -->
+	<select id="getBebeInfoView" parameterType="com.agilog.beans.PostBean" resultType="com.agilog.beans.PostBean">
+	    SELECT IB_CODE AS IBCODE,
+		   TO_CHAR(IB_DATE, 'yyyy.mm.dd') AS IBDATE,
+		   IB_TITLE AS IBTITLE,
+		   IB_CONTENT AS IBCONTENT,
+		   IB_VIEW AS IBVIEW,
+		   IB_LIKE AS IBLIKE
+		FROM INFOBOARD
+		ORDER BY IBVIEW DESC
+	</select>
 	<!-- 정보게시판 게시글 보기 -->
 	<select id="getBebePost" parameterType="com.agilog.beans.PostBean" resultType="com.agilog.beans.PostBean">
 	   SELECT IB_CODE AS IBCODE,
@@ -87,5 +109,6 @@
 	   FROM INFOBOARD
 	   WHERE IB_CODE = #{ibCode}
 	</select>
+	
 	
 </mapper>

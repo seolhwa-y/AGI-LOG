@@ -72,4 +72,25 @@
 	<update id="updateReservationStatus" parameterType="com.agilog.beans.ReservationBean">
 		UPDATE RE SET RE_RCCODE = #{rcCode} WHERE RE_CODE = #{resCode} AND TO_CHAR(RE_DATE,'YYYY-MM-DD') = #{resDate} AND RE_BBSUCODE = #{suCode} AND RE_RCCODE = 'CP'
 	</update>
+	<select id="getDailyDiaryFeed"  resultType="com.agilog.beans.DailyDiaryBean">
+		SELECT DD_CODE AS DDCODE,
+		       TO_CHAR(DD_DATE,'YYYY-MM-DD HH:MI') AS DDDATE,
+		       DD_CONTENT AS  DDCONTENT,
+		       TO_NUMBER(DD_LIKE) AS LIKES,
+		       DP_LINK AS DPLINK
+		FROM DAILYDIARY LEFT OUTER JOIN DAILYDIARYPHOTO ON DD_CODE = DP_DDCODE
+		WHERE DD_STATUS = '1'
+		ORDER BY DD_DATE
+	</select>
+	<select id="getMyDailyDiary" parameterType="com.agilog.beans.AuthBean" resultType="com.agilog.beans.DailyDiaryBean">
+		SELECT DD_CODE AS DDCODE,
+			   TO_CHAR(DD_DATE,'YYYY-MM-DD HH:MI') AS DDDATE,
+		       DD_CONTENT AS  DDCONTENT,
+			   TO_NUMBER(DD_LIKE) AS LIKES,
+			   DP_LINK AS DPLINK
+		FROM DAILYDIARY LEFT OUTER JOIN DAILYDIARYPHOTO ON DD_CODE = DP_DDCODE
+		WHERE DD_SUCODE = #{suCode}
+		ORDER BY DD_DATE
+	</select>
+
 </mapper>

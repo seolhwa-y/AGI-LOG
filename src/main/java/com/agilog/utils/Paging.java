@@ -17,6 +17,7 @@ public class Paging {
 		this.pageName = pageName;
 	}
 
+
 	@SuppressWarnings("unused")
 	public String makePageGroup() {
 		// 전체 페이지 갯수
