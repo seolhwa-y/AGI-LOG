@@ -38,6 +38,6 @@
 	</select>
 	<insert id="insDd" parameterType="com.agilog.beans.DailyDiaryBean">
 		INSERT INTO DAILYDIARY(DD_CODE, DD_DATE, DD_SUCODE, DD_STATUS, DD_CONTENT, DD_VIEW, DD_LIKE) 
-		VALUES(#{ddCode}, DEFAULT, #{ddSuCode}, #{ddStatus}, #{ddContent}, DEFAULT, DEFAULT)
+		VALUES(#{ddCode}, DEFAULT, #{suCode}, #{ddStatus}, #{ddContent}, DEFAULT, DEFAULT)
 	</insert>
 </mapper>

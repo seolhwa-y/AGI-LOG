@@ -65,7 +65,7 @@ public class DailyDiary2 implements ServiceRule {
 				DailyDiaryBean db = (DailyDiaryBean) mav.getModel().get("dailyDiaryBean");
 
 				System.out.println("코드 체크 : " + ab.getSuCode());
-				db.setDdSuCode(ab.getSuCode());
+				db.setSuCode(ab.getSuCode());
 
 				if (this.session.selectOne("getFbCode") == null) {
 					db.setDdCode("1");
@@ -75,7 +75,7 @@ public class DailyDiary2 implements ServiceRule {
 				}
 				System.out.println("코드 체크2 : " + db.getDdCode());
 				System.out.println("상태 체크 : " + db.getDdStatus());
-				System.out.println("유저 코드 체크 : " + db.getDdSuCode());
+				System.out.println("유저 코드 체크 : " + db.getSuCode());
 				System.out.println("컨텐츠 체크 : " + db.getDdContent());
 				
 				if(this.convertToBoolean(this.session.insert("insDd", db))) {
