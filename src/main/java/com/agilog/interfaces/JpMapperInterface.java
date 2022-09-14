@@ -105,7 +105,7 @@ public interface JpMapperInterface {
 	public List<BoardBean> getMeetingBoard(BoardBean bb);
 	//
 	//게시판목록
-	public List<PostBean> getBebeInfo(PostBean pb);
+	public List<PostBean> getBebeInfo();
 	public List<PostBean> getBebePost(PostBean pb);
 	public PostBean getPostInfo(PostBean pb);
 	public List<BoardBean> getSearchWriter(BoardBean bb);

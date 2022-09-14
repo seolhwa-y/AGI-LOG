@@ -27,7 +27,17 @@
 		INSERT INTO FREEBOARD(FB_CODE, FB_DATE, FB_SUCODE, FB_TITLE, FB_CONTENT, FB_VIEW, FB_LIKE) 
 		VALUES(#{fbCode}, DEFAULT, #{fbSuCode}, #{fbTitle}, #{fbContent}, DEFAULT, DEFAULT)
 	</insert>
-	<select id="getPostList" parameterType="com.agilog.beans.PostBean" resultType="com.agilog.beans.PostBean">
-		SELECT FB_CODE, FB_DATE, FB_SUCODE
+	<select id="getFbPostList" resultType="com.agilog.beans.PostBean">
+		SELECT * FROM FBPOSTLIST
 	</select>
+	<select id="getFbPostContent" parameterType="com.agilog.beans.PostBean" resultType="com.agilog.beans.PostBean">
+		SELECT * FROM FBPOSTCONTENT WHERE FBCODE = #{fbCode}
+	</select>
+	<select id="getDdCode" parameterType="com.agilog.beans.PostBean" resultType="int">
+		SELECT MAX(DD_CODE) FROM DAILYDIARY
+	</select>
+	<insert id="insDd" parameterType="com.agilog.beans.DailyDiaryBean">
+		INSERT INTO DAILYDIARY(DD_CODE, DD_DATE, DD_SUCODE, DD_STATUS, DD_CONTENT, DD_VIEW, DD_LIKE) 
+		VALUES(#{ddCode}, DEFAULT, #{suCode}, #{ddStatus}, #{ddContent}, DEFAULT, DEFAULT)
+	</insert>
 </mapper>

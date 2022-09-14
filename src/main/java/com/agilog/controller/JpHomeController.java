@@ -83,8 +83,7 @@ public class JpHomeController {
 	
 	//육아정보 게시판
 	@RequestMapping(value = "/MoveInfoBoard", method = RequestMethod.GET)
-	public ModelAndView moveInfoBoardPage(ModelAndView mav, @ModelAttribute PostBean pb) {
-		mav.addObject(pb);
+	public ModelAndView moveInfoBoardPage(ModelAndView mav) {
 		this.board.backController(mav, 56);
 		return mav;
 	}
@@ -109,6 +108,15 @@ public class JpHomeController {
 		this.board.backController(mav, 8);
 		return mav;
 	}
+	//게시판 페이징
+	@RequestMapping(value = "/MovePageNum", method = RequestMethod.GET)
+	public ModelAndView movePageNum(ModelAndView mav, @ModelAttribute BoardBean bb) {
+		mav.addObject(bb);
+		System.out.println("홈컨트롤러");
+		this.board.backController(mav, 200);
+		return mav;
+	}
+	
 	
 	
 }

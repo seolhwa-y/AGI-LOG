@@ -281,7 +281,7 @@ public class MyPage implements ServiceRule {
 			String suCode = bb.getSuCode();
 			String babyCode = bb.getBbCode();
 			/* 저장 폴더 경로 설정 */
-			String path = "C:\\Users\\js94\\git\\agi-log\\src\\main\\webapp\\resources\\img\\"+suCode+"\\profile\\";
+			String path = "C:\\Users\\ktysh\\git\\agi-log\\src\\main\\webapp\\resources\\img\\"+suCode+"\\profile\\";
 			
 			/* 확장자 뽑아내서 파일이름(아이코드) 만들어주기 */
 			int pos = file.getOriginalFilename().lastIndexOf(".");
@@ -325,7 +325,7 @@ public class MyPage implements ServiceRule {
 		String suCode = mb.getSuCode();
 		/* 저장 폴더 경로 설정 */
 		//String path = "C:\\upload\\profile\\"+suCode;
-		String path = "C:\\Users\\js94\\git\\agi-log\\src\\main\\webapp\\resources\\img\\"+suCode+"\\profile\\";
+		String path = "C:\\Users\\ktysh\\git\\agi-log\\src\\main\\webapp\\resources\\img\\"+suCode+"\\profile\\";
 		
 		//String path = "/res/img/"+suCode;
 		/* 확장자 뽑아내서 파일이름 만들어주기 */

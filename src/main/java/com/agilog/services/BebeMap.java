@@ -112,6 +112,11 @@ public class BebeMap implements ServiceRule {
 			
 			bmcb.setMcSuCode(ab.getSuCode());
 			bmcb.setMcCode(this.session.selectOne("getMcCode", bmcb.getMcSuCode()));
+			
+			if(bmcb.getMcCode() == null) {
+				bmcb.setMcCode("1");
+			}
+			
 			if(this.convertToBoolean(this.session.insert("insMapComment", bmcb))) {
 				System.out.println("지도 댓글 등록 성공");
 				

@@ -83,6 +83,26 @@ function changeSort(){
 	form.method = "post";
 	form.submit();
 }
+function pageNum(num){
+	let form = document.getElementById("serverForm");
+	form.appendChild(createInput("hidden","pageNum",num,null,null));
+	
+	alert(num);
+	
+	form.action = "MovePageNum";
+	form.method = "get";
+	form.submit();
+}
+
+window.onpageshow = function(event) {
+	let form = document.getElementById("serverForm");
+    if(event.persisted || (window.performance && window.performance.navigation.type == 2)) {
+       	
+        form.action = "MoveInfoBoard";
+        form.method = "get";
+    	form.submit();
+    } 
+}
 </script>
 </head>
 <body onload="getInfo()">
@@ -128,7 +148,8 @@ function changeSort(){
 			<div id="rightArea" class="scrollBar">
 				<div class="infoBoard">
 					<div class="infoBoardH">육아정보 게시판</div>
-					${bebeBoardList}
+					<div>${bebeBoardList}</div>
+					<div> ${pageNum} </div>
 				</div>
 			</div>
 		</div>

@@ -10,6 +10,8 @@ public class DailyDiaryBean {
 	private String ddContent;
 	private String dpLink;
 	
+	private String ddStatus;
+	
 	private boolean isLike;
 	private int likes;
 	
