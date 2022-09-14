@@ -26,6 +26,7 @@ import com.agilog.services.DashBoard;
 import com.agilog.services.MyPage;
 import com.agilog.services2.Board2;
 import com.agilog.services2.Company2;
+import com.agilog.services2.DailyDiary2;
 
 @Controller
 public class ThHomeController {
@@ -36,7 +37,7 @@ public class ThHomeController {
 	@Autowired
 	Company2 company;
 	@Autowired
-	DailyDiary dailyDiary;
+	DailyDiary2 dailyDiary;
 	@Autowired
 	BebeMap bebeMap;
 	@Autowired
@@ -67,6 +68,14 @@ public class ThHomeController {
 		System.out.println("컨트롤러 진입 체크1");
 		mav.addObject(pb);
 		this.board.backController(mav, 65);
+		return mav;
+	}
+	
+	@RequestMapping(value = "/InsertDailyDiary", method = RequestMethod.POST)
+	public ModelAndView insertDailyDiary(ModelAndView mav, @ModelAttribute DailyDiaryBean pb) {
+		System.out.println("컨트롤러 진입 체크1");
+		mav.addObject(pb);
+		this.board.backController(mav, 35);
 		return mav;
 	}
 }

@@ -143,7 +143,7 @@
 	}
 	.mMiniInput {
     height: 20rem;
-    width: 30rem;
+    width: 20rem;
 	}
 	.statusCheck {
 	
@@ -166,18 +166,21 @@
     margin-left: 20%;
 	}
 	.modal_foot{
-	position: relative;
-    display: flex;
-    margin: 5% auto;
-    justify-content: space-between;
-    width: 70%;
+		position: relative;
+	    display: flex;
+	    margin: 5% auto;
+	    justify-content: space-between;
+	    width: 70%;
+    	margin-left: 20%;
 	}
 	.modal_head{
 		font-size: 3rem;
 		height: 8%;
+    	margin-left: 7%;
 	}
 	.modal_content{
 		height: 70%;
+    	margin-left: 10%;
 	}
 	.close{
 		float:right;
@@ -185,12 +188,12 @@
 	.dateInput{
 		width: 70%;
 	}
-	.modal_body {
+	.ddModal_body {
     position: relative;
     top: 50%;
     left: 50%;
-    width: 700px;
-    height: 700px;
+    width: 640px;
+    height: 730px;
     padding: 20px;
     text-align: center;
     /*background-color: rgb(255, 255, 255);*/
@@ -260,8 +263,10 @@ function moveWriteFeed(){
 	let modalContent = document.querySelector(".modal_content");
 	let modalFoot = document.querySelector(".modal_foot");
 
+	
 
 	modal.style.display = "block";
+	//modal.style.background-color = "none";
 	modalHead.innerHTML = "<div class='insBabyTitle'>일기 쓰기</div>";
 	modalContent.innerHTML = "<table class='insWriteTable'><tr><td class='tdName'><span class='name'>내  용 :</span></td><td class='tdValue'><input class='mMiniInput name'type='textarea' name='ddContent' placeholder='내용을 입력하세요' required></td></tr>"
 							+"<tr><td></td></tr>"
@@ -406,6 +411,25 @@ function dailyDiaryComment(ajaxData) {
 	swal("요청", "요청하신 작업을 완료하였습니다!", "success", { button: "완료"});
 }
 
+//피드 클릭시 확대
+function moveWriteFeed(){
+	
+	alert
+	
+	let modal = document.querySelector(".modal");
+	let modalHead = document.querySelector(".modal_head");
+	let modalContent = document.querySelector(".modal_content");
+	let modalFoot = document.querySelector(".modal_foot");
+
+	
+
+	modal.style.display = "block";
+	//modal.style.background-color = "none";
+	modalHead.innerHTML = "<div class='insBabyTitle'>일기 쓰기</div>";
+	modalFoot.innerHTML = "<button class='mBtnX' onclick='modalClose()'>취소</button><button class='mBtnO' onclick='insertDailyDiary()'>등록</button>";
+
+
+}
 
 </script>
 </head>
@@ -466,7 +490,7 @@ function dailyDiaryComment(ajaxData) {
 					</div>
 					<input id="searchHashTag" class="writeBtn btn" type="button" value="검색">
 					<div id="writeFeedArea">
-						<input id="writeFeed"type="button" class="writeBtn btn" value="글쓰기" >
+						<input id="writeFeed"type="button" class="writeBtn btn" onClick="moveWriteFeed()" value="글쓰기" >
 					</div>
 				</div>
 				<div id="rightArea_middle" class="scrollBar">
@@ -475,7 +499,7 @@ function dailyDiaryComment(ajaxData) {
 			</div>
 		</div>
 		<div class="modal">
-            <div class="modal_body">
+            <div class="ddModal_body">
 				<div class="modal_head">
 					<i class="fa-solid fa-xmark closeBtn editBtn"></i><br />
 				</div>
