@@ -10,6 +10,7 @@ import com.agilog.beans.BoardBean;
 import com.agilog.beans.CompanyBean;
 import com.agilog.beans.DailyDiaryBean;
 import com.agilog.beans.DailyDiaryCommentBean;
+import com.agilog.beans.DailyDiaryPhotoBean;
 import com.agilog.beans.HealthDiaryBean;
 import com.agilog.beans.MyPageBean;
 import com.agilog.beans.PostBean;
@@ -30,4 +31,6 @@ public interface ThMapperInterface {
 	public PostBean getFbPostContent(PostBean pb);
 	public int getDdCode(DailyDiaryBean db);
 	public int insDd(DailyDiaryBean db);
+	public DailyDiaryBean getDDFeed(DailyDiaryBean ddb);
+	public DailyDiaryPhotoBean getDDP(DailyDiaryBean ddb);
 }

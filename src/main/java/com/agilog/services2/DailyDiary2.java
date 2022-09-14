@@ -1,5 +1,6 @@
 package com.agilog.services2;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -10,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.agilog.beans.AuthBean;
 import com.agilog.beans.DailyDiaryBean;
+import com.agilog.beans.DailyDiaryPhotoBean;
 import com.agilog.beans.PostBean;
 import com.agilog.interfaces.ServiceRule;
 import com.agilog.utils.Encryption;
@@ -41,6 +43,14 @@ public class DailyDiary2 implements ServiceRule {
 
 	public void backController(Model model, int serviceCode) {
 
+		switch(serviceCode) {
+
+		case 31:
+			this.getDailyDiaryFeedCtl(model);
+			break;
+		default:
+			break;
+		}	
 	}
 
 	private void moveDailyDiaryPageCtl(ModelAndView mav) {
@@ -55,8 +65,23 @@ public class DailyDiary2 implements ServiceRule {
 
 	}
 
+	private void getDailyDiaryFeedCtl(Model model) {
+		System.out.println("겟 디디 피드 진입 체크");
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		DailyDiaryBean ddb = (DailyDiaryBean) model.getAttribute("dailyDiaryBean");
+		DailyDiaryPhotoBean ddpb = new DailyDiaryPhotoBean();
+		
+		map.put("dailyDiaryFeed", this.session.selectOne("getDDFeed", ddb));
+
+		System.out.println("ddf?"+this.session.selectOne("getDDFeed", ddb));
+		System.out.println("ddp?"+this.session.selectOne("getDDP", ddb));
+		
+		map.put("dailyDirayPhotoLink", ((DailyDiaryPhotoBean)this.session.selectOne("getDDP", ddb)).getDpLink());
+		model.addAttribute("getDDFeed", map);
+	}
+
 	private void insertDailyDiaryCtl(ModelAndView mav) {
-		System.out.print("인설트 디디 진입 체크");
+		System.out.println("인설트 디디 진입 체크");
 		
 		try {
 			AuthBean ab = ((AuthBean) this.pu.getAttribute("accessInfo"));

@@ -40,4 +40,10 @@
 		INSERT INTO DAILYDIARY(DD_CODE, DD_DATE, DD_SUCODE, DD_STATUS, DD_CONTENT, DD_VIEW, DD_LIKE) 
 		VALUES(#{ddCode}, DEFAULT, #{ddSuCode}, #{ddStatus}, #{ddContent}, DEFAULT, DEFAULT)
 	</insert>
+	<select id="getDDFeed" parameterType="com.agilog.beans.DailyDiaryBean" resultType="com.agilog.beans.DailyDiaryBean">
+		SELECT * FROM DDVIEW WHERE DDCODE = #{ddCode}
+	</select>
+	<select id="getDDP" parameterType="com.agilog.beans.DailyDiaryBean" resultType="com.agilog.beans.DailyDiaryPhotoBean">
+		SELECT * FROM DAILYDIARYPHOTO WHERE DP_DDCODE = #{ddCode}
+	</select>
 </mapper>

@@ -70,12 +70,28 @@ public class ThHomeController {
 		this.board.backController(mav, 65);
 		return mav;
 	}
+
+	@RequestMapping(value = "/MoveFreeBoardPage", method = RequestMethod.GET)
+	public ModelAndView moveBoardPage(ModelAndView mav, @ModelAttribute BoardBean bb) {
+		mav.addObject(bb);
+		this.board.backController(mav, 8);
+
+		return mav;
+	}
 	
-	@RequestMapping(value = "/InsertDailyDiary", method = RequestMethod.POST)
-	public ModelAndView insertDailyDiary(ModelAndView mav, @ModelAttribute DailyDiaryBean pb) {
-		System.out.println("컨트롤러 진입 체크1");
+	//게시판 글 내용 보기
+	@RequestMapping(value = "/MoveShowFbPost", method = RequestMethod.POST)
+	public ModelAndView moveShowFbPostCtl(ModelAndView mav, @ModelAttribute PostBean pb) {
 		mav.addObject(pb);
-		this.board.backController(mav, 35);
+		this.board.backController(mav, 581);
+		return mav;
+	}
+
+	//감성일기 등록
+	@RequestMapping(value = "/InsertDailyDiary", method = RequestMethod.POST)
+	public ModelAndView insertDailyDiary(ModelAndView mav, @ModelAttribute DailyDiaryBean db) {
+		mav.addObject(db);
+		this.dailyDiary.backController(mav, 35);
 		return mav;
 	}
 }

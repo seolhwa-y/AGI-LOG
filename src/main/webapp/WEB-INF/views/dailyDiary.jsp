@@ -266,7 +266,6 @@ function moveWriteFeed(){
 	
 
 	modal.style.display = "block";
-	//modal.style.background-color = "none";
 	modalHead.innerHTML = "<div class='insBabyTitle'>일기 쓰기</div>";
 	modalContent.innerHTML = "<table class='insWriteTable'><tr><td class='tdName'><span class='name'>내  용 :</span></td><td class='tdValue'><input class='mMiniInput name'type='textarea' name='ddContent' placeholder='내용을 입력하세요' required></td></tr>"
 							+"<tr><td></td></tr>"
@@ -412,23 +411,30 @@ function dailyDiaryComment(ajaxData) {
 }
 
 //피드 클릭시 확대
-function moveWriteFeed(){
+function getFeed(ddCode){
 	
-	alert
+	alert("췤");
+	
+	const clientData = "ddCode=" + ddCode;
+
+	postAjaxJson("GetDailyDiaryFeed", clientData, "viewFeed");
+}
+
+//피드 콜백
+function viewFeed(ajaxData) {
+	alert("콜백 췤");
+	const ajax = JSON.parse(ajaxData);
+	const dailyDirayPhotoLink = ajax.dailyDirayPhotoLink;
+	const dailyDiaryFeed = ajax.dailyDiaryFeed;
 	
 	let modal = document.querySelector(".modal");
 	let modalHead = document.querySelector(".modal_head");
 	let modalContent = document.querySelector(".modal_content");
 	let modalFoot = document.querySelector(".modal_foot");
-
-	
-
 	modal.style.display = "block";
-	//modal.style.background-color = "none";
-	modalHead.innerHTML = "<div class='insBabyTitle'>일기 쓰기</div>";
+
+	modalHead.innerHTML = "<div class='viewFeedHead'></div>";
 	modalFoot.innerHTML = "<button class='mBtnX' onclick='modalClose()'>취소</button><button class='mBtnO' onclick='insertDailyDiary()'>등록</button>";
-
-
 }
 
 </script>
