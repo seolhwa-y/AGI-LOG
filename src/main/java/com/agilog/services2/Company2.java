@@ -14,6 +14,10 @@ import com.agilog.beans.ReservationBean;
 import com.agilog.interfaces.ServiceRule;
 import com.agilog.utils.Encryption;
 import com.agilog.utils.ProjectUtils;
+import java.util.Base64.*;
+import java.util.HashMap;
+
+import org.apache.commons.codec.binary.Base64;
 
 @Service
 public class Company2 implements ServiceRule {
@@ -24,7 +28,8 @@ public class Company2 implements ServiceRule {
 	private Encryption enc;
 	@Autowired
 	private ProjectUtils pu;
-
+	@Autowired
+	private smsSend sms;
 	public Company2() {
 	}
 	// Controller
@@ -65,9 +70,33 @@ public class Company2 implements ServiceRule {
 				if (rb.getResDoCode() != null) {
 					System.out.println("rd 진입 체크");
 					this.session.update("updRDRes", rb);
+					
+					//예약상태 변경 문자보내기
+					rb = this.session.selectOne("getResInfoForSms", rb);
+					HashMap<String,String> map = new HashMap<String,String>();
+					map.put("resDate", rb.getResDate());
+					map.put("resSuName", this.enc.aesDecode(rb.getResSuName(), rb.getResSuCode()));
+					map.put("resSuPhone", this.enc.aesDecode(rb.getResSuPhone(), rb.getResSuCode()));
+					map.put("resCoName", this.enc.aesDecode(rb.getResCoName(), rb.getResCoCode()));
+					map.put("resBbName", rb.getResBbName());
+					map.put("resActionName", rb.getResActionName());
+					map.put("resDoName", rb.getResDoName());
+					sms.sendSMS(map);
 				} else {
 					System.out.println("cp 진입 체크");
 					this.session.update("updCPRes", rb);
+					
+					//예약상태 변경 문자보내기
+					rb = this.session.selectOne("getResInfoForSms", rb);
+					HashMap<String,String> map = new HashMap<String,String>();
+					map.put("resDate", rb.getResDate());
+					map.put("resSuName", this.enc.aesDecode(rb.getResSuName(), rb.getResSuCode()));
+					map.put("resSuPhone", this.enc.aesDecode(rb.getResSuPhone(), rb.getResSuCode()));
+					map.put("resCoName", this.enc.aesDecode(rb.getResCoName(), rb.getResCoCode()));
+					map.put("resBbName", rb.getResBbName());
+					map.put("resActionName", rb.getResActionName());
+					map.put("resDoName", rb.getResDoName());
+					sms.sendSMS(map);
 				}
 
 				//새 표 작성 후 페이지 리다이렉트
@@ -80,6 +109,9 @@ public class Company2 implements ServiceRule {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	private void sendSmsCtl() {
+	                
 	}
 
 	private void checkManagetCtl(ModelAndView mav) {
