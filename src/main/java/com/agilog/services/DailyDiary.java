@@ -132,7 +132,7 @@ public class DailyDiary implements ServiceRule {
 		StringBuffer sb = new StringBuffer();
 		
 		for(DailyDiaryBean fl : feedList) {
-			sb.append("<li class=\'feed\'>");
+			sb.append("<li class=\'feed\' onClick=\'getFeed(" + fl.getDdCode() + ")\'>");
 			sb.append("<div class=\'feed_top\'>");
 			
 			if(fl.getDpLink()!=null) {

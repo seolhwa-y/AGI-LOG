@@ -11,6 +11,7 @@ public class AuthBean {
 	private String suPhone;
 	private String suEmail;
 	private String suNickName;
+	private String suAddress;
 	private String suPhoto;
 	private String suTheme;
 	private String alDate;

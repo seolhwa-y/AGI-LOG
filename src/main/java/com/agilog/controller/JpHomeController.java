@@ -83,7 +83,10 @@ public class JpHomeController {
 	
 	//육아정보 게시판
 	@RequestMapping(value = "/MoveInfoBoard", method = RequestMethod.GET)
-	public ModelAndView moveInfoBoardPage(ModelAndView mav) {
+	public ModelAndView moveInfoBoardPage(ModelAndView mav, @ModelAttribute PostBean pb) {
+		mav.addObject(pb);
+		System.out.println("페이지번호 : " + pb.getPageNum());
+		System.out.println("정렬 : " + pb.getIbSort());
 		this.board.backController(mav, 56);
 		return mav;
 	}
@@ -94,26 +97,11 @@ public class JpHomeController {
 		this.board.backController(mav, 58);
 		return mav;
 	}
-		//게시판조회 정렬
-	@RequestMapping(value = "/MoveSortPost", method = RequestMethod.POST)
-	public ModelAndView moveSortPost(ModelAndView mav, @ModelAttribute PostBean pb) {
-		mav.addObject(pb);
-		this.board.backController(mav, 500);
-		return mav;
-	}
 	//전체 게시판 조회
 	@RequestMapping(value = "/MoveBoardPage", method = RequestMethod.GET)
 	public ModelAndView moveBoardPage(ModelAndView mav, @ModelAttribute PostBean pb) {
 		mav.addObject(pb);
 		this.board.backController(mav, 8);
-		return mav;
-	}
-	//게시판 페이징
-	@RequestMapping(value = "/MovePageNum", method = RequestMethod.GET)
-	public ModelAndView movePageNum(ModelAndView mav, @ModelAttribute BoardBean bb) {
-		mav.addObject(bb);
-		System.out.println("홈컨트롤러");
-		this.board.backController(mav, 200);
 		return mav;
 	}
 	

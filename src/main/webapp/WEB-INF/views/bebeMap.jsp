@@ -139,12 +139,14 @@
         	// 지도의 우측에 확대 축소 컨트롤을 추가한다
         	map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 
-        	// 주소-좌표 변환 객체를 생성합니다
+        	// 주소-좌표 변환 객체를 생성합니다 위도 경도********************
         	var geocoder = new kakao.maps.services.Geocoder();
 
         	// 주소로 좌표를 검색합니다*********
         	geocoder.addressSearch('인천 미추홀구 매소홀로488번길 6-32', function(result, status) {
-
+ 			// 좌표 검색 result ******************
+        	console.log(result);
+ 			console.log(status);
         		// 정상적으로 검색이 완료됐으면 
         		if (status === kakao.maps.services.Status.OK) {
 
@@ -199,11 +201,17 @@
         		}
 
         		// 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
-        		ps.keywordSearch(keyword, placesSearchCB);
+        		ps.keywordSearch(keyword, placesSearchCB, {
+        			// 특정 위치에서 검색하게 하는,,,,********
+        		    location: new kakao.maps.LatLng(33.450701, 126.570667)
+        		});
         	}
 
         	// 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
         	function placesSearchCB(data, status, pagination) {
+        	console.log(data);
+        	console.log(status);
+        	console.log(pagination);
         		if (status === kakao.maps.services.Status.OK) {
 
         			// 정상적으로 검색이 완료됐으면
@@ -228,7 +236,7 @@
 
         	// 검색 결과 목록과 마커를 표출하는 함수입니다
         	function displayPlaces(places) {
-
+				console.log(places);
         		var listEl = document.getElementById('placesList'), 
 	        		menuEl = document.getElementById('menu_wrap'), 
 	        		fragment = document.createDocumentFragment(), 
@@ -389,8 +397,10 @@
         	
         	// 마크 눌렀을 때 CALLBACK
         	function callDisplayInfo(ajaxData) {
-        		if(ajaxData == null) {
-        			alert("예약 불가능");
+        		console.log(ajaxData);
+        		if(ajaxData == "") {
+        			return;
+        			
         		} else {
             		const mcCommentList = JSON.parse(ajaxData);
             		const suCode = mcCommentList.suCode;
@@ -415,7 +425,7 @@
 	    				mcList += "<div class = 'comment " + i + "'>";
 	    				// 프로필 사진이 없을 경우 기본 이미지
 	    				if(mcComment[i].suPhoto != null) {
-	    					mcList += "<img class='profileImage' src=" + ddComment[i].suPhoto + ">";
+	    					mcList += "<img class='profileImage' src=" + mcComment[i].suPhoto + ">";
 	    				} else {
 	    					mcList += "<img class='profileImage' src='/res/img/profile_default.png'>";
 	    				}
@@ -438,7 +448,7 @@
 	        		infowindow.setContent(infoWindow);
 	        		console.log(mcComment);
         		}
-    			swal("요청", "요청하신 작업을 완료하였습니다!", "success", { button: "완료"});
+    			//swal("요청", "요청하신 작업을 완료하였습니다!", "success", { button: "완료"});
         	}
 
         	// 검색결과 목록의 자식 Element를 제거하는 함수입니다

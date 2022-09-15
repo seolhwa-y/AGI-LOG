@@ -105,7 +105,8 @@ public class DailyDiary3 implements ServiceRule {
 			AuthBean ab = (AuthBean)this.pu.getAttribute("accessInfo");
 			
 			ddcb.setDcSuCode(ab.getSuCode());
-			ddcb.setDcCode(this.session.selectOne("getDcCode", ddcb.getDcSuCode()));
+			ddcb.setDcCode(this.session.selectOne("getDcCode", ddcb.getDcDdCode()));
+			System.out.println(ddcb.getDcCode());
 			if(this.convertToBoolean(this.session.insert("insDailyDiaryComment", ddcb))) {
 				System.out.println("감성일기 댓글 등록 성공");
 				

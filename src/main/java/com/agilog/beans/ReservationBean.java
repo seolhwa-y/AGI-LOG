@@ -6,6 +6,9 @@ import lombok.Data;
 public class ReservationBean {
 	public String resSuCode;
 	public String resBbCode;
+	public String resSuName;
+	public String resSuPhone;
+	
 	
 	public String resCode;
 	public String resAccess;

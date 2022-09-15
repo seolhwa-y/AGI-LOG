@@ -7,9 +7,22 @@
 <title>회원가입</title>
 <script src="/res/js/agiMain.js"></script>
 <script src="https://use.fontawesome.com/releases/v6.1.2/js/all.js"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <link rel="stylesheet" href="/res/css/agiMain.css">
 <link rel="stylesheet" href="/res/css/joinForm.css">
 <script>
+	/* 주소 검색 API */
+	function checkAddress() {
+	        //카카오 지도 발생
+	        new daum.Postcode({
+	            oncomplete: function(data) { //선택시 입력값 세팅
+	                console.log(data.address);
+	                document.getElementsByName("suAddress")[0].value = data.address + data.bname; // 주소 넣기
+	            }
+	        }).open();
+	} 
+
 	let check = false;
 	function checkOverlap() {
 		//0:? 1:닉네임
@@ -17,6 +30,7 @@
 		let clientData = "code=1&suNickName="+nickName.value;
 		postAjaxJson("CheckPersonalOverlap",clientData,"callBackOverlap");
 	}
+	
 	function callBackOverlap(ajaxData) {
 		if(ajaxData=="ok"){
 			alert("사용가능");
@@ -109,6 +123,7 @@
 		let name = document.getElementsByName("suName")[0].value; 
 		let phone = document.getElementsByName("suPhone")[0].value;
 		let nick = document.getElementsByName("suNickName")[1].value;
+		let address = document.getElementsByName("suAddress")[0].value;
 		
 		if(name.length > 11 && name.length == 0){
 			alert("이름은 10자 이내로 입력해주세요");
@@ -126,12 +141,19 @@
 			alert("닉네임 중복확인을 해주세요");
 			return;
 		}
+		if(address == null){
+			alert("주소를 입력해주세요.");
+			return;
+		}
 		form.appendChild(createInput("hidden","suEmail",email,null,null));
 		form.appendChild(createInput("hidden","suCode",code,null,null));
 		form.appendChild(createInput("hidden","suName",name,null,null));
 		form.appendChild(createInput("hidden","suPhone",phone,null,null));
 		form.appendChild(createInput("hidden","suNickName",nick,null,null));
+		form.appendChild(createInput("hidden","suAddress",address,null,null));
+		
 		alert(nick);
+		
 		form.submit();
 	}
 </script>
@@ -194,6 +216,13 @@
 							</div>
 							<input type="text" class="basicInput" name="suNickName" placeholder="Nickname" onchange="change()"/>
 							<button class="checkBtn btn" onclick="checkOverlap()">중복확인</button>
+						</div>
+						<div class = "accessInput-input-group2">
+							<div class="necessaryInfo">
+								<span class="necessaryPoint">*</span>주소
+							</div>
+							<input type = "text" name = "suAddress" class="basicInput" placeholder="주소"/>
+					    	<input type = "button" value="주소검색" id = "checkSuAddress" class="checkBtn btn" onclick = "checkAddress()">
 						</div>
 						<button class="checkBtn btn joinconfirm" onclick="joinCtl()">가입완료</button>
 					</div>

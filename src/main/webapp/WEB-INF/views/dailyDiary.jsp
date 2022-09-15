@@ -9,6 +9,8 @@
 <script src="https://use.fontawesome.com/releases/v6.1.2/js/all.js"></script>
 <link rel="stylesheet" href="/res/css/agiMain.css">
 
+<!-- 알림창 꾸미기 -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <!-- 카카오 스크립트 -->
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 <!-- 네이버 스크립트 -->
@@ -203,7 +205,68 @@
     box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
     transform: translateX(-50%) translateY(-50%);
     
-}
+	}
+
+	.viewFeedHead {
+	    width: 50%;
+	    margin-left: 25%;
+		margin-top : 5%;
+	    display: flex;
+	}
+	
+	#feed_top, img {
+	    width: 100%;
+	    height: 100%;
+	    border-radius: 5px 5px 0 0;
+    	margin-right: 37%;
+	}
+	
+	svg:not(:host).svg-inline--fa, svg:not(:root).svg-inline--fa {
+	    overflow: visible;
+	    box-sizing: content-box;
+	    margin-top: -5%;
+	}
+	
+	.viewLike {
+	    color: red;
+	    float: right;
+    	margin-right: 13%;
+    	margin-top: 41.5%;
+	    font-size: 1.5rem;
+    }
+    
+    .viewLike:hover{
+    	cursor: pointer;
+	}
+    
+    #viewFeedDate {
+	    float: left;
+	    margin-top: 43%;
+	    font-size: 1.5rem;
+	    width: 66%;
+    }
+    
+    #viewFeedContent {
+	    margin-top: 48%;
+	    border-top: 1px black solid;
+	    width: 83%;
+	    margin-left: 7%;
+	    text-align: left;
+	    font-size: 2rem;
+    }
+    
+    #UDIcon {
+	    margin-left: 75%;
+	    margin-top : -4%;
+	    width: 20%;
+    }
+    
+    #updContent {
+	    height: 7rem;
+	    width: 25rem;
+	    font-size: 1.5rem;
+    	resize: none;
+    }
 </style>
 <script>
 Kakao.init('2afdabad57ed92e1cc9de5bd4baed321');
@@ -313,14 +376,6 @@ function modalClose(){
 }
 
 /* 감성일기 댓글 작업 */
-	// 모달켜기
-	function clickee() {
-	alert("hi");
-		document.getElementsByClassName("modal")[0].style.display = "block";
-		let clientData = "";
-		postAjaxJson("ShowDailyDiary", clientData, "dailyDiaryComment");
-}
-	
 // 댓글 수정 버튼
 function updateInput(ddCode, ddSuCode, dcCode, dcDate, ddDate){
 	let dcContent = document.getElementsByClassName(dcDate)[0];
@@ -350,7 +405,6 @@ function updateDailyDiaryComment(ddCode, ddSuCode, dcCode, dcDate, ddDate) {
 // 3. 댓글 삭제
 function deleteDailyDiaryComment(ddCode, ddSuCode, dcCode, dcDate, ddDate) {
 	const clientData = "dcDdCode=" + ddCode + "&dcCode=" + dcCode + "&dcDdSuCode=" + ddSuCode + "&dcDate=" + dcDate + "&dcDdDate=" + ddDate;
-	postAjaxJson("DeleteDailyDiaryComment", clientData, "dailyDiaryComment");
 	
     // 경고
     swal({
@@ -369,16 +423,46 @@ function deleteDailyDiaryComment(ddCode, ddSuCode, dcCode, dcDate, ddDate) {
         });
 }
 
-// CALLBACK
-function dailyDiaryComment(ajaxData) {
+
+//피드 클릭시 확대
+function getFeed(ddCode){
+	const clientData = "ddCode=" + ddCode;
+
+	postAjaxJson("GetDailyDiaryFeed", clientData, "viewFeed");
+}
+
+//피드 콜백
+function viewFeed(ajaxData) {
+	alert("콜백 췤");
 	const ajax = JSON.parse(ajaxData);
 	const suCode = ajax.suCode;
 	const ddComment = ajax.ddComment;
+	const ddFeed = ajax.ddFeed;
 	console.log(ajax);
 	
-	let modalBody = document.getElementsByClassName("modal_content")[0];
-	modalBody.innerHTML = "";
+	alert(${accessInfo.suCode});
 	
+	let modal = document.querySelector(".modal");
+	let modalHead = document.querySelector(".modal_head");
+	let modalContent = document.querySelector(".modal_content");
+	let modalFoot = document.querySelector(".modal_foot");
+	modal.style.display = "block";
+
+	modalHead.innerHTML = "<div class='viewFeedHead'><img src=\'" + ddFeed.dpLink + "'><i class='fa-solid fa-xmark closeBtn editBtn' onclick='modalClose()'></div>";
+	modalContent.innerHTML = "<br/><div id='viewFeedDate'>" + ddFeed.ddDate.substring(0, 4) + "년 " + ddFeed.ddDate.substring(4, 6) + "월 " + ddFeed.ddDate.substring(6, 8) + "일 " + ddFeed.ddDate.substring(8, 10) + ":" + ddFeed.ddDate.substring(10, 12) + ":" + ddFeed.ddDate.substring(12, 14) + "</div><div class='viewLike' onClick='dailyDiaryLike(" + ddFeed.ddCode + "," + ddFeed.ddDate + "," + ddFeed.suCode + ")'>❤ " + ddFeed.likes + "</div>"
+							 +"<div id='viewFeedContent'><br/>" + ddFeed.ddContent + "</div>";
+	if("${accessInfo.suCode}" == ddFeed.suCode) {
+		alert("똑같음" + "${accessInfo.suCode}" + "==" + ddFeed.suCode);
+		modalContent.innerHTML += "<div id='UDIcon'><i class='fa-solid fa-pen updBtn editBtn' onClick='feedUpdateInput(" + ddFeed.ddCode + ")' style='margin-right:20%'></i><i class='fa-solid fa-trash-can delBtn editBtn' onClick='deleteDailyDiaryFeed(" + ddFeed.ddCode + ")'></i></div>";
+	} else {
+		alert("다름" + "${accessInfo.suCode}" + "==" + ddFeed.suCode);
+	}
+	//modalFoot.innerHTML = "<button class='mBtnX' onclick='modalClose()'>취소</button><button class='mBtnO' onclick='insertDailyDiary()'>등록</button>";
+	
+	//댓글
+	let modalBody = document.getElementsByClassName("modal_content")[0];
+	
+	alert(ddComment[0].dcDdCode);
 	
 	modalBody.innerHTML += "<div><hr></div>";
 	modalBody.innerHTML += "<div>";
@@ -415,6 +499,73 @@ function dailyDiaryComment(ajaxData) {
 	swal("요청", "요청하신 작업을 완료하였습니다!", "success", { button: "완료"});
 }
 
+function feedUpdateInput(ddCode) {
+	alert("피업테" + ddCode);
+	let viewFeedContent = document.getElementById("viewFeedContent");
+	let UDIcon = document.getElementById("UDIcon");
+	let content = document.getElementById("viewFeedContent").textContent;
+
+	viewFeedContent.innerHTML = "";
+	viewFeedContent.innerHTML = "<br/><textarea id='updContent'>" + content + "</textarea>";
+
+	UDIcon.innerHTML = "";
+	UDIcon.innerHTML = "<button class='submitBtn btn' onClick='updateDailyDiaryFeed(" + ddCode + ")'>수정</button>";
+	UDIcon.style.marginTop="-14%";
+}
+
+//피드 내용 수정
+function updateDailyDiaryFeed(ddCode) {
+	alert("피업테2");
+	
+	let updContent = document.getElementById("updContent").value;
+	
+	const clientData = "ddCode=" + ddCode + "&ddContent=" + updContent;
+	
+	postAjaxJson("UpdateDailyDiaryFeed", clientData, "viewFeed");
+}
+
+
+function deleteDailyDiaryFeed(ddCode) {
+	alert("피삭테");
+	
+	swal({
+        title: "진짜로 삭제하십니까?",
+        text: "삭제한 피드는 복구할 수 없습니다.",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    })
+        .then((willDelete) => {
+            if (willDelete) {
+            	let form = document.getElementById("serverForm");
+
+            	form.appendChild(createInput("hidden","ddCode",ddCode,null,null));
+            	
+            	form.action = "DeleteDailyDiaryFeed";
+            	form.method = "post";
+            	
+            	form.submit();
+            	modalClose();
+            } else {
+                swal("삭제를 취소하셨습니다.");
+            }
+        });
+}
+
+function dailyDiaryLike(ddCode, ddDate, suCode) {
+	alert("피라테");
+	
+	const clientData = "ddCode=" + ddCode + "&ddDate=" + ddDate + "&ddSuCode=" + suCode;
+	alert(clientData);
+	postAjaxJson("DailyDiaryLike", clientData, "updLike");
+}
+
+function updLike(ajaxData) {
+	alert("updlike 콜백 췤");
+	const ajax = JSON.parse(ajaxData);
+	
+	alert(ajax);
+}
 
 </script>
 </head>
@@ -486,7 +637,6 @@ function dailyDiaryComment(ajaxData) {
 		<div class="modal">
             <div class="ddModal_body">
 				<div class="modal_head">
-					<i class="fa-solid fa-xmark closeBtn editBtn"></i><br />
 				</div>
 				<div class="modal_content"></div>
 				<div class="modal_foot"></div>
