@@ -1,6 +1,8 @@
 package com.agilog.services;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -51,7 +53,14 @@ public class SkDailyDiary implements ServiceRule {
 			ab = (AuthBean) this.pu.getAttribute("accessInfo");
 			if (ab != null) {
 				ddb.setSuCode(ab.getSuCode());
-
+				
+				//날짜 형식 변환
+				SimpleDateFormat form = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+				
+				Date d = form.parse(ddb.getDdDate());
+				ddb.setDdDate(sdf.format(d));
+				
 				// 0개 일때 !false=>좋아요 누른적 없음 => 좋아요 등록
 				if (!this.convertToBoolean(this.session.selectOne("isDdLike", ddb))) {
 					if (this.convertToBoolean(this.session.insert("insDdLike", ddb))) {

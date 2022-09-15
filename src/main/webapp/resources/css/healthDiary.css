@@ -10,13 +10,17 @@
 
 #rightArea {
 	position: relative;
-	padding: 2% 0%;
+	padding: 1% 0%;
 	box-sizing: border-box;
 	margin: 0;
+	overflow: hidden;
 }
 
 .writeBtn {
-	width: auto;
+	width: 8rem;
+	height: 2rem;
+	font-size: 1.4rem;
+	border: solid 2px rgb(173, 173, 173);
 }
 .saveBtn {
 	width: auto;
@@ -31,14 +35,16 @@
 }
 
 .modal_head {
-	position: relative;
-	text-align: left;
-	width: 100%;
-	height: 8%;
-	padding: 2% 5%;
-	box-sizing: border-box;
-	font-size: 1.8rem;
-	font-weight: 800;
+	display: flex;
+    position: relative;
+    text-align: left;
+    width: 100%;
+    height: 8%;
+    padding: 2% 5%;
+    box-sizing: border-box;
+    font-size: 1.8rem;
+    font-weight: 800;
+    justify-content: space-between;
 }
 
 .modal_content {
@@ -89,9 +95,24 @@
 }
 
 .mMiniSelect {
-	width: 90px;
+	width: 100px;
 	height: 2rem;
 	font-size: 1rem;
+	border-radius: 5px;
+    border: solid 2px rgb(173, 173, 173);
+    box-sizing: content-box;
+}
+
+.dateInput {
+	font-size: 1.2rem;
+}
+
+.babyInfo {
+	width: 115px;
+	height: 2rem;
+	font-size: 1.3rem;
+	border-radius: 5px;
+    border: solid 2px rgb(173, 173, 173);
 }
 
 /* timepicker */
@@ -114,6 +135,7 @@
 	padding: 1.5% 5%;
 	box-sizing: border-box;
 	width: 100%;
+	height: 100%;
 }
 
 .diary {
@@ -123,7 +145,7 @@
 	padding: 10px 15px;
 	box-sizing: border-box;
 	background-color: white;
-	width: 85%;
+	width: 90%;
 	height: 130px;
 	border-radius: 5px;
 	box-shadow: 3px 3px 8px 0px dimgray;

@@ -15,4 +15,5 @@ public class DailyDiaryBean {
 	private boolean isLike;
 	private int likes;
 	
+	private String moveWrite;
 }

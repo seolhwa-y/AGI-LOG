@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Collections;
 import java.util.Date;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -19,6 +20,7 @@ import com.agilog.beans.HealthDiaryBean;
 import com.agilog.beans.ReservationBean;
 import com.agilog.interfaces.ServiceRule;
 import com.agilog.utils.Encryption;
+import com.agilog.utils.ListSort;
 import com.agilog.utils.ProjectUtils;
 @Service
 public class HealthDiary implements ServiceRule {
@@ -89,7 +91,13 @@ public class HealthDiary implements ServiceRule {
 				//건강일기
 				List<HealthDiaryBean> healthList = this.session.selectList("getHealthDiary",ab);
 				mav.addObject("diaryList", this.makeHealthDiaryHtml(healthList));
+				
+				HealthDiaryBean h = (HealthDiaryBean)mav.getModel().get("healthDiaryBean");
+				if(h!=null&&h.getMoveWrite()!=null&&h.getMoveWrite().equals("1")) {
+					mav.addObject("isWrite",true);
+				}
 				page="healthDiary";
+				
 			}
 			
 			mav.setViewName(page);
@@ -109,7 +117,14 @@ public class HealthDiary implements ServiceRule {
 			AuthBean ab = (AuthBean)this.pu.getAttribute("accessInfo");
 			//세션존재 -> insert
 			if(ab!=null) {
+				SimpleDateFormat form = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+				
+				Date d = form.parse(hb.getHdDate());
+				hb.setHdDate(sdf.format(d));
+				
 				hb.setSuCode(ab.getSuCode());
+				System.out.println(hb.getHdDate());
 				//다이어리 코드 가져오기
 				hb.setHdCode(this.session.selectOne("getHealthDiaryCode",hb));
 				//항목 검사
@@ -285,11 +300,13 @@ public class HealthDiary implements ServiceRule {
 	//건강일기 리스트 html
 	private String makeHealthDiaryHtml(List<HealthDiaryBean> healthList) {
 		StringBuffer sb = new StringBuffer();
-		SimpleDateFormat form = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-		SimpleDateFormat msdf = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss");
-		SimpleDateFormat sdf = new SimpleDateFormat("MM월dd일 hh시");
+		SimpleDateFormat form = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat msdf = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
+		SimpleDateFormat sdf = new SimpleDateFormat("MM월dd일 HH시");
 		Date d;
 		
+		ListSort compare = new ListSort();
+		Collections.sort(healthList, compare);
 		for(HealthDiaryBean hb:healthList) {
 			try {
 			sb.append("<div class=\"diary "+hb.getBbCode()+"\" >");

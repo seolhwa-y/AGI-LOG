@@ -89,7 +89,6 @@ public class Authentication implements ServiceRule {
 	}
 
 	private void checkPersonalOverlap(Model model) {
-		System.out.println("중복체크 메소드 진입");
 		String code = (String) model.getAttribute("code");
 		AuthBean ab = (AuthBean) model.getAttribute("authBean");
 		int result = 0;
@@ -121,23 +120,22 @@ public class Authentication implements ServiceRule {
 
 		try {
 			if(ab.getSuCode().length()>10)
-				ab.setSuName(this.enc.aesEncode(ab.getSuName(), ab.getSuCode().substring(0, 24)));
+				ab.setSuName(this.enc.aesEncode(ab.getSuName(), ab.getSuCode().substring(0, 10)));
 			else 
 				ab.setSuName(this.enc.aesEncode(ab.getSuName(), ab.getSuCode()));
 			
 			if(ab.getSuCode().length()>10)
-				ab.setSuEmail(this.enc.aesEncode(ab.getSuEmail(), ab.getSuCode().substring(0, 24)));
+				ab.setSuEmail(this.enc.aesEncode(ab.getSuEmail(), ab.getSuCode().substring(0, 10)));
 			else 
 				ab.setSuEmail(this.enc.aesEncode(ab.getSuEmail(), ab.getSuCode()));
 			
 			if(ab.getSuCode().length()>10)
-				ab.setSuPhone(this.enc.aesEncode(ab.getSuPhone(), ab.getSuCode().substring(0, 24)));
+				ab.setSuPhone(this.enc.aesEncode(ab.getSuPhone(), ab.getSuCode().substring(0, 10)));
 			else 
 				ab.setSuPhone(this.enc.aesEncode(ab.getSuPhone(), ab.getSuCode()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		mav.addObject(ab);
 		if (this.convertToBoolean(this.session.insert("insSocialUser", ab))) {
 			/* 회원가입 성공시 유저별로 /res/img/유저코드로 폴더 생성*/
 			String path = "C:\\Users\\js94\\git\\agi-log\\src\\main\\webapp\\resources\\img\\"+ab.getSuCode();
@@ -424,7 +422,6 @@ public class Authentication implements ServiceRule {
 		}
 
 		if (this.convertToBoolean(this.session.insert("insCompanyInfo", cb))) {
-			System.out.println("SHY : 기업 회원가입 성공");
 			mav.setViewName("companyLogin");
 		} else {
 			System.out.println("SHY : 기업 회원가입 실패");

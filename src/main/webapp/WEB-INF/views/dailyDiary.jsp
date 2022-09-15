@@ -222,6 +222,10 @@ function getInfo() {
 
 	let feedList = document.getElementById("feedList");
 	feedList.innerHTML = "${allDailyDiaryList}";
+	
+	if("${isWrite}") {
+		moveWriteFeed();
+	}
 }
 function openPopUp() {
 	testPopUp = window

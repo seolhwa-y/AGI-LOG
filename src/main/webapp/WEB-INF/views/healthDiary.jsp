@@ -53,6 +53,10 @@
             	alert("${fail}");
             }
             writeForm = document.getElementsByClassName("modal_content")[0].innerHTML;
+            
+            if("${isWrite}") {
+            	writeHealthDiary();
+        	}
         }
         /* ------------------------------------------------------------- */
         //로그아웃
@@ -113,16 +117,25 @@
                 }
             }
         }
+        
+      	//현재 시간
+		let today = new Date();
+		let year = today.getFullYear();
+		let month = ('0' + (today.getMonth() + 1)).slice(-2);
+		let day = ('0' + today.getDate()).slice(-2);
+		
+		let td = (year+"-"+month+"-"+day);
+		
         //일기작성 모달 띄우기
         function writeHealthDiary() {
             let modal = document.getElementsByClassName("modal")[0];
             let mcontent = document.getElementsByClassName("modal_content")[0];
             mcontent.innerHTML = writeForm;
             let mhead = document.getElementsByClassName("modal_head")[0];
-        	mhead.innerHTML = "<i class='fa-solid fa-xmark closeBtn editBtn' onclick='cancel()'></i><br />";
+        	mhead.innerHTML = "<i class='fa-solid fa-xmark closeBtn editBtn' onclick='cancel()'></i>";
         	let orgh = mhead.innerHTML;
             if(document.getElementsByClassName("babyInfo")[0] != undefined){
-            	mhead.innerHTML = orgh+"${babyInfo}";
+            	mhead.innerHTML = orgh+"${babyInfo}<input type='date' class='hdDate dateInput' value='"+td+"'/>";
             }
             let mfoot = document.getElementsByClassName("modal_foot")[0];
             mfoot.innerHTML="";
@@ -189,7 +202,12 @@
       		let data = document.getElementsByClassName("modal_content")[0];
       		let babyInfo = document.getElementsByClassName("babyInfo")[1];
             let bbCode = babyInfo.options[babyInfo.selectedIndex].value;
+      		let hdDate = document.getElementsByClassName("hdDate")[0];
       		
+      		let hours = ('0' + today.getHours()).slice(-2); 
+    		let minutes = ('0' + today.getMinutes()).slice(-2);
+    		let seconds = ('0' + today.getSeconds()).slice(-2);
+    		form.appendChild(createInput("hidden","hdDate",hdDate.value+" "+hours+":"+minutes+":"+seconds,null,null));
 			form.appendChild(createInput("hidden","sleep",sleepTime(),null,null));
 			form.appendChild(createInput("hidden","bbCode",bbCode,null,null));
 			form.appendChild(data);
@@ -212,10 +230,7 @@
         	
         	return Math.trunc((w-s)/60) + "H " + Math.round((Math.round((w-s)%60))/10)*10+"m";
         }
-        //현재 시간
-/*      let today = new Date();   
-        let hours = ('0' + today.getHours()).slice(-2); 
-        let minutes = ('0' + today.getMinutes()).slice(-2); */
+
         //건강일기 디테일 확인
         function showHealthDiary(hdCode) {
         	let clientData = "hdCode="+hdCode;
@@ -227,7 +242,7 @@
         	let data = JSON.parse(ajaxData);
         	let modal = document.getElementsByClassName("modal")[0];
         	let mhead = document.getElementsByClassName("modal_head")[0];
-        	mhead.innerHTML = "<span>"+data.bbName+"</span><i class='fa-solid fa-xmark closeBtn editBtn' onclick='cancel()'></i><br />";
+        	mhead.innerHTML = "<span>"+data.bbName+"</span><i class='fa-solid fa-xmark closeBtn editBtn' onclick='cancel()'></i>";
         	let mcontent = document.getElementsByClassName("modal_content")[0];
             mcontent.innerHTML = writeForm;
             let mfoot = document.getElementsByClassName("modal_foot")[0];
@@ -379,7 +394,7 @@
                         ${babyInfo}
                         <button class="writeBtn btn" onclick="writeHealthDiary()">글쓰기</button>
                     </div>
-                    <div id="diaryArea">
+                    <div id="diaryArea" class="scrollBar">
                         ${diaryList}
                     </div>
                     <div class="up"><a href="#rightArea">위로</a></div>
@@ -391,7 +406,7 @@
             <img id="hdClip" src="/res/img/clip.png"/>
                 <div class="modal_head">
                     ${babyInfo}
-                    <i class="fa-solid fa-xmark closeBtn editBtn" onclick="cancel()"></i><br />
+                    <i class="fa-solid fa-xmark closeBtn editBtn" onclick="cancel()"></i>
                 </div>
                 <div class="modal_content">
                     <div class="row">

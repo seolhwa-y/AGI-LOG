@@ -181,8 +181,8 @@ public class SkHomeController {
 	}
 	
 	@RequestMapping(value = "/MoveHealthDiaryPage", method = RequestMethod.GET)
-	public ModelAndView moveHealthDiaryPage(ModelAndView mav, @ModelAttribute AuthBean ab) {
-		mav.addObject(ab);
+	public ModelAndView moveHealthDiaryPage(ModelAndView mav, @ModelAttribute HealthDiaryBean hb) {
+		mav.addObject(hb);
 		this.healthDiary.backController(mav, 33);
 		
 		return mav;
@@ -208,6 +208,22 @@ public class SkHomeController {
 	public ModelAndView moveDoctorComment(ModelAndView mav, @ModelAttribute AuthBean ab) {
 		mav.addObject(ab);
 		this.healthDiary.backController(mav, 76);
+		
+		return mav;
+	}
+	
+	@RequestMapping(value = "/MoveDailyDiaryPage", method = RequestMethod.POST)
+	public ModelAndView moveWriteDailyDiary(ModelAndView mav, @ModelAttribute DailyDiaryBean hb) {
+		mav.addObject(hb);
+		this.dailyDiary.backController(mav, 5);
+		
+		return mav;
+	}
+	
+	@RequestMapping(value = "/MoveHealthDiaryPage", method = RequestMethod.POST)
+	public ModelAndView moveWriteHealthDiary(ModelAndView mav, @ModelAttribute HealthDiaryBean hb) {
+		mav.addObject(hb);
+		this.healthDiary.backController(mav, 33);
 		
 		return mav;
 	}

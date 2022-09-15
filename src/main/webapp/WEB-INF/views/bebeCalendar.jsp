@@ -17,12 +17,13 @@
 <script	src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
 <style>
 #calendar {
-	max-width: 1100px;
 	margin: 0 auto;
-	max-height: 700px;
+	max-width: 1200px;
+	max-height: 690px;
 }
 #rightArea {
-	padding: 0.1% 0;
+	padding: 0.3% 0;
+	width: 1400px;
 }
 
 .modal {
@@ -179,6 +180,10 @@ input[type="checkbox"]:checked+label::after {
 .dateImg {
 	margin-right: 6px;
 }
+
+.fc .fc-writeHDBtn-button {
+var(--fc-button-bg-color, #ffffff);
+}
 </style>
 <script>
 Kakao.init('2afdabad57ed92e1cc9de5bd4baed321');
@@ -194,6 +199,10 @@ function getInfo() {
 		} else ;
 		accessArea.innerHTML += "<span onclick=\"movePage('MoveCompanyLoginPage')\">기업회원</span>";
 	}
+	document.getElementsByClassName("fc-writeDDBtn-button")[0].style.backgroundColor="lightpink";
+	document.getElementsByClassName("fc-writeDDBtn-button")[0].style.border="solid 2px dimgray";
+	document.getElementsByClassName("fc-writeHDBtn-button")[0].style.backgroundColor="lightblue";
+	document.getElementsByClassName("fc-writeHDBtn-button")[0].style.border="solid 2px dimgray";
 }
 function openPopUp() {
 	testPopUp = window
@@ -236,13 +245,35 @@ function kakaoLogout() {
 
     // div 태그_캘린더에 라이브러리 적용.
     var calendar = new FullCalendar.Calendar(calendarEl, {
+    	customButtons: {
+    	    writeDDBtn: {
+    	      text: '일기쓰기',
+    	      click: function() {
+    	        let form = document.getElementById("serverForm");
+    	        form.appendChild(createInput("hidden","moveWrite","1",null,null));
+    	        form.action = "MoveDailyDiaryPage";
+    	        form.method = "post";
+    	        form.submit();
+    	      }
+    	    },
+    	    writeHDBtn: {
+      	      text: '기록쓰기',
+      	      click: function() {
+      	    	let form = document.getElementById("serverForm");
+    	        form.appendChild(createInput("hidden","moveWrite","1",null,null));
+    	        form.action = "MoveHealthDiaryPage";
+    	        form.method = "post";
+    	        form.submit();
+      	      }
+      	    }
+    	  },
     	// 헤더 왼쪽 : 전월, 당월, 오늘 이동
     	// 헤더 중간 : 현재 캘린더 년 
-    	// 헤어 오른쪽 : 월, 주, 일로 구분하여 보기.
+    	// 헤더 오른쪽 : 월, 주, 일로 구분하여 보기.
       headerToolbar: {
         left: 'prev,next today',
         center: 'title',
-        right: 'dayGridMonth'
+        right: 'writeDDBtn writeHDBtn dayGridMonth'
       },
       // 초기 날짜 :: 설정 안하면 투데이로 보인다.
       initialDate: '2022-09-03', 
@@ -252,14 +283,10 @@ function kakaoLogout() {
       selectable: false,
       selectMirror: false,
       eventOrder: '-title',
-      // 캘린더에서 드래그 해서 일정 생성
-      select: function(arg) {
-       
-      },
       // 일정을 클릭 했을 때 발생
       eventClick: function(info) {
-		if(info.el.classList.item(8) == "birthDay") {
-			
+		if(info.el.classList.item(8) == "healthDiary") {
+			alert("dhlsdksgej");
 		}
 		else {
 			let modalTitle = document.getElementById("modalTitle");
@@ -288,17 +315,15 @@ function kakaoLogout() {
     		bimg.setAttribute("width", "16");
     		bimg.setAttribute("height", "16");
     	    bimg.classList.add("dateImg");
-    	    if(info.el.classList.item(8) == "birthDay")
+    	    if(info.el.classList.item(8) == "birthDay"||info.el.classList.item(7) == "birthDay")
     	    	info.el.querySelector(".fc-event-title").insertBefore(bimg,info.el.querySelector(".fc-event-title").firstChild);
-//    	    	info.el.querySelector(".fc-event-title").appendChild(bimg);
     	    
     	    const ddimg = document.createElement("img");
     	    ddimg.setAttribute("src","/res/img/dailydiary.png");
     	    ddimg.setAttribute("width", "16");
     	    ddimg.setAttribute("height", "16");
     	    ddimg.classList.add("dateImg");
-    	    if(info.el.classList.item(8) == "dailyDiary")
-//    	    	info.el.querySelector(".fc-event-title").insertBefore(ddimg,info.el.querySelector(".fc-event-title").firstChild);
+    	    if(info.el.classList.item(8) == "dailyDiary"||info.el.classList.item(7) == "dailyDiary")
     	    	info.el.querySelector(".fc-event-title").appendChild(ddimg);
     	    
     	    const hdimg = document.createElement("img");
@@ -306,8 +331,7 @@ function kakaoLogout() {
     	    hdimg.setAttribute("width", "16");
     	    hdimg.setAttribute("height", "16");
     	    hdimg.classList.add("dateImg");
-    	    if(info.el.classList.item(8) == "healthDiary")
-//    	    	info.el.querySelector(".fc-event-title").insertBefore(hdimg,info.el.querySelector(".fc-event-title").firstChild);
+    	    if(info.el.classList.item(8) == "healthDiary"||info.el.classList.item(7) == "healthDiary")
     	    	info.el.querySelector(".fc-event-title").appendChild(hdimg);
     	    
     	    const reimg = document.createElement("img");
@@ -315,8 +339,7 @@ function kakaoLogout() {
     	    reimg.setAttribute("width", "16");
     	    reimg.setAttribute("height", "16");
     	    reimg.classList.add("dateImg");
-    	    if(info.el.classList.item(8) == "reservation")
-//    	    	info.el.querySelector(".fc-event-title").insertBefore(reimg,info.el.querySelector(".fc-event-title").firstChild);
+    	    if(info.el.classList.item(8) == "reservation"||info.el.classList.item(7) == "reservation")
     	    	info.el.querySelector(".fc-event-title").appendChild(reimg);
     	    
     	    const scimg = document.createElement("img");
@@ -324,8 +347,7 @@ function kakaoLogout() {
     	    scimg.setAttribute("width", "16");
     	    scimg.setAttribute("height", "16");
     	    scimg.classList.add("dateImg");
-    	    if(info.el.classList.item(8) == "schedule")
-//    	    	info.el.querySelector(".fc-event-title").insertBefore(scimg,info.el.querySelector(".fc-event-title").firstChild);
+    	    if(info.el.classList.item(8) == "schedule"||info.el.classList.item(7) == "schedule")
     	    	info.el.querySelector(".fc-event-title").appendChild(scimg);
     	  },
       // 특정일자 선택했을때의 펑션

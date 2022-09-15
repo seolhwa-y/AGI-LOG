@@ -219,7 +219,7 @@ public class MyPage implements ServiceRule {
 					} else {
 					//네이버
 					ab.setType("naver");
-					String suCode = ab.getSuCode().substring(0, 24);
+					String suCode = ab.getSuCode().substring(0, 10);
 					//이름 복호화
 					mpb.setSuName(this.enc.aesDecode(mpb.getSuName(),suCode));
 					

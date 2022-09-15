@@ -41,6 +41,7 @@ public class BebeCalendar3 implements ServiceRule {
 
 	private void moveCalendarCtl(ModelAndView mav) {
 		AuthBean ab;
+		String page = "login";
 		try {
 			ab = (AuthBean) this.pu.getAttribute("accessInfo");
 			if (ab != null) {
@@ -65,11 +66,12 @@ public class BebeCalendar3 implements ServiceRule {
 				mav.addObject("hdList", this.makeEventHD(hdList));
 				mav.addObject("reList", this.makeEventRe(reList));
 				mav.addObject("scList", this.makeEventSc(scList));
+				page = "bebeCalendar";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		mav.setViewName("bebeCalendar");
+		mav.setViewName(page);
 	}
 
 	private void moveMonthCtl(Model model) {
@@ -117,7 +119,6 @@ public class BebeCalendar3 implements ServiceRule {
 				sb.append(",");
 			}
 		}
-		System.out.println(sb.toString());
 		return sb.toString();
 	}
 

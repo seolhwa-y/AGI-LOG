@@ -31,4 +31,6 @@ public class HealthDiaryBean {
 	
 	private int age;
 	private int rnk;
+	
+	private String moveWrite;
 }
