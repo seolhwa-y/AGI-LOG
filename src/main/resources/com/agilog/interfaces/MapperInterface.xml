@@ -33,6 +33,6 @@
 		SELECT COUNT(*) FROM SU WHERE SU_NICKNAME = #{suNickName}
 	</select>
 	<insert id="insSocialUser" parameterType="com.agilog.beans.AuthBean" >
-		INSERT INTO SU VALUES(#{suCode},#{suName},#{suPhone},#{suEmail},#{suNickName},null,null)
+		INSERT INTO SU VALUES(#{suCode},#{suName},#{suPhone},#{suEmail},#{suNickName},null,null,#{suAddress})
 	</insert>
 </mapper>

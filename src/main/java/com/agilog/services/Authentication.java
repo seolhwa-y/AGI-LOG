@@ -134,6 +134,11 @@ public class Authentication implements ServiceRule {
 				ab.setSuPhone(this.enc.aesEncode(ab.getSuPhone(), ab.getSuCode().substring(0, 24)));
 			else 
 				ab.setSuPhone(this.enc.aesEncode(ab.getSuPhone(), ab.getSuCode()));
+			
+			if(ab.getSuCode().length()>10)
+				ab.setSuAddress(this.enc.aesEncode(ab.getSuAddress(), ab.getSuCode().substring(0, 24)));
+			else 
+				ab.setSuAddress(this.enc.aesEncode(ab.getSuAddress(), ab.getSuCode()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
