@@ -161,7 +161,6 @@ function deleteFile(num) {
     filesArr[num].is_delete = true;
 }
 
-
 </script>
 
 <style>
@@ -221,8 +220,8 @@ function deleteFile(num) {
 		</div>
 		<div id="middle">
 			<div id="rightArea" class="scrollBar">
-				<input type="text" id="fbTitle" placeholder="제목을 입력해 주세요"/>
-				<textarea name="ir1" id="ir1" rows="10" cols="165"></textarea>
+				<div style="width:54%">제목 : <input type="text" id="fbTitle" style="width:92%" placeholder="제목을 입력해 주세요"/></div>
+				<textarea name="ir1" id="ir1" rows="20" cols="90"></textarea>
 				<script type="text/javascript">
 					var oEditors = [];
 					nhn.husky.EZCreator.createInIFrame({
