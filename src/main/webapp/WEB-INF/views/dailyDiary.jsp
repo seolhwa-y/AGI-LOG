@@ -597,7 +597,10 @@ function updLike(ajaxData) {
 	alert("updlike 콜백 췤");
 	const ajax = JSON.parse(ajaxData);
 	
-	alert(ajax);
+	alert(ajax.likes);
+	let viewLike = document.getElementsByClassName("viewLike")[0];
+	
+	viewLike.innerHTML = "❤ " + ajax.likes;
 }
 
 </script>

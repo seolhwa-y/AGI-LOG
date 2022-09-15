@@ -92,41 +92,41 @@ public class Board implements ServiceRule {
 	}
 
 	private void moveInfoBoardCtl(ModelAndView mav) {
-		PostBean pb = (PostBean) mav.getModel().get("postBean");
+		PostBean pb = (PostBean)mav.getModel().get("postBean");
 		int pageNum = 0;	// 현재 페이지 번호
 		int listCount = 5;	// 페이지당 나타낼 글의 갯수
 		int pageCount = 3;	// 페이지그룹당 페이지 갯수
 		int maxNum =0; // 전체 글의 숫자	
-		System.out.println("처음 : " + pageNum);
+
 		/*페이징 제작 */
 		maxNum = this.session.selectOne("InfoCount");
 		if(pb.getPageNum() != 0) {
 			pageNum =  pb.getPageNum();
 		}else {
-			pb = new PostBean();
 			pageNum=1;
 			pb.setPageNum(pageNum);
 		}
-
+		
 		// 필드로 저장
 		this.maxNum = maxNum;
 		this.pageNum = pageNum;
 		this.listCount = listCount;
 		this.pageCount = pageCount;
-		System.out.println("현재 : " + pageNum);
 		
-		if((pb.getIbSort() == "newList") || (pb.getIbSort() == null)) {
-			//최신순 가져오기
-			pb.setIbSort("newList");
-			mav.addObject("bebeBoardList", this.makeBoardList(this.session.selectList("getBebeInfo", pb)));
-			System.out.println("지나감");
-		}else if(pb.getIbSort().equals("oldList")){
+		ibSort = pb.getIbSort();
+				if(ibSort==null) {
+					ibSort = "newList";
+				};
+
+		if(ibSort.equals("newList")){
+		mav.addObject("bebeBoardList", this.makeBoardList(this.session.selectList("getBebeInfo", pb)));
+		}else if(ibSort.equals("oldList")){
 			//오래된순 가져오기
 			mav.addObject("bebeBoardList", this.makeBoardList(this.session.selectList("getBebeInfoOld", pb)));
-		}else if(pb.getIbSort().equals("likeList")){	
+		}else if(ibSort.equals("likeList")){	
 			//좋아요순 가져오기
 			mav.addObject("bebeBoardList", this.makeBoardList(this.session.selectList("getBebeInfoLike", pb)));
-		}else if(pb.getIbSort().equals("viewList")){
+		}else if(ibSort.equals("viewList")){
 			//조회수순 가져오기
 			mav.addObject("bebeBoardList", this.makeBoardList(this.session.selectList("getBebeInfoView", pb)));
 		}
@@ -154,16 +154,8 @@ public class Board implements ServiceRule {
 		StringBuffer sb = new StringBuffer();
 		int start = (currentGroup * pageCount) - (pageCount - 1);
 		int end = (currentGroup * pageCount >= totalPage) ? totalPage : currentGroup * pageCount;
-		System.out.println("전체페이지 : " + totalPage);
-		System.out.println("전체 그룹 : " + currentGroup);
-		System.out.println("현재 페이지 : " + pageNum);
-		System.out.println("시작 페이지 : " + start);
-		System.out.println("끝 페이지 : " + end);
-		if (start != 1) {
-			sb.append("<a href='MoveInfoBoard?ibSort=" + ibSort + "&pageNum=" + (start - 1) + "'>");
-			sb.append("[이전]");
-			sb.append("</a>");
-		}
+
+
 
 		for (int i = start; i <= end; i++) {
 			if (pageNum != i) {
@@ -172,11 +164,7 @@ public class Board implements ServiceRule {
 				sb.append("<font class=\"pagenum\"font style='color:red;'>"+ i + "</font>");
 			}
 		}
-		if (end != totalPage) {
-			sb.append("<a class=\"pagenum\" href='MoveInfoBoard?ibSort=\" + ibSort + \"&pageNum=\" + (end + 1) + \"'>");
-			sb.append("[다음]");
-			sb.append("</a>");
-		}
+
 		return sb.toString();
 	}
 	
@@ -249,7 +237,6 @@ public class Board implements ServiceRule {
 			sb.append("<option value = \"likeList\">좋아요순</option>");
 			sb.append("<option value = \"viewList\">조회수순</option>");
 		sb.append("</select>");
-		System.out.println("사이즈 : " + bebeBoardList.size());
 		sb.append("<table class=\"infoTable\">");
 			sb.append("<tr>");
 			sb.append("<th class=\"infoBoardM no\">No.</th>");
@@ -261,14 +248,14 @@ public class Board implements ServiceRule {
 			for(int idx=0; idx<bebeBoardList.size(); idx++) {
 				PostBean pb = (PostBean)bebeBoardList.get(idx);
 				int max = bebeBoardList.size();
+				System.out.println("페이지번호 : " + pageNum);
 				sb.append("<tr class=\"selectBoard\" onClick=\"boardContent("+ pb.getIbCode() +")\">");
 				sb.append("<td class=\"infoBoardB\">"+ (max-idx) +"</td>");
 				sb.append("<td class=\"infoBoardTitle\">"+ pb.getIbTitle() +"</td>");
 				sb.append("<td class=\"infoBoardB\">"+ pb.getIbDate() +"</td>");
 				sb.append("<td class=\"infoBoardB\">"+ pb.getIbLike() +"</td>");
 				sb.append("<td class=\"infoBoardB\">"+ pb.getIbView() +"</td>");
-				sb.append("</tr>");
-			//this.page.makePageGroup();	
+				sb.append("</tr>");	
 			}
 		sb.append("</table>");
 		return sb.toString();

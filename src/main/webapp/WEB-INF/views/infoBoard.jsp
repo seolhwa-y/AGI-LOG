@@ -14,6 +14,7 @@
 <!-- 네이버 스크립트 -->
 <script	src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
 <script>
+
 Kakao.init('2afdabad57ed92e1cc9de5bd4baed321');
 function getInfo() {
 	/* 테마 이미지 or 단순색상 */
@@ -90,7 +91,7 @@ function boardContent(data1){
 	
 	form.appendChild(createInput("hidden","ibCode",data1,null,null));
 
-
+	
 	form.action = "MoveShowPost";
 	form.method = "post";
 	form.submit();
@@ -99,10 +100,11 @@ function changeSort(){
 	let form = document.getElementById("serverForm");
 	let postSelect = document.getElementById("infoBoardSelect");
 	//option값을 저장
-	var ibSort = postSelect.options[postSelect.selectedIndex].value;
-	var optionText = postSelect.options[postSelect.selectedIndex].text;
-
-	form.appendChild(createInput("hidden","ibSort",ibSort,null,null));
+	let ibSorts = postSelect.options[postSelect.selectedIndex].value;
+	let optionText = postSelect.options[postSelect.selectedIndex].text;
+	alert(optionText + "으로 정렬합니다");
+	form.appendChild(createInput("hidden","ibSort",ibSorts,null,null));
+	
 
 	
 	form.action = "MoveInfoBoard";
