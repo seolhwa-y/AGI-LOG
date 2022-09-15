@@ -66,6 +66,14 @@
 		}
 	}
 </script>
+<style>
+
+.comment {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}}
+</style>
 </head>
 <body onload="getInfo()">
 <div id="background">
@@ -367,7 +375,7 @@
         		markers = marker;
         		postAjaxJson("ViewCompanyInfo", clientData, "callDisplayInfo");
         	
-        		let content = '<div class = "infoWindow" style="width:20rem; height: 20rem; text-align:center; padding:6px 0;">';
+        		let content = '<div class = "infoWindow" style="width:30rem; height: 20rem; text-align:center; padding:6px 0;">';
     			content	+= '<div>'+ title + '</div>';
     			content	+= '<div>'+ address + '</div>';
     			content	+= '<div>'+ phone + '</div>';
@@ -390,40 +398,43 @@
         			
 	    			let infoWindow = document.getElementsByClassName("infoWindow")[0];
 	    			
+	    			let mcList = ""
+	    			
 	 	        	if(suCode != null) {
-		        		infoWindow.innerHTML += "<input type = 'button' value = '예약'  onClick = \"showReservation(\'" + mcComment[0].coCode + "\')\">";
+	 	        		mcList += "<input type = 'button' value = '예약'  onClick = \"showReservation(\'" + mcComment[0].coCode + "\')\">";
 		        	} 
 					
-	    			infoWindow.innerHTML += "<div><hr></div>"
-	    								 + "<div>"
-						    			 + "<input class=\"mcContent mEditInput\" />"
-						    			 + "<button class=\"mMiniBtn btn\" onClick=\"insertMapComment("+ mcComment[0].coCode + ")\">확인</button>"
-						    			 + "</div>"
-	    								 + "<div id='commentList'>";
+	    			mcList += "<div><hr></div>";
+	    			mcList += "<div style='display: flex; align-items: center; justify-content: space-evenly;'>";
+	    			mcList += "<input class=\"mcContent mEditInput\" />";
+	    			mcList += "<button class=\"mMiniBtn btn\" onClick=\"insertMapComment("+ mcComment[0].coCode + ")\">확인</button>";
+	    			mcList += "</div>";
+	    			mcList += "<div id='commentList'>";
 	    			
 	    			for(i = 0; i < mcComment.length; i++) {
-	    				infoWindow.innerHTML += "<div class = 'comment " + i + "'>";
+	    				mcList += "<div class = 'comment " + i + "'>";
 	    				// 프로필 사진이 없을 경우 기본 이미지
 	    				if(mcComment[i].suPhoto != null) {
-	    					infoWindow.innerHTML += "<img class='profileImage' src=" + ddComment[i].suPhoto + ">";
+	    					mcList += "<img class='profileImage' src=" + ddComment[i].suPhoto + ">";
 	    				} else {
-	    					infoWindow.innerHTML += "<img class='profileImage' src='/res/img/profile_default.png'>";
+	    					mcList += "<img class='profileImage' src='/res/img/profile_default.png'>";
 	    				}
 	    			
 	    				// 닉네임
-	    				infoWindow.innerHTML += "<div class = 'suNickname'>" +  mcComment[i].suNickname + "</div>";
+	    				mcList += "<div class = 'suNickname'>" +  mcComment[i].suNickname + "</div>";
 	    			
 	    				// 댓글 내용
-	    				infoWindow.innerHTML += "<div class='dcContent " + mcComment[i].mcDate + "'>" + mcComment[i].mcContent + "</div>";
+	    				mcList += "<div class='dcContent " + mcComment[i].mcDate + "'>" + mcComment[i].mcContent + "</div>";
 	    				
 	    				// 수정 삭제 버튼
 	    				if(suCode === mcComment[i].mcSuCode) {
-	    					infoWindow.innerHTML += "<i class='fa-solid fa-pen updBtn editBtn' onClick='updateInput(" + mcComment[i].coCode + "," + mcComment[i].mcCode + "," + mcComment[i].mcDate + "," + mcComment[i].mcSuCode + ")'></i>";
-	    					infoWindow.innerHTML += "<i class='fa-solid fa-trash-can delBtn editBtn' onClick='deleteMapComment(" + mcComment[i].coCode + "," + mcComment[i].mcCode + "," + mcComment[i].mcDate + "," + mcComment[i].mcSuCode + ")'></i>";
+	    					mcList += "<i class='fa-solid fa-pen updBtn editBtn' onClick='updateInput(" + mcComment[i].coCode + "," + mcComment[i].mcCode + "," + mcComment[i].mcDate + "," + mcComment[i].mcSuCode + ")'></i>";
+	    					mcList += "<i class='fa-solid fa-trash-can delBtn editBtn' onClick='deleteMapComment(" + mcComment[i].coCode + "," + mcComment[i].mcCode + "," + mcComment[i].mcDate + "," + mcComment[i].mcSuCode + ")'></i>";
 	    				} 
-	    				infoWindow.innerHTML += "</div>";
+	    				mcList += "</div>";
 	    			}
-	    			infoWindow.innerHTML += "</div>";
+	    			mcList += "</div>";
+	    			infoWindow.innerHTML += mcList;
 	        		infowindow.setContent(infoWindow);
 	        		console.log(mcComment);
         		}
@@ -439,8 +450,6 @@
 
         	// 예약하기 (정보 가지고 DB 접근) 모달 띄우기
         	function showReservation(title, address, phone) {
-
-        		
         		let clientData = "coName=" + title + "&coAddress=" + address + "&coPhone=" + phone;
         		postAjaxJson("ShowReservation", clientData, "callReservation");
         	}
@@ -466,7 +475,7 @@
         		let mcContent = document.getElementsByClassName(mcDate)[0];
 
         		mcContent.innerHTML = "";
-        		mcContent.innerHTML += "<input class ='updMcComment commentInput'>";
+        		mcContent.innerHTML += "<input class ='updMcComment mEditInput'>";
         		mcContent.innerHTML += "<button class='submitBtn btn' onClick='updateMapComment(" + coCode + "," + mcCode + "," + mcDate + "," + mcSuCode +")'>확인</button>";
         	}
         	
@@ -476,6 +485,9 @@
         		const clientData = "coCode=" + coCode + "&mcContent=" + mcContent;
         		
         		postAjaxJson("InsertCompanyComment", clientData, "mapComment");
+        		
+				document.getElementsByClassName("mEditInput")[0].value = "";
+
         	}
 
         	// 댓글 수정
@@ -517,9 +529,7 @@
     			commentList.innerHTML = "";
     			
         		for(i = 0; i < mcComment.length; i++) {
-
-	 	        	
-        			commentList.innerHTML = "<div class = 'comment " + i + "'>";
+        			commentList.innerHTML += "<div class = 'comment " + i + "'>";
     				// 프로필 사진이 없을 경우 기본 이미지
     				if(mcComment[i].suPhoto != null) {
     					commentList.innerHTML += "<img class='profileImage' src=" + ddComment[i].suPhoto + ">";

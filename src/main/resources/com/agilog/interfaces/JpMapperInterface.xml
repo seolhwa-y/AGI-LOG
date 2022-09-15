@@ -55,13 +55,13 @@
 	
 	
 	<!-- 육아정보 게시판 리스트 불러오기 -->
-	<select id="getBebeInfo" parameterType="com.agilog.beans.PostBean" resultType="com.agilog.beans.PostBean">
-	    SELECT IB_CODE AS IBCODE,
-		   TO_CHAR(IB_DATE, 'yyyy.mm.dd') AS IBDATE,
-		   IB_TITLE AS IBTITLE,
-		   IB_CONTENT AS IBCONTENT,
-		   IB_VIEW AS IBVIEW,
-		   IB_LIKE AS IBLIKE
+	<select id="getBebeInfo" resultType="com.agilog.beans.PostBean">
+		SELECT IB_CODE AS IBCODE,
+			   TO_CHAR(IB_DATE, 'yyyy.mm.dd') AS IBDATE,
+			   IB_TITLE AS IBTITLE,
+			   IB_CONTENT AS IBCONTENT,
+			   IB_VIEW AS IBVIEW,
+			   IB_LIKE AS IBLIKES
 		FROM INFOBOARD
 		ORDER BY IBDATE DESC
 	</select>

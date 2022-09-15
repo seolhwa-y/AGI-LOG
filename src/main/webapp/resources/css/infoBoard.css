@@ -148,3 +148,13 @@
     margin-left: 1.3rem;
     cursor:pointer;
 }
+.pagenum{
+	margin:0 auto;
+	margin-top:1rem;
+	font-size: 15px;
+    padding: 5px 9px 3px;
+    border-radius: 3px;
+    border: 1px solid #BDBDBD;
+    background-color:white;
+    cursor:pointer;
+}

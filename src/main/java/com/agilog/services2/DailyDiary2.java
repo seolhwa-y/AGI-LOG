@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.agilog.beans.AuthBean;
 import com.agilog.beans.DailyDiaryBean;
+import com.agilog.beans.DailyDiaryCommentBean;
 import com.agilog.beans.DailyDiaryPhotoBean;
 import com.agilog.beans.PostBean;
 import com.agilog.interfaces.ServiceRule;
@@ -36,6 +37,9 @@ public class DailyDiary2 implements ServiceRule {
 		case 35:
 			this.insertDailyDiaryCtl(mav);
 			break;
+		case 87:
+			this.deleteDailyDiaryFeedCtl(mav);
+			break;
 		default:
 			break;
 		}	
@@ -48,13 +52,16 @@ public class DailyDiary2 implements ServiceRule {
 		case 31:
 			this.getDailyDiaryFeedCtl(model);
 			break;
+		case 88:
+			this.updateDailyDiaryFeedCtl(model);
+			break;
 		default:
 			break;
 		}	
 	}
 
 	private void moveDailyDiaryPageCtl(ModelAndView mav) {
-
+		
 	}
 
 	private void showDailyDiaryCtl(Model model) {
@@ -68,16 +75,42 @@ public class DailyDiary2 implements ServiceRule {
 	private void getDailyDiaryFeedCtl(Model model) {
 		System.out.println("겟 디디 피드 진입 체크");
 		HashMap<String, Object> map = new HashMap<String, Object>();
+		DailyDiaryCommentBean ddcb = (DailyDiaryCommentBean)model.getAttribute("dailyDiaryCommentBean");
 		DailyDiaryBean ddb = (DailyDiaryBean) model.getAttribute("dailyDiaryBean");
-		DailyDiaryPhotoBean ddpb = new DailyDiaryPhotoBean();
 		
-		map.put("dailyDiaryFeed", this.session.selectOne("getDDFeed", ddb));
+		AuthBean ab;
+		try {
+			ab = (AuthBean)this.pu.getAttribute("accessInfo");
+			if(ab != null) {
+				map.put("suCode", ab.getSuCode());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-		System.out.println("ddf?"+this.session.selectOne("getDDFeed", ddb));
-		System.out.println("ddp?"+this.session.selectOne("getDDP", ddb));
+		ddb = this.session.selectOne("getDDFeed", ddb);
 		
-		map.put("dailyDirayPhotoLink", ((DailyDiaryPhotoBean)this.session.selectOne("getDDP", ddb)).getDpLink());
-		model.addAttribute("getDDFeed", map);
+		ddcb.setDcDdCode(ddb.getDdCode());
+		ddcb.setDcDdSuCode(ddb.getSuCode());//suCode == ddSuCode
+		ddcb.setDcDdDate(ddb.getDdDate());
+		
+		System.out.println("피드 코드 체크2 : " + ddcb.getDcDdCode());
+		System.out.println("작성자 체크 : " + ddcb.getDcDdSuCode());
+		System.out.println("날짜 체크 : " + ddcb.getDcDdDate());
+		System.out.println("이미지 체크1 : " + ddb.getDpLink());
+		
+		if(ddb.getDpLink() == null) {
+			ddb.setDpLink("/res/img/non_photo.png");
+		}
+		
+		System.out.println("이미지 체크2 : " + ddb.getDpLink());
+
+		System.out.println("comment check : " + this.session.selectList("getDailyDiaryComment", ddcb));
+		
+		map.put("ddFeed", ddb);
+		map.put("ddComment", this.session.selectList("getDailyDiaryComment", ddcb));
+		model.addAttribute("dailyDiaryFeed", map);
+		
 	}
 
 	private void insertDailyDiaryCtl(ModelAndView mav) {
@@ -104,7 +137,8 @@ public class DailyDiary2 implements ServiceRule {
 				System.out.println("컨텐츠 체크 : " + db.getDdContent());
 				
 				if(this.convertToBoolean(this.session.insert("insDd", db))) {
-					mav.setViewName("freeBoard");
+					mav.addObject("allDailyDiaryList", this.makeDialyFeed(this.session.selectList("getDailyDiaryFeed")));
+					mav.setViewName("dailyDiary");
 				}
 			} else {
 				mav.addObject("message", "세션이 만료되었습니다. 다시 로그인 해주세요");
@@ -112,10 +146,9 @@ public class DailyDiary2 implements ServiceRule {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			mav.addObject("message", "네트워크가 불안정합니다.");
+			mav.setViewName("dashBoard");
 		}
-		
-		mav.setViewName("dailyDiary");
-
 	}
 
 	private void insertDailyDiaryCommentCtl(Model model) {
@@ -134,12 +167,38 @@ public class DailyDiary2 implements ServiceRule {
 
 	}
 
-	private void updateMyDailyDiaryCtl(Model model) {
-
+	private void updateDailyDiaryFeedCtl(Model model) {
+		System.out.println("업데이트 디디 진입 체크");
+		DailyDiaryBean ddb = (DailyDiaryBean) model.getAttribute("dailyDiaryBean");
+		if(this.convertToBoolean(this.session.update("updDDFeed", ddb))) {
+			this.getDailyDiaryFeedCtl(model);
+		}
 	}
 
-	private void deleteMyDailyDiaryCtl(ModelAndView mav) {
+	private void deleteDailyDiaryFeedCtl(ModelAndView mav) {
+		System.out.println("delete 디디 진입 체크");
 
+		try {
+			AuthBean ab = ((AuthBean) this.pu.getAttribute("accessInfo"));
+			if(ab != null) {
+				//디디빈 세팅
+				DailyDiaryBean db = (DailyDiaryBean) mav.getModel().get("dailyDiaryBean");
+
+				System.out.println("코드 체크 : " + db.getDdCode());
+				
+				if(this.convertToBoolean(this.session.insert("delDd", db))) {
+					mav.addObject("allDailyDiaryList", this.makeDialyFeed(this.session.selectList("getDailyDiaryFeed")));
+					mav.setViewName("dailyDiary");
+				}
+			} else {
+				mav.addObject("message", "세션이 만료되었습니다. 다시 로그인 해주세요");
+				mav.setViewName("dashBoard");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			mav.addObject("message", "네트워크가 불안정합니다.");
+			mav.setViewName("dashBoard");
+		}
 	}
 
 	private void trendHashTagCtl(Model model) {
@@ -152,7 +211,31 @@ public class DailyDiary2 implements ServiceRule {
 
 	private String makeDialyFeed(List<DailyDiaryBean> feedList) {
 		StringBuffer sb = new StringBuffer();
-
+		
+		for(DailyDiaryBean fl : feedList) {
+			sb.append("<li class=\'feed\' onClick=\'getFeed(" + fl.getDdCode() + ")\'>");
+			sb.append("<div class=\'feed_top\'>");
+			
+			if(fl.getDpLink()!=null) {
+				sb.append("<img src=\'"+fl.getDpLink()+"\'>");
+			}else {
+				sb.append("<img src=\'/res/img/non_photo.png\'>");
+			}
+	
+			sb.append("<div class=\'like\'>❤ "+fl.getLikes()+"</div>");
+			sb.append("</div>");
+			sb.append("<div class=\'feed_bottom\'>");
+			sb.append("<div id=\'feedDate\'>"+ fl.getDdDate()+"</div>");
+			if(fl.getDdContent().length()>32) {
+				sb.append(fl.getDdContent().substring(0,25)+"...</div>");
+			}else {
+				sb.append(fl.getDdContent()+"</div>");
+			}
+			
+			sb.append("</li>");
+			 
+		}
+		
 		return sb.toString();
 	}
 

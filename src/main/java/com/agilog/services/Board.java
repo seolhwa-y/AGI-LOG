@@ -2,6 +2,8 @@ package com.agilog.services;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,10 +41,15 @@ public class Board implements ServiceRule {
 			this.moveShowPostCtl(mav);
 			break;
 		case 56:
+			System.out.println("인포보드");
 			this.moveInfoBoardCtl(mav);
 			break;
 		case 500:
 			this.changeSortCtl(mav);
+			break;
+		case 200:
+			System.out.println("넘버링");
+			this.moveInfoBoardCtl(mav);
 			break;
 		}
 	}
@@ -106,8 +113,12 @@ public class Board implements ServiceRule {
 	}
 
 	private void moveInfoBoardCtl(ModelAndView mav) {
-		PostBean pb = (PostBean) mav.getModel().get("postBean");
-		mav.addObject("bebeBoardList", this.makeBoardList(this.session.selectList("getBebeInfo", pb)));
+		
+		mav.addObject("bebeBoardList", this.makeBoardList(this.session.selectList("getBebeInfo")));
+		BoardBean bb = (BoardBean) mav.getModel().get("boardBean");
+		System.out.println("찍는 메소드 : " + bb);
+		mav.addObject("pageNum", this.makePageNum(this.session.selectList("getBebeInfo"), bb));
+
 		mav.setViewName("infoBoard");
 	}
 
@@ -116,8 +127,8 @@ public class Board implements ServiceRule {
 	}
 
 	private void moveShowPostCtl(ModelAndView mav) {
+		
 		PostBean pb = (PostBean) mav.getModel().get("postBean");
-
 		mav.addObject("content",this.makePostView(this.session.selectList("getBebePost",pb)));
 		mav.setViewName("post");
 	}
@@ -202,24 +213,30 @@ public class Board implements ServiceRule {
 			//this.page.makePageGroup();	
 			}
 		sb.append("</table>");
+		
+		return sb.toString();
+	}
+	private String makePageNum(List<PostBean> bebeBoardList,BoardBean bb) {
+		StringBuffer sb = new StringBuffer();
 		/*-----------------페이징 실험---------------------*/
 		//전체글의 수
-		int total = bebeBoardList.size();
-		System.out.println("전체글 수 : " + total);
-		//12 -> 2page     29 ->  3page ...
-		
-		//마지막 페이지 구하기
-		int lastpage = (int)(Math.ceil((double)total/10));
+		int totalPage = bebeBoardList.size();
+		System.out.println("전체글 수 : " + totalPage);
+		//마지막 페이지 구하기     12 -> 2page     29 ->  3page ...
+		int lastpage = (int)(Math.ceil((double)totalPage/10));
 		System.out.println("마지막 페이지 : " + lastpage);
-		//pageNum
-		//String pageNum = request
+		
+		
+		// 1 -> 0 , 2 -> 10 , 3 ->20 , 4 ->30 
+		//int index_no = Integer.parseInt(bb.getPageNum());
+		//System.out.println(index_no);
 		//페이징 html출력
 		for(int i=1; i<=lastpage; i++) {
-			sb.append("<a href='MoveInfoBoard?pageNum="+i+"'>" + i + "</a>");
+		sb.append("<a class=\"pagenum\" onClick=\"pageNum('" + i + "')\" href='MoveInfoBoard?pageNum="+i+"'>" + i + "</a>");
+		
 		}
 		return sb.toString();
 	}
-
 	private boolean convertToBoolean(int booleanCheck) {
 		boolean result = false;
 

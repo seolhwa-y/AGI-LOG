@@ -32,5 +32,8 @@ public interface ThMapperInterface {
 	public int getDdCode(DailyDiaryBean db);
 	public int insDd(DailyDiaryBean db);
 	public DailyDiaryBean getDDFeed(DailyDiaryBean ddb);
-	public DailyDiaryPhotoBean getDDP(DailyDiaryBean ddb);
+	public DailyDiaryBean getDDPhoto(DailyDiaryBean ddb);
+	public int updDDFeed(DailyDiaryBean ddb);
+	public int delDd(DailyDiaryBean ddb);
+	public ReservationBean getResInfoForSms(ReservationBean rb);
 }
