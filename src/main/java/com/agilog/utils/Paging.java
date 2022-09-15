@@ -3,9 +3,9 @@ package com.agilog.utils;
 
 
 public class Paging {
-	private int maxNum; 			// 전체 글의 숫자
+	private int maxNum; 		// 전체 글의 숫자
 	private int pageNum; 		// 현재 페이지 번호
-	private int listCount; 			// 페이지당 나타낼 글의 갯수
+	private int listCount; 		// 페이지당 나타낼 글의 갯수
 	private int pageCount; 		// 페이지그룹당 페이지 갯수
 	private String pageName; 	// 게시판의 종류
 

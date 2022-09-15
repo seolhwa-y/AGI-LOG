@@ -150,11 +150,16 @@
 }
 .pagenum{
 	margin:0 auto;
-	margin-top:1rem;
-	font-size: 15px;
+	margin-left: 7px;
+    font-size: 21px;
     padding: 5px 9px 3px;
     border-radius: 3px;
     border: 1px solid #BDBDBD;
     background-color:white;
     cursor:pointer;
+}
+.paging{
+	float: left;
+    margin-left: 46%;
+    margin-top: 2rem;
 }
