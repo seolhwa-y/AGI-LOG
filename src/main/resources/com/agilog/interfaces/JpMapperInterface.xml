@@ -54,19 +54,30 @@
 	</select>
 	
 	
-	<!-- 육아정보 게시판 리스트 불러오기 -->
-	<select id="getBebeInfo" resultType="com.agilog.beans.PostBean">
-		SELECT IB_CODE AS IBCODE,
-			   TO_CHAR(IB_DATE, 'yyyy.mm.dd') AS IBDATE,
-			   IB_TITLE AS IBTITLE,
-			   IB_CONTENT AS IBCONTENT,
-			   IB_VIEW AS IBVIEW,
-			   IB_LIKE AS IBLIKES
-		FROM INFOBOARD
-		ORDER BY IBDATE DESC
+	
+	
+	<select id="InfoCount" parameterType="com.agilog.beans.PostBean" resultType="int">
+	    SELECT COUNT(*) FROM IB
 	</select>
+	
+
+	<select id="getBebeInfo" parameterType="com.agilog.beans.PostBean" resultType="com.agilog.beans.PostBean">
+		SELECT*FROM(SELECT ROWNUM AS NUM, A.*
+		FROM(
+			SELECT IB_CODE AS IBCODE,
+				   TO_CHAR(IB_DATE,'yyyy.mm.dd') AS IBDATE,
+				   IB_TITLE AS IBTITLE,
+				   IB_CONTENT AS IBCONTENT,
+				   IB_VIEW AS IBVIEW,
+				   IB_LIKE AS IBLIKE
+			FROM INFOBOARD ORDER BY IBDATE DESC
+		) A)WHERE NUM BETWEEN 1+5*(#{pageNum}-1) AND 5*#{pageNum}
+	</select>
+	
 	<!-- 육아정보 게시판 리스트 불러오기 오래된 순 정렬 -->
 	<select id="getBebeInfoOld" parameterType="com.agilog.beans.PostBean" resultType="com.agilog.beans.PostBean">
+	    SELECT*FROM(SELECT ROWNUM AS NUM, A.*
+		FROM(
 	    SELECT IB_CODE AS IBCODE,
 		   TO_CHAR(IB_DATE, 'yyyy.mm.dd') AS IBDATE,
 		   IB_TITLE AS IBTITLE,
@@ -75,9 +86,12 @@
 		   IB_LIKE AS IBLIKE
 		FROM INFOBOARD
 		ORDER BY IBDATE ASC
+		) A)WHERE NUM BETWEEN 1+5*(#{pageNum}-1) AND 5*#{pageNum}
 	</select>
 		<!-- 육아정보 게시판 리스트 불러오기 좋아요 순 정렬 -->
 	<select id="getBebeInfoLike" parameterType="com.agilog.beans.PostBean" resultType="com.agilog.beans.PostBean">
+	   SELECT*FROM(SELECT ROWNUM AS NUM, A.*
+		FROM(
 	    SELECT IB_CODE AS IBCODE,
 		   TO_CHAR(IB_DATE, 'yyyy.mm.dd') AS IBDATE,
 		   IB_TITLE AS IBTITLE,
@@ -86,9 +100,12 @@
 		   IB_LIKE AS IBLIKE
 		FROM INFOBOARD
 		ORDER BY IBLIKE DESC
+		) A)WHERE NUM BETWEEN 1+5*(#{pageNum}-1) AND 5*#{pageNum}
 	</select>
 		<!-- 육아정보 게시판 리스트 불러오기 조회수 순 정렬 -->
 	<select id="getBebeInfoView" parameterType="com.agilog.beans.PostBean" resultType="com.agilog.beans.PostBean">
+	    SELECT*FROM(SELECT ROWNUM AS NUM, A.*
+		FROM(
 	    SELECT IB_CODE AS IBCODE,
 		   TO_CHAR(IB_DATE, 'yyyy.mm.dd') AS IBDATE,
 		   IB_TITLE AS IBTITLE,
@@ -97,9 +114,12 @@
 		   IB_LIKE AS IBLIKE
 		FROM INFOBOARD
 		ORDER BY IBVIEW DESC
+		) A)WHERE NUM BETWEEN 1+5*(#{pageNum}-1) AND 5*#{pageNum}
 	</select>
 	<!-- 정보게시판 게시글 보기 -->
 	<select id="getBebePost" parameterType="com.agilog.beans.PostBean" resultType="com.agilog.beans.PostBean">
+	   SELECT*FROM(SELECT ROWNUM AS NUM, A.*
+		FROM(
 	   SELECT IB_CODE AS IBCODE,
 		      IB_DATE AS IBDATE,
 		      IB_TITLE AS IBTITLE,
@@ -108,6 +128,7 @@
 		      IB_LIKE AS IBLIKES
 	   FROM INFOBOARD
 	   WHERE IB_CODE = #{ibCode}
+	   ) A)WHERE NUM BETWEEN 1+5*(#{pageNum}-1) AND 5*#{pageNum}
 	</select>
 	
 	

@@ -117,7 +117,7 @@
 	}
 	.moveLeft{
     float: left;
-    margin-top: 40%;
+    margin-top: 26%;
     left: -3rem;
     font-size: 3rem;
     position: absolute;
@@ -132,24 +132,6 @@
     cursor: pointer;
     color : #616161;
     display:none;
-	}
-	.cover1{
-	background-color: #fff1f1;
-    width: 4rem;
-    height: 4rem;
-    position: absolute;
-    top: 40%;
-    left: -8%;
-    z-index: 2;
-	}
-	.cover2{    
-	
-	background-color: #fff1f1;
-    width: 4rem;
-    height: 4rem;
-    position: absolute;
-    top: 40%;
-    right: -5%;
 	}
 	.insBabyTable{
 		margin-left: 11%;
@@ -217,7 +199,6 @@ position: relative;
 	.profileImage{
 	max-width: 100%;
     max-height: 100%;
-    height: 100%;
     width: 100%;
     border-radius: 100%;}
     
@@ -230,23 +211,24 @@ position: relative;
 	text-align: center;
 	border-radius: 100px;
     border: 3px solid lightgray;
-    width: 12%;
+    width: 13%;
     height: 60%;
-    display: inline-block;
+	display: inline-grid;
 	margin-left: 3%;
+	margin-top: 10%;
 	}
 	#themeList{
 	order: 1px solid #000000;
     width: 100%;
     height: 30%;
-    margin-left: 8%;
-    display: flex;
-    margin-top: 30%;
+    display: block;
+    margin-top: 10%;
 	}
 	.checked::after{
 	content: "✔";
-    font-size: 275%;
-    line-height: 166%;
+    font-size: 425%;
+    line-height: 16%;
+    color: black;
 	}
 	#themeModalFoot{
 	position: relative;
@@ -254,7 +236,7 @@ position: relative;
     margin: 13% auto;
     justify-content: space-between;
     width: 80%;
-    top: -30%;
+    top: -15%;
     }
 
 </style>
@@ -276,20 +258,30 @@ function isCharLengthCheck(text, minimum, maximum) {
 }
 Kakao.init('2afdabad57ed92e1cc9de5bd4baed321');
 function getInfo() {
-	/* 테마 사용자값으로 설정 */
-	let middle = document.getElementById("middle");
+	//미들 필요없음
+	/* 테마 이미지 or 단순색상 */
 	let body = document.getElementById("body");
-	//let sideMenu = document.querySelector(".side-menu");
-	let cover1 = document.getElementById("cover1");
-	let cover2 = document.getElementById("cover2");
 	
-	let color = "${mypageInfo.suTheme}".split(":");
-	
-	body.style.background = color[0];
-	middle.style.background = color[0];
-	cover1.style.background = color[0];
-	cover2.style.background = color[0];
-	//sideMenu.style.background= color[1];
+	let suTheme = "${mypageInfo.suTheme}";
+	if(suTheme.indexOf("#") == 0){
+		//단순색상
+		/* 테마 사용자값으로 설정 */
+		//배경css제거
+		body.className = "";
+		
+		//let sideMenu = document.querySelector(".side-menu");
+		
+		let color = "${mypageInfo.suTheme}".split(":");
+		
+		body.style.background = color[0];
+		//sideMenu.style.background= color[1];
+
+	}else{
+		//배경이미지
+		body.style.background = "none";
+		body.className = "bgImage"+suTheme;
+	}
+
 
 	
 	if("${message}"!= ""){
@@ -321,14 +313,7 @@ function getInfo() {
 	let pImage = document.getElementById("pImage");
 	let parentName = document.getElementById("parentName");
 	let parentNickName = document.getElementById("parentNickName");
-	///resources/img/2411751690/2411751690.jpg
-	//String path = "/Users/js94/git/agi-log/src/main/webapp/resources/img/2411751690/2411751690"+suCode;
-	//C:\Users\js94\git\agi-log\src\main\webapp\resources\img\2411751690\2411751690.jpg
-	//file:///C://Users/js94/git/agi-log/src/main/webapp/resources/img/2411751690/2411751690.jpg
-	//    /Users
-	//                                        /res/img/2409449450/DD/1.jpg
-	//											/resources/img/2411751690/2411751690.jpg
-	//alert("${mypageInfo.suPhoto}");
+	
 	//부모사진이 없으면 기본이미지 띄워줌
 	if("${mypageInfo.suPhoto}" != ""){
 		pImage.innerHTML = "<img class='profileImage' src=\'"+"${mypageInfo.suPhoto}"+"\'>";
@@ -543,7 +528,7 @@ function changeParentProfile(){
 	parentNickName.innerHTML = "<input type=\"text\" name='suNickName' class=\"profileInput\" placeholder=\"${mypageInfo.suNickName}\">";
 	
 	// 아이쪽 <,>버튼을 숨겨줌 0:숨김 1:나타남
-	cover("0");
+	cover("1");
 	
 	// 부모 프로필 수정과 관련되지 않은 버튼들 없애주기
 	let editConfirmBtn1 = document.getElementById("editConfirmBtn1");
@@ -551,7 +536,7 @@ function changeParentProfile(){
 	let rightWest = document.getElementById("rightWest");	
 
 	editConfirmBtn1.style.display = "block";
-	leftWest.style.display = "none";
+	leftWest.style.display =  "none";
 	rightWest.style.display = "none";
 }
 //부모프로필변경 :: 수정완료버튼 클릭
@@ -584,7 +569,7 @@ function parentEditCancel(){
 	leftWest.style.display = "block";
 	rightWest.style.display = "block";
 	// <,> 보여주기
-	cover("1");
+	cover("0");
 	
 	let parentNickName = document.getElementById("parentNickName");
 	
@@ -603,15 +588,12 @@ function changeBabyProfile(){
 	leftWest.style.display = "none";
 	rightWest.style.display = "none";
 	// <,> 가려주기
-	cover("0");
+	cover("1");
 	
 	// 현재 저장된 프로필 값 input박스 value로 넣어 사용자에게 보여주기
-	//let bbNameTd = document.getElementById("bbName");
 	let bbBirthdayTd = document.getElementById("bbBirthday");
 	
-	//bbName = bbNameTd.innerText;
 	bbBirthday = bbBirthdayTd.innerText;
-	//bbNameTd.innerHTML = "<input type=\"text\" name='bbName' class=\"profileInput dateInput\" value=\""+bbName+"\">";
 	bbBirthdayTd.innerHTML = "<input type=\"date\" name='bbBirthday' class=\"profileInput dateInput\" value=\""+bbBirthday+"\">";
 
 }
@@ -625,21 +607,13 @@ function changeBabyInfo(){
 
 	if(babyInfo == null){
 		babyNumber = "${mypageInfo.babyList[0].bbCode}";
-		//bbName = "${mypageInfo.babyList[0].bbName}";
 		
 	}else{
 		babyNumber = babyInfo.babyList[babyNum].bbCode;
-		//bbName = babyInfo.babyList[babyNum].bbName;
 	}
-	
-	/*if(bbNameInput.value==""){
-		alert("아이 이름을 작성해 주세요");
-		return;
-	}*/
 	
 	form.appendChild(createInput("text","bbCode",babyNumber,"",""));
 	form.appendChild(bbBirthdayInput);
-	//form.appendChild(bbNameInput);
 	
 	form.action = "ChangeBabyInfo";
 	form.method = "post";
@@ -658,7 +632,7 @@ function babyEditCancel(){
 	leftWest.style.display = "block";
 	rightWest.style.display = "block";
 	// <,> 보여주기
-	cover("1");
+	cover("0");
 	
 	let bbBirthdayTd = document.getElementById("bbBirthday");
 	
@@ -666,15 +640,31 @@ function babyEditCancel(){
 }
 //아이정보 <왼쪽 >오른쪽 버튼 가려주기
 function cover(number){
-	let cover1 = document.getElementById("cover1");
-	let cover2 = document.getElementById("cover2");
+	let getBabyInfo = document.getElementById("getBabyInfo");
+	let minus = document.getElementById("minus");
+	let plus = document.getElementById("plus");
+	
 	
 	if(number==1){
-		cover1.style.display = "none";
-		cover2.style.display = "none";
+		
+		minus.style.opacity = "0%";
+	
+		if(babyInfo == null){
+			getBabyInfo.style.opacity = "0%";
+			
+		}else{
+			plus.style.opacity = "0%";
+		}
 	}else{
-		cover1.style.display = "block";
-		cover2.style.display = "block";
+		
+		minus.style.opacity = "100%";
+		
+		if(babyInfo == null){
+			getBabyInfo.style.opacity = "100%";
+			
+		}else{
+			plus.style.opacity = "100%";
+		}
 	}
 }
 
@@ -784,7 +774,7 @@ function selectTheme(num){
 	let child = themeList.childNodes;
 	let modalFoot = document.getElementById("themeModalFoot");
 	
-	for(idx=0;idx<10;idx++){
+	for(idx=0;idx<20;idx++){
 		if(idx == num){
 			if(child[num].classList.contains("checked")){
 				child[num].classList.remove("checked");
@@ -816,35 +806,54 @@ function changeTheme(num){
 		clientData = "suTheme=#fff1f1:#ffd4d4";
 		break;
 	case 3 : //노랑
-		clientData = "suTheme=#FAF4C0:#FAED7D";
+		clientData = "suTheme=#F9F5E0:#F5EECB";
 		break;
 	case 5 : //파랑
-		clientData = "suTheme=#D4F4FA:#B2EBF4";
+		clientData = "suTheme=#E5F0F8:#E5F0F8";
 		break;
 	case 7 : //보라
-		clientData = "suTheme=#E8D9FF:#E8D9FF";
+		clientData = "suTheme=#E0E4F9:#CBD2F5";
 		break;
 	case 9 : //초록
-		clientData = "suTheme=#CEFBC9:#B7F0B1";
+		clientData = "suTheme=#F1F9E0:#E7F5CB";
+		break;
+	case 11 : //1
+		clientData = "suTheme=1";
+		break;
+	case 13 : //2
+		clientData = "suTheme=2";
+		break;
+	case 15 : //3
+		clientData = "suTheme=3";
+		break;
+	case 17 : //4
+		clientData = "suTheme=4";
+		break;
+	case 19 : //5
+		clientData = "suTheme=5";
 		break;
 	}
+	alert(clientData);
 	postAjaxJson("ChangeTheme",clientData,"callBackTheme");
 	
 }
 function callBackTheme(theme){
-	let middle = document.getElementById("middle");
+	//let middle = document.getElementById("middle");
 	let body = document.getElementById("body");
 	let sideMenu = document.querySelector(".side-menu");
-	let cover1 = document.getElementById("cover1");
-	let cover2 = document.getElementById("cover2");
 	
-	let color = theme.split(":");
-	
-	body.style.background = color[0];
-	middle.style.background = color[0];
-	cover1.style.background = color[0];
-	cover2.style.background = color[0];
-	
+	if(theme.indexOf("#") == 0){
+		//단순색상
+		body.className = "";
+		let color = theme.split(":");
+		
+		body.style.background = color[0];
+	}else{
+		//단순이미지
+		body.style.background = "none";
+		body.className = "bgImage"+theme;
+		
+	}
 	themeModalClose();
 }
 </script>
@@ -909,7 +918,6 @@ function callBackTheme(theme){
 			<div id="line"></div>
 			
 			<div id="right">
-				<div class="cover1" id="cover1"style="display:none;" ></div>
 				<div class="moveLeft" id="minus" onclick="changeBaby('-1')">◁</div>
 				<div class="west">
 					<div class="profile" id="bImage"></div>
@@ -950,7 +958,6 @@ function callBackTheme(theme){
 						<button class="mBtnP btn" onclick="changeBabyInfo()">수정완료</button>
 					</div>
 				</div>
-				<div class="cover2" id="cover2" style="display:none;"></div>
 				<div class="moveRight" id="getBabyInfo" onclick="getBabyInfo()">▷</div>
 				<div class="moveRight" id="plus" style="display:none;" onclick="changeBaby('1')">▷</div>
 			</div>
@@ -973,10 +980,15 @@ function callBackTheme(theme){
 				<div class="modal_content">
 					<div id ="themeList">
 					<div class="theme" style="background-color:#fff1f1;" onclick="selectTheme('1')">&nbsp;</div>
-					<div class="theme" style="background-color:#FAF4C0;" onclick="selectTheme('3')">&nbsp;</div>
-					<div class="theme" style="background-color:#D4F4FA;" onclick="selectTheme('5')">&nbsp;</div>
-					<div class="theme" style="background-color:#E8D9FF;" onclick="selectTheme('7')">&nbsp;</div>
-					<div class="theme" style="background-color:#CEFBC9;" onclick="selectTheme('9')">&nbsp;</div>
+					<div class="theme" style="background-color:#F9F5E0;" onclick="selectTheme('3')">&nbsp;</div>
+					<div class="theme" style="background-color:#E5F0F8;" onclick="selectTheme('5')">&nbsp;</div>
+					<div class="theme" style="background-color:#E0E4F9;" onclick="selectTheme('7')">&nbsp;</div>
+					<div class="theme" style="background-color:#F1F9E0;" onclick="selectTheme('9')">&nbsp;</div>
+					<div class="theme" style="background-image:url('/res/img/background1.jpg');  background-size : cover;" onclick="selectTheme('11')">&nbsp;</div>
+					<div class="theme" style="background-image:url('/res/img/background2.jpg');  background-size : cover;" onclick="selectTheme('13')">&nbsp;</div>
+					<div class="theme" style="background-image:url('/res/img/background3.jpg');  background-size : cover;" onclick="selectTheme('15')">&nbsp;</div>
+					<div class="theme" style="background-image:url('/res/img/background4.jpg');  background-size : cover;" onclick="selectTheme('17')">&nbsp;</div>
+					<div class="theme" style="background-image:url('/res/img/background5.jpg');  background-size : cover;" onclick="selectTheme('19')">&nbsp;</div>
 					</div>
 				</div>
 				<div class="modal_foot" id="themeModalFoot"><button class='mBtnX' onclick='themeModalClose()'>취소</button><button class='mBtnO' onclick='changeTheme(0)'>변경</button></div>
@@ -988,44 +1000,6 @@ function callBackTheme(theme){
 	<input style="visibility: hidden;" type="file" name="file" onchange="submitPhoto('2');" accept="image/*">
 	<form id="serverForm"></form>
 <script>
-/*
-if ("${mypageInfo.suName}"!=null) {
-    document.documentElement.classList.add("dark")
-	let toggleTheme = document.getElementById("toggleTheme");
-    let middle = document.getElementById("middle");
-    toggleTheme.addEventListener("click",function(){
-    	   if(document.querySelector('body').classList.contains('dark-mode')){
-    	        document.body.classList.remove("dark-mode");
-    	        middle.classList.remove("dark-mode");
-    	    }else{
-    	        document.body.classList.add("dark-mode");
-    	        middle.classList.add("dark-mode");
-    	    }
-    },false);
-	}
-if ("Blue") {
-	
-
-	let middle = document.getElementById("middle");
-	
-	switch(){
-	case PINK :
-		middle.classList.add("pink-mode");
-		break;
-	case LEMON :
-		middle.classList.add("lemon-mode");
-		break;
-	case BLUE :
-		middle.classList.add("blue-mode");
-		break;
-	case PURPLE :
-		middle.classList.add("purple-mode");
-		break;
-	case GREEN :
-		middle.classList.add("green-mode");
-		break;
-	}
-}*/
 </script>
 </body>
 </html>

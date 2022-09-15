@@ -40,4 +40,26 @@
 		INSERT INTO DAILYDIARY(DD_CODE, DD_DATE, DD_SUCODE, DD_STATUS, DD_CONTENT, DD_VIEW, DD_LIKE) 
 		VALUES(#{ddCode}, DEFAULT, #{suCode}, #{ddStatus}, #{ddContent}, DEFAULT, DEFAULT)
 	</insert>
+	<select id="getDDFeed" parameterType="com.agilog.beans.DailyDiaryBean" resultType="com.agilog.beans.DailyDiaryBean">
+		SELECT * FROM DDVIEW WHERE DDCODE = #{ddCode}
+	</select>
+	<select id="getDDPhoto" parameterType="com.agilog.beans.DailyDiaryBean" resultType="com.agilog.beans.DailyDiaryBean">
+		SELECT DP_LINK AS DPLINK FROM DAILYDIARYPHOTO WHERE DP_DDCODE = #{ddCode}
+	</select>
+	<update id="updDDFeed" parameterType="com.agilog.beans.DailyDiaryBean">
+		UPDATE DAILYDIARY SET DD_CONTENT = #{ddContent}
+		WHERE DD_CODE = #{ddCode}
+	</update>
+	<delete id="delDd" parameterType="com.agilog.beans.DailyDiaryBean">
+		DELETE DAILYDIARY
+		WHERE DD_CODE = #{ddCode}
+	</delete>
+	<select id="getResInfoForSms"  parameterType="com.agilog.beans.ReservationBean" resultType="com.agilog.beans.ReservationBean">
+        SELECT TO_CHAR(RE_DATE,'YYYY-MM-DD HH:MI') AS RESDATE, SU_CODE AS RESSUCODE, SU_NAME AS RESSUNAME, SU_PHONE AS RESSUPHONE, CO_CODE AS RESCOCODE, CO_NAME AS RESCONAME, BB_NAME AS RESBBNAME, RC_NAME AS RESACTIONNAME, DO_NAME AS RESDONAME
+        FROM RE INNER JOIN SU ON RE_BBSUCODE = SU_CODE INNER JOIN CO ON RE_DOCOCODE = CO_CODE
+                INNER JOIN BB ON BB_SUCODE = SU_CODE AND BB_CODE = RE_BBCODE
+                INNER JOIN RC ON RC_CODE = RE_RCCODE
+                INNER JOIN DO ON DO_COCODE = CO_CODE AND DO_CODE = RE_DOCODE
+        WHERE RE_CODE = #{resCode}
+	</select>
 </mapper>

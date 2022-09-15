@@ -79,13 +79,13 @@ function changeSort(){
 	form.appendChild(createInput("hidden","ibSort",ibSort,null,null));
 
 	
-	form.action = "MoveSortPost";
-	form.method = "post";
+	form.action = "MoveInfoBoard";
+	form.method = "get";
 	form.submit();
 }
 function pageNum(num){
 	let form = document.getElementById("serverForm");
-	form.appendChild(createInput("hidden","pageNum",num,null,null));
+	form.appendChild(createInput("hidden","page",num,null,null));
 	
 	alert(num);
 	
@@ -148,8 +148,8 @@ window.onpageshow = function(event) {
 			<div id="rightArea" class="scrollBar">
 				<div class="infoBoard">
 					<div class="infoBoardH">육아정보 게시판</div>
-					<div>${bebeBoardList}</div>
-					<div> ${pageNum} </div>
+					${bebeBoardList}
+					<div class="paging">${pagingList}</div>
 				</div>
 			</div>
 		</div>
