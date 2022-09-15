@@ -110,4 +110,14 @@ public class JsHomeController {
 		
 		return mav;
 	}
+	
+	@RequestMapping(value = "/MoveDailyDiaryPageFromDashBoard", method = RequestMethod.GET)
+	public ModelAndView moveDailyDiaryPageFromDashBoard(ModelAndView mav, @ModelAttribute DailyDiaryBean ddb) {
+		mav.addObject(ddb);
+		String ddCode = ddb.getDdCode();
+		mav.addObject("ddCode",ddCode);
+		this.dailyDiary.backController(mav, 5);
+
+		return mav;
+	}
 }

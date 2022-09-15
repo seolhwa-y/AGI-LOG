@@ -258,28 +258,27 @@ function isCharLengthCheck(text, minimum, maximum) {
 }
 Kakao.init('2afdabad57ed92e1cc9de5bd4baed321');
 function getInfo() {
-	//미들 필요없음
 	/* 테마 이미지 or 단순색상 */
 	let body = document.getElementById("body");
 	
-	let suTheme = "${mypageInfo.suTheme}";
-	if(suTheme.indexOf("#") == 0){
-		//단순색상
-		/* 테마 사용자값으로 설정 */
-		//배경css제거
-		body.className = "";
-		
-		//let sideMenu = document.querySelector(".side-menu");
-		
-		let color = "${mypageInfo.suTheme}".split(":");
-		
-		body.style.background = color[0];
-		//sideMenu.style.background= color[1];
+	let suTheme = "${accessInfo.suTheme}";
+	
+	if(suTheme != ""){
+		if(suTheme.indexOf("#") == 0){
+			//단순색상
+			/* 테마 사용자값으로 설정 */
+			//배경css제거
+			body.className = "";
+			
+			let color = suTheme.split(":");
 
-	}else{
-		//배경이미지
-		body.style.background = "none";
-		body.className = "bgImage"+suTheme;
+			body.style.background = color[0];
+
+		}else{
+			//배경이미지
+			body.style.background = "none";
+			body.className = "bgImage"+suTheme;
+		}
 	}
 
 
@@ -291,7 +290,7 @@ function getInfo() {
 	let accessArea = document.getElementById("accessArea");
 	if ("${accessInfo.type}"!= null&&"${accessInfo.type}"!="") {
 		accessArea.innerHTML = "";
-		accessArea.innerHTML = "<span> ${accessInfo.suNickName}님 </span>";
+		accessArea.innerHTML = "<span onclick=\"movePage('MoveMyPage')\"> ${accessInfo.suNickName}님 </span>";
 		if ("${accessInfo.type}"== "kakao") {
 			accessArea.innerHTML +="<span onclick=\"kakaoLogout();\">로그아웃</span>"
 		} else if ("${ accessInfo.type }"== "naver") {
@@ -809,7 +808,7 @@ function changeTheme(num){
 		clientData = "suTheme=#F9F5E0:#F5EECB";
 		break;
 	case 5 : //파랑
-		clientData = "suTheme=#E5F0F8:#E5F0F8";
+		clientData = "suTheme=#E5F0F8:#D1E4F3";
 		break;
 	case 7 : //보라
 		clientData = "suTheme=#E0E4F9:#CBD2F5";

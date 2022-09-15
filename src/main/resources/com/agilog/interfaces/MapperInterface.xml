@@ -12,7 +12,7 @@
 		SELECT SUM(AL_ACTION) FROM AL WHERE AL_SUCODE = #{suCode}
 	</select>
 	<select id="getAccessInfo" parameterType="com.agilog.beans.AuthBean" resultType="com.agilog.beans.AuthBean">
-		SELECT SU_CODE AS SUCODE, SU_NICKNAME AS SUNICKNAME FROM SU WHERE SU_CODE = #{suCode}
+		SELECT SU_CODE AS SUCODE, SU_NICKNAME AS SUNICKNAME, SU_THEME AS SUTHEME FROM SU WHERE SU_CODE = #{suCode}
 	</select>
 	<select id="isCompanyMember" parameterType="com.agilog.beans.CompanyBean" resultType="com.agilog.beans.CompanyBean">
 		SELECT CO_PASSWORD AS COPASSWORD FROM CO WHERE CO_CODE = #{coCode}

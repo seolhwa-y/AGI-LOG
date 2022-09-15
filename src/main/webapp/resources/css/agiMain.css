@@ -734,7 +734,7 @@ input {
   top: 0;
   left: 0;
   z-index: -1;
-  opacity: 0.5;
+  opacity: 0.3;
 }
 .bgImage2::after {
   width: 100%;
@@ -746,7 +746,7 @@ input {
   top: 0;
   left: 0;
   z-index: -1;
-  opacity: 0.5;
+  opacity: 0.3;
 }
 .bgImage3::after {
   width: 100%;
@@ -758,7 +758,7 @@ input {
   top: 0;
   left: 0;
   z-index: -1;
-  opacity: 0.5;
+  opacity: 0.3;
 }
 .bgImage4::after {
   width: 100%;
@@ -770,7 +770,7 @@ input {
   top: 0;
   left: 0;
   z-index: -1;
-  opacity: 0.5;
+  opacity: 0.3;
 }
 .bgImage5::after {
   width: 100%;
@@ -782,5 +782,5 @@ input {
   top: 0;
   left: 0;
   z-index: -1;
-  opacity: 0.5;
+  opacity: 0.3;
 }

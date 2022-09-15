@@ -271,10 +271,37 @@
 <script>
 Kakao.init('2afdabad57ed92e1cc9de5bd4baed321');
 function getInfo() {
+	/* 테마 이미지 or 단순색상 */
+	let body = document.getElementById("body");
+	
+	let suTheme = "${accessInfo.suTheme}";
+	let sideMenu = document.querySelector(".side-menu");
+	if(suTheme != ""){
+		if(suTheme.indexOf("#") == 0){
+			//단순색상
+			/* 테마 사용자값으로 설정 */
+			//배경css제거
+			body.className = "";
+			
+			let color = suTheme.split(":");
+
+			body.style.background = color[0];
+			sideMenu.style.background= color[1];
+
+		}else{
+			//배경이미지
+			body.style.background = "none";
+			body.className = "bgImage"+suTheme;
+			sideMenu.style.background= "whitesmoke";
+
+		}
+	}
+	
+	
 	let accessArea = document.getElementById("accessArea");
 	if ("${accessInfo.type}"!= null&&"${accessInfo.type}"!="") {
 		accessArea.innerHTML = "";
-		accessArea.innerHTML = "<span> ${accessInfo.suNickName}님 </span>";
+		accessArea.innerHTML = "<span onclick=\"movePage('MoveMyPage')\"> ${accessInfo.suNickName}님 </span>";
 		if ("${accessInfo.type}"== "kakao") {
 			accessArea.innerHTML +="<span onclick=\"kakaoLogout();\">로그아웃</span>"
 		} else if ("${ accessInfo.type }"== "naver") {
@@ -288,6 +315,12 @@ function getInfo() {
 	
 	if("${isWrite}") {
 		moveWriteFeed();
+	}
+	
+	if("${ddCode}"!=""){
+		alert("${ddCode}");
+		getFeed("${ddCode}");             
+		
 	}
 }
 function openPopUp() {
@@ -569,7 +602,7 @@ function updLike(ajaxData) {
 
 </script>
 </head>
-<body onload="getInfo()">
+<body onload="getInfo()" id="body">
 	<div id="background">
 		<div id="top">
 			<div id="accessArea">
@@ -624,9 +657,9 @@ function updLike(ajaxData) {
 					<div id="hashTagArea">
 						<input id="hashTag" type="text" placeholder=" # 해시태그">
 					</div>
-					<input id="searchHashTag" class="writeBtn btn" type="button" value="검색">
+					<input id="searchHashTag" class="writeBtn btn" type="button" style="cursor:pointer;" value="검색">
 					<div id="writeFeedArea">
-						<input id="writeFeed"type="button" class="writeBtn btn" onClick="moveWriteFeed()" value="글쓰기" >
+						<input id="writeFeed"type="button" class="writeBtn btn" style="cursor:pointer;" onClick="moveWriteFeed()" value="글쓰기" >
 					</div>
 				</div>
 				<div id="rightArea_middle" class="scrollBar">

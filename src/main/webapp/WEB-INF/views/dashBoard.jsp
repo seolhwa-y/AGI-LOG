@@ -30,10 +30,33 @@
 <script>
 	Kakao.init('2afdabad57ed92e1cc9de5bd4baed321');
 	function getInfo() {
+		/* 테마 이미지 or 단순색상 */
+		let body = document.getElementById("body");
+		
+		let suTheme = "${accessInfo.suTheme}";
+		if(suTheme != ""){
+			if(suTheme.indexOf("#") == 0){
+				//단순색상
+				/* 테마 사용자값으로 설정 */
+				//배경css제거
+				body.className = "";
+				
+				let color = suTheme.split(":");
+
+				body.style.background = color[0];
+
+			}else{
+				//배경이미지
+				body.style.background = "none";
+				body.className = "bgImage"+suTheme;
+
+			}
+		}
+		
 		let accessArea = document.getElementById("accessArea");
 		if ("${accessInfo.type}" != null && "${accessInfo.type}" != "") {
 			accessArea.innerHTML = "";
-			accessArea.innerHTML = "<span> ${accessInfo.suNickName}님 </span>";
+			accessArea.innerHTML = "<span onclick=\"movePage('MoveMyPage')\"> ${accessInfo.suNickName}님 </span>";
 			if ("${accessInfo.type}" == "kakao") {
 				accessArea.innerHTML += "<span onclick=\"kakaoLogout();\">로그아웃</span>"
 			} else if ("${ accessInfo.type }" == "naver") {
@@ -74,12 +97,20 @@
 		}
 	}
 
-	function me() {
-		alert("이동하자 해당 감성일기로");
+	function me(ddCode) {
+		alert(ddCode);
+		let form = document.getElementById("serverForm");
+		
+		form.appendChild(createInput("hidden","ddCode",ddCode,"",""));
+		
+		form.action = "MoveDailyDiaryPageFromDashBoard";
+		form.method = "";
+		
+		form.submit();
 	}
 </script>
 </head>
-<body onload="getInfo()">
+<body onload="getInfo()" id="body">
 	<div id="background">
 		<div id="top">
 			<div id="accessArea">
@@ -121,19 +152,19 @@
 					</div>
 					<div style="display: flex; height: 20%; width: 100%; margin: 2%;">
 						<!-- 하단 설명단 -->
-						<div style="width: 33%; position: relative;">
-							<div style="font-size: 11rem; color: lightgrey;">1</div>
+						<div style="width: 33%; position: relative; cursor:pointer;"  onclick="movePage('MoveDailyDiaryPage')">
+							<div style="font-size: 11rem; color: lightgrey; " >1</div>
 							<div
 								style="position: absolute; width: 74%; font-size: 1.5rem; margin: -5.2rem 2.2rem;">
 								아이와의 소중한 추억을 기록하고 간직하세요</div>
 						</div>
-						<div style="width: 33%; position: relative;">
+						<div style="width: 33%; position: relative; cursor:pointer;"  onclick="movePage('MoveHealthDiaryPage')">
 							<div style="font-size: 11rem; color: lightgrey;">2</div>
 							<div
 								style="position: absolute; width: 79%; font-size: 1.5rem; margin: -5.2rem 2.2rem;">
 								아이의 건강상태를 체크하고 전문가와 상담할 수 있어요</div>
 						</div>
-						<div style="width: 34%; position: relative;">
+						<div style="width: 34%; position: relative; cursor:pointer;"  onclick="movePage('MoveMapPage')">
 							<div style="font-size: 11rem; color: lightgrey;">3</div>
 							<div
 								style="position: absolute; width: 79%; font-size: 1.5rem; margin: -5.2rem 2.2rem;">
