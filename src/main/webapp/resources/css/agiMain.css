@@ -54,7 +54,7 @@ body{
 	display: flex;
     height: 44rem;
     width: 100rem;
-    background-color: #fff1f1;
+    /*background-color: #fff1f1;*/
     margin: 0 auto;
 }
 
@@ -722,4 +722,65 @@ input {
 .editCommentInput {
     height: 1.5rem;
     width: 35rem;
+}
+/* 테마변경 */
+.bgImage1::after {
+  width: 100%;
+  height: 100%;
+  content: "";
+  background: url("/res/img/background1.jpg");
+  position: absolute;
+  background-size : cover;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  opacity: 0.5;
+}
+.bgImage2::after {
+  width: 100%;
+  height: 100%;
+  content: "";
+  background: url("/res/img/background2.jpg");
+  position: absolute;
+  background-size : cover;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  opacity: 0.5;
+}
+.bgImage3::after {
+  width: 100%;
+  height: 100%;
+  content: "";
+  background: url("/res/img/background3.jpg");
+  position: absolute;
+  background-size : cover;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  opacity: 0.5;
+}
+.bgImage4::after {
+  width: 100%;
+  height: 100%;
+  content: "";
+  background: url("/res/img/background4.jpg");
+  position: absolute;
+  background-size : cover;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  opacity: 0.5;
+}
+.bgImage5::after {
+  width: 100%;
+  height: 100%;
+  content: "";
+  background: url("/res/img/background5.jpg");
+  position: absolute;
+  background-size : cover;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  opacity: 0.5;
 }
