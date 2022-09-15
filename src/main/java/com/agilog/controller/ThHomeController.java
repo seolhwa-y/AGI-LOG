@@ -94,4 +94,12 @@ public class ThHomeController {
 		this.dailyDiary.backController(mav, 35);
 		return mav;
 	}
+
+	//감성일기 등록
+	@RequestMapping(value = "/DeleteDailyDiaryFeed", method = RequestMethod.POST)
+	public ModelAndView deleteDailyDiaryFeed(ModelAndView mav, @ModelAttribute DailyDiaryBean db) {
+		mav.addObject(db);
+		this.dailyDiary.backController(mav, 87);
+		return mav;
+	}
 }

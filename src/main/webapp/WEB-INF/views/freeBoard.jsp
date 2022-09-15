@@ -8,6 +8,7 @@
 <script src="/res/js/agiMain.js"></script>
 <script src="https://use.fontawesome.com/releases/v6.1.2/js/all.js"></script>
 <link rel="stylesheet" href="/res/css/agiMain.css">
+<link rel="stylesheet" href="/res/css/infoBoard.css">
 
 <!-- 카카오 스크립트 -->
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
@@ -102,6 +103,10 @@ function kakaoLogout() {
 				<!-- ------------------------------------------------------------------------ -->
 			</div>
 			<div id="rightArea" class="scrollBar">
+				<div class="infoBoard">
+					<div class="infoBoardH">자유 게시판</div>
+					${freeBoardList}
+				</div>
 				<input type="button" value="글쓰기" onClick="movePagePost('MoveWritePage')">
 			</div>
 		</div>
