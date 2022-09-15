@@ -92,8 +92,8 @@ public class JpHomeController {
 	}
 	//게시판 글 내용 보기
 	@RequestMapping(value = "/MoveShowPost", method = RequestMethod.POST)
-	public ModelAndView MoveShowPostCtl(ModelAndView mav, @ModelAttribute PostBean pb) {
-		mav.addObject(pb);
+	public ModelAndView MoveShowPostCtl(ModelAndView mav, @ModelAttribute PostBean pbs) {
+		mav.addObject(pbs);
 		this.board.backController(mav, 58);
 		return mav;
 	}
