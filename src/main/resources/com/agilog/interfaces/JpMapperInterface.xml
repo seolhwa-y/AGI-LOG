@@ -118,8 +118,6 @@
 	</select>
 	<!-- 정보게시판 게시글 보기 -->
 	<select id="getBebePost" parameterType="com.agilog.beans.PostBean" resultType="com.agilog.beans.PostBean">
-	   SELECT*FROM(SELECT ROWNUM AS NUM, A.*
-		FROM(
 	   SELECT IB_CODE AS IBCODE,
 		      IB_DATE AS IBDATE,
 		      IB_TITLE AS IBTITLE,
@@ -128,8 +126,10 @@
 		      IB_LIKE AS IBLIKES
 	   FROM INFOBOARD
 	   WHERE IB_CODE = #{ibCode}
-	   ) A)WHERE NUM BETWEEN 1+5*(#{pageNum}-1) AND 5*#{pageNum}
 	</select>
+	
+	
+	
 	
 	
 </mapper>
