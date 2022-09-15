@@ -372,7 +372,7 @@ public class Company implements ServiceRule {
 			}
 		}
 			sb.append("</table><br/>");
-			
+			System.out.println(resBean.getDoComment());
 			sb.append("<div class=\"docCo\">의사소견 입력<br/><br/>");
 			sb.append("<input type=\"text\" name=\"doctorComment\" class=\"commentInput\" placeholder=\"내용을 입력하세요.\"/>");
 			sb.append("<button class=\"submitBtn btn\" "

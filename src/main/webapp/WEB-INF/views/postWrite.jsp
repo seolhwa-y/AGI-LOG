@@ -18,10 +18,33 @@
 <script>
 Kakao.init('2afdabad57ed92e1cc9de5bd4baed321');
 function getInfo() {
+	/* 테마 이미지 or 단순색상 */
+	let body = document.getElementById("body");
+	
+	let suTheme = "${accessInfo.suTheme}";
+	if(suTheme != ""){
+		if(suTheme.indexOf("#") == 0){
+			//단순색상
+			/* 테마 사용자값으로 설정 */
+			//배경css제거
+			body.className = "";
+			
+			let color = suTheme.split(":");
+
+			body.style.background = color[0];
+
+		}else{
+			//배경이미지
+			body.style.background = "none";
+			body.className = "bgImage"+suTheme;
+
+		}
+	}
+	
 	let accessArea = document.getElementById("accessArea");
 	if ("${accessInfo.type}"!= null&&"${accessInfo.type}"!="") {
 		accessArea.innerHTML = "";
-		accessArea.innerHTML = "<span> ${accessInfo.suNickName}님 </span>";
+		accessArea.innerHTML = "<span onclick=\"movePage('MoveMyPage')\"> ${accessInfo.suNickName}님 </span>";
 		if ("${accessInfo.type}"== "kakao") {
 			accessArea.innerHTML +="<span onclick=\"kakaoLogout();\">로그아웃</span>"
 		} else if ("${ accessInfo.type }"== "naver") {
@@ -161,7 +184,6 @@ function deleteFile(num) {
     filesArr[num].is_delete = true;
 }
 
-
 </script>
 
 <style>
@@ -199,7 +221,7 @@ function deleteFile(num) {
 <body onload="getInfo()">
 </head>
 <body>
-	<div id="background">
+	<div id="background" id="body">
 		<div id="top">
 			<div id="accessArea">
 				<span onclick="movePage('MoveLoginPage')">로그인</span>
@@ -221,8 +243,8 @@ function deleteFile(num) {
 		</div>
 		<div id="middle">
 			<div id="rightArea" class="scrollBar">
-				<input type="text" id="fbTitle" placeholder="제목을 입력해 주세요"/>
-				<textarea name="ir1" id="ir1" rows="10" cols="165"></textarea>
+				<div style="width:54%">제목 : <input type="text" id="fbTitle" style="width:92%" placeholder="제목을 입력해 주세요"/></div>
+				<textarea name="ir1" id="ir1" rows="20" cols="90"></textarea>
 				<script type="text/javascript">
 					var oEditors = [];
 					nhn.husky.EZCreator.createInIFrame({

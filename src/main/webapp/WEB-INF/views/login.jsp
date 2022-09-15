@@ -14,13 +14,36 @@
 <script src="https://code.jquery.com/jquery-1.12.1.min.js"></script>
 <script>
 	function getInfo() {
+		/* 테마 이미지 or 단순색상 */
+		let body = document.getElementById("body");
+		
+		let suTheme = "${accessInfo.suTheme}";
+		if(suTheme != ""){
+			if(suTheme.indexOf("#") == 0){
+				//단순색상
+				/* 테마 사용자값으로 설정 */
+				//배경css제거
+				body.className = "";
+				
+				let color = suTheme.split(":");
+
+				body.style.background = color[0];
+
+			}else{
+				//배경이미지
+				body.style.background = "none";
+				body.className = "bgImage"+suTheme;
+
+			}
+		}
+		
 		if("${message}"!="") {
 			alert("${message}");
 		}
 		let accessArea = document.getElementById("accessArea");
 		if ("${accessInfo.type}" != null && "${accessInfo.type}" != "") {
 			accessArea.innerHTML = "";
-			accessArea.innerHTML = "<span> ${accessInfo.suNickName}님 </span>";
+			accessArea.innerHTML = "<span onclick=\"movePage('MoveMyPage')\"> ${accessInfo.suNickName}님 </span>";
 			if ("${accessInfo.type}" == "kakao") {
 				accessArea.innerHTML += "<span onclick=\"kakaoLogout();\">로그아웃</span>"
 			} else if ("${ accessInfo.type }" == "naver") {
@@ -47,7 +70,7 @@
 	}
 </script>
 </head>
-<body onload="getInfo()">
+<body onload="getInfo()" id="body">
 	<div id="background">
 		<div id="top">
 			<div id="accessArea">
