@@ -18,12 +18,14 @@
 <style>
 #calendar {
 	margin: 0 auto;
-	max-width: 1200px;
+	max-width: 1250px;
 	max-height: 690px;
 }
 #rightArea {
-	padding: 0.3% 0;
+	padding: 0.2% 0;
 	width: 1400px;
+	background-color: whitesmoke;
+	
 }
 
 .modal {
@@ -245,6 +247,7 @@ function kakaoLogout() {
 
     // div 태그_캘린더에 라이브러리 적용.
     var calendar = new FullCalendar.Calendar(calendarEl, {
+    	aspectRatio: 2,
     	customButtons: {
     	    writeDDBtn: {
     	      text: '일기쓰기',
@@ -382,12 +385,26 @@ function showDateDetail(ajaxData){
 	let checkDd = document.getElementById("checkDd");
 	let checkHd = document.getElementById("checkHd");
 	
+	//해당 날짜
+	let date = dateInfo.date;
 	// 공유,헬스 작성여부에따라 체크표시
 	if(dateInfo.dailyDiary){
 		checkDd.setAttribute("checked","checked");
+		
+		let c = document.getElementsByClassName("checkName")[0];
+		
+		c.addEventListener("click",function() {
+			showDd(date);
+		});
 	}
 	if(dateInfo.healthDiary){
 		checkHd.setAttribute("checked","checked");
+		
+		let c = document.getElementsByClassName("checkName")[1];
+		
+		c.addEventListener("click",function() {
+			showHd(date);
+		});
 	}
 	
 	
@@ -421,7 +438,7 @@ function showDateDetail(ajaxData){
 			}
 		}
 	}
-
+	
 }
 // 모달창 닫기
 function modalClose(){
@@ -511,6 +528,24 @@ function insertSchedule(schDate){
 	let clientData = "scheduleName="+insSchedule.value+"&scheduleDate="+schDate;
 	
 	postAjaxJson("InsertSchedule",clientData,"showDateDetail");
+}
+
+function showDd(date) {
+	let form = document.getElementById("serverForm");
+	form.appendChild(createInput("hidden","ddDate",date,null,null));
+	form.action = "MoveMyDailyDiaryPage";
+	form.method = "post";
+	
+	form.submit();
+}
+
+function showHd(date) {
+	let form = document.getElementById("serverForm");
+	form.appendChild(createInput("hidden","hdDate",date,null,null));
+	form.action = "MoveHealthDiaryPage";
+	form.method = "post";
+	
+	form.submit();
 }
 
 </script>

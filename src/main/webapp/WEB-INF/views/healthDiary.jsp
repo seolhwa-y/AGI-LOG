@@ -57,6 +57,10 @@
             if("${isWrite}") {
             	writeHealthDiary();
         	}
+            //캘린더에서 특정 날짜에 작성한 일기 확인
+            if("${showHdDate}"!="") {
+            	showHdDate("${showHdDate}");
+            }
         }
         /* ------------------------------------------------------------- */
         //로그아웃
@@ -96,11 +100,11 @@
             let babyInfo = document.getElementsByClassName("babyInfo")[0];
             changeList(babyInfo.options[babyInfo.selectedIndex].value);
         }
+        
         //아이 코드가 일치하는 피드만 보여줌
         function changeList(value) {
             let diaryList = document.getElementById("diaryArea");
             let diary = diaryList.childNodes;
-            console.log(value);
             //초기화
             for (let idx = 0; idx < diary.length; idx++) {
                 if (diary[idx].tagName != undefined)
@@ -113,6 +117,25 @@
                     str = str.substr(6, 2);
                     if (!(str == value) && diary[idx].tagName != undefined) {
                         diary[idx].style.display = "none";
+                    }
+                }
+            }
+        }
+        
+        function showHdDate(date) {
+        	let diaryList = document.getElementById("diaryArea");
+            let diary = diaryList.childNodes;
+            //초기화
+            for (let idx = 0; idx < diary.length; idx++) {
+                if (diary[idx].tagName != undefined)
+                    diary[idx].style.display = "block";
+            }
+            //날짜 설정
+            let d = document.getElementsByClassName("hdDate"); //증조부 .parentNode.parentNode.parentNode
+            if (date != "") {
+                for (let idx = 0; idx < d.length; idx++) {
+                    if (!(d[idx].innerText.split(" ")[0]==date)) {
+                        d[idx].parentNode.parentNode.parentNode.parentNode.style.display = "none";
                     }
                 }
             }

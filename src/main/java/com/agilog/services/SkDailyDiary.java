@@ -55,7 +55,7 @@ public class SkDailyDiary implements ServiceRule {
 				ddb.setSuCode(ab.getSuCode());
 				
 				//날짜 형식 변환
-				SimpleDateFormat form = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				SimpleDateFormat form = new SimpleDateFormat("yyyyMMddHHmmss");
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 				
 				Date d = form.parse(ddb.getDdDate());
@@ -67,7 +67,7 @@ public class SkDailyDiary implements ServiceRule {
 						// 현재 유저의 좋아요 여부 저장
 						ddb.setLike(true);
 						// 해당일기 전체 좋아요 수 조회
-						ddb.setLikes(Integer.parseInt(this.session.selectOne("getDdLike", ddb)));
+						ddb.setLikes(this.session.selectOne("getDdLike", ddb));
 						// 해당일기 좋아요 수 업데이트
 						if (this.convertToBoolean(this.session.update("updDdLike", ddb))) {
 							model.addAttribute("ddLike", ddb);
@@ -78,7 +78,7 @@ public class SkDailyDiary implements ServiceRule {
 						// 현재 유저의 좋아요 여부 저장
 						ddb.setLike(false);
 						// 해당일기 전체 좋아요 수 조회
-						ddb.setLikes(Integer.parseInt(this.session.selectOne("getDdLike", ddb)));
+						ddb.setLikes(this.session.selectOne("getDdLike", ddb));
 						// 해당일기 좋아요 수 업데이트
 						if (this.convertToBoolean(this.session.update("updDdLike", ddb))) {
 							model.addAttribute("ddLike", ddb);

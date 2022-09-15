@@ -56,7 +56,7 @@ public class DailyDiary implements ServiceRule {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+		//캘린더에서 글쓰기 버튼 눌렀을때
 		DailyDiaryBean d = (DailyDiaryBean)mav.getModel().get("dailyDiaryBean");
 		if(d!=null&&d.getMoveWrite()!=null&&d.getMoveWrite().equals("1")) {
 			mav.addObject("isWrite",true);
@@ -84,6 +84,12 @@ public class DailyDiary implements ServiceRule {
 				// db에서 내가 작성한 감성일기들을 최신순으로 가져옴
 				mav.addObject("myDailyDiaryFeed",this.makeDialyFeed(this.session.selectList("getMyDailyDiary",ab)));
 				mav.setViewName("myDailyDiary");
+				//캘린더에서 해당 날짜 감성일기 부분을 눌렀을때
+				DailyDiaryBean d = (DailyDiaryBean)mav.getModel().get("dailyDiaryBean");
+				System.out.println(d);
+				if(d!=null&&d.getDdDate()!=null) {
+					mav.addObject("showDdDate",d.getDdDate());
+				}
 			}else {
 				mav.setViewName("login");
 			}
@@ -144,7 +150,7 @@ public class DailyDiary implements ServiceRule {
 			sb.append("<div class=\'like\'>❤ "+fl.getLikes()+"</div>");
 			sb.append("</div>");
 			sb.append("<div class=\'feed_bottom\'>");
-			sb.append("<div id=\'feedDate\'>"+ fl.getDdDate()+"</div>");
+			sb.append("<div class=\'feedDate\'>"+ fl.getDdDate()+"</div>");
 			if(fl.getDdContent().length()>32) {
 				sb.append(fl.getDdContent().substring(0,25)+"...</div>");
 			}else {

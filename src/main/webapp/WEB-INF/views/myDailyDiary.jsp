@@ -108,7 +108,7 @@
     	height: 100%;
 		border-radius: 5px 5px 0 0;
 	}
-	#feedDate{
+	.feedDate{
 		margin-bottom: 3%;
 		border-bottom: 1px solid dimgray;
 	}
@@ -154,7 +154,33 @@ function getInfo() {
 	
 	let feedList = document.getElementById("feedList");
 	feedList.innerHTML = "${myDailyDiaryFeed}";
+	
+	//캘린더에서 특정 날짜에 작성한 일기 확인
+	if("${showDdDate}"!="") {
+		showDdDate("${showDdDate}");
+    }
 }
+
+function showDdDate(date) {
+	let feedList = document.getElementById("feedList");
+    let feed = feedList.childNodes;
+    //초기화
+    for (let idx = 0; idx < feed.length; idx++) {
+        if (feed[idx].tagName != undefined)
+        	feed[idx].style.display = "block";
+    }
+    //날짜 설정
+    let d = document.getElementsByClassName("feedDate"); //증조부 .parentNode.parentNode.parentNode
+    if (date != "") {
+        for (let idx = 0; idx < d.length; idx++) {
+        	console.log(d);
+            if (!(d[idx].innerText.split(" ")[0]==date)) {
+                d[idx].parentNode.parentNode.style.display = "none";
+            }
+        }
+    }
+}
+
 function openPopUp() {
 	testPopUp = window
 		.open("https://nid.naver.com/nidlogin.logout",

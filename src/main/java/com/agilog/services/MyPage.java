@@ -3,6 +3,7 @@ package com.agilog.services;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -118,6 +119,11 @@ public class MyPage implements ServiceRule {
 				hdb.setBbCode(babyCode);
 				hdb.setBbWeight(bb.getBbWeight());
 				hdb.setCaCode("01");
+				
+				Date date = new Date(System.currentTimeMillis());
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+				hdb.setHdDate(sdf.format(date));
+				
 				/* HealthDiaryCode max+1값 가져옴 */
 				hdb.setHdCode(this.session.selectOne("getHealthDiaryCode",hdb));
 				/* DB :: HealthDiary테이블에 아이 몸무게 INSERT */

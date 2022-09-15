@@ -95,6 +95,14 @@ public class HealthDiary implements ServiceRule {
 				HealthDiaryBean h = (HealthDiaryBean)mav.getModel().get("healthDiaryBean");
 				if(h!=null&&h.getMoveWrite()!=null&&h.getMoveWrite().equals("1")) {
 					mav.addObject("isWrite",true);
+				} else if(h!=null&&h.getHdDate()!=null) {
+					SimpleDateFormat form = new SimpleDateFormat("yyyy-MM-dd");
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
+					
+					Date d = form.parse(h.getHdDate());
+					h.setHdDate(sdf.format(d));
+					
+					mav.addObject("showHdDate",h.getHdDate());
 				}
 				page="healthDiary";
 				
@@ -322,7 +330,7 @@ public class HealthDiary implements ServiceRule {
 			sb.append("<span class=\"userId\">"+hb.getBbName()+"</span>");
 			
 			d = form.parse(hb.getHdDate());
-			sb.append("<span class=\"userId\">"+msdf.format(d)+"</span>");
+			sb.append("<span class=\"hdDate\">"+msdf.format(d)+"</span>");
 			
 			sb.append("</div>");
 			sb.append("</div>");

@@ -220,8 +220,16 @@ public class SkHomeController {
 		return mav;
 	}
 	
+	@RequestMapping(value = "/MoveMyDailyDiaryPage", method = RequestMethod.POST)
+	public ModelAndView moveMyDailyDiary(ModelAndView mav, @ModelAttribute DailyDiaryBean hb) {
+		mav.addObject(hb);
+		this.dailyDiary.backController(mav, 32);
+		
+		return mav;
+	}
+	
 	@RequestMapping(value = "/MoveHealthDiaryPage", method = RequestMethod.POST)
-	public ModelAndView moveWriteHealthDiary(ModelAndView mav, @ModelAttribute HealthDiaryBean hb) {
+	public ModelAndView moveMyHealthDiary(ModelAndView mav, @ModelAttribute HealthDiaryBean hb) {
 		mav.addObject(hb);
 		this.healthDiary.backController(mav, 33);
 		
