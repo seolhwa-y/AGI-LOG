@@ -76,6 +76,10 @@ public interface JpMapperInterface {
 	public DailyDiaryBean getMyDailyDiary(DailyDiaryBean ddb);
 	public List<DailyDiaryCommentBean> getMyDailyDiaryComment(DailyDiaryCommentBean ddcb);
 	public int delDailyDiary(DailyDiaryBean ddb);
+	
+	public List<DailyDiaryBean> getMyDailyDiaryFeedNew(DailyDiaryBean dd);
+	public List<DailyDiaryBean> getMyDailyDiaryFeedOld(DailyDiaryBean dd);
+	public List<DailyDiaryBean> getMyDailyDiaryFeedLike(DailyDiaryBean dd);
 	//
 	public MyPageBean getMyInfo(String userCode);
 	public List<BabyBean> getBabyInfoList(String userCode);

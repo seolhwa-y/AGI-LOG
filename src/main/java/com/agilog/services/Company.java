@@ -185,6 +185,7 @@ public class Company implements ServiceRule {
 		//cb.setCoManagerCode(((CompanyBean)mav.getModel().get("companyBean")).getCoManagerCode());
 		
 		mav.addObject("healthDataList", this.makeHealthData(this.session.selectList("getHealthDataList", rb), rb));
+		//mav.addObject("doctorComment",this.makePatientCo(this.session.selectList("getPatientInfoList",db)));
 		mav.setViewName("doctorHealthData");
 	}
 
@@ -290,19 +291,28 @@ public class Company implements ServiceRule {
 			sb.append("<td class=\"doctorMgrB\">" + rb.getResBbName() + "</td>");
 			sb.append("<td class=\"doctorMgrB\">" + rb.getResActionName() + "</td>");
 			sb.append("</tr>");
-			if(rb.getDoComment() != null) {
+			/*if(rb.getDoComment() != null) {
 				sb.append("<tr>");
-				sb.append("<th class=\"doctorMgrCM\" colspan=\"3\">의사 소견서</th>");
+				sb.append("<th class=\"doctorMgrCM\" colspan=\"3\">"+ rb.getResBbName() + "님의 진료 소견서 : "+ rb.getDoComment() + "</th>");
 				sb.append("</tr>");
-				sb.append("<tr>");
-				sb.append("<td class=\"doctorMgrC\" colspan=\"3\">" + rb.getDoComment() + "</td>");
-				sb.append("</tr>");
-			}
+			}*/
 		}
 		sb.append("</table>");
 		
 		return sb.toString();
 	}
+	/*private String makePatientCo(List<ReservationBean> patientList) {
+		StringBuffer sb = new StringBuffer();
+		for(int idx=0; idx<patientList.size(); idx++) {
+		ReservationBean rb = (ReservationBean)patientList.get(idx);
+		if(rb.getDoComment() != null) {
+			sb.append("<tr>");
+			sb.append("<th class=\"doctorMgrCM\" colspan=\"3\">"+ rb.getResBbName() + "님의 진료 소견서 : "+ rb.getDoComment() + "</th>");
+			sb.append("</tr>");
+		}
+		}
+		return sb.toString();
+	}*/
 
 	//의사 리스트 EL작업
 	private String makeDoctorList(List<DoctorBean> doctorList) {
@@ -357,17 +367,39 @@ public class Company implements ServiceRule {
 				sb.append("</tr>");
 			}else {
 				sb.append("<tr>");
-				sb.append("<td class=\"patientMgrB\">" + hdb.getHdDate() + "</td>");
-				sb.append("<td class=\"patientMgrB\">" + hdb.getBbHeight() + "&nbsp;cm</td>");
-				sb.append("<td class=\"patientMgrB\">" + hdb.getBbWeight() + "&nbsp;kg</td>");
+				if(hdb.getHdDate()!=null) {
+					sb.append("<td class=\"patientMgrB\">" + hdb.getHdDate() + "</td>");
+				} else {sb.append("<td class=\"patientMgrB\">정보없음</td>");}
+				if(hdb.getBbHeight()!=null) {
+					sb.append("<td class=\"patientMgrB\">" + hdb.getBbHeight() + "&nbsp;cm</td>");
+				}else {sb.append("<td class=\"patientMgrB\">정보없음</td>");}
+				if(hdb.getBbWeight()!=null) {
+					sb.append("<td class=\"patientMgrB\">" + hdb.getBbWeight() + "&nbsp;kg</td>");
+				}else {sb.append("<td class=\"patientMgrB\">정보없음</td>");}	
+				if(hdb.getFoot()!=null) {
 				sb.append("<td class=\"patientMgrB\">" + hdb.getFoot() + "&nbsp;mm</td>");
+				}else {sb.append("<td class=\"patientMgrB\">정보없음</td>");}
+				if(hdb.getHead()!=null) {
 				sb.append("<td class=\"patientMgrB\">" + hdb.getHead() + "&nbsp;inch</td>");
+				}else {sb.append("<td class=\"patientMgrB\">정보없음</td>");}
+				if(hdb.getTemperature()!=null) {
 				sb.append("<td class=\"patientMgrB\">" + hdb.getTemperature() + "&nbsp;&deg;c</td>");
+				}else {sb.append("<td class=\"patientMgrB\">정보없음</td>");}
+				if(hdb.getSleep()!=null) {
 				sb.append("<td class=\"patientMgrB\">" + hdb.getSleep() + "</td>");
+				}else {sb.append("<td class=\"patientMgrB\">정보없음</td>");}
+				if(hdb.getDefecation()!=null) {
 				sb.append("<td class=\"patientMgrB\">" + hdb.getDefecation() + "</td>");
+				}else {sb.append("<td class=\"patientMgrB\">정보없음</td>");}
+				if(hdb.getDefstatus()!=null) {
 				sb.append("<td class=\"patientMgrB\">" + hdb.getDefstatus() + "</td>");
+				}else {sb.append("<td class=\"patientMgrB\">정보없음</td>");}
+				if(hdb.getMeal()!=null) {
 				sb.append("<td class=\"patientMgrB\">" + hdb.getMeal() + "</td>");
+				}else {sb.append("<td class=\"patientMgrB\">정보없음</td>");}
+				if(hdb.getMemo()!=null) {
 				sb.append("<td class=\"patientMgrB m\">" + hdb.getMemo() + "</td>");
+				}else {sb.append("<td class=\"patientMgrB m\">정보없음</td>");}
 				sb.append("</tr>");
 			}
 		}
@@ -380,6 +412,7 @@ public class Company implements ServiceRule {
 		return sb.toString();
 	}
 
+	
 	private String makeHTMLCReservation(List<DoctorBean> doctorList, List<ReservationBean> reservationList) {
 		StringBuffer sb = new StringBuffer();
 		int idx = 0;

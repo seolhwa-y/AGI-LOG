@@ -36,22 +36,29 @@ public class Board implements ServiceRule {
 	}
 
 	public void backController(ModelAndView mav, int serviceCode) {
-		
-		switch (serviceCode) {
-		case 8:
-			this.moveBoardPageCtl(mav);
-			break;
-		case 58 :
-			this.moveShowPostCtl(mav);
-			break;
-		case 56:
-			this.moveInfoBoardCtl(mav);
-			break;
-		case 200:
-			this.moveInfoBoardCtl(mav);
-			break;
-		}
+		/*try {
+			 세션 데이터 유무검사 
+			if ((AuthBean) this.pu.getAttribute("accessInfo") != null) {*/
+				switch (serviceCode) {
+				case 8:
+					this.moveBoardPageCtl(mav);
+					break;
+				case 58 :
+					this.moveShowPostCtl(mav);
+					break;
+				case 56:
+					this.moveInfoBoardCtl(mav);
+					break;
+				case 200:
+					this.moveInfoBoardCtl(mav);
+					break;
+				}
+			/* 세션 데이터 없을 시 login로 page이동	
+			}else {mav.setViewName("login");}
+			
+		} catch (Exception e) {e.printStackTrace();}*/
 	}
+
 
 	public void backController(Model model, int serviceCode) {
 
@@ -92,52 +99,54 @@ public class Board implements ServiceRule {
 	}
 
 	private void moveInfoBoardCtl(ModelAndView mav) {
-		PostBean pb = (PostBean)mav.getModel().get("postBean");
-		int pageNum = 0;	// 현재 페이지 번호
-		int listCount = 5;	// 페이지당 나타낼 글의 갯수
-		int pageCount = 3;	// 페이지그룹당 페이지 갯수
-		int maxNum =0; // 전체 글의 숫자	
-
-		/*페이징 제작 */
-		maxNum = this.session.selectOne("InfoCount");
-		if(pb.getPageNum() != 0) {
-			pageNum =  pb.getPageNum();
-		}else {
-			pageNum=1;
-			pb.setPageNum(pageNum);
-		}
 		
-		// 필드로 저장
-		this.maxNum = maxNum;
-		this.pageNum = pageNum;
-		this.listCount = listCount;
-		this.pageCount = pageCount;
-		
-		ibSort = pb.getIbSort();
-				if(ibSort==null) {
-					ibSort = "newList";
-				};
-
-		if(ibSort.equals("newList")){
-		mav.addObject("bebeBoardList", this.makeBoardList(this.session.selectList("getBebeInfo", pb)));
-		}else if(ibSort.equals("oldList")){
-			//오래된순 가져오기
-			mav.addObject("bebeBoardList", this.makeBoardList(this.session.selectList("getBebeInfoOld", pb)));
-		}else if(ibSort.equals("likeList")){	
-			//좋아요순 가져오기
-			mav.addObject("bebeBoardList", this.makeBoardList(this.session.selectList("getBebeInfoLike", pb)));
-		}else if(ibSort.equals("viewList")){
-			//조회수순 가져오기
-			mav.addObject("bebeBoardList", this.makeBoardList(this.session.selectList("getBebeInfoView", pb)));
-		}
-		
-		
-		
-		//페이징 el제작
-		mav.addObject("pagingList",	this.makePageGroup());
-		
-		
-		mav.setViewName("infoBoard");
+			PostBean pb = (PostBean)mav.getModel().get("postBean");
+			int pageNum = 0;	// 현재 페이지 번호
+			int listCount = 5;	// 페이지당 나타낼 글의 갯수
+			int pageCount = 3;	// 페이지그룹당 페이지 갯수
+			int maxNum =0; // 전체 글의 숫자	
+	
+			/*페이징 제작 */
+			maxNum = this.session.selectOne("InfoCount");
+			if(pb.getPageNum() != 0) {
+				pageNum =  pb.getPageNum();
+			}else {
+				pageNum=1;
+				pb.setPageNum(pageNum);
+			}
+			
+			// 필드로 저장
+			this.maxNum = maxNum;
+			this.pageNum = pageNum;
+			this.listCount = listCount;
+			this.pageCount = pageCount;
+			
+			ibSort = pb.getIbSort();
+					if(ibSort==null) {
+						ibSort = "newList";
+					};
+			//정렬했을 때 코드로 분류
+			//최신순 가져오기
+			if(ibSort.equals("newList")){
+			mav.addObject("bebeBoardList", this.makeBoardList(this.session.selectList("getBebeInfo", pb)));
+			}else if(ibSort.equals("oldList")){
+				//오래된순 가져오기
+				mav.addObject("bebeBoardList", this.makeBoardList(this.session.selectList("getBebeInfoOld", pb)));
+			}else if(ibSort.equals("likeList")){	
+				//좋아요순 가져오기
+				mav.addObject("bebeBoardList", this.makeBoardList(this.session.selectList("getBebeInfoLike", pb)));
+			}else if(ibSort.equals("viewList")){
+				//조회수순 가져오기
+				mav.addObject("bebeBoardList", this.makeBoardList(this.session.selectList("getBebeInfoView", pb)));
+			}
+			
+			
+			
+			//페이징 el제작
+			mav.addObject("pagingList",	this.makePageGroup());
+			
+			
+			mav.setViewName("infoBoard");
 	}
 	@SuppressWarnings("unused")
 	public String makePageGroup() {
@@ -152,11 +161,12 @@ public class Board implements ServiceRule {
 		
 	private String makeHtml(int currentGroup, int totalPage, String ibSort) {
 		StringBuffer sb = new StringBuffer();
+		//시작 & 끝
 		int start = (currentGroup * pageCount) - (pageCount - 1);
 		int end = (currentGroup * pageCount >= totalPage) ? totalPage : currentGroup * pageCount;
 
 
-
+		//페이지 번호 만들기
 		for (int i = start; i <= end; i++) {
 			if (pageNum != i) {
 				sb.append("<a class=\"pagenum\" href='MoveInfoBoard?ibSort=" + ibSort + "&pageNum="+i+"'>" + i + "</a>");
@@ -171,7 +181,7 @@ public class Board implements ServiceRule {
 	private void moveWritePageCtl(ModelAndView mav) {
 
 	}
-
+	//게시글 보기
 	private void moveShowPostCtl(ModelAndView mav) {
 		
 		PostBean pb = (PostBean) mav.getModel().get("postBean");
@@ -228,10 +238,11 @@ public class Board implements ServiceRule {
 	private void updatePostCtl(ModelAndView mav) {
 
 	}
-
+	//게시판 리스트 EL작업
 	private String makeBoardList(List<PostBean> bebeBoardList) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<select id=\"infoBoardSelect\" onChange=\"changeSort()\">");
+			sb.append("<option value = \"none\" selected disabled>정렬순서</option>");
 			sb.append("<option value = \"newList\">최신순</option>");
 			sb.append("<option value = \"oldList\">오래된순</option>");
 			sb.append("<option value = \"likeList\">좋아요순</option>");
@@ -239,9 +250,8 @@ public class Board implements ServiceRule {
 		sb.append("</select>");
 		sb.append("<table class=\"infoTable\">");
 			sb.append("<tr>");
-			sb.append("<th class=\"infoBoardM no\">No.</th>");
-			sb.append("<th class=\"infoBoardM title\">제목</th>");
 			sb.append("<th class=\"infoBoardM date\">작성일</th>");
+			sb.append("<th class=\"infoBoardM title\">제목</th>");
 			sb.append("<th class=\"infoBoardM like\">좋아요</th>");
 			sb.append("<th class=\"infoBoardM view\">조회수</th>");
 			sb.append("</tr>");
@@ -250,9 +260,8 @@ public class Board implements ServiceRule {
 				int max = bebeBoardList.size();
 				System.out.println("페이지번호 : " + pageNum);
 				sb.append("<tr class=\"selectBoard\" onClick=\"boardContent("+ pb.getIbCode() +")\">");
-				sb.append("<td class=\"infoBoardB\">"+ (max-idx) +"</td>");
-				sb.append("<td class=\"infoBoardTitle\">"+ pb.getIbTitle() +"</td>");
 				sb.append("<td class=\"infoBoardB\">"+ pb.getIbDate() +"</td>");
+				sb.append("<td class=\"infoBoardTitle\">"+ pb.getIbTitle() +"</td>");
 				sb.append("<td class=\"infoBoardB\">"+ pb.getIbLike() +"</td>");
 				sb.append("<td class=\"infoBoardB\">"+ pb.getIbView() +"</td>");
 				sb.append("</tr>");	

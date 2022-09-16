@@ -52,14 +52,22 @@
     border:solid 2px;
     padding:6px;
 }
-#infoBoardSelect{
-	width: 6rem;
-    height: 1.5rem;
-    font-size: 1rem;
-    float: right;
-    margin-right: 1.4rem;
-    margin-top: -1rem;
-}
+	#infoBoardSelect{
+		width: 6.5rem;
+    	height: 1.8rem;
+    	font-size: 1.2rem;
+	    float: right;
+	    margin-right: 4.6rem;
+	    margin-top: -1rem;
+	    box-sizing: border-box;
+	    border-radius: 6px;
+		color: dimgray;
+	}
+	option {
+  		padding: 4px;
+  		font-size: 20px;
+  		color: dimgray;
+	}
 .selectBoard{
 	background-color:white;
 	cursor: pointer;

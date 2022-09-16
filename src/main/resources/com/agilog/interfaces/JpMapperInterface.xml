@@ -130,6 +130,74 @@
 	
 	
 	
+	<!-- 감성일기 최신순 -->
+	<select id="getDailyDiaryFeedNew"  resultType="com.agilog.beans.DailyDiaryBean">
+		SELECT DD_CODE AS DDCODE,
+		       TO_CHAR(DD_DATE,'YYYY-MM-DD HH:MI') AS DDDATE,
+		       DD_CONTENT AS  DDCONTENT,
+		       TO_NUMBER(DD_LIKE) AS LIKES,
+		       DP_LINK AS DPLINK
+		FROM DAILYDIARY LEFT OUTER JOIN DAILYDIARYPHOTO ON DD_CODE = DP_DDCODE
+		WHERE DD_STATUS = '1'
+		ORDER BY DD_DATE DESC
+	</select>
+	<!-- 감성일기 오래된순 -->
+	<select id="getDailyDiaryFeedOld"  resultType="com.agilog.beans.DailyDiaryBean">
+		SELECT DD_CODE AS DDCODE,
+		       TO_CHAR(DD_DATE,'YYYY-MM-DD HH:MI') AS DDDATE,
+		       DD_CONTENT AS  DDCONTENT,
+		       TO_NUMBER(DD_LIKE) AS LIKES,
+		       DP_LINK AS DPLINK
+		FROM DAILYDIARY LEFT OUTER JOIN DAILYDIARYPHOTO ON DD_CODE = DP_DDCODE
+		WHERE DD_STATUS = '1'
+		ORDER BY DD_DATE ASC
+	</select>
+	<!-- 감성일기 좋아요순 -->
+	<select id="getDailyDiaryFeedLike"  resultType="com.agilog.beans.DailyDiaryBean">
+		SELECT DD_CODE AS DDCODE,
+		       TO_CHAR(DD_DATE,'YYYY-MM-DD HH:MI') AS DDDATE,
+		       DD_CONTENT AS  DDCONTENT,
+		       TO_NUMBER(DD_LIKE) AS LIKES,
+		       DP_LINK AS DPLINK
+		FROM DAILYDIARY LEFT OUTER JOIN DAILYDIARYPHOTO ON DD_CODE = DP_DDCODE
+		WHERE DD_STATUS = '1'
+		ORDER BY DD_LIKE DESC
+	</select>
 	
+	
+	
+	<!-- 내피드 최신순 -->
+	<select id="getMyDailyDiaryFeedNew" parameterType="com.agilog.beans.DailyDiaryBean"  resultType="com.agilog.beans.DailyDiaryBean">
+		SELECT DD_CODE AS DDCODE,
+		       TO_CHAR(DD_DATE,'YYYY-MM-DD HH:MI') AS DDDATE,
+		       DD_CONTENT AS  DDCONTENT,
+		       TO_NUMBER(DD_LIKE) AS LIKES,
+		       DP_LINK AS DPLINK
+		FROM DAILYDIARY LEFT OUTER JOIN DAILYDIARYPHOTO ON DD_CODE = DP_DDCODE
+		WHERE DD_SUCODE = #{ddSuCode}
+		ORDER BY DD_LIKE DESC
+	</select>
+	<!-- 내피드 오래된순 -->
+	<select id="getMyDailyDiaryFeedOld"  parameterType="com.agilog.beans.DailyDiaryBean" resultType="com.agilog.beans.DailyDiaryBean">
+		SELECT DD_CODE AS DDCODE,
+		       TO_CHAR(DD_DATE,'YYYY-MM-DD HH:MI') AS DDDATE,
+		       DD_CONTENT AS  DDCONTENT,
+		       TO_NUMBER(DD_LIKE) AS LIKES,
+		       DP_LINK AS DPLINK
+		FROM DAILYDIARY LEFT OUTER JOIN DAILYDIARYPHOTO ON DD_CODE = DP_DDCODE
+		WHERE DD_SUCODE = #{ddSuCode}
+		ORDER BY DD_DATE ASC
+	</select>
+	<!-- 내피드 좋아요순 -->
+	<select id="getMyDailyDiaryFeedLike"  parameterType="com.agilog.beans.DailyDiaryBean" resultType="com.agilog.beans.DailyDiaryBean">
+		SELECT DD_CODE AS DDCODE,
+		       TO_CHAR(DD_DATE,'YYYY-MM-DD HH:MI') AS DDDATE,
+		       DD_CONTENT AS  DDCONTENT,
+		       TO_NUMBER(DD_LIKE) AS LIKES,
+		       DP_LINK AS DPLINK
+		FROM DAILYDIARY LEFT OUTER JOIN DAILYDIARYPHOTO ON DD_CODE = DP_DDCODE
+		WHERE DD_SUCODE = #{ddSuCode}
+		ORDER BY DD_LIKE DESC
+	</select>
 	
 </mapper>
