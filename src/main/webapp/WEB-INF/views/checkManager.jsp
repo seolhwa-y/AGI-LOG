@@ -24,9 +24,9 @@
 	function checkManager() {
 		let form = document.getElementById("serverForm");
 		
-		let coManagerCode = document.getElementsByName("coManagerCode")[0];
-		form.appendChild(coManagerCode);
-
+		let coManagerCode = document.getElementsByName("coManagerCode")[0];	
+		form.appendChild(createInput("hidden","coManagerCode",coManagerCode.value,null,null));
+		
 		form.action = "CheckManager";
 		form.method = "post";
 		form.submit();

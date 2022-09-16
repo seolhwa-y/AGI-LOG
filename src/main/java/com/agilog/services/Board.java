@@ -2,6 +2,9 @@ package com.agilog.services;
 
 import java.util.List;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -181,9 +184,8 @@ public class Board implements ServiceRule {
 	private void moveWritePageCtl(ModelAndView mav) {
 
 	}
-	//게시글 보기
+	//게시글 보기 / 조회수 증가
 	private void moveShowPostCtl(ModelAndView mav) {
-		
 		PostBean pb = (PostBean) mav.getModel().get("postBean");
 		mav.addObject("content",this.makePostView(this.session.selectList("getBebePost",pb)));
 		mav.setViewName("post");
