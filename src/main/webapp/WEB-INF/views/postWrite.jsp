@@ -88,7 +88,7 @@ function kakaoLogout() {
 var submitObject = new Object();
 
 function submitContents() {
-	let form = document.getElementById("serverForm");
+	let form = document.getElementById("upload");
 	oEditors.getById["ir1"].exec("UPDATE_CONTENTS_FIELD", []);	// 에디터의 내용이 textarea에 적용됩니다.
 	const files = submitObject.files;
 	
@@ -110,14 +110,24 @@ function submitContents() {
 	form.appendChild(createInput("hidden","fbTitle",fbTitle,null,null));
 	form.appendChild(createInput("hidden","fbContent",fbContent,null,null));
 	
-	for (idx = 0; idx < files.length; idx++) {
-    	alert(files[idx].name);
-    	form.appendChild(createInput("hidden","files["+idx+"].fileName",files[idx].name, null, null));
-	}
+	//for (idx = 0; idx < files.length; idx++) {
+    //	alert(files[idx].name);
+    //	form.appendChild(createInput("hidden","files["+idx+"].fileName",files[idx].name, null, null));
+	//}
+	
+	console.log(form);
 	
 	form.action = "InsertPost";
 	form.method = "post";
-	form.enctype= "multipart/form-data";
+	//form.enctype= "multipart/form-data";
+	form.submit();
+}
+
+function uploadFile(){
+	alert("aaaa");
+	const form = document.getElementById("upload");
+	form.method = "post";
+	console.log(form);
 	form.submit();
 }
 
@@ -293,12 +303,14 @@ function validation(obj){
 					 fCreator: "createSEditor2"
 					});
 				</script>
+				<form id="upload" enctype="multipart/form-data">
 				<div id="USdiv">
-					<input style="display: block;" type="file" accept="image/*" name="input-multiple-image" id="input-multiple-image" multiple>
+					<input style="display: block;" type="file" name="files" id="input-multiple-image" multiple />
 					<div id="multiple-container"></div>
 					<input type="button" value="취소" style=" font-size:1.5rem;position: absolute;right: 12%;bottom: -8%;">
 					<input type="button" onclick="submitContents();" value="작성" style="font-size:1.5rem;position: absolute;right: -1%;bottom: -8%;">
 				</div>
+				</form>
 			</div>
 		</div>
 		<div class="modal">
@@ -311,6 +323,10 @@ function validation(obj){
             </div>
         </div>
 	</div>
+	<!-- <form id="upload" action="Upload" enctype="multipart/form-data">
+		<input type="file" name="files" multiple />
+	</form>
+	<input type="button" value="파일전송" onClick="uploadFile()"/> -->
 	<form id="serverForm"></form>
 </body>
 <script type="text/javascript">
@@ -318,5 +334,6 @@ const inputMultipleImage = document.getElementById("input-multiple-image")
 inputMultipleImage.addEventListener("change", e => {
     readMultipleImage(e.target)
 })
+
 </script>
 </html>

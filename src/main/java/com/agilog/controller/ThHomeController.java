@@ -66,12 +66,19 @@ public class ThHomeController {
 	}
 	
 	@RequestMapping(value = "/InsertPost", method = RequestMethod.POST)
-	public ModelAndView insertPost(ModelAndView mav, @ModelAttribute PostBean pb, @RequestParam("input-multiple-image") MultipartFile[] files) {
+	public ModelAndView insertPost(ModelAndView mav, @RequestParam() MultipartFile[] files, @ModelAttribute PostBean pb) {
 		System.out.println("인설트 포스트 컨트롤러 진입 체크1");
-		mav.addObject(files);
+		System.out.println("testfile : "+files.length);
 		System.out.println("testfile : "+files[0].getOriginalFilename());
+		mav.addObject(files);
 		mav.addObject(pb);
 		this.board.backController(mav, 65);
+		return mav;
+	}
+	
+	@RequestMapping(value = "/Upload", method = RequestMethod.POST)
+	public ModelAndView upload(ModelAndView mav, @RequestParam() MultipartFile[] files) {
+		System.out.println(files[0].getOriginalFilename());
 		return mav;
 	}
 
