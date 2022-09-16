@@ -23,8 +23,10 @@ import org.springframework.web.servlet.ModelAndView;
 import com.agilog.beans.AuthBean;
 import com.agilog.beans.BoardBean;
 import com.agilog.beans.CompanyBean;
+import com.agilog.beans.MultiUploadVO;
 import com.agilog.beans.PostBean;
 import com.agilog.beans.ReservationBean;
+import com.agilog.beans.UploadVO;
 import com.agilog.utils.Encryption;
 import com.agilog.utils.Paging;
 import com.agilog.utils.ProjectUtils;
@@ -92,6 +94,7 @@ public class Board2 {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 		mav.addObject("freeBoardList", this.makeBoardList(this.session.selectList("getFbPostList")));
 		mav.setViewName("freeBoard");
 	}
@@ -198,6 +201,10 @@ public class Board2 {
 				//포스트빈 세팅
 				PostBean pb = (PostBean) mav.getModel().get("postBean");
 
+				MultipartFile[] files = ((MultipartFile[])mav.getModel().get("files"));
+
+				System.out.println("파일 왔는지 체크 : " + files);
+				
 				System.out.println("코드 체크 : " + ab.getSuCode());
 				pb.setFbSuCode(ab.getSuCode());
 

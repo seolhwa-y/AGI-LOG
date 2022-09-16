@@ -85,9 +85,12 @@ function kakaoLogout() {
 	}
 }
 
-function submitContents(elClickedObj) {
+var submitObject = new Object();
+
+function submitContents() {
 	let form = document.getElementById("serverForm");
 	oEditors.getById["ir1"].exec("UPDATE_CONTENTS_FIELD", []);	// 에디터의 내용이 textarea에 적용됩니다.
+	const files = submitObject.files;
 	
 	let fbTitle = document.getElementById("fbTitle").value;
 	let fbContent = document.getElementById("ir1").value;
@@ -107,58 +110,64 @@ function submitContents(elClickedObj) {
 	form.appendChild(createInput("hidden","fbTitle",fbTitle,null,null));
 	form.appendChild(createInput("hidden","fbContent",fbContent,null,null));
 	
+	for (idx = 0; idx < files.length; idx++) {
+    	alert(files[idx].name);
+    	form.appendChild(createInput("hidden","files["+idx+"].fileName",files[idx].name, null, null));
+	}
+	
 	form.action = "InsertPost";
 	form.method = "post";
+	form.enctype= "multipart/form-data";
 	form.submit();
 }
 
-var fileNo = 0;
-var filesArr = new Array();
-
-/* 첨부파일 추가 */
-function addFile(obj){
-    var reader = new FileReader();
-    var maxFileCnt = 5;   // 첨부파일 최대 개수
-    var attFileCnt = document.querySelectorAll('.filebox').length;    // 기존 추가된 첨부파일 개수
-    var remainFileCnt = maxFileCnt - attFileCnt;    // 추가로 첨부가능한 개수
-    var curFileCnt = obj.files.length;  // 현재 선택된 첨부파일 개수
-
-    // 첨부파일 개수 확인
-    if (curFileCnt > remainFileCnt) {
-        alert("첨부파일은 최대 " + maxFileCnt + "개 까지 첨부 가능합니다.");
-    }
-
-    for (var i = 0; i < Math.min(curFileCnt, remainFileCnt); i++) {
-
-        const file = obj.files[i];
-
-        // 첨부파일 검증
-        if (validation(file)) {
-            // 파일 배열에 담기
-            var reader = new FileReader();
-            reader.onload = function () {
-                filesArr.push(file);
-            };
+function readMultipleImage(input) {
+    const multipleContainer = document.getElementById("multiple-container")
+    
+    submitObject = input;
+    
+    // 인풋 태그에 파일들이 있는 경우
+    if(input.files) {
+        
+        console.log(input.files)
+        // 유사배열을 배열로 변환 (forEach문으로 처리하기 위해)
+        const fileArr = Array.from(input.files)
+        multipleContainer.innerHTML = "";
+        const $colDiv1 = document.createElement("div")
+        const $colDiv2 = document.createElement("div")
+        $colDiv1.classList.add("column")
+        $colDiv2.classList.add("column")
+        fileArr.forEach((file, index) => {
+            const reader = new FileReader()
+            const $imgDiv = document.createElement("div")   
+            const $img = document.createElement("img")
+            $img.classList.add("image")
+            const $label = document.createElement("label")
+            $label.classList.add("image-label")
+            $label.textContent = file.name
+            $imgDiv.appendChild($img)
+            $imgDiv.appendChild($label)
+            reader.onload = e => {
+                $img.src = e.target.result
+                
+                $imgDiv.style.width = "280px"
+            }
+            
+            console.log(file.name)
+            if(index % 2 == 0) {
+                $colDiv1.appendChild($imgDiv)
+            } else {
+                $colDiv2.appendChild($imgDiv)
+            }
+            
             reader.readAsDataURL(file)
-
-            // 목록 추가
-            let htmlData = '';
-            htmlData += '<div id="file' + fileNo + '" class="filebox">';
-            htmlData += '   <p class="name">' + file.name + '</p>';
-            htmlData += '   <a class="delete" onclick="deleteFile(' + fileNo + ');"><i class="far fa-minus-square"></i></a>';
-            htmlData += '</div>';
-            //insertAdjacentHTML = jquery의 .append와 동일한 기능
-            document.getElementsByClassName("file-list")[0].insertAdjacentHTML('beforeend', htmlData);
-            fileNo++;
-        } else {
-            continue;
-        }
+        })
+        multipleContainer.appendChild($colDiv1)
+        multipleContainer.appendChild($colDiv2)
     }
-    // 초기화
-    document.querySelector("input[type=file]").value = "";
 }
 
-/* 첨부파일 검증 */
+/* 첨부파일 검증 
 function validation(obj){
     const fileTypes = ['application/pdf', 'image/gif', 'image/jpeg', 'image/png', 'image/bmp', 'image/tif', 'application/haansofthwp', 'application/x-hwp'];
     if (obj.name.length > 100) {
@@ -176,14 +185,7 @@ function validation(obj){
     } else {
         return true;
     }
-}
-
-/* 첨부파일 삭제 */
-function deleteFile(num) {
-    document.querySelector("#file" + num).remove();
-    filesArr[num].is_delete = true;
-}
-
+}*/
 </script>
 
 <style>
@@ -215,6 +217,43 @@ function deleteFile(num) {
     margin-left: 5px;
 }
 
+#multiple-container {
+	margin-top:5%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    height: 550px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+#multiple-container:hover{
+    cursor: pointer;
+}
+.image {
+    display: block;
+    width: 100%;
+}
+.image-label {
+    position: relative;
+    bottom: 22px;
+    left: 5px;
+    color: white;
+    text-shadow: 2px 2px 2px black;
+}
+
+#USdiv {
+    width: 44%;
+    height: 570px;
+    float: right;
+    position: relative;
+    margin-top: -48%;
+}
+
+#input-multiple-image{
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 570px;
+}
 </style>
 
 </head>
@@ -244,7 +283,7 @@ function deleteFile(num) {
 		<div id="middle">
 			<div id="rightArea" class="scrollBar">
 				<div style="width:54%">제목 : <input type="text" id="fbTitle" style="width:92%" placeholder="제목을 입력해 주세요"/></div>
-				<textarea name="ir1" id="ir1" rows="20" cols="90"></textarea>
+				<textarea name="ir1" id="ir1" rows="40" cols="90"></textarea>
 				<script type="text/javascript">
 					var oEditors = [];
 					nhn.husky.EZCreator.createInIFrame({
@@ -254,20 +293,12 @@ function deleteFile(num) {
 					 fCreator: "createSEditor2"
 					});
 				</script>
-				<form action="sample/viewer/index.php" method="post">
-					<textarea name="ir1" id="ir1" rows="10" cols="100" style="width:766px; height:412px; display:none;"></textarea>
-					<p>
-						<div class="insert">
-							<form method="POST" onsubmit="return false;" enctype="multipart/form-data">
-						        <input type="file" onchange="addFile(this);" multiple />
-						        <div class="file-list"></div>
-						    </form>
-							<input type="button" onclick="submitForm()" value="이미지 삽입" />
-						</div>
-						<input type="button" onclick="submitContents(this);" value="작성" />
-						<input type="button" value="취소" />
-					</p>
-				</form>
+				<div id="USdiv">
+					<input style="display: block;" type="file" accept="image/*" name="input-multiple-image" id="input-multiple-image" multiple>
+					<div id="multiple-container"></div>
+					<input type="button" value="취소" style=" font-size:1.5rem;position: absolute;right: 12%;bottom: -8%;">
+					<input type="button" onclick="submitContents();" value="작성" style="font-size:1.5rem;position: absolute;right: -1%;bottom: -8%;">
+				</div>
 			</div>
 		</div>
 		<div class="modal">
@@ -282,5 +313,10 @@ function deleteFile(num) {
 	</div>
 	<form id="serverForm"></form>
 </body>
-
+<script type="text/javascript">
+const inputMultipleImage = document.getElementById("input-multiple-image")
+inputMultipleImage.addEventListener("change", e => {
+    readMultipleImage(e.target)
+})
+</script>
 </html>
