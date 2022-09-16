@@ -3,9 +3,11 @@ package com.agilog.interfaces;
 import java.util.List;
 
 import com.agilog.beans.BebeCalendarBean;
+import com.agilog.beans.CompanyBean;
 import com.agilog.beans.DailyDiaryBean;
 import com.agilog.beans.HealthDiaryBean;
 import com.agilog.beans.PostBean;
+import com.agilog.beans.ReservationBean;
 
 public interface SkMapperInterface {
 	public String getHealthDiaryCode(HealthDiaryBean hb);
@@ -49,4 +51,7 @@ public interface SkMapperInterface {
 	public int insIbLike(PostBean pb);
 	public int getIbLike(PostBean pb);
 	public int updIbLike(PostBean pb);
+	
+	public List<ReservationBean> getResCount(CompanyBean cb);
+	public List<ReservationBean> getDateResInfo(ReservationBean rb);
 }

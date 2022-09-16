@@ -181,4 +181,22 @@
 	<update id="updIbLike" parameterType="com.agilog.beans.PostBean" >
 		UPDATE IB SET IB_LIKE = #{likes} WHERE IB_CODE = #{ibCode} AND IB_DATE = TO_DATE(#{ibDate},'YYYYMMDDHH24MISS')
 	</update>
+	
+	<!-- 예약관리 캘린더에 띄울 예약정보(개수) 조회 -->
+	<select id="getResCount" parameterType="com.agilog.beans.CompanyBean" resultType="com.agilog.beans.ReservationBean">
+		SELECT COUNT(RE_CODE)AS RESCOUNT, TO_CHAR(RE_DATE,'YYYY-MM-DD') AS RESDATE FROM RE WHERE RE_DOCOCODE = #{coCode} GROUP BY RE_DATE
+	</select>
+	<!-- 해당 날짜 예약정보 조회 -->
+	<select id="getDateResInfo" parameterType="com.agilog.beans.ReservationBean" resultType="com.agilog.beans.ReservationBean">
+		SELECT  RESDATE,
+        SUBSTR(RESDATE,9,10) AS RESTIME,
+        RESBBNAME,
+        RESDOCODE,
+        RCCODE,
+        COCODE,
+        RESDONAME,
+        RESCODE
+		FROM RESINFO
+		WHERE COCODE = #{resCoCode} AND SUBSTR(RESDATE,1,8) = #{resDate}
+	</select>
 </mapper>

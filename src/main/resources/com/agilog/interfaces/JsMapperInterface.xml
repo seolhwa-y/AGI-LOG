@@ -92,5 +92,18 @@
 		WHERE DD_SUCODE = #{suCode}
 		ORDER BY DD_DATE
 	</select>
-
+	<select id="getCoResList" parameterType="com.agilog.beans.ReservationBean" resultType="com.agilog.beans.ReservationBean">
+        SELECT CR_COCODE AS RESCOCODE,
+               TO_CHAR(CR_DATE,'YYYY-MM-DD') AS RESDATE,
+               CR_TIME AS RESTIME,
+               CR_REAL AS RESREAL
+        FROM CR
+        WHERE CR_COCODE = #{resCoCode} AND TO_CHAR(CR_DATE,'YYYY-MM-DD') = #{resDate}
+    </select>
+    <insert id="insResTime" parameterType="com.agilog.beans.ReservationBean">
+        INSERT INTO CR VALUES(#{resCoCode},#{resDate},#{resTime},#{resReal})
+    </insert>
+    <delete id="delResTime" parameterType="com.agilog.beans.ReservationBean">
+        DELETE FROM CR WHERE CR_COCODE = #{resCoCode} AND TO_CHAR(CR_DATE,'YYYY-MM-DD')=#{resDate} AND CR_TIME = #{resTime}
+    </delete>
 </mapper>

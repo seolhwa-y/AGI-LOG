@@ -27,4 +27,8 @@ public class ReservationBean {
 	private String resAction;
 	private String resActionName;
 	private String resMemo;
+	
+	private int resCount;
+	private String resTime;
+	private String resReal;
 }
