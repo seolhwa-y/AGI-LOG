@@ -21,6 +21,124 @@
 	padding: 0.3% 0;
 	width: 1400px;
 }
+#time{
+	width: 40%;
+	height: 95%;
+}
+#border{
+	height: 90%;
+	border : 1px solid black;
+}
+#listBox{
+	width: 60%;
+	height: 95%;
+}
+.modal_body {
+    width: 1200px;
+    box-sizing: border-box;
+}
+.modal_head{
+	position: relative;
+	width: 100%;
+	height: 4rem;
+	margin-bottom: 1rem;
+}
+.modal_content {
+	display: flex;
+	width: 100%;
+	height: 90%;
+}
+.closeBtn {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+}
+#date {
+	float: left;
+	font-size: 3.5rem;
+	margin-left: 2rem;
+}
+.resH{
+	letter-spacing: 3px;
+    font-size: 1.3rem;
+    width: 7rem;
+    padding: 10px;
+    vertical-align: top;
+    background-color: rgb(255, 194, 204);
+}
+.resD{
+	width: 155px;
+    font-size: 1.2rem;
+    padding: 10px;
+    vertical-align: top;
+    color: rgb(97, 97, 97);
+    border-bottom: 1px solid #ccc;
+    background: #fafafa;
+}
+.resD select {
+	font-size: 1.2rem;
+}
+.saveBtn {
+	box-shadow: 0px 5px 0px 0px rgb(239 157 171);
+    background-color: rgb(255, 194, 204);
+}
+</style>
+<style>
+.timeTitle{
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    font-size: 199%;
+}
+#timeContent{
+    width: 100%;
+    height: 80%;
+}
+#list{
+    width: 100%;
+    height: 80%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+#morning{
+    margin: 1rem;
+    height: 40%;
+}
+#line{
+    border: 1px solid dimgray;
+    margin: 22px 42px;
+}
+#afternoon{
+    margin: 1rem;
+    height: 40%;
+}
+.mBtnO {
+    height: 2.5rem;
+    width: 10rem;
+    box-shadow: 0px 5px 0px 0px rgb(239 157 171);
+    background-color: rgb(255, 194, 204);
+    font-size: 1.5rem;
+    color: dimgray;
+    margin: 1.4rem;
+}
+.disable{
+    height: 2.5rem;
+    width: 10rem;
+    box-shadow: 0px 5px 0px 0px rgb(182, 182, 182);
+    background: gainsboro;
+    margin: 1.4rem;
+}
+.realDisable{
+	height: 2.5rem;
+    width: 10rem;
+    box-shadow: 0px 5px 0px 0px rgb(182, 182, 182);
+    background: gainsboro;
+    margin: 1.4rem;
+    border: 1px solid black;
+}
+.scrollBar::-webkit-scrollbar-track {
+	background:none;
+}
 </style>
 <script>
 function init() {
@@ -41,58 +159,20 @@ var calendarEl = document.getElementById('calendar');
 
 // div 태그_캘린더에 라이브러리 적용.
 var calendar = new FullCalendar.Calendar(calendarEl, {
-	
-	customButtons: {
-	    writeDDBtn: {
-	      text: '일기쓰기',
-	      click: function() {
-	        let form = document.getElementById("serverForm");
-	        form.appendChild(createInput("hidden","moveWrite","1",null,null));
-	        form.action = "MoveDailyDiaryPage";
-	        form.method = "post";
-	        form.submit();
-	      }
-	    },
-	    writeHDBtn: {
-  	      text: '기록쓰기',
-  	      click: function() {
-  	    	let form = document.getElementById("serverForm");
-	        form.appendChild(createInput("hidden","moveWrite","1",null,null));
-	        form.action = "MoveHealthDiaryPage";
-	        form.method = "post";
-	        form.submit();
-  	      }
-  	    }
-	  },
-	// 헤더 왼쪽 : 전월, 당월, 오늘 이동
-	// 헤더 중간 : 현재 캘린더 년 
-	// 헤더 오른쪽 : 월, 주, 일로 구분하여 보기.
   headerToolbar: {
     left: 'prev,next today',
     center: 'title',
-    right: 'writeDDBtn writeHDBtn dayGridMonth'
+    right: 'dayGridMonth'
   },
   // 초기 날짜 :: 설정 안하면 투데이로 보인다.
   initialDate: '2022-09-03', 
-  // 일간 주간 캘린더 이동
   navLinks: false, 
-  //달력 일정 드래그 해서 이동 가능.
   selectable: false,
   selectMirror: false,
   eventOrder: '-title',
   // 일정을 클릭 했을 때 발생
   eventClick: function(info) {
-	/*if(info.el.classList.item(8) == "healthDiary") {
-		alert("dhlsdksgej");
-	}
-	else {
-		let modalTitle = document.getElementById("modalTitle");
-		let clientData = "date="+info.event.startStr;
-  	    
-		modalTitle.innerText = info.event.startStr;
-  	    
-		postAjaxJson("DateDetail",clientData,"showDateDetail");
-	}*/
+	  
   },
   // 수정 가능 여부
   editable: true,
@@ -100,64 +180,90 @@ var calendar = new FullCalendar.Calendar(calendarEl, {
   dayMaxEvents: true, // allow "more" link when too many events
   // 일정
   events: [
-      
+      ${resCount}
   ],
     eventDidMount: function(info) {
-
-	  },
+	},
   // 특정일자 선택했을때의 펑션
   dateClick: function(info) {
-	    //alert('Clicked on: ' + info.dateStr);
-	    //dateStr = 2022-09-02
-	    //alert('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
-	    //alert('Current view: ' + info.view.type);
-	    // change the day's background color just for fun
-	    //info.dayEl.style.backgroundColor = 'red';
-	    let modalTitle = document.getElementById("modalTitle");
-	    let clientData = "date="+info.dateStr;
+	    let modal = document.querySelector(".modal");
+		modal.style.display="block";
+	    let modalHead = document.getElementsByClassName("modal_head")[0];
+	    modalHead.innerHTML = modalHead.innerHTML+"<span id='date'>"+info.dateStr+"<span><i class='fa-solid fa-xmark closeBtn editBtn' onclick='modalClose()'></i>";
 	    
-	    modalTitle.innerText = info.dateStr;
-	    
-	    postAjaxJson("DateDetail",clientData,"showDateDetail");
+	    let clientData = "resDate="+info.dateStr;
+	    postAjaxJson("CoResDetail",clientData,"resManageMent");
 	  }
 });
-
 calendar.render();
 });
-
-	function updateReservation(resCode, idx, idx2) {
-		let form = document.getElementById("serverForm");
-
-		alert(resCode + "," + idx + "," + idx2);
-		let rcCode = document.getElementsByName("selectResState")[idx];
-		let rcCode2 = rcCode.options[rcCode.selectedIndex].value;
-		
-		form.appendChild(createInput("hidden","resCode",resCode,null,null));
-
-		let hidden1 = document.createElement("input");
-		hidden1.type = "hidden";
-		hidden1.name = "rcCode";
-		hidden1.value = rcCode2;
-		 
-		form.appendChild(hidden1);
-		
-		if (idx2 != "") {
-			alert("실행체크");
-			let doCode = document.getElementsByName("selectDoctor")[idx2];
-			let doCode2 = doCode.options[doCode.selectedIndex].value;
-			
-			let hidden2 = document.createElement("input");
-			hidden2.type = "hidden";
-			hidden2.name = "doCode";
-			hidden2.value = doCode2;
-			
-			form.appendChild(hidden2);
-		}
-
-		form.action = "UpdateReservation";
-		form.method = "post";
-		form.submit();
+//시간, 예약정보 콜백
+function resManageMent(ajaxData){
+	let info = JSON.parse(ajaxData);
+	
+	let modal = document.querySelector(".modal");
+	modal.style.display="block";
+	
+	let timeContent = document.getElementById("timeContent");
+	timeContent.innerHTML = info.time;
+	
+	let list = document.getElementById("list");
+	list.innerHTML = "";
+	if(info.resInfo!=""&&info.resInfo!=null)
+		list.innerHTML = info.resInfo;
+}
+//시간 조정
+function setResTime(obj){
+	let info = (obj.value).split(":");
+	//info[0] : date, info[1] : time
+	let clientData;
+	
+	if(obj.className == "mBtnO btn disable"){
+		//예약가능하게 바꿈
+		obj.className = "mBtnO btn";
+		clientData = "resDate="+info[0]+"&resTime="+info[1];
+	}else{
+		//예약 막음
+		obj.className += " disable";
+		clientData = "resDate="+info[0]+"&resTime="+info[1]+"&resReal=0";
 	}
+	
+	postAjaxJson("SetResTime",clientData,"callbackTime");
+	
+}
+//수정 콜백
+function callbackTime(){
+	alert("예약가능시간 수정 완료");
+}
+function warning(){
+	alert("찐예약됨~~삭제하고하셈");
+}
+//예약상태 변경
+function updateReservation(resCode, idx, idx2) {
+	let form = document.getElementById("serverForm");
+	alert(resCode + "," + idx + "," + idx2);
+	let rcCode = document.getElementsByName("selectResState")[idx];
+	let rcCode2 = rcCode.options[rcCode.selectedIndex].value;
+	let date = document.getElementById("date").innerText;
+	
+	let clientData = "rcCode="+rcCode2+"&resCode="+resCode+"&resDate="+date;
+
+	if (idx2 != "") {
+		let doCode = document.getElementsByName("selectDoctor")[idx2];
+		let doCode2 = doCode.options[doCode.selectedIndex].value;
+		clientData += "&resDoCode="+doCode2;
+	}
+
+	postAjaxJson("UpdateReservation",clientData,"resManageMent");
+}
+// 모달창 닫기
+function modalClose(){
+	let modal = document.querySelector(".modal");
+	let modalHead = document.getElementsByClassName("modal_head")[0];
+	modalHead.innerHTML = "";
+	
+	modal.style.display="none";
+}
 </script>
 </head>
 <body onload="init()">
@@ -182,19 +288,32 @@ calendar.render();
 		<div id="middle">
 			<div id="rightArea" class="scrollBar">
 				<div id='calendar'></div>
-				${resInfo}
+				
 			</div>
 		</div>
-		<div class="modal">
+	</div>
+	<div class="modal">
             <div class="modal_body">
 				<div class="modal_head">
-					<i class="fa-solid fa-xmark closeBtn editBtn"></i><br />
+					<i class="fa-solid fa-xmark closeBtn editBtn" onclick="modalClose()"></i>
 				</div>
-				<div class="modal_content"></div>
+				<div class="modal_content">
+					<div id="time">
+					<div class="timeTitle">* 예약시간 관리 *</div>
+						<div id="timeContent">
+						</div>
+					</div>
+					<div id="border">
+					</div>
+					<div id="listBox">
+					<div class="timeTitle">* 예약정보 관리 *</div>
+						<div id="list" class="scrollBar">
+						</div>
+					</div>
+				</div>
 				<div class="modal_foot"></div>
             </div>
-        </div>
-	</div>
+    </div>
 	<form id="serverForm"></form>
 </body>
 

@@ -1,5 +1,6 @@
 package com.agilog.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -8,12 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.agilog.beans.AuthBean;
 import com.agilog.beans.DailyDiaryBean;
 import com.agilog.beans.HealthDiaryBean;
 import com.agilog.beans.PostBean;
+import com.agilog.beans.ReservationBean;
 import com.agilog.services.Authentication;
 import com.agilog.services.BebeCalendar;
 import com.agilog.services.BebeMap;
@@ -25,6 +29,7 @@ import com.agilog.services.HealthDiary;
 import com.agilog.services.MyPage;
 import com.agilog.services.SkBoard;
 import com.agilog.services.SkDailyDiary;
+import com.agilog.services3.Company3;
 
 @RestController
 public class SkAPIController {
@@ -33,7 +38,7 @@ public class SkAPIController {
 	@Autowired
 	DashBoard dashBoard;
 	@Autowired
-	Company company;
+	Company3 company;
 	@Autowired
 	DailyDiary dailyDiary;
 	@Autowired
@@ -83,5 +88,13 @@ public class SkAPIController {
 		model.addAttribute(pb);
 		this.board.backController(model, 111);
 		return (PostBean)model.getAttribute("fbLike");
+	}
+
+	@RequestMapping(value="/UpdateReservation", method=RequestMethod.POST)
+	public HashMap<String,Object> updateReservation(Model model, @ModelAttribute ReservationBean rb) {
+		model.addAttribute(rb);
+		this.company.backController(model, 72);
+		
+		return (HashMap<String,Object>)model.getAttribute("dateInfo");
 	}
 }

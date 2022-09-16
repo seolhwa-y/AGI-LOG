@@ -106,7 +106,7 @@ public class BebeCalendar implements ServiceRule {
 				bcb.getReservationInfo().get(0).setResCoName(this.enc.aesDecode(rbList.get(0).getResCoName(),rbList.get(0).getResCoCode()));
 			}
 			
-			/* 예약일정 가져오기 */
+			/* 예약시간정 가져오기 */
 			List<ScheduleBean> scheduleList = new ArrayList<ScheduleBean>();
 			scheduleList = this.session.selectList("getScheduleList",bcb);
 

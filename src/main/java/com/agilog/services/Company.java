@@ -19,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.agilog.beans.AuthBean;
+import com.agilog.beans.BebeCalendarBean;
 import com.agilog.beans.CompanyBean;
 import com.agilog.beans.DoctorBean;
 import com.agilog.beans.HealthDiaryBean;
@@ -136,8 +137,9 @@ public class Company implements ServiceRule {
               CompanyBean cb = ((CompanyBean) this.pu.getAttribute("companyAccessInfo"));
               if(cb != null) {
             	  if(cb.getCoManagerCode()!=null) {
-            		  mav.addObject("resInfo", this.makeHTMLCReservation(this.session.selectList("getDoctorInfo", cb), this.session.selectList("getResInfo", cb)));
-            		  mav.setViewName("reservationManagement");
+            		  //mav.addObject("resInfo", this.makeHTMLCReservation(this.session.selectList("getDoctorInfo", cb), this.session.selectList("getResInfo", cb)));
+            		  //mav.setViewName("reservationManagement");
+            		  this.checkManager(mav);
                   } else {
                 	  mav.setViewName("checkManager");
                   }
@@ -194,7 +196,15 @@ public class Company implements ServiceRule {
 		try {
 			CompanyBean cb = ((CompanyBean) this.pu.getAttribute("companyAccessInfo"));
 			if(cb != null) {
-				if(((CompanyBean)mav.getModel().get("companyBean")).getCoManagerCode()!=null) {
+				if(cb.getCoManagerCode()!=null) {
+					//예약 갯수 조회
+					List<ReservationBean> re = this.session.selectList("getResCount",cb);
+					mav.addObject("resCount",this.makeEventResCount(re));
+					mav.addObject("coCode",cb.getCoManagerCode());
+					//mav.addObject("resInfo", this.makeHTMLCReservation(this.session.selectList("getDoctorInfo", cb), this.session.selectList("getResInfo", cb)));
+					mav.setViewName("reservationManagement");
+				}
+				else if(((CompanyBean)mav.getModel().get("companyBean")).getCoManagerCode()!=null) {
 					cb.setCoManagerCode(((CompanyBean)mav.getModel().get("companyBean")).getCoManagerCode());
 					if(this.convertToBoolean(this.session.selectOne("isManagerCode", cb))) {
 						// 세션에 저장할 로그인 유저 정보 가져오기
@@ -203,8 +213,11 @@ public class Company implements ServiceRule {
 						System.out.println("체크 매니저 진입 체크 : "+company);
 						// 세션에 userCode저장
 						this.pu.setAttribute("companyAccessInfo", company);
+						//예약 갯수 조회
+						List<ReservationBean> re = this.session.selectList("getResCount",cb);
+						mav.addObject("resCount",this.makeEventResCount(re));
 						mav.addObject("coCode",cb.getCoManagerCode());
-						mav.addObject("resInfo", this.makeHTMLCReservation(this.session.selectList("getDoctorInfo", cb), this.session.selectList("getResInfo", cb)));
+						//mav.addObject("resInfo", this.makeHTMLCReservation(this.session.selectList("getDoctorInfo", cb), this.session.selectList("getResInfo", cb)));
 						mav.setViewName("reservationManagement");
 					}
 					else {
@@ -412,74 +425,25 @@ public class Company implements ServiceRule {
 		return sb.toString();
 	}
 
-	
-	private String makeHTMLCReservation(List<DoctorBean> doctorList, List<ReservationBean> reservationList) {
+
+	//캘린더 내부 예약개수 형식 만들기
+	private String makeEventResCount(List<ReservationBean> re) {
 		StringBuffer sb = new StringBuffer();
 		int idx = 0;
-		int idx2 = 0;
-			sb.append("<table id=\"reservationTable\">\n");
-			sb.append("<tr>\n");
-			sb.append("<th>예약일</th>\n");
-			sb.append("<th>환자명</th>\n");
-			sb.append("<th>담당의</th>\n");
-			sb.append("<th>예약상태</th>\n");
-			sb.append("<th>상태변경</th>\n");
-			sb.append("</tr>\n");
-			sb.append("<tr>\n");
-			for(ReservationBean rb : reservationList) {
-				sb.append("<tr>\n");
-				sb.append("<td>\n" + rb.getResDate() + "</td>\n");
-				sb.append("<td>\n" + rb.getResBbName() + "</td>\n");
-				switch(rb.getRcCode()) {
-				case "RD" :
-					sb.append("<td>\n");
-					sb.append("<select name = 'selectDoctor'>\n");
-					for (DoctorBean db : doctorList) {
-						sb.append("<option value='"+ db.getDoCode() +"'>\n" + db.getDoName() + "</option>\n");
-					}
-					sb.append("</td>\n");
-					sb.append("<td>\n");
-					sb.append("<select name = 'selectResState'>\n");
-					sb.append("<option disabled selected>예약중</option>\n");
-					sb.append("<option value='CP'>예약완료</option>\n");
-					sb.append("<option value='CC'>예약취소</option>\n");
-					sb.append("</td>\n");
-					sb.append("<td><input type='button' value='저장' onClick=\"updateReservation('" + rb.getResCode() + "','" + idx + "','" + idx2 + "')\"></td>\n");
-					idx++;
-					idx2++;
-					break;
-				case "CP" :
-					sb.append("<td>\n" + rb.getResDoName() + "</td>\n");
-					sb.append("<td>\n");
-					sb.append("<select name = 'selectResState'>\n");
-					sb.append("<option disabled selected>예약완료</option>\n");
-					sb.append("<option value='CC'>예약취소</option>\n");
-					sb.append("</td>\n");
-					sb.append("<td><input type='button' value='저장' onClick=\"updateReservation('" + rb.getResCode() + "','" + idx + "', '')\"></td>\n");
-					idx++;
-					break;
-				case "CC" :
-					sb.append("<td></td>\n");
-					sb.append("<td>\n");
-					sb.append("<option disabled selected>예약취소</option>\n");
-					sb.append("</td>\n");
-					sb.append("<td></td>\n");
-					break;
-				case "MC" :
-					sb.append("<td>\n" + rb.getResDoName() + "</td>\n");
-					sb.append("<td>\n");
-					sb.append("<option disabled selected>진료 완료</option>\n");
-					sb.append("</td>\n");
-					sb.append("<td></td>\n");
-					break;
-				default:
+		if(re.size()!=0) {
+			for (ReservationBean rb:re) {
+				sb.append("{start:'" + rb.getResDate() + "'");
+				sb.append(",title:'" + rb.getResCount() + "'");
+				sb.append(",display:'list-item'");
+				sb.append(",borderColor:'#ff9e80'");
+				sb.append(",classNames:'resCount'}");
+				if (idx++ != re.size() - 1) {
+					sb.append(",");
 				}
-				sb.append("</tr>\n");
 			}
-			sb.append("</div>\n");
+		}
 		return sb.toString();
 	}
-
 
 	// BooleanCheck ��
 	private boolean convertToBoolean(int booleanCheck) {
