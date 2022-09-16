@@ -1,9 +1,13 @@
 package com.agilog.controller;
 
+import java.util.HashMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.agilog.beans.BabyBean;
@@ -13,6 +17,7 @@ import com.agilog.beans.ReservationBean;
 import com.agilog.beans.ScheduleBean;
 import com.agilog.services.BebeCalendar;
 import com.agilog.services.MyPage;
+import com.agilog.services3.Company3;
 
 @RestController
 public class JsAPIController {
@@ -20,6 +25,8 @@ public class JsAPIController {
 	MyPage myPage;
 	@Autowired
 	BebeCalendar calendar;
+	@Autowired
+	Company3 company;
 	
 	@SuppressWarnings("unchecked")
 	@PostMapping("/GetBabyInfo")
@@ -92,4 +99,21 @@ public class JsAPIController {
 		
 		return (BebeCalendarBean)model.getAttribute("bebeCalendarBean");
 	}
+	@SuppressWarnings("unchecked")
+	@PostMapping("/CoResDetail")
+    public HashMap<String,Object> coResDetail(Model model, @ModelAttribute ReservationBean rb){
+        model.addAttribute(rb);
+
+        company.backController(model, 118);
+
+        return (HashMap<String,Object>)model.getAttribute("dateInfo");
+    }
+    @PostMapping("/SetResTime")
+    public ReservationBean setResTime(Model model, @ModelAttribute ReservationBean rb){
+        model.addAttribute(rb);
+        System.out.println("api에서의rb:"+rb);
+        company.backController(model, 119);
+
+        return (ReservationBean)model.getAttribute("reservationBean");
+    }
 }

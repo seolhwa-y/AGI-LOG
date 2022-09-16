@@ -69,6 +69,6 @@ public interface ShMapperInterface {
 
 	// 지도 예약 가능 일정 조회
 	public List<ReservationBean> getReservationList(ReservationBean rb);
-	// 지도 예약일정 등록
+	// 지도 예약시간정 등록
 	public int insReservationList(ReservationBean rb);
 }

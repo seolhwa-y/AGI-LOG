@@ -135,6 +135,20 @@
     transform: translateX(-50%) translateY(-50%);
     
 }
+    #dailySelect{
+    	box-sizing: border-box;
+		width: 7.5rem;
+		height: 2.5rem;
+		padding: 4px;
+		font-size: 20px;
+		border-radius: 6px;
+		color: dimgray;
+	}
+	option {
+  		padding: 4px;
+  		font-size: 20px;
+  		color: dimgray;
+}
 
 </style>
 <script>
@@ -238,6 +252,21 @@ function kakaoLogout() {
 		Kakao.Auth.setAccessToken(undefined)
 	}
 }
+function changeSort(){
+	let form = document.getElementById("serverForm");
+	let postSelect = document.getElementById("dailySelect");
+	//option값을 저장
+	let ddSort = postSelect.options[postSelect.selectedIndex].value;
+	let optionText = postSelect.options[postSelect.selectedIndex].text;
+	alert(optionText + "으로 정렬합니다");
+	form.appendChild(createInput("hidden","ddSort",ddSort,null,null));
+	
+
+	
+	form.action = "ChangeMyDailyDiary";
+	form.method = "get";
+	form.submit();
+}
 </script>
 </head>
 <body onload="getInfo()" id="body">
@@ -287,11 +316,11 @@ function kakaoLogout() {
 			<div id="rightArea" class="scrollBar">
 				<div id="rightArea_top">
 					<div id="sortArea">
-						<select id="sort">
+						<select id="dailySelect" onChange="changeSort()">
+							<option value = "none" selected disabled>정렬순서</option>
 							<option value = "newList">최신순</option>
 							<option value = "oldList">오래된순</option>
 							<option value = "likeList">좋아요순</option>
-							<option value = "viewList">조회순</option>
 						</select>
 					</div>
 					<div id="writeFeedArea">

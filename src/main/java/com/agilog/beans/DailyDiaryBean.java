@@ -18,4 +18,5 @@ public class DailyDiaryBean {
 	private int likes;
 	
 	private String moveWrite;
+	private String ddSort;
 }

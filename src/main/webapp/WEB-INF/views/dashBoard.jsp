@@ -154,19 +154,19 @@
 						<!-- 하단 설명단 -->
 						<div style="width: 33%; position: relative; cursor:pointer;"  onclick="movePage('MoveDailyDiaryPage')">
 							<div style="font-size: 11rem; color: lightgrey; " >1</div>
-							<div
+							<div 
 								style="position: absolute; width: 74%; font-size: 1.5rem; margin: -5.2rem 2.2rem;">
 								아이와의 소중한 추억을 기록하고 간직하세요</div>
 						</div>
 						<div style="width: 33%; position: relative; cursor:pointer;"  onclick="movePage('MoveHealthDiaryPage')">
 							<div style="font-size: 11rem; color: lightgrey;">2</div>
-							<div
+							<div 
 								style="position: absolute; width: 79%; font-size: 1.5rem; margin: -5.2rem 2.2rem;">
 								아이의 건강상태를 체크하고 전문가와 상담할 수 있어요</div>
 						</div>
 						<div style="width: 34%; position: relative; cursor:pointer;"  onclick="movePage('MoveMapPage')">
 							<div style="font-size: 11rem; color: lightgrey;">3</div>
-							<div
+							<div 
 								style="position: absolute; width: 79%; font-size: 1.5rem; margin: -5.2rem 2.2rem;">
 								내 주변에 병원, 약국 등 육아에 필요한 시설의 위치를 찾아보세요</div>
 						</div>
