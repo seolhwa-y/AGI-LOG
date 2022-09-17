@@ -95,7 +95,8 @@ function upbLikes(ajaxData){
 	alert("콜백 췤");
 	const ajax = JSON.parse(ajaxData);
 	let sLike = document.getElementsByClassName("sLike")[0];
-	sLike.innerText = ajax.likes;
+	sLike.innerText = ajax.ibLike;
+	
 }
 /* 게시글 댓글 작업 */
 	// 댓글 수정 버튼

@@ -2,6 +2,7 @@ package com.agilog.controller;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -89,12 +90,12 @@ public class SkAPIController {
 		this.board.backController(model, 111);
 		return (PostBean)model.getAttribute("fbLike");
 	}
-	@PostMapping("/InfoBoardLike")
-    public PostBean infoBoardLike(Model model, @ModelAttribute PostBean pb) {
+	@SuppressWarnings("unchecked")
+    @PostMapping("/InfoBoardLike")
+    public Map<String, Object> infoBoardLike(Model model, @ModelAttribute PostBean pb) {
         model.addAttribute(pb);
         this.board.backController(model, 112);
-        System.out.println("8");
-        return (PostBean)model.getAttribute("ibLike");
+        return (Map<String, Object>)model.getAttribute("ibLike");
     }
 	@RequestMapping(value="/UpdateReservation", method=RequestMethod.POST)
 	public HashMap<String,Object> updateReservation(Model model, @ModelAttribute ReservationBean rb) {
