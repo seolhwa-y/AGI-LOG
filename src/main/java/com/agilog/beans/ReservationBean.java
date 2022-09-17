@@ -9,7 +9,6 @@ public class ReservationBean {
 	public String resSuName;
 	public String resSuPhone;
 	
-	
 	public String resCode;
 	public String resAccess;
 	
@@ -30,5 +29,4 @@ public class ReservationBean {
 	
 	private int resCount;
 	private String resTime;
-	private String resReal;
 }

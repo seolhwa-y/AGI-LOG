@@ -49,10 +49,28 @@ public class Company3 implements ServiceRule {
 	public void backController(Model model, int serviceCode) {
 		switch(serviceCode) {
 		case 118: this.resManagementCtl(model); break;
+		case 119: this.setResTimeCtl(model);
 		case 72: this.updateReservationCtl(model); break;
 		default:
 			break;
 		}	
+	}
+	@Transactional(rollbackFor = SQLException.class)
+	private void setResTimeCtl(Model model) {
+		try {
+			ReservationBean rb = (ReservationBean) model.getAttribute("reservationBean");
+			rb.setResCoCode(((CompanyBean) this.pu.getAttribute("companyAccessInfo")).getCoCode());
+			// 예약가능시간 삽입 rt->insert
+			if (this.convertToBoolean(this.session.insert("insDoctorResTime", rb))) {
+				// 성공
+				System.out.println("성공");
+			} else {
+				// 실패
+				System.out.println("실패");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Transactional(rollbackFor = SQLException.class)
@@ -81,7 +99,7 @@ public class Company3 implements ServiceRule {
 					map.put("resBbName", rb.getResBbName());
 					map.put("resActionName", rb.getResActionName());
 					map.put("resDoName", rb.getResDoName());
-					sms.sendSMS(map);
+					//sms.sendSMS(map);
 				} else {
 					System.out.println("cp 진입 체크");
 					this.convertToBoolean(this.session.update("updCPRes", rb));
@@ -96,7 +114,7 @@ public class Company3 implements ServiceRule {
 					map.put("resBbName", rb.getResBbName());
 					map.put("resActionName", rb.getResActionName());
 					map.put("resDoName", rb.getResDoName());
-					sms.sendSMS(map);
+					//sms.sendSMS(map);
 				}
 				//새 표 작성 후 페이지 리다이렉트
 				this.resManagementCtl(model);
@@ -118,8 +136,16 @@ public class Company3 implements ServiceRule {
 				if(cb.getCoManagerCode()!=null) {
 					if(this.convertToBoolean(this.session.selectOne("isManagerCode", cb))) {
 						rb.setResCoCode(cb.getCoCode());
-						List<ReservationBean> r = this.session.selectList("getCoResList",rb);
-						map.put("time", this.makeTimeInfo(r, rb));
+						//의사정보 가져오기
+						List<DoctorBean> docList = this.session.selectList("getDoctorInfo", cb);
+						map.put("doctorList", this.makeDoctorSelect(docList));
+						
+						//첫번째 의사의 시간정보 가져오기
+						if(docList.size()!=0) {
+							rb.setResDoCode(docList.get(0).getDoCode());
+							List<ReservationBean> r = this.session.selectList("getDoctorResTime",rb);
+							map.put("time", this.makeTimeInfo(r, rb));
+						}
 						
 						SimpleDateFormat form = new SimpleDateFormat("yyyy-MM-dd");
 						SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
@@ -139,24 +165,33 @@ public class Company3 implements ServiceRule {
 		} catch (Exception e) {e.printStackTrace();}
 	}
 	
+	private String makeDoctorSelect(List<DoctorBean> doctorList) {
+		StringBuffer sb = new StringBuffer();
+		sb.append("<select name = 'docTime' onchange='chageDoctor()'>\n");
+		int idx = 0;
+		for (DoctorBean db : doctorList) {
+			if(idx++==0) {
+				sb.append("<option value='"+ db.getDoCode() +"' selected>\n" + db.getDoName() + "</option>\n");
+			} else {
+				sb.append("<option value='"+ db.getDoCode() +"'>\n" + db.getDoName() + "</option>\n");
+			}
+		}
+		return sb.toString();
+	}
+	
 	private String makeTimeInfo(List<ReservationBean> r, ReservationBean rb) {
 		String sample[] = {"09","10","11","12","14","15","16","17"};
 		StringBuffer sb = new StringBuffer();
-		
+		System.out.println(r);
 		sb.append("<div id=\'morning\'>");
 		for(int idx=0;idx<8;idx++) {
-			
 			sb.append("<button class=\'mBtnO btn");
 			for(int a=0;a<r.size();a++) {
-				
 				if(sample[idx].equals(r.get(a).getResTime())) {
-					if(r.get(a).getResReal().equals("1")) {
-						//진짜예약이있는시간
-						sb.append(" realDisable \' disabled=\'disabled");
-					}else {
-						//그냥막은예약시간
-						sb.append(" disable");
-					}
+					//그냥 연 예약시간
+					sb.append(" disable\' disabled");
+				} else {
+					sb.append("realDisable");
 				}
 			}
 			sb.append("\' onclick=\'setResTime(this)\' value=\'"+rb.getResDate()+":"+sample[idx]+"\'>"+sample[idx]+":00</button>");

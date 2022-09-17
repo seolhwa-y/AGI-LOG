@@ -156,20 +156,39 @@ public class MyPage implements ServiceRule {
 	/* 부모 프로필 변경 */
 	@Transactional(rollbackFor = SQLException.class)
 	private void changeParentInfoCtl(ModelAndView mav) {
-
 		MyPageBean mb = ((MyPageBean)mav.getModel().get("myPageBean"));
 		try {
+			boolean isUpd=false;
 			mb.setSuCode(((AuthBean)this.pu.getAttribute("accessInfo")).getSuCode());
 			/* DB :: SU테이블에 변경된 유저 정보 UPDATE */
-			if(this.converToBoolean(this.session.update("updProFile",mb))){
-				/*업데이트 성공*/
-				/*페이지 이동*/
+			//닉네임
+			if(mb.getSuNickName()!=""&&mb.getSuNickName()!=null) {
+				if(this.converToBoolean(this.session.update("updProFile",mb))){
+					/*업데이트 성공*/
+					/*페이지 이동*/
+					//this.moveMyPageCtl(mav);
+					isUpd = true;
+				}else {
+					/*업데이트 실패*/
+					isUpd = false;
+				}
+			}
+			if(mb.getSuAddress()!=""&&mb.getSuAddress()!=null) {
+				if(this.converToBoolean(this.session.update("updAddress",mb))) {
+					/* 업데이트 성공 */
+					/* 페이지 이동 */
+					//this.moveMyPageCtl(mav);
+					isUpd = true;
+				}else {
+					/*업데이트 실패*/
+					isUpd = false;
+				}
+			}
+			
+			if(isUpd) {
 				this.moveMyPageCtl(mav);
-				
-			}else {
-				/*업데이트 실패*/
-				String message = "업데이트 실패";
-				mav.addObject("message",message);
+			} else {
+				mav.addObject("message","업데이트 실패");
 				this.moveMyPageCtl(mav);
 			}
 		} catch (Exception e) {

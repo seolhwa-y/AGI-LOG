@@ -3,7 +3,9 @@ package com.agilog.services;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +46,7 @@ public class SkBoard implements ServiceRule {
 			this.freeBoardLikeCtl(model);
 			break;
 		case 112:
-			this.freeBoardLikeCtl(model);
+			this.infoBoardLikeCtl(model);
 			break;
 		}
 	}
@@ -66,6 +68,8 @@ public class SkBoard implements ServiceRule {
 				Date d = form.parse(pb.getFbDate());
 				pb.setFbDate(sdf.format(d));
 				
+				Map<String, Object> map = new HashMap<String, Object>();
+				
 				// 0개 일때 !false=>좋아요 누른적 없음 => 좋아요 등록
 				if (!this.convertToBoolean(this.session.selectOne("isFbLike", pb))) {
 					if (this.convertToBoolean(this.session.insert("insFbLike", pb))) {
@@ -75,7 +79,8 @@ public class SkBoard implements ServiceRule {
 						pb.setLikes(Integer.parseInt(this.session.selectOne("getFbLike", pb)));
 						// 해당게시글 좋아요 수 업데이트
 						if (this.convertToBoolean(this.session.update("updFbLike", pb))) {
-							model.addAttribute("fbLike", pb);
+							map.put("fbLike", pb);
+							model.addAttribute("fbLike", map);
 						}
 					}
 				} else { // 1개 일때 !true=>좋아요 누른적 있음 => 좋아요 삭제
@@ -86,7 +91,8 @@ public class SkBoard implements ServiceRule {
 						pb.setLikes(Integer.parseInt(this.session.selectOne("getFbLike", pb)));
 						// 해당게시글 좋아요 수 업데이트
 						if (this.convertToBoolean(this.session.update("updFbLike", pb))) {
-							model.addAttribute("fbLike", pb);
+							map.put("fbLike", pb);
+							model.addAttribute("fbLike", map);
 						}
 					}
 				}
@@ -113,6 +119,8 @@ public class SkBoard implements ServiceRule {
 				Date d = form.parse(pb.getIbDate());
 				pb.setIbDate(sdf.format(d));
 				
+				Map<String, Object> map = new HashMap<String, Object>();
+				
 				// 0개 일때 !false=>좋아요 누른적 없음 => 좋아요 등록
 				if (!this.convertToBoolean(this.session.selectOne("isIbLike", pb))) {
 					if (this.convertToBoolean(this.session.insert("insIbLike", pb))) {
@@ -122,7 +130,8 @@ public class SkBoard implements ServiceRule {
 						pb.setLikes(this.session.selectOne("getIbLike", pb));
 						// 해당게시글 좋아요 수 업데이트
 						if (this.convertToBoolean(this.session.update("updIbLike", pb))) {
-							model.addAttribute("ibLike", pb);
+							map.put("ibLike", pb);
+							model.addAttribute("ibLike", map);
 						}
 					}
 				} else { // 1개 일때 !true=>좋아요 누른적 있음 => 좋아요 삭제
@@ -133,7 +142,8 @@ public class SkBoard implements ServiceRule {
 						pb.setLikes(this.session.selectOne("getIbLike", pb));
 						// 해당게시글 좋아요 수 업데이트
 						if (this.convertToBoolean(this.session.update("updIbLike", pb))) {
-							model.addAttribute("ibLike", pb);
+							map.put("ibLike", pb);
+							model.addAttribute("ibLike", map);
 						}
 					}
 				}
@@ -145,7 +155,7 @@ public class SkBoard implements ServiceRule {
 
 	private boolean convertToBoolean(int booleanCheck) {
 		boolean result = false;
-
+		
 		return result;
 	}
 }

@@ -6,6 +6,7 @@ import com.agilog.beans.BebeCalendarBean;
 import com.agilog.beans.CompanyBean;
 import com.agilog.beans.DailyDiaryBean;
 import com.agilog.beans.HealthDiaryBean;
+import com.agilog.beans.MyPageBean;
 import com.agilog.beans.PostBean;
 import com.agilog.beans.ReservationBean;
 
@@ -34,19 +35,19 @@ public interface SkMapperInterface {
 	public List<BebeCalendarBean> checkSchedule(BebeCalendarBean bcb);
 	public List<BebeCalendarBean> getBabyBirth(BebeCalendarBean bcb);
 	
-	public String isDdLike(DailyDiaryBean ddb);
+	public int isDdLike(DailyDiaryBean ddb);
 	public int delDdLike(DailyDiaryBean ddb);
 	public int insDdLike(DailyDiaryBean ddb);
 	public int getDdLike(DailyDiaryBean ddb);
 	public int updDdLike(DailyDiaryBean ddb);
 	
-	public String isFbLike(PostBean pb);
+	public int isFbLike(PostBean pb);
 	public int delFbLike(PostBean pb);
 	public int insFbLike(PostBean pb);
 	public int getFbLike(PostBean pb);
 	public int updFbLike(PostBean pb);
 	
-	public String isIbLike(PostBean pb);
+	public int isIbLike(PostBean pb);
 	public int delIbLike(PostBean pb);
 	public int insIbLike(PostBean pb);
 	public int getIbLike(PostBean pb);
@@ -54,4 +55,9 @@ public interface SkMapperInterface {
 	
 	public List<ReservationBean> getResCount(CompanyBean cb);
 	public List<ReservationBean> getDateResInfo(ReservationBean rb);
+	
+	public int updAddress(MyPageBean mpb);
+	
+	public List<ReservationBean> getDoctorResTime(ReservationBean rb);
+	public int insDoctorResTime(ReservationBean rb);
 }

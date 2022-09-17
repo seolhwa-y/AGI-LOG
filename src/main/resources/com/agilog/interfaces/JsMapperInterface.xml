@@ -3,7 +3,16 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.agilog.interfaces.JsMapperInterface">
 	<select id="getMyInfo" parameterType="string" resultType="com.agilog.beans.MyPageBean">
-		SELECT SU_CODE AS SUCODE, SU_NAME AS SUNAME, SU_NICKNAME AS SUNICKNAME, SU_EMAIL AS SUEMAIL, SU_PHONE AS SUPHONE ,SU_PHOTO AS SUPHOTO ,SU_THEME AS SUTHEME FROM SU WHERE SU_CODE = #{suCode}
+		SELECT  SU_CODE AS SUCODE,
+        		SU_NAME AS SUNAME,
+        		SU_NICKNAME AS SUNICKNAME,
+        		SU_EMAIL AS SUEMAIL,
+        		SU_PHONE AS SUPHONE,
+        		SU_PHOTO AS SUPHOTO,
+        		SU_THEME AS SUTHEME,
+        		SU_ADDRESS AS SUADDRESS
+		FROM SU
+		WHERE SU_CODE = #{suCode}
 	</select>
 	<select id="getBabyInfoList" parameterType="string" resultType="com.agilog.beans.BabyBean">
 		SELECT BB_CODE AS BBCODE, BB_SUCODE AS SUCODE, BB_NAME AS BBNAME, TO_CHAR(BB_BIRTHDAY,'YYYY-MM-DD') AS BBBIRTHDAY, BBWEIGHT, BBHEIGHT,BB_PHOTO AS BBPHOTO
@@ -92,7 +101,7 @@
 		WHERE DD_SUCODE = #{suCode}
 		ORDER BY DD_DATE
 	</select>
-	<select id="getCoResList" parameterType="com.agilog.beans.ReservationBean" resultType="com.agilog.beans.ReservationBean">
+<!-- 	<select id="getCoResList" parameterType="com.agilog.beans.ReservationBean" resultType="com.agilog.beans.ReservationBean">
         SELECT CR_COCODE AS RESCOCODE,
                TO_CHAR(CR_DATE,'YYYY-MM-DD') AS RESDATE,
                CR_TIME AS RESTIME,
@@ -105,5 +114,5 @@
     </insert>
     <delete id="delResTime" parameterType="com.agilog.beans.ReservationBean">
         DELETE FROM CR WHERE CR_COCODE = #{resCoCode} AND TO_CHAR(CR_DATE,'YYYY-MM-DD')=#{resDate} AND CR_TIME = #{resTime}
-    </delete>
+    </delete> -->
 </mapper>

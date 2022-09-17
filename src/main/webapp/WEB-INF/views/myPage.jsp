@@ -10,7 +10,10 @@
 <link rel="stylesheet" href="/res/css/agiMain.css">
 <style>
 #middle {
-	display: block;
+	display: flex;
+	position: relative;
+	justify-content: space-evenly;
+	align-items: center;
 }
 	.mBtnP {
     height: 2.3rem;
@@ -46,35 +49,29 @@
     	font-size: 1.1rem;
    		
 	}
-	#middle{
-		position: relative;
-	}
 	#line{    
-		position: relative;
-		float: left;
-		border-left: 4px solid #C0C0C0;
-		height: 60%;
-		left: 50%;
-		margin-top: 8rem;
+	position: absolute;
+    border-left: 4px solid #C0C0C0;
+    height: 60%;
+    left: 50%;
+    transform: translateX(-50%);
 	}
 	#left{
-		position: absolute;
-		float: left;
+		margin-left: 3%;
+		position: relative;
 		height: 75%;
-		width: 40%;
-		margin: 5rem;
+		width: 45%;
 	}
 	#right{
-	    position: relative;
-	    float: right;
-	    height: 75%;
-	    width: 40%;
-	    margin: 5rem;
-		
+	display: flex;
+    position: relative;
+    height: 75%;
+    width: 40%;
+    align-items: center;
 	}
 	.west{
 		height: 100%;
-		width: 40%;
+		width: 35%;
 		float: left;
 	}
 	.sideWest{
@@ -84,7 +81,7 @@
 	}
 	.east{
 		height: 100%;
-		width: 57.5%;
+		width: 65%;
 		float: right;
 	}
 	.profile{
@@ -103,7 +100,7 @@
 		width: 100%;
 		height: 60%;
 		font-size: 1.7rem;
-		margin-top: 1.3rem;
+		margin-top: 2.3rem;
 		
 	}
 	table{
@@ -116,19 +113,19 @@
 		width: 80px;
 	}
 	.moveLeft{
-    float: left;
-    margin-top: 26%;
-    left: -3rem;
+    margin-top: -10%;
     font-size: 3rem;
     position: absolute;
+    left: -3rem;
     cursor: pointer;
     color : #616161;
     display:none;
 	}
 	.moveRight{
-	float: right;
-    margin-top: -57%;
+    margin-top: -10%;
     font-size: 3rem;
+    position: absolute;
+    right: 0;
     cursor: pointer;
     color : #616161;
     display:none;
@@ -239,12 +236,21 @@ position: relative;
     width: 80%;
     top: -15%;
     }
-
+#address .profileInput {
+	width: 50%;
+}
+#address {
+	padding-right: 12%;
+	box-sizing: border-box;
+}
 </style>
 <!-- 카카오 스크립트 -->
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 <!-- 네이버 스크립트 -->
 <script	src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
+<!-- 주소검색 -->
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
 //길이 체크
 function isCharLengthCheck(text, minimum, maximum) {
@@ -261,7 +267,6 @@ Kakao.init('2afdabad57ed92e1cc9de5bd4baed321');
 function getInfo() {
 	/* 테마 이미지 or 단순색상 */
 	let body = document.getElementById("body");
-	
 	let suTheme = "${accessInfo.suTheme}";
 	
 	if(suTheme != ""){
@@ -270,19 +275,14 @@ function getInfo() {
 			/* 테마 사용자값으로 설정 */
 			//배경css제거
 			body.className = "";
-			
 			let color = suTheme.split(":");
-
 			body.style.background = color[0];
-
 		}else{
 			//배경이미지
 			body.style.background = "none";
 			body.className = "bgImage"+suTheme;
 		}
 	}
-
-
 	
 	if("${message}"!= ""){
 		alert("${message}");
@@ -300,8 +300,6 @@ function getInfo() {
 		accessArea.innerHTML += "<span onclick=\"movePage('MoveCompanyLoginPage')\">기업회원</span>";
 	}
 	
-
-	
 	//처음화면에서 필요없는 버튼숨기기
 	let editConfirmBtn1 = document.getElementById("editConfirmBtn1");
 	let editConfirmBtn2 = document.getElementById("editConfirmBtn2");
@@ -313,6 +311,7 @@ function getInfo() {
 	let pImage = document.getElementById("pImage");
 	let parentName = document.getElementById("parentName");
 	let parentNickName = document.getElementById("parentNickName");
+	let address = document.getElementById("address");
 	
 	//부모사진이 없으면 기본이미지 띄워줌
 	if("${mypageInfo.suPhoto}" != ""){
@@ -324,6 +323,7 @@ function getInfo() {
 	pImage.innerHTML = "<img class='profileImage' src=\'"+"${mypageInfo.suPhoto}"+"\'>";
 	parentName.innerText="${mypageInfo.suName}";
 	parentNickName.innerText="${mypageInfo.suNickName}";
+	address.innerText="${mypageInfo.suAddress}";
 	
 	let bImage = document.getElementById("bImage");
 	let bbName = document.getElementById("bbName");
@@ -522,10 +522,14 @@ let babyNum = 0;
 //부모프로필변경 :: 부모쪽 프로필변경 클릭 :: 관련없는 다른 버튼들 지워주기
 function changeParentProfile(){
 	//부모 프로필 수정버튼 눌렀을 때
+	//닉네임
 	let parentNickName = document.getElementById("parentNickName");
-	
+	//주소
+	let address = document.getElementById("address");
 	//수정가능한 부분을 인풋박스로 바꿔줌 
 	parentNickName.innerHTML = "<input type=\"text\" name='suNickName' class=\"profileInput\" placeholder=\"${mypageInfo.suNickName}\">";
+	address.innerHTML = "<input type =\"text\" name =\"suAddress\" class=\"profileInput\" placeholder=\"${mypageInfo.suAddress}\" readonly/>"
+					+"<input type = \"button\" value=\"주소검색\" id = \"checkSuAddress\" class=\"checkBtn btn\" onclick = \"checkAddress()\">";
 	
 	// 아이쪽 <,>버튼을 숨겨줌 0:숨김 1:나타남
 	cover("1");
@@ -539,20 +543,31 @@ function changeParentProfile(){
 	leftWest.style.display =  "none";
 	rightWest.style.display = "none";
 }
+/* 주소 검색 API */
+function checkAddress() {
+        //카카오 지도 발생
+        new daum.Postcode({
+            oncomplete: function(data) { //선택시 입력값 세팅
+                document.getElementsByName("suAddress")[0].value = data.address + data.bname; // 주소 넣기
+            }
+        }).open();
+}
 //부모프로필변경 :: 수정완료버튼 클릭
 function changeParentInfo(){
 	let nickName = document.getElementsByName("suNickName")[0];
+	let address = document.getElementsByName("suAddress")[0];
 	let form = document.getElementById("serverForm");
 	
-	if(nickName.value == ""){
-		alert("바꾸실 닉네임을 입력하세요");
+	if((nickName.value==""&&address.value=="")){
+		alert("바꾸실 정보를 입력하세요");
 		nickName.focus();
-	}else if(!isCharLengthCheck(nickName.value,"1","20")){
+	}else if(nickName.value!=""&&!isCharLengthCheck(nickName.value,"1","20")){
 		alert("닉네임은 1자~20자 사이로 입력해주세요")
 		nickName.focus();
 	}
 	else{
-		form.appendChild(nickName);
+		form.appendChild(createInput("hidden","suNickName",nickName.value,null,null));
+		form.appendChild(createInput("hidden","suNickName",address.value,null,null));
 		form.action = "ChangeParentInfo";
 		form.method = "post";
 		
@@ -572,8 +587,10 @@ function parentEditCancel(){
 	cover("0");
 	
 	let parentNickName = document.getElementById("parentNickName");
+	let address = document.getElementById("address");
 	
 	parentNickName.innerText="${mypageInfo.suNickName}";
+	address.innerText="${mypageInfo.suAddress}";
 }
 let bbName = "";
 let bbBirthday = "";
@@ -905,6 +922,10 @@ function callBackTheme(theme){
 							<tr>
 								<td><span >닉네임</span></td>
 								<td colspan="2" id="parentNickName"></td>
+							</tr>
+							<tr>
+								<td><span>주소</span></td>
+								<td colspan="2" id="address"></td>
 							</tr>
 						</table>
 					</div>
