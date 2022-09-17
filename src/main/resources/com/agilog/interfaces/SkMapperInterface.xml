@@ -167,15 +167,15 @@
 	</select>
 	<!-- 해당게시글 좋아요 내역 저장 -->
 	<insert id="insIbLike" parameterType="com.agilog.beans.PostBean" >
-		INSERT INTO IL VALUES(#{ibCode}, TO_DATE(#{ibDate},'YYYYMMDDHH24MISS'), #{suCode})
-	</insert>
+        INSERT INTO IL VALUES(#{ibCode}, TO_DATE(#{ibDate},'YYYYMMDDHH24MISS'), #{suCode})
+    </insert>
 	<!-- 해당게시글 좋아요 내역 삭제 -->
 	<delete id="delIbLike" parameterType="com.agilog.beans.PostBean" >
 		DELETE FROM IL WHERE IL_IBCODE = #{ibCode} AND IL_IBDATE = TO_DATE(#{ibDate},'YYYYMMDDHH24MISS') AND IL_SUCODE = #{suCode}
 	</delete>
 	<!-- 해당게시글 좋아요 수 조회 -->
 	<select id="getIbLike" parameterType="com.agilog.beans.PostBean" resultType="int">
-		SELECT COUNT(*) AS LIKES FROM IL WHERE WHERE IL_IBCODE = #{ibCode} AND IL_IBDATE = TO_DATE(#{ibDate},'YYYYMMDDHH24MISS')
+		SELECT COUNT(*) AS LIKES FROM IL WHERE IL_IBCODE = #{ibCode} AND IL_IBDATE = TO_DATE(#{ibDate},'YYYYMMDDHH24MISS')
 	</select>
 	<!-- 해당게시글 좋아요 수 업데이트 -->
 	<update id="updIbLike" parameterType="com.agilog.beans.PostBean" >

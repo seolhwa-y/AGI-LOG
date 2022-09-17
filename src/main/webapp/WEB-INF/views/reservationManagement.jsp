@@ -155,7 +155,6 @@ function init() {
 
 		accessArea.innerHTML = "<span> ${companyAccessInfo.coName}님 </span>";
 		accessArea.innerHTML += "<span onclick=\"movePage(\'CompanyLogout\')\">로그아웃</span>";
-		accessArea.innerHTML += "<span onclick=\"movePage(\'MoveMainPage\')\">일반회원</span>";
 	}
 }
 /*********************캘린더************************/

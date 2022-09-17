@@ -17,7 +17,6 @@
 			
 			accessArea.innerHTML = "<span> ${companyBean.coName}님 </span>";
 			accessArea.innerHTML += "<span onclick=\"movePage(\'CompanyLogout\')\">로그아웃</span>";
-			accessArea.innerHTML += "<span onclick=\"movePage(\'MoveMainPage\')\">일반회원</span>";	
 		}
 	}
 	

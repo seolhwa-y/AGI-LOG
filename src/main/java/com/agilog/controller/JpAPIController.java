@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.agilog.beans.CompanyBean;
+import com.agilog.beans.DailyDiaryBean;
 import com.agilog.beans.DoctorBean;
 import com.agilog.beans.PostBean;
 import com.agilog.services.Authentication;
+import com.agilog.services.Board;
 import com.agilog.services.Company;
 import com.agilog.services.DashBoard;
 
@@ -28,6 +30,8 @@ public class JpAPIController {
 	DashBoard dashBoard;
 	@Autowired
 	Company company;
+	@Autowired
+	Board board;
 	
 	
 	//의사등록 중복확인 메소드
