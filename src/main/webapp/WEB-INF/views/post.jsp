@@ -85,10 +85,18 @@ function kakaoLogout() {
 		Kakao.Auth.setAccessToken(undefined)
 	}
 }
-function likeBtn(){
-	
+function likeBtn(ibCode, ibDate) {
+	const clientData = "ibCode=" + ibCode + "&ibDate=" + ibDate;
+	alert(clientData);
+	postAjaxJson("InfoBoardLike", clientData, "updLikes");
 }
 
+function upbLikes(ajaxData){
+	alert("콜백 췤");
+	const ajax = JSON.parse(ajaxData);
+	let sLike = document.getElementsByClassName("sLike")[0];
+	sLike.innerText = ajax.likes;
+}
 /* 게시글 댓글 작업 */
 	// 댓글 수정 버튼
 function updateInput(fbCode, fbSuCode, fcCode, fcDate, fbDate){
@@ -177,6 +185,8 @@ function postComment(ajaxData) {
 	
 	swal("요청", "요청하신 작업을 완료하였습니다!", "success", { button: "완료"});
 }
+
+
 </script>
 </head>
 <body onload="getInfo()" id="body">

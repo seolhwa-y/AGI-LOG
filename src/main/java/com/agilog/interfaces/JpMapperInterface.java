@@ -110,7 +110,7 @@ public interface JpMapperInterface {
 	//
 	//게시판목록
 	public List<PostBean> getBebeInfo(PostBean pb);
-	public List<PostBean> getBebePost(PostBean pb);
+	public PostBean getBebePost(PostBean pb);
 	public PostBean getPostInfo(PostBean pb);
 	public List<BoardBean> getSearchWriter(BoardBean bb);
 	public List<BoardBean> getSearchTitle(BoardBean bb);

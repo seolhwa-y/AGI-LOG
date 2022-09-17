@@ -89,7 +89,13 @@ public class SkAPIController {
 		this.board.backController(model, 111);
 		return (PostBean)model.getAttribute("fbLike");
 	}
-
+	@PostMapping("/InfoBoardLike")
+    public PostBean infoBoardLike(Model model, @ModelAttribute PostBean pb) {
+        model.addAttribute(pb);
+        this.board.backController(model, 112);
+        System.out.println("8");
+        return (PostBean)model.getAttribute("ibLike");
+    }
 	@RequestMapping(value="/UpdateReservation", method=RequestMethod.POST)
 	public HashMap<String,Object> updateReservation(Model model, @ModelAttribute ReservationBean rb) {
 		model.addAttribute(rb);

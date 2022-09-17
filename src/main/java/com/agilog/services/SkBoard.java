@@ -39,15 +39,15 @@ public class SkBoard implements ServiceRule {
 	}
 
 	public void backController(Model model, int serviceCode) {
-		switch (serviceCode) {
-		case 111:
-			this.freeBoardLikeCtl(model);
-			break;
-		case 112:
-			this.freeBoardLikeCtl(model);
-			break;
-		}
-	}
+        switch (serviceCode) {
+        case 111:
+            this.freeBoardLikeCtl(model);
+            break;
+        case 112:
+            this.infoBoardLikeCtl(model);
+            break;
+        }
+    }
 
 	// 자유게시판 좋아요
 	@Transactional(rollbackFor = SQLException.class)
@@ -112,10 +112,13 @@ public class SkBoard implements ServiceRule {
 				
 				Date d = form.parse(pb.getIbDate());
 				pb.setIbDate(sdf.format(d));
-				
+				System.out.println("0");
 				// 0개 일때 !false=>좋아요 누른적 없음 => 좋아요 등록
+	                System.out.println("가자 : "+this.convertToBoolean(this.session.selectOne("isIbLike", pb)));
 				if (!this.convertToBoolean(this.session.selectOne("isIbLike", pb))) {
+					System.out.println("1");
 					if (this.convertToBoolean(this.session.insert("insIbLike", pb))) {
+						System.out.println("2");
 						// 현재 유저의 좋아요 여부 저장
 						pb.setLike(true);
 						// 해당게시글 전체 좋아요 수 조회
@@ -123,18 +126,22 @@ public class SkBoard implements ServiceRule {
 						// 해당게시글 좋아요 수 업데이트
 						if (this.convertToBoolean(this.session.update("updIbLike", pb))) {
 							model.addAttribute("ibLike", pb);
+							System.out.println("3");
 						}
+						System.out.println("4");
 					}
 				} else { // 1개 일때 !true=>좋아요 누른적 있음 => 좋아요 삭제
 					if (this.convertToBoolean(this.session.delete("delIbLike", pb))) {
+						System.out.println("5");
 						// 현재 유저의 좋아요 여부 저장
 						pb.setLike(false);
 						// 해당게시글 전체 좋아요 수 조회
 						pb.setLikes(this.session.selectOne("getIbLike", pb));
 						// 해당게시글 좋아요 수 업데이트
 						if (this.convertToBoolean(this.session.update("updIbLike", pb))) {
+							System.out.println("6");
 							model.addAttribute("ibLike", pb);
-						}
+						}System.out.println("7");
 					}
 				}
 			}
@@ -144,8 +151,6 @@ public class SkBoard implements ServiceRule {
 	}
 
 	private boolean convertToBoolean(int booleanCheck) {
-		boolean result = false;
-
-		return result;
+		return booleanCheck == 0 ? false : true;
 	}
 }

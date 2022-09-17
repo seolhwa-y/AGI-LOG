@@ -123,7 +123,7 @@
 		      IB_TITLE AS IBTITLE,
 		      IB_CONTENT AS IBCONTENT,
 		      IB_VIEW AS IBVIEW,
-		      IB_LIKE AS IBLIKES
+		      IB_LIKE AS IBLIKE
 	   FROM INFOBOARD
 	   WHERE IB_CODE = #{ibCode}
 	</select>
@@ -200,4 +200,8 @@
 		ORDER BY DD_LIKE DESC
 	</select>
 	
+	
+	<update id="insBoardView" parameterType="com.agilog.beans.PostBean">
+	UPDATE IB SET IB_VIEW = #{ibView} WHERE IB_CODE = #{ibCode}
+	</update>
 </mapper>

@@ -16,8 +16,7 @@ function init(){
 		accessArea.innerHTML = "";
 		
 		accessArea.innerHTML = "<span> ${companyAccessInfo.coName}님 </span>";
-		accessArea.innerHTML += "<span onclick=\"movePage(\'CompanyLogout\')\">로그아웃</span>";
-		accessArea.innerHTML += "<span onclick=\"movePage(\'MoveMainPage\')\">일반회원</span>";	
+		accessArea.innerHTML += "<span onclick=\"movePage(\'CompanyLogout\')\">로그아웃</span>";	
 	}
 }
 function updDoctorComment(data1,data2) {
