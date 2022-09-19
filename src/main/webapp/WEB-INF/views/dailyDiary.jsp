@@ -177,7 +177,6 @@ function insertDailyDiary(returnAction){
 	form.enctype = "multipart/form-data";
 	
 	form.submit();
-	modalClose('');
 
 	if (returnAction != '') {
 		alert("test1 : " + returnAction);

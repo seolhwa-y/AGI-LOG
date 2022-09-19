@@ -166,10 +166,6 @@ function init() {
 		accessArea.innerHTML = "<span> ${companyAccessInfo.coName}님 </span>";
 		accessArea.innerHTML += "<span onclick=\"movePage(\'CompanyLogout\')\">로그아웃</span>";
 		
-		alert("${companyAccessInfo.coPhoto}");
-		/* let profile = document.getElementById("profile");
-		
-		profile.innerHTML = "<img class='profileImg' src='"+"${companyAccessInfo.coPhoto}"+"'>"; */
 	}
 }
 /*********************캘린더************************/
@@ -210,7 +206,12 @@ var calendar = new FullCalendar.Calendar(calendarEl, {
 	    let modal = document.querySelector(".modal");
 		modal.style.display="block";
 	    let modalHead = document.getElementsByClassName("modal_head")[0];
-	    modalHead.innerHTML = "<div id='profile'><img class='profileImg' src='"+"${companyAccessInfo.coPhoto}"+"'></div><span id='date'>"+info.dateStr+"<span><i class='fa-solid fa-xmark closeBtn editBtn' onclick='modalClose()'></i>";
+	    
+	    if("${companyAccessInfo.coPhoto}"!=""){
+	    	modalHead.innerHTML = "<div id='profile'><img class='profileImg' src='"+"${companyAccessInfo.coPhoto}"+"'></div><span id='date'>"+info.dateStr+"<span><i class='fa-solid fa-xmark closeBtn editBtn' onclick='modalClose()'></i>";
+	    }else{
+	    	modalHead.innerHTML = "<div id='profile'><img class='profileImg' src='/res/img/profile_default.png'></div><span id='date'>"+info.dateStr+"<span><i class='fa-solid fa-xmark closeBtn editBtn' onclick='modalClose()'></i>";
+	    }
 	    
 	    let clientData = "resDate="+info.dateStr;
 	    postAjaxJson("CoResDetail",clientData,"resManageMent");
