@@ -9,6 +9,12 @@
 <script src="https://use.fontawesome.com/releases/v6.1.2/js/all.js"></script>
 <link rel="stylesheet" href="/res/css/agiMain.css">
 <link rel="stylesheet" href="/res/css/company.css">
+<style>
+@import url("//fonts.googleapis.com/earlyaccess/nanumgothic.css" );
+.passw[type=password]{
+	font-family:"Nanum Gothic", sans-serif !important;
+}
+</style>
 <script>
 	function checkDoctor() {
 		let form = document.getElementById("serverForm");
@@ -65,7 +71,7 @@
 						<p id="checkCompanyTitle"><br/>담당의 정보를 입력해주세요.</p>
 							<div class="companyCF">
 								<input type="text" name="doctorCode"  class="basicInput" placeholder="담당의 코드">
-								<input type="password" name="doctorPassword"  class="basicInput" placeholder="담당의 비밀번호">
+								<input type="password" name="doctorPassword"  class="basicInput passw" placeholder="담당의 비밀번호">
 								<button type="button" class="basicBtn btn" value="담당의 인증" onclick="checkDoctor()">확인</button>
 							</div>
 				</div>

@@ -261,7 +261,9 @@ public class HealthDiary implements ServiceRule {
 				ReservationBean rb = new ReservationBean();
 				rb.setResSuCode(ab.getSuCode());
 				List<ReservationBean> commentList = this.session.selectList("getDoctorCommentList",rb);
-				
+				/*if(commentList.size()!=0) {
+					mav.addObject("commentList", this.makeDoctorCommentHtml(commentList));
+				}*/
 				mav.addObject("commentList", this.makeDoctorCommentHtml(commentList));
 				page = "healthComment";
 			}
@@ -348,33 +350,40 @@ public class HealthDiary implements ServiceRule {
 		return sb.toString();
 	}
 	//의사소견 리스트 html
-	private String makeDoctorCommentHtml(List<ReservationBean> commentList) {
-		StringBuffer sb = new StringBuffer();
-		try {
-			for(ReservationBean rb:commentList) {
-				sb.append("<div class=\"diary "+rb.getResBbCode()+"\" >");
-				sb.append("<div>");
-				sb.append("<div class=\"miniProfile\">");
-				sb.append("<img src=\"/res/img/profile_default.png\" alt=\"images\">");
-				sb.append("<div class=\"text\">");
-				sb.append("<span class=\"userId\">"+rb.getResBbName()+"</span>");
-				sb.append("</div>");
-				sb.append("<div class=\"text\" style=\"margin-left:20px;\">");
-				sb.append("<p class=\"userId\">"+this.enc.aesDecode(rb.getResCoName(), rb.getResCoCode())+"("+rb.getResDoName()+")</p>");
-				sb.append("</div>");
-				sb.append("<div class=\"text\" style=\"margin-left:10px;\">");
-				sb.append("<p class=\"userId\">진료일자:"+rb.getResDate()+"</p>");
-				sb.append("</div>");
-				sb.append("</div>");
-				sb.append("<div class=\"title\">"+rb.getDoComment()+"</div>");
-				sb.append("</div>");
-				sb.append("</div>");
+		private String makeDoctorCommentHtml(List<ReservationBean> commentList) {
+			StringBuffer sb = new StringBuffer();
+			try {
+				for(ReservationBean rb:commentList) {
+					if(rb.getDoComment()!=null) {
+						System.out.println(rb);
+						sb.append("<div class=\"diary "+rb.getResBbCode()+"\" >");
+						sb.append("<div>");
+						sb.append("<div class=\"miniProfile\">");
+						if(rb.getResBbPhoto()!=null) {
+							sb.append("<img src=\""+rb.getResBbPhoto()+"\" alt=\"images\">");
+						}else {
+							sb.append("<img src=\"/res/img/profile_default.png\" alt=\"images\">");
+						}
+						sb.append("<div class=\"text\">");
+						sb.append("<span class=\"userId\">"+rb.getResBbName()+"</span>");
+						sb.append("</div>");
+						sb.append("<div class=\"text\" style=\"margin-left:20px;\">");
+						sb.append("<p class=\"userId\">"+this.enc.aesDecode(rb.getResCoName(), rb.getResCoCode())+"("+rb.getResDoName()+")</p>");
+						sb.append("</div>");
+						sb.append("<div class=\"text\" style=\"margin-left:10px;\">");
+						sb.append("<p class=\"hdDate\">진료일자:"+rb.getResDate()+"</p>");
+						sb.append("</div>");
+						sb.append("</div>");
+						sb.append("<div class=\"title\">"+rb.getDoComment()+"</div>");
+						sb.append("</div>");
+						sb.append("</div>");
+					}
+				}
+			} catch(Exception e) {
+				e.printStackTrace();
 			}
-		} catch(Exception e) {
-			e.printStackTrace();
+			return sb.toString();
 		}
-		return sb.toString();
-	}
 	// BooleanCheck ��
 	private boolean converToBoolean(int booleanCheck) {
 		return booleanCheck == 0 ? false : true;

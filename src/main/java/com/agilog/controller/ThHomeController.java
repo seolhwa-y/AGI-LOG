@@ -84,8 +84,8 @@ public class ThHomeController {
 	
 	@RequestMapping(value = "/MoveBoardPage", method = RequestMethod.GET)
 	
-	public ModelAndView moveBoardPage(ModelAndView mav, @ModelAttribute BoardBean bb) {
-		mav.addObject(bb);
+	public ModelAndView moveBoardPage(ModelAndView mav, @ModelAttribute PostBean pb) {
+		mav.addObject(pb);
 		this.board.backController(mav, 8);
 
 		return mav;

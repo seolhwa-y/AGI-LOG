@@ -49,11 +49,12 @@ function getInfo() {
 		accessArea.innerHTML = "";
 		accessArea.innerHTML = "<span onclick=\"movePage('MoveMyPage')\"> ${accessInfo.suNickName}님 </span>";
 		if ("${accessInfo.type}"== "kakao") {
-			accessArea.innerHTML +="<span onclick=\"kakaoLogout();\">로그아웃</span>"
+			accessArea.innerHTML +="<span onclick=\"kakaoLogout();\">로그아웃</span>";
 		} else if ("${ accessInfo.type }"== "naver") {
-			accessArea.innerHTML +="<span onclick=\"naverLogout(); return false;\">로그아웃</span>"
-		} else ;
+			accessArea.innerHTML +="<span onclick=\"naverLogout(); return false;\">로그아웃</span>";
+		} else {
 		accessArea.innerHTML += "<span onclick=\"movePage('MoveCompanyLoginPage')\">기업회원</span>";
+		}
 	}
 }
 function openPopUp() {
