@@ -1,0 +1,138 @@
+@charset "UTF-8";
+.pWriter {
+	width: 16rem;
+    text-align: center;
+    float: left;
+    margin-left: -4rem;
+}
+
+.pUDIcon {
+	width: 8rem;
+    text-align: center;
+    float: right;
+}
+
+.updatePost {
+    background-color: white;
+    border: white;
+    font-size: 1.2rem;
+	color:grey;
+}
+
+.deletePost {
+    background-color: white;
+    border: white;
+    font-size: 1.2rem;
+	color:grey;
+}
+.imgContainer {
+	margin-right : 1%
+}
+
+
+
+.postContent{
+	background-color:white;
+	margin: 0 auto;
+	margin-top: 1rem;
+	width: 79rem;
+    height: 100%;
+}
+.pTitle{
+	margin: 0 auto;
+    width: 49rem;
+    text-align: center;
+    font-size: 1.5rem;
+    padding: 21px;
+}
+.pHead{
+	width: 75rem;
+    height: 1.3rem;
+    font-size: 1.2rem;
+    margin: 0 auto;
+    padding: 18px;
+    border: 1px solid;
+    border-width: 2px 0px 2px 0px;
+}
+.pDate{
+	width: 16rem;
+    text-align: center;
+    float: left;
+    margin-left: 8rem;
+}
+.sDate{
+	color:grey;
+}
+.pView{
+	width: 11rem;
+    text-align: center;
+    float: left;
+}
+.sView{
+	color: #0F71C6
+}
+.pLike{
+	width: 11rem;
+	margin-left: 1rem;
+	float: left;
+}
+.sLike{
+	color: orangered;
+}
+.pBody{
+	width: 73rem;
+    height: 68.5%;
+    padding: 2rem;
+    border: 1px solid;
+    border-width: 0px 0px 2px 0px;
+    margin: 0 auto;
+    margin-top: 1.3rem;
+}
+.pContent{
+	float : left;
+	background-color:white;
+    margin-top: -3%;
+    width : 50%; height : 110%;
+    border-right : 1px black solid;
+}
+.pPhoto {
+	float: right;
+    width: 49%; height: 110%;
+    margin-top: -3%;
+}
+
+.likeBtn{
+	font-size: 15px;
+    padding: 5px 9px 3px;
+    border-radius: 3px;
+    border: 1px solid #BDBDBD;
+    float:right;
+    margin-top: 1rem;
+    margin-right: 1.3rem;
+    cursor:pointer;
+}
+.backList{
+	font-size: 15px;
+    padding: 5px 9px 3px;
+    border-radius: 3px;
+    border: 1px solid #BDBDBD;
+    float:left;
+    margin-top: 1rem;
+    margin-left: 1.3rem;
+    cursor:pointer;
+}
+.pagenum{
+	margin:0 auto;
+	margin-left: 7px;
+    font-size: 21px;
+    padding: 5px 9px 3px;
+    border-radius: 3px;
+    border: 1px solid #BDBDBD;
+    background-color:white;
+    cursor:pointer;
+}
+.paging{
+	float: left;
+    margin-left: 46%;
+    margin-top: 2rem;
+}
