@@ -132,7 +132,6 @@ public class HealthDiary implements ServiceRule {
 				hb.setHdDate(sdf.format(d));
 				
 				hb.setSuCode(ab.getSuCode());
-				System.out.println(hb.getHdDate());
 				//다이어리 코드 가져오기
 				hb.setHdCode(this.session.selectOne("getHealthDiaryCode",hb));
 				//항목 검사

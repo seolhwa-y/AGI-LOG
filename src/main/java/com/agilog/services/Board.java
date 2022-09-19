@@ -202,20 +202,45 @@ public class Board implements ServiceRule {
 	//정보게시판 게시글 EL 작업
 	private String makePostView(PostBean pb) {
 		StringBuffer sb = new StringBuffer();
-		//if(bebePost.size() !=0) {
-			sb.append("<div class=\"pTitle\">" + pb.getIbTitle() + "</div>");
-			sb.append("<div class=\"pHead\">");
-			sb.append("<div class=\"pDate\">작성일&ensp;<small class=\"sDate\">" + pb.getIbDate() +"</small></div>");
-			sb.append("<div class=\"pView\">조회수&ensp;<small class=\"sView\">" + pb.getIbView() + "</small></div>");
-			sb.append("<div class=\"pLike\">좋아요&ensp;<small class=\"sLike\">" + pb.getLikes() + "</small></div>");
-			sb.append("</div>");
-			sb.append("<div class=\"pBody\">");
-			sb.append("<div class=\"pContent\"> " + pb.getIbContent() + " </div>");	
-			sb.append("</div>");
-			sb.append("<button class=\"likeBtn\" onClick=\"likeBtn('"+pb.getIbCode()+ "','" + pb.getIbDate()+ "')\">좋아요</button>");
-			sb.append("<button class=\"backList\" onClick=\"movePage('MoveInfoBoard')\">목록</button>");
-		sb.append("</div");
-		//}
+		AuthBean ab;
+		try {
+			ab = (AuthBean) this.pu.getAttribute("accessInfo");
+			
+			if(ab!=null) {
+				pb.setSuCode(ab.getSuCode());
+				sb.append("<div class=\"pTitle\">" + pb.getIbTitle() + "</div>");
+				sb.append("<div class=\"pHead\">");
+				sb.append("<div class=\"pDate\">작성일&ensp;<small class=\"sDate\">" + pb.getIbDate() +"</small></div>");
+				sb.append("<div class=\"pView\">조회수&ensp;<small class=\"sView\">" + pb.getIbView() + "</small></div>");
+				sb.append("<div class=\"pLike\">좋아요&ensp;<small class=\"sLike\">" + pb.getLikes() + "</small></div>");
+				sb.append("</div>");
+				sb.append("<div class=\"pBody\">");
+				sb.append("<div class=\"pContent\"> " + pb.getIbContent() + " </div>");	
+				sb.append("</div>");
+				// 0개 일때 !false=>좋아요 누른적 없음
+				if (!this.convertToBoolean(this.session.selectOne("isIbLike", pb))) {
+					sb.append("<button class=\"likeBtn\" onClick=\"likeBtn('"+pb.getIbCode()+ "','" + pb.getIbDate()+ "','0')\">좋아요♥</button>");
+				} else { // 1개 일때 !true=>좋아요 누른적 있음
+					sb.append("<button class=\"likeBtn myLike\" onClick=\"likeBtn('"+pb.getIbCode()+ "','" + pb.getIbDate()+ "','0')\">좋아요♥</button>");
+				}
+				sb.append("<button class=\"backList\" onClick=\"movePage('MoveInfoBoard')\">목록</button>");
+				sb.append("</div");
+			} else {
+				sb.append("<div class=\"pTitle\">" + pb.getIbTitle() + "</div>");
+				sb.append("<div class=\"pHead\">");
+				sb.append("<div class=\"pDate\">작성일&ensp;<small class=\"sDate\">" + pb.getIbDate() +"</small></div>");
+				sb.append("<div class=\"pView\">조회수&ensp;<small class=\"sView\">" + pb.getIbView() + "</small></div>");
+				sb.append("<div class=\"pLike\">좋아요&ensp;<small class=\"sLike\">" + pb.getLikes() + "</small></div>");
+				sb.append("</div>");
+				sb.append("<div class=\"pBody\">");
+				sb.append("<div class=\"pContent\"> " + pb.getIbContent() + " </div>");	
+				sb.append("</div>");
+				sb.append("<button class=\"backList\" onClick=\"movePage('MoveInfoBoard')\">목록</button>");
+				sb.append("</div");
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 		return sb.toString();
 	}
 
@@ -277,8 +302,6 @@ public class Board implements ServiceRule {
 		return sb.toString();
 	}
 	private boolean convertToBoolean(int booleanCheck) {
-		boolean result = false;
-
-		return result;
+		return booleanCheck==0 ? false : true;
 	}
 }

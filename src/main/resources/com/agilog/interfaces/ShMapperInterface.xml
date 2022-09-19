@@ -46,13 +46,13 @@
 	<select id="getPostCommentList" parameterType="com.agilog.beans.PostCommentBean" resultType="com.agilog.beans.PostCommentBean">
 		SELECT	*
 		FROM FREEBOARDCOMMENTLIST
-		WHERE FCFBCODE = #{fcFbCode} AND FCFBSUCODE = #{fcFbSuCode} AND FCFBDATE = #{fcFbDate}
+		WHERE FCFBCODE = #{fcFbCode}
 	</select>
 	
 	<!-- 자유게시판 댓글 등록 -->
 	<insert id="insPostComment" parameterType="com.agilog.beans.PostCommentBean">
 		INSERT INTO FC(FC_CODE, FC_FBCODE, FC_FBSUCODE, FC_FBDATE, FC_SUCODE, FC_DATE, FC_CONTENT)
-		VALUES (#{fcCode}, #{fcFbCode}, #{fcFbSuCode}, TO_DATE(#{fcFbDate}, 'YYYYMMDDHH24MISS'), #{fcSuCode}, DEFAULT, #{fcContent})
+		VALUES (#{fcCode}, #{fcFbCode}, #{fcFbSuCode}, TO_DATE(TO_CHAR(TO_DATE(#{fcFbDate}, 'YYYY-MM-DD HH24:MI:SS'), 'YYYYMMDDHH24MISS'), 'YYYYMMDDHH24MISS'), #{fcSuCode}, DEFAULT, #{fcContent})
 	</insert>
 	
 	<!-- 자유게시판 댓글 수정 -->

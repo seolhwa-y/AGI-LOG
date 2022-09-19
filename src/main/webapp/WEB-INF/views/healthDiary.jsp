@@ -184,7 +184,7 @@
         	mhead.innerHTML = "<i class='fa-solid fa-xmark closeBtn editBtn' onclick='cancel()'></i>";
         	let orgh = mhead.innerHTML;
             if(document.getElementsByClassName("babyInfo")[0] != undefined){
-            	mhead.innerHTML = orgh+"${babyInfo}<input type='date' class='hdDate dateInput' value='"+td+"'/>";
+            	mhead.innerHTML = orgh+"${babyInfo}<input type='date' class='hdDate dateInput selectDate' value='"+td+"'/>";
             }
             let mfoot = document.getElementsByClassName("modal_foot")[0];
             mfoot.innerHTML="";
@@ -251,7 +251,7 @@
       		let data = document.getElementsByClassName("modal_content")[0];
       		let babyInfo = document.getElementsByClassName("babyInfo")[1];
             let bbCode = babyInfo.options[babyInfo.selectedIndex].value;
-      		let hdDate = document.getElementsByClassName("hdDate")[0];
+      		let hdDate = document.getElementsByClassName("selectDate")[0];
       		
       		let hours = ('0' + today.getHours()).slice(-2); 
     		let minutes = ('0' + today.getMinutes()).slice(-2);
@@ -260,7 +260,6 @@
 			form.appendChild(createInput("hidden","sleep",sleepTime(),null,null));
 			form.appendChild(createInput("hidden","bbCode",bbCode,null,null));
 			form.appendChild(data);
-			
 			form.action = "InsertHealthDiary";
 			form.method = "post";
 			

@@ -205,7 +205,7 @@ ul {
 	}
 	
 	.viewLike {
-	    color: red;
+	    color: black;
 	    float: right;
     	margin-right: 13%;
     	margin-top: 41.5%;
@@ -215,6 +215,10 @@ ul {
     .viewLike:hover{
     	cursor: pointer;
 	}
+    
+    .myViewLike {
+    	color: red;
+    }
     
     #viewFeedDate {
 	    float: left;

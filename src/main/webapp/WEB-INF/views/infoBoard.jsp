@@ -115,8 +115,6 @@ function pageNum(num){
 	let form = document.getElementById("serverForm");
 	form.appendChild(createInput("hidden","page",num,null,null));
 	
-	alert(num);
-	
 	form.action = "MovePageNum";
 	form.method = "get";
 	form.submit();

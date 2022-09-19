@@ -88,18 +88,46 @@ function kakaoLogout() {
 		Kakao.Auth.setAccessToken(undefined)
 	}
 }
-function likeBtn(ibCode, ibDate) {
-	const clientData = "ibCode=" + ibCode + "&ibDate=" + ibDate;
-	alert(clientData);
-	postAjaxJson("InfoBoardLike", clientData, "updLikes");
+function likeBtn(bCode, bDate, bType) {
+	let clientData;
+	let jobCode;
+	if(bType=="0"){
+		clientData = "ibCode=" + bCode + "&ibDate=" + bDate;
+		jobCode = "InfoBoardLike";
+	} else if(bType=="1") {
+		clientData = "fbCode=" + bCode + "&fbDate=" + bDate + "&fbSuCode=" + document.getElementById("writer").value;;
+		jobCode = "FreeBoardLike";
+	}
+	//InfoBoardLike, FreeBoardLike
+	postAjaxJson(jobCode, clientData, "updLikes");
 }
 
-function upbLikes(ajaxData){
-	alert("콜백 췤");
-	console.log(ajax);
+function updLikes(ajaxData){
 	const ajax = JSON.parse(ajaxData);
+	//좋아요 수
 	let sLike = document.getElementsByClassName("sLike")[0];
-	sLike.innerText = ajax.ibLike.likes;
+	//좋아요 버튼
+	let like = document.getElementsByClassName("likeBtn")[0];
+	//정보게시판/자유게시판 좋아요 판단
+	if(ajax.ibLike != undefined) {
+		//내가 좋아요를 누른 게시글인 경우
+		if(ajax.ibLike.like) {
+			like.className = "likeBtn myLike";
+		} else { //내가 좋아요를 안누른 게시글인 경우
+			like.className = "likeBtn";
+		}
+		sLike.innerText = ajax.ibLike.likes;
+	} else if(ajax.fbLike != undefined) {
+		//내가 좋아요를 누른 게시글인 경우
+		if(ajax.fbLike.like) {
+			like.className = "likeBtn myLike";
+		} else { //내가 좋아요를 안누른 게시글인 경우
+			like.className = "likeBtn";
+		}
+		sLike.innerText = ajax.fbLike.likes;
+	} else {
+		alert("좋아요 실패!");
+	}
 }
 /* 게시글 댓글 작업 */
 	// 댓글 수정 버튼
@@ -157,35 +185,36 @@ function postComment(ajaxData) {
 	const fbComment = ajax.fbComment;
 	const suCode = ajax.suCode;
 	console.log(ajax);
-
-	document.getElementsByClassName("fbComment")[0].value = "";
-	let commentList = document.getElementById("commentList");
 	
-	commentList.innerHTML = "";
+	let commentList = document.getElementById("commentList");
+	document.getElementsByClassName("fbComment")[0].value = "";
+	
+	let comment = "";
 
 	for(i = 0; i < fbComment.length; i++){
-		commentList.innerHTML += "<div class = 'comment " + i + "'>";
+		comment += "<div class = 'comment " + i + "'>";
 		// 프로필 사진이 없을 경우 기본 이미지
 		if(fbComment[i].suPhoto != null) {
-			commentList.innerHTML += "<img class='profileImage' src=" + fbComment[i].suPhoto + ">";
+			comment += "<img class='profileImage' src=" + fbComment[i].suPhoto + ">";
 		} else {
-			commentList.innerHTML += "<img class='profileImage' src='/res/img/profile_default.png'>";
+			comment += "<img class='profileImage' src='/res/img/profile_default.png'>";
 		}
 		
 		// 닉네임
-		commentList.innerHTML += "<div class = 'suNickname'>" + fbComment[i].suNickname + "</div>";
+		comment += "<div class = 'suNickname'>" + fbComment[i].suNickname + "</div>";
 
 		// 댓글 내용
-		commentList.innerHTML += "<div class='fcContent'" + fbComment[i].fcDate + ">" + fbComment[i].fcContent + "</div>";
+		comment += "<div class='fcContent'" + fbComment[i].fcDate + ">" + fbComment[i].fcContent + "</div>";
 
 		// 수정 삭제 버튼
 		if(suCode === fbComment[i].fcSuCode) {
-			commentList.innerHTML += "<i class='fa-solid fa-pen updBtn editBtn' onClick='updateInput(" + fbComment[i].fcFbCode + "," + fbComment[i].fcFbSuCode + "," + fbComment[i].fcCode + "," + fbComment[i].fcDate +")'></i>";
-			commentList.innerHTML += "<i class='fa-solid fa-trash-can delBtn editBtn' onClick='deleteBoardComment(" + fbComment[i].fcFbCode + "," + fbComment[i].fcFbSuCode + "," + fbComment[i].fcCode + "," + fbComment[i].fcDate +")'></i>";
+			comment += "<i class='fa-solid fa-pen updBtn editBtn' onClick='updateInput(" + fbComment[i].fcFbCode + "," + fbComment[i].fcFbSuCode + "," + fbComment[i].fcCode + "," + fbComment[i].fcDate +")'></i>";
+			comment += "<i class='fa-solid fa-trash-can delBtn editBtn' onClick='deleteBoardComment(" + fbComment[i].fcFbCode + "," + fbComment[i].fcFbSuCode + "," + fbComment[i].fcCode + "," + fbComment[i].fcDate +")'></i>";
 		}
-		commentList.innerHTML += "</div>";
+		comment += "</div>";
+		commentList.innerHTML = comment;
 	}
-	
+
 	swal("요청", "요청하신 작업을 완료하였습니다!", "success", { button: "완료"});
 }
 function updatePost(fbCode) {

@@ -174,7 +174,7 @@ public class BebeCalendar3 implements ServiceRule {
 				}
 			}
 		}
-
+		System.out.println(sb.toString());
 		return sb.toString();
 	}
 
@@ -198,8 +198,6 @@ public class BebeCalendar3 implements ServiceRule {
 	}
 
 	private boolean convertToBoolean(int booleanCheck) {
-		boolean result = false;
-
-		return result;
+		return booleanCheck==0?false:true;
 	}
 }

@@ -90,10 +90,12 @@ function kakaoLogout() {
 	}
 }
 
-function boardContent(num) {
+function boardContent(num, su, date) {
     let form = document.getElementById("serverForm");
 
     form.appendChild(createInput("hidden","fbCode",num,null,null));
+    form.appendChild(createInput("hidden","fbSuCode",su,null,null));
+    form.appendChild(createInput("hidden","fbDate",date,null,null));
 
     form.action = "MoveShowFbPost";
     form.method = "post";

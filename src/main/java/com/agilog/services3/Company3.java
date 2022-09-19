@@ -102,7 +102,6 @@ public class Company3 implements ServiceRule {
 				
 				//닥터 코드가 있으면 닥터 코드를 포함하여 업데이트, 없으면 닥터 코드를 제외한 업데이트
 				if (rb.getResDoCode() != null) {
-					System.out.println("doCode유");
 					if(this.convertToBoolean(this.session.update("updRDRes", rb))) {
 						if(rb.getRcCode().equals("CC")) {
 							rb.setResCount(this.session.selectOne("getTimeResCount",rb));
@@ -123,7 +122,6 @@ public class Company3 implements ServiceRule {
 						}
 					}
 				} else {
-					System.out.println("doCode무");
 					if(this.convertToBoolean(this.session.update("updCPRes", rb))) {
 						if(rb.getRcCode().equals("CC")) {
 							rb.setResCount(this.session.selectOne("getTimeResCount",rb));
