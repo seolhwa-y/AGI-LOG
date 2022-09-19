@@ -96,18 +96,20 @@ public class BebeCalendar implements ServiceRule {
 		}
 
 		try {
-			/* 일반일정 가져오기 */
+			/* 예약일정 가져오기 */
 			List<ReservationBean> rbList = new ArrayList<ReservationBean>();
+			
 			rbList = this.session.selectList("getReservationInfo", bcb);
-
+			
 			if(rbList.size()!=0) {
 				bcb.setReservationInfo(rbList);
 				//병원이름 복호화
 				bcb.getReservationInfo().get(0).setResCoName(this.enc.aesDecode(rbList.get(0).getResCoName(),rbList.get(0).getResCoCode()));
 			}
 			
-			/* 예약시간정 가져오기 */
+			/* 일반일정 가져오기 */
 			List<ScheduleBean> scheduleList = new ArrayList<ScheduleBean>();
+			
 			scheduleList = this.session.selectList("getScheduleList",bcb);
 
 			if(scheduleList.size()!=0) {
@@ -227,7 +229,6 @@ public class BebeCalendar implements ServiceRule {
 			rb.setResSuCode(ab.getSuCode());
 			// CC => 예약취소
 			rb.setRcCode("CC");
-
 			/* 예약취소 :: 예약완료 => 예약취소로 변경*/
 			if(this.converToBoolean(this.session.update("updateReservationStatus",rb))) {
 				//update 성공

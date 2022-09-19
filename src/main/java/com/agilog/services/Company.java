@@ -371,9 +371,9 @@ public class Company implements ServiceRule {
 			sb.append("<tr>");
 			sb.append("<td class=\"doctorMgrB\">" + db.getDoCode() + "</td>");
 			sb.append("<td class=\"doctorMgrB\">" + db.getDoName() + "</td>");
-			sb.append("<td class=\"doctorMgrB\"><button class=\"delBtn\">");
-			sb.append("<i class=\"fa-solid fa-trash-can delBtn editBtn\" "
-					+ "onClick=\"deleteDoctor("+ db.getDoCode() +")\"></i>Delete</button>");
+			sb.append("<td class=\"doctorMgrB\">"
+					+ "<button class=\"delBtn\" onClick=\"deleteDoctor("+ db.getDoCode() +")\">");
+			sb.append("<i class=\"fa-solid fa-trash-can delBtn\"></i>삭제</button>");
 			sb.append("</td>");
 			sb.append("</tr>");
 		}

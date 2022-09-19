@@ -17,8 +17,8 @@ ul {
 	#rightArea_top{
 		width: 100%;
     	height: 5%;
-    	padding: 1% 5%;
     	margin-left: 3px;
+    	box-sizing : border-box;
 	}
 	#rightArea_middle{
 		margin-top: 1%;
@@ -196,7 +196,6 @@ ul {
 	    width: 100%;
 	    height: 100%;
 	    border-radius: 5px 5px 0 0;
-    	margin-right: 37%;
 	}
 	
 	svg:not(:host).svg-inline--fa, svg:not(:root).svg-inline--fa {

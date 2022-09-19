@@ -1,94 +1,42 @@
 @charset "UTF-8";
-.freeBoard{
-	width: 79.3rem;
-    height: 42rem;
-}
-.freeTable{
-	background-color:white;
-	margin:0 auto;
-	margin-top: 1.4rem;
-	border-collapse:collapse;
-}
-.freeBoardH{
-	font-size:2rem;
-	width:14rem;
-	padding: 25px;
-}
-.freeBoardM{
-	font-size:1.2rem;
-	padding: 9px;
-	border: solid 2px;
-    background-color: #cfcfcf;
-}
-.no{
-	width:5rem;
-}
-.title{
-	width:43rem;
-	word-spacing: 6rem;
-}
-.date{
-	width:10rem;
-}
-.like{
-	width:5rem;
-}
-.view{
-	width:7rem;
-}
-.thead{
-	text-align: left;
+.pWriter {
+	width: 16rem;
+    text-align: center;
+    float: left;
+    margin-left: -4rem;
 }
 
-.freeBoardB{
-	font-size: 1.1rem;
+.pUDIcon {
+	width: 8rem;
     text-align: center;
-    border:solid 2px;
-    padding:6px;
-}
-.freeBoardTitle{
-	font-size: 1.1rem;
-    text-align: left;
-    border:solid 2px;
-    padding:6px;
-}
-.freeBoardWriter{
-	font-size: 1.1rem;
-    text-align: left;
-    border:solid 2px;
-    padding:6px;
-}
-#freeBoardSelect{
-	width: 6rem;
-    height: 1.5rem;
-    font-size: 1rem;
     float: right;
-    margin-right: 1.4rem;
-    margin-top: -1rem;
-    box-sizing: border-box;
-    border-radius: 6px;
-	color: dimgray;
 }
-	option {
-  		padding: 4px;
-  		font-size: 20px;
-  		color: dimgray;
-	}
-.selectBoard{
-	background-color:white;
-	cursor: pointer;
+
+.updatePost {
+    background-color: white;
+    border: white;
+    font-size: 1.2rem;
+	color:grey;
 }
-.selectBoard:hover{
-    background-color:#bbb;
-    transition: all 0.3s;
+
+.deletePost {
+    background-color: white;
+    border: white;
+    font-size: 1.2rem;
+	color:grey;
 }
+.imgContainer {
+	margin-right : 1%
+}
+
+
 
 .postContent{
 	background-color:white;
 	margin: 0 auto;
 	margin-top: 1rem;
 	width: 79rem;
-    height: 43rem;
+    height: 100%;
 }
 .pTitle{
 	margin: 0 auto;
@@ -110,7 +58,7 @@
 	width: 16rem;
     text-align: center;
     float: left;
-    margin-left: 19rem;
+    margin-left: 8rem;
 }
 .sDate{
 	color:grey;
@@ -133,6 +81,7 @@
 }
 .pBody{
 	width: 73rem;
+    height: 68.5%;
     padding: 2rem;
     border: 1px solid;
     border-width: 0px 0px 2px 0px;
@@ -140,8 +89,18 @@
     margin-top: 1.3rem;
 }
 .pContent{
+	float : left;
 	background-color:white;
+    margin-top: -3%;
+    width : 50%; height : 110%;
+    border-right : 1px black solid;
 }
+.pPhoto {
+	float: right;
+    width: 49%; height: 110%;
+    margin-top: -3%;
+}
+
 .likeBtn{
 	font-size: 15px;
     padding: 5px 9px 3px;
@@ -176,12 +135,4 @@
 	float: left;
     margin-left: 46%;
     margin-top: 2rem;
-}
-.writeBtn{
-	float: left;
-    margin-top: 0.6rem;
-    width: 5rem;
-    height: 2rem;
-    font-size: 1rem;
-    margin-left: 72rem;
 }

@@ -52,10 +52,12 @@
 	margin-top:10px;
 	float:left;
 	color:grey;
+	cursor:pointer;
 }
 .findInfo{
 	margin-top:10px;
 	margin-right:5px;
 	float:right;
 	color:grey;
+	cursor:pointer;
 }

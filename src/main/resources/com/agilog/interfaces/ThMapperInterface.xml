@@ -87,7 +87,7 @@
 		WHERE FB_CODE = #{fbCode}
 	</update>
 	<select id="getDdDate" parameterType="com.agilog.beans.DailyDiaryBean" resultType="com.agilog.beans.DailyDiaryBean">
-		SELECT DD_DATE AS DDDATE
+		SELECT TO_CHAR(DD_DATE, 'YYYYMMDDHH24MISS') AS DDDATE
 		FROM DAILYDIARY WHERE DD_CODE = #{ddCode}
 	</select>
 	<insert id="insDDP" parameterType="com.agilog.beans.DailyDiaryPhotoBean">

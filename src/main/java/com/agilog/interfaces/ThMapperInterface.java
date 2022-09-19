@@ -48,4 +48,5 @@ public interface ThMapperInterface {
 	public int insDDP(DailyDiaryPhotoBean ddpb);
 	public int delDdPhoto(DailyDiaryPhotoBean ddpb);
 	public int getDdpCode(DailyDiaryBean db);
+	public List<PostPhotoBean> getFbPp(PostPhotoBean ppb);
 }

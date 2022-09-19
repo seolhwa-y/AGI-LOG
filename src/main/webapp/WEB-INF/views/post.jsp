@@ -8,7 +8,7 @@
 <script src="/res/js/agiMain.js"></script>
 <script src="https://use.fontawesome.com/releases/v6.1.2/js/all.js"></script>
 <link rel="stylesheet" href="/res/css/agiMain.css">
-<link rel="stylesheet" href="/res/css/infoBoard.css">
+<link rel="stylesheet" href="/res/css/post.css">
 <!-- 알림창 꾸미기 -->
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <!-- 카카오 스크립트 -->
@@ -52,8 +52,9 @@ function getInfo() {
 			accessArea.innerHTML +="<span onclick=\"kakaoLogout();\">로그아웃</span>";
 		} else if ("${ accessInfo.type }"== "naver") {
 			accessArea.innerHTML +="<span onclick=\"naverLogout(); return false;\">로그아웃</span>";
-		} else 
+		} else {
 		accessArea.innerHTML += "<span onclick=\"movePage('MoveCompanyLoginPage')\">기업회원</span>";
+		}
 	}
 }
 function openPopUp() {

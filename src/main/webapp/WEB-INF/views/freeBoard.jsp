@@ -101,6 +101,41 @@ function boardContent(num, su, date) {
     form.method = "post";
     form.submit();
 }
+
+function changeSort(){
+	let form = document.getElementById("serverForm");
+	let postSelect = document.getElementById("freeBoardSelect");
+	//option값을 저장
+	let fbSorts = postSelect.options[postSelect.selectedIndex].value;
+	let optionText = postSelect.options[postSelect.selectedIndex].text;
+	alert(optionText + "으로 정렬합니다");
+	form.appendChild(createInput("hidden","fbSort",fbSorts,null,null));
+	
+
+	
+	form.action = "MoveBoardPage";
+	form.method = "get";
+	form.submit();
+}
+function pageNum(num){
+	let form = document.getElementById("serverForm");
+	form.appendChild(createInput("hidden","page",num,null,null));
+	
+	alert(num);
+	
+	form.action = "MovePageNum";
+	form.method = "get";
+	form.submit();
+}
+window.onpageshow = function(event) {
+	let form = document.getElementById("serverForm");
+    if(event.persisted || (window.performance && window.performance.navigation.type == 2)) {
+       	
+        form.action = "MoveBoardPage";
+        form.method = "get";
+    	form.submit();
+    } 
+}
 </script>
 </head>
 <body onload="getInfo()" id="body">
@@ -144,10 +179,12 @@ function boardContent(num, su, date) {
 			</div>
 			<div id="rightArea" class="scrollBar">
 				<div class="infoBoard">
-					<div class="infoBoardH">자유 게시판</div>
+					<div class="freeBoardH">자유 게시판</div>
 					${freeBoardList}
+					<input class="writeBtn" type="button" value="글쓰기" onClick="movePagePost('MoveWritePage')">
+					<div class="paging">${pagingList}</div>
 				</div>
-				<input type="button" value="글쓰기" onClick="movePagePost('MoveWritePage')">
+				
 			</div>
 		</div>
 		<div class="modal">

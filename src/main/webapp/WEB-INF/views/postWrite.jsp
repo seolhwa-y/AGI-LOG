@@ -163,7 +163,6 @@ function readMultipleImage(input) {
                 $imgDiv.style.width = "280px"
             }
             
-            console.log(file.name)
             if(index % 2 == 0) {
                 $colDiv1.appendChild($imgDiv)
             } else {
