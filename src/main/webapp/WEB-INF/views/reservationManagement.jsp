@@ -116,7 +116,7 @@
     height: 2.5rem;
     width: 10rem;
     box-shadow: 0px 5px 0px 0px rgb(239 157 171);
-    background-color: rgb(255, 194, 204);
+    background-color: gainsboro;
     font-size: 1.5rem;
     color: dimgray;
     margin: 1.4rem;
@@ -125,14 +125,21 @@
     height: 2.5rem;
     width: 10rem;
     box-shadow: 0px 5px 0px 0px rgb(182, 182, 182);
-    background: gainsboro;
+    background: rgb(255, 194, 204);
+    margin: 1.4rem;
+}
+.disable:hover {
+	height: 2.5rem;
+    width: 10rem;
+    box-shadow: 0px 5px 0px 0px rgb(182, 182, 182);
+    background: rgb(255, 194, 204);
     margin: 1.4rem;
 }
 .realDisable{
 	height: 2.5rem;
     width: 10rem;
     box-shadow: 0px 5px 0px 0px rgb(182, 182, 182);
-    background: gainsboro;
+    background: rgb(255, 194, 204);
     margin: 1.4rem;
     border: 1px solid black;
 }
@@ -148,7 +155,6 @@ function init() {
 
 		accessArea.innerHTML = "<span> ${companyAccessInfo.coName}님 </span>";
 		accessArea.innerHTML += "<span onclick=\"movePage(\'CompanyLogout\')\">로그아웃</span>";
-		accessArea.innerHTML += "<span onclick=\"movePage(\'MoveMainPage\')\">일반회원</span>";
 	}
 }
 /*********************캘린더************************/
@@ -204,6 +210,8 @@ function resManageMent(ajaxData){
 	let modal = document.querySelector(".modal");
 	modal.style.display="block";
 	
+	let doctor = document.getElementById("doctor");
+	doctor.innerHTML = info.doctorList;
 	let timeContent = document.getElementById("timeContent");
 	timeContent.innerHTML = info.time;
 	
@@ -215,17 +223,14 @@ function resManageMent(ajaxData){
 //시간 조정
 function setResTime(obj){
 	let info = (obj.value).split(":");
-	//info[0] : date, info[1] : time
+	let doctor = document.getElementsByName("docTime")[0];
+	
 	let clientData;
 	
-	if(obj.className == "mBtnO btn disable"){
+	if(obj.className == "mBtnO btn"){
 		//예약가능하게 바꿈
-		obj.className = "mBtnO btn";
-		clientData = "resDate="+info[0]+"&resTime="+info[1];
-	}else{
-		//예약 막음
-		obj.className += " disable";
-		clientData = "resDate="+info[0]+"&resTime="+info[1]+"&resReal=0";
+		obj.className = "mBtnO btn disable";
+		clientData = "resDate="+info[0]+"&resTime="+info[1]+"&resDoCode="+doctor.options[doctor.selectedIndex].value;
 	}
 	
 	postAjaxJson("SetResTime",clientData,"callbackTime");
@@ -235,8 +240,20 @@ function setResTime(obj){
 function callbackTime(){
 	alert("예약가능시간 수정 완료");
 }
-function warning(){
-	alert("찐예약됨~~삭제하고하셈");
+//의사 변경
+function chageDoctor() {
+	let doctor = document.getElementsByName("docTime")[0].options[doctor.selectedIndex].value;
+	let date = document.getElementById("date").innerText;
+	let clientData;
+	clientData = "resDate="+date+"&resDoCode="+doctor;
+	
+	postAjavJson("GetDoctorResTime",clientData,"callbackDocTime");
+}
+//해당의사의 예약시간 콜백
+function callbackDocTime(ajaxData) {
+let info = JSON.parse(ajaxData);
+	let timeContent = document.getElementById("timeContent");
+	timeContent.innerHTML = info.time;
 }
 //예약상태 변경
 function updateReservation(resCode, idx, idx2) {
@@ -300,6 +317,8 @@ function modalClose(){
 				<div class="modal_content">
 					<div id="time">
 					<div class="timeTitle">* 예약시간 관리 *</div>
+						<div id="doctor">
+						</div>
 						<div id="timeContent">
 						</div>
 					</div>

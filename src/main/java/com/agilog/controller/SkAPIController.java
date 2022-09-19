@@ -2,6 +2,7 @@ package com.agilog.controller;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -83,15 +84,34 @@ public class SkAPIController {
 		return (DailyDiaryBean)model.getAttribute("ddLike");
 	}
 	
+	@SuppressWarnings("unchecked")
 	@PostMapping("/FreeBoardLike")
-	public PostBean freeBoardLike(Model model, @ModelAttribute PostBean pb) {
+	public Map<String, Object> freeBoardLike(Model model, @ModelAttribute PostBean pb) {
 		model.addAttribute(pb);
 		this.board.backController(model, 111);
-		return (PostBean)model.getAttribute("fbLike");
+		return (Map<String, Object>)model.getAttribute("fbLike");
+	}
+	
+	@SuppressWarnings("unchecked")
+	@PostMapping("/InfoBoardLike")
+	public Map<String, Object> infoBoardLike(Model model, @ModelAttribute PostBean pb) {
+		model.addAttribute(pb);
+		this.board.backController(model, 112);
+		return (Map<String, Object>)model.getAttribute("ibLike");
 	}
 
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value="/UpdateReservation", method=RequestMethod.POST)
 	public HashMap<String,Object> updateReservation(Model model, @ModelAttribute ReservationBean rb) {
+		model.addAttribute(rb);
+		this.company.backController(model, 72);
+		
+		return (HashMap<String,Object>)model.getAttribute("dateInfo");
+	}
+	
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value="/GetDoctorResTime", method=RequestMethod.POST)
+	public HashMap<String,Object> getDoctorResTime(Model model, @ModelAttribute ReservationBean rb) {
 		model.addAttribute(rb);
 		this.company.backController(model, 72);
 		

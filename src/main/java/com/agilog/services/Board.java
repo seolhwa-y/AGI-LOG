@@ -1,6 +1,11 @@
 package com.agilog.services;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.agilog.beans.AuthBean;
+import com.agilog.beans.DailyDiaryBean;
 import com.agilog.beans.PostBean;
 import com.agilog.interfaces.ServiceRule;
 import com.agilog.utils.Encryption;
@@ -61,7 +67,6 @@ public class Board implements ServiceRule {
 
 
 	public void backController(Model model, int serviceCode) {
-
 	}
 
 	private void moveBoardPageCtl(ModelAndView mav) {
@@ -181,19 +186,23 @@ public class Board implements ServiceRule {
 	private void moveWritePageCtl(ModelAndView mav) {
 
 	}
-	//게시글 보기
+	//게시글 보기 / 조회수 증가
 	private void moveShowPostCtl(ModelAndView mav) {
 		
 		PostBean pb = (PostBean) mav.getModel().get("postBean");
-		mav.addObject("content",this.makePostView(this.session.selectList("getBebePost",pb)));
+		//조회수 증가
+		pb = this.session.selectOne("getBebePost",pb);
+		pb.setIbView(pb.getIbView()+1);
+		this.session.update("insBoardView",pb);
+				
+		mav.addObject("content",this.makePostView(this.session.selectOne("getBebePost",pb)));
 		mav.setViewName("post");
+
 	}
 	//정보게시판 게시글 EL 작업
-	private String makePostView(List<PostBean> bebePost) {
+	private String makePostView(PostBean pb) {
 		StringBuffer sb = new StringBuffer();
 		//if(bebePost.size() !=0) {
-		for(int idx=0; idx<1; idx++) {
-				PostBean pb = (PostBean)bebePost.get(idx);
 			sb.append("<div class=\"pTitle\">" + pb.getIbTitle() + "</div>");
 			sb.append("<div class=\"pHead\">");
 			sb.append("<div class=\"pDate\">작성일&ensp;<small class=\"sDate\">" + pb.getIbDate() +"</small></div>");
@@ -203,9 +212,9 @@ public class Board implements ServiceRule {
 			sb.append("<div class=\"pBody\">");
 			sb.append("<div class=\"pContent\"> " + pb.getIbContent() + " </div>");	
 			sb.append("</div>");
-			sb.append("<button class=\"likeBtn\" onClick=\"likeBtn()\">좋아요</button>");
+			sb.append("<button class=\"likeBtn\" onClick=\"likeBtn('"+pb.getIbCode()+ "','" + pb.getIbDate()+ "','" + pb.getSuCode()+ "')\">좋아요</button>");
 			sb.append("<button class=\"backList\" onClick=\"movePage('MoveInfoBoard')\">목록</button>");
-			}
+				System.out.println("좋아요 정리 :" + pb.getIbCode() + pb.getIbDate());
 		sb.append("</div");
 		//}
 		return sb.toString();
@@ -258,7 +267,6 @@ public class Board implements ServiceRule {
 			for(int idx=0; idx<bebeBoardList.size(); idx++) {
 				PostBean pb = (PostBean)bebeBoardList.get(idx);
 				int max = bebeBoardList.size();
-				System.out.println("페이지번호 : " + pageNum);
 				sb.append("<tr class=\"selectBoard\" onClick=\"boardContent("+ pb.getIbCode() +")\">");
 				sb.append("<td class=\"infoBoardB\">"+ pb.getIbDate() +"</td>");
 				sb.append("<td class=\"infoBoardTitle\">"+ pb.getIbTitle() +"</td>");

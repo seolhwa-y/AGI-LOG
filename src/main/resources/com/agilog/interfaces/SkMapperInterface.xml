@@ -167,15 +167,15 @@
 	</select>
 	<!-- 해당게시글 좋아요 내역 저장 -->
 	<insert id="insIbLike" parameterType="com.agilog.beans.PostBean" >
-		INSERT INTO IL VALUES(#{ibCode}, #{ibDate}, #{suCode})
-	</insert>
+        INSERT INTO IL VALUES(#{ibCode}, TO_DATE(#{ibDate},'YYYYMMDDHH24MISS'), #{suCode})
+    </insert>
 	<!-- 해당게시글 좋아요 내역 삭제 -->
 	<delete id="delIbLike" parameterType="com.agilog.beans.PostBean" >
 		DELETE FROM IL WHERE IL_IBCODE = #{ibCode} AND IL_IBDATE = TO_DATE(#{ibDate},'YYYYMMDDHH24MISS') AND IL_SUCODE = #{suCode}
 	</delete>
 	<!-- 해당게시글 좋아요 수 조회 -->
 	<select id="getIbLike" parameterType="com.agilog.beans.PostBean" resultType="int">
-		SELECT COUNT(*) AS LIKES FROM IL WHERE WHERE IL_IBCODE = #{ibCode} AND IL_IBDATE = TO_DATE(#{ibDate},'YYYYMMDDHH24MISS')
+		SELECT COUNT(*) AS LIKES FROM IL WHERE IL_IBCODE = #{ibCode} AND IL_IBDATE = TO_DATE(#{ibDate},'YYYYMMDDHH24MISS')
 	</select>
 	<!-- 해당게시글 좋아요 수 업데이트 -->
 	<update id="updIbLike" parameterType="com.agilog.beans.PostBean" >
@@ -199,4 +199,26 @@
 		FROM RESINFO
 		WHERE COCODE = #{resCoCode} AND SUBSTR(RESDATE,1,8) = #{resDate}
 	</select>
+	<!-- 해당 날짜 해당 의사의 예약가능 시간 조회 -->
+	<select id="getDoctorResTime" parameterType="com.agilog.beans.ReservationBean" resultType="com.agilog.beans.ReservationBean">
+		SELECT  RT_DOCOCODE AS RESCOCODE,
+        RT_DOCOCODE AS RESDOCODE,
+        TO_CHAR(RT_DATE,'YYYY-MM-DD') AS RESDATE,
+        RT_TIME AS RESTIME,
+        RT_COUNT AS RESCOUNT
+		FROM RT
+		WHERE RT_DOCOCODE = #{resCoCode} AND RT_DOCODE = #{resDoCode} AND TO_CHAR(RT_DATE,'YYYY-MM-DD') = #{resDate}
+	</select>
+	<!-- 해당 날짜 해당 의사의 예약가능 시간 삽입 -->
+	<insert id="insDoctorResTime" parameterType="com.agilog.beans.ReservationBean">
+		INSERT INTO RT VALUES(#{resCoCode},#{resDoCode},TO_DATE(#{resDate}),#{resTime},0)
+	</insert>
+	<update id="updDoctorResTime" parameterType="com.agilog.beans.ReservationBean">
+		UPDATE RT SET RT_COUNT = #{resCount} WHERE RT_DOCOCODE = #{resCoCode} AND RT_DOCODE = #{resDoCode} AND RT_DATE = #{resDate}
+	</update>
+	
+	<!-- 마이페이지 주소 변경 -->
+	<update id="updAddress" parameterType="com.agilog.beans.MyPageBean">
+		UPDATE SU SET SU_ADDRESS = #{suAddress} WHERE SU_CODE = #{suCode}
+	</update>
 </mapper>

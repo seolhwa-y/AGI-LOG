@@ -3,7 +3,9 @@ package com.agilog.services;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +63,8 @@ public class SkDailyDiary implements ServiceRule {
 				Date d = form.parse(ddb.getDdDate());
 				ddb.setDdDate(sdf.format(d));
 				
+				Map<String, Object> map = new HashMap<String, Object>();
+				
 				// 0개 일때 !false=>좋아요 누른적 없음 => 좋아요 등록
 				if (!this.convertToBoolean(this.session.selectOne("isDdLike", ddb))) {
 					if (this.convertToBoolean(this.session.insert("insDdLike", ddb))) {
@@ -70,7 +74,8 @@ public class SkDailyDiary implements ServiceRule {
 						ddb.setLikes(this.session.selectOne("getDdLike", ddb));
 						// 해당일기 좋아요 수 업데이트
 						if (this.convertToBoolean(this.session.update("updDdLike", ddb))) {
-							model.addAttribute("ddLike", ddb);
+							map.put("ddLike", ddb);
+							model.addAttribute("ddLike", map);
 						}
 					}
 				} else { // 1개 일때 !true=>좋아요 누른적 있음 => 좋아요 삭제
@@ -81,7 +86,8 @@ public class SkDailyDiary implements ServiceRule {
 						ddb.setLikes(this.session.selectOne("getDdLike", ddb));
 						// 해당일기 좋아요 수 업데이트
 						if (this.convertToBoolean(this.session.update("updDdLike", ddb))) {
-							model.addAttribute("ddLike", ddb);
+							map.put("ddLike", ddb);
+							model.addAttribute("ddLike", map);
 						}
 					}
 				}

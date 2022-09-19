@@ -134,7 +134,7 @@ public interface JsMapperInterface {
 	public List<ScheduleBean> getScheduleList(BebeCalendarBean bcb);
 	public String getNewScheduleCode(ScheduleBean sb);
 	public int updateReservationStatus(ReservationBean rb);
-	public List<ReservationBean> getCoResList(ReservationBean rb);
-    public int insResTIme(ReservationBean rb);
-    public int delResTime(ReservationBean rb);
+//	public List<ReservationBean> getCoResList(ReservationBean rb);
+//  public int insResTIme(ReservationBean rb);
+//  public int delResTime(ReservationBean rb);
 }

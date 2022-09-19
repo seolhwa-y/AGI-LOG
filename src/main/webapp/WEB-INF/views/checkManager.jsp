@@ -17,16 +17,15 @@
 			
 			accessArea.innerHTML = "<span> ${companyBean.coName}님 </span>";
 			accessArea.innerHTML += "<span onclick=\"movePage(\'CompanyLogout\')\">로그아웃</span>";
-			accessArea.innerHTML += "<span onclick=\"movePage(\'MoveMainPage\')\">일반회원</span>";	
 		}
 	}
 	
 	function checkManager() {
 		let form = document.getElementById("serverForm");
 		
-		let coManagerCode = document.getElementsByName("coManagerCode")[0];
-		form.appendChild(coManagerCode);
-
+		let coManagerCode = document.getElementsByName("coManagerCode")[0];	
+		form.appendChild(createInput("hidden","coManagerCode",coManagerCode.value,null,null));
+		
 		form.action = "CheckManager";
 		form.method = "post";
 		form.submit();
