@@ -177,7 +177,6 @@ function insertDailyDiary(returnAction){
 	form.enctype = "multipart/form-data";
 	
 	form.submit();
-	modalClose('');
 
 	if (returnAction != '') {
 		alert("test1 : " + returnAction);
@@ -359,12 +358,14 @@ function viewFeed(ajaxData) {
 		comment += "</div>";
 	}
 	comment += "</div>";
-
-	input += "<div style = 'margin-top: 9%;'>";
-	input += "<input class=\"ddComment mEditInput\" />";
-	input += "<button class=\"mMiniBtn btn\" onClick=\"insertDailyDiaryComment("+ ddFeed.ddCode + "," + ddFeed.suCode + "," + ddFeed.ddDate + ")\">확인</button>";
-	input += "</div>";
 	
+	if(suCode != null){
+		input += "<div style = 'margin-top: 9%;'>";
+		input += "<input class=\"ddComment mEditInput\" />";
+		input += "<button class=\"mMiniBtn btn\" onClick=\"insertDailyDiaryComment("+ ddFeed.ddCode + "," + ddFeed.suCode + "," + ddFeed.ddDate + ")\">확인</button>";
+		input += "</div>";
+	}
+
 	modalContent.innerHTML += comment;
 	modalFoot.innerHTML += input;
 }

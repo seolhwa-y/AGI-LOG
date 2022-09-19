@@ -100,4 +100,7 @@
 	<select id="getDdpCode" parameterType="com.agilog.beans.DailyDiaryBean" resultType="int">
 		SELECT MAX(TO_NUMBER(DP_CODE)) FROM DAILYDIARYPHOTO WHERE DP_DDCODE = #{ddCode}
 	</select>
+	<select id="getFbPp" parameterType="com.agilog.beans.PostBean" resultType="com.agilog.beans.PostPhotoBean">
+        SELECT FP_CODE AS FPCODE, FP_FBCODE AS FPFBCODE, FP_FBSUCODE AS FPFBSUCODE, FP_FBDATE AS FPFBDATE, FP_LINK AS FPLINK FROM FREEBOARDPHOTO WHERE FP_FBCODE = #{fbCode}
+    </select>
 </mapper>
