@@ -182,7 +182,7 @@ public class Authentication implements ServiceRule {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		mav.setViewName("companyLogin");
+		mav.setViewName("dashBoard");
 	}
 
 	// 추가해주기~~~~

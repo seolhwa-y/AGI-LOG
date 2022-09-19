@@ -50,6 +50,9 @@ public interface JpMapperInterface {
 	public List<ReservationBean> getReservationInfo(ReservationBean rb);
 	public List<ReservationBean> getReservationCategory(ReservationBean rb);
 	public List<HealthDiaryBean> getHealthDataList(HealthDiaryBean hb);
+	public ReservationBean getPatientComment(ReservationBean rb);
+	public int isPrivateData (ReservationBean rb);
+	public String isResOpenData (ReservationBean rb);
 	public String checkDoctorCode(CompanyBean cb);
 	public String isDoctorMember(DoctorBean db);
 	public int isDoctorCode(DoctorBean db);
