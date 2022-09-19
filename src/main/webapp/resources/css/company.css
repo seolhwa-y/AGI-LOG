@@ -6,6 +6,7 @@
 	text-align: center;
 	line-height: 1.5;
 	margin: 0 auto;
+	margin-top: 1rem;
 }
 .doctorMgrM {
 	letter-spacing: 7px;
@@ -122,10 +123,12 @@
 #doctorMgrTitleDiv {
 	width: 70rem;
 	height: 2rem;
+	padding: 3rem;
 	margin: 0 auto;
 }
 
 #addDocBtn {
+	float: right;
 	margin-left: 59rem;
 }
 
