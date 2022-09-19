@@ -68,21 +68,21 @@ public class ThHomeController {
 	@RequestMapping(value = "/InsertPost", method = RequestMethod.POST)
 	public ModelAndView insertPost(ModelAndView mav, @RequestParam() MultipartFile[] files, @ModelAttribute PostBean pb) {
 		System.out.println("인설트 포스트 컨트롤러 진입 체크1");
-		System.out.println("testfile : "+files.length);
-		System.out.println("testfile : "+files[0].getOriginalFilename());
-		mav.addObject(files);
+		mav.addObject("files", files);
 		mav.addObject(pb);
 		this.board.backController(mav, 65);
 		return mav;
 	}
 	
-	@RequestMapping(value = "/Upload", method = RequestMethod.POST)
-	public ModelAndView upload(ModelAndView mav, @RequestParam() MultipartFile[] files) {
-		System.out.println(files[0].getOriginalFilename());
+	@RequestMapping(value = "/UpdatePost", method = RequestMethod.POST)
+	public ModelAndView updatePost(ModelAndView mav, @ModelAttribute PostBean pb) {
+		System.out.println("upd 포스트 컨트롤러 진입 체크1");
+		mav.addObject(pb);
+		this.board.backController(mav, 102);
 		return mav;
 	}
 
-	@RequestMapping(value = "/MoveFreeBoardPage", method = RequestMethod.GET)
+	@RequestMapping(value = "/MoveFreeBoard", method = RequestMethod.GET)
 	public ModelAndView moveBoardPage(ModelAndView mav, @ModelAttribute BoardBean bb) {
 		mav.addObject(bb);
 		this.board.backController(mav, 8);
@@ -98,9 +98,28 @@ public class ThHomeController {
 		return mav;
 	}
 
+	//게시글 삭제
+	@RequestMapping(value = "/MoveUpdateFBPost", method = RequestMethod.POST)
+	public ModelAndView moveUpdateFBPost(ModelAndView mav, @ModelAttribute PostBean pb) {
+		mav.addObject(pb);
+		this.board.backController(mav, 101);
+		return mav;
+	}
+
+	//게시글 삭제
+	@RequestMapping(value = "/DeleteFBPost", method = RequestMethod.POST)
+	public ModelAndView deleteFBPost(ModelAndView mav, @ModelAttribute PostBean pb) {
+		mav.addObject(pb);
+		this.board.backController(mav, 96);
+		return mav;
+	}
+
 	//감성일기 등록
 	@RequestMapping(value = "/InsertDailyDiary", method = RequestMethod.POST)
-	public ModelAndView insertDailyDiary(ModelAndView mav, @ModelAttribute DailyDiaryBean db) {
+	public ModelAndView insertDailyDiary(ModelAndView mav, @RequestParam() MultipartFile files, @ModelAttribute DailyDiaryBean db) {
+		System.out.println("insert daily diary 진입 체크1");
+		mav.addObject("files", files);
+		System.out.println(files.getOriginalFilename());
 		mav.addObject(db);
 		this.dailyDiary.backController(mav, 35);
 		return mav;

@@ -9,6 +9,8 @@
 <script src="https://use.fontawesome.com/releases/v6.1.2/js/all.js"></script>
 <link rel="stylesheet" href="/res/css/agiMain.css">
 <link rel="stylesheet" href="/res/css/infoBoard.css">
+<!-- 알림창 꾸미기 -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <!-- 카카오 스크립트 -->
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 <!-- 네이버 스크립트 -->
@@ -108,7 +110,6 @@ function updateInput(fbCode, fbSuCode, fcCode, fcDate, fbDate){
 	fcContent.innerHTML += "<button class='submitBtn btn' onClick='updateBoardComment(" + fbCode + "," + fbSuCode + "," + fcCode + "," + fcDate + "," + fbDate +")'>확인</button>";
 }
 
-
 // 자유게시판 댓글 전부 AJAX
 // 1. 등록 완료
 function insertBoardComment(fbCode, fbSuCode, fbDate) {
@@ -186,8 +187,30 @@ function postComment(ajaxData) {
 	
 	swal("요청", "요청하신 작업을 완료하였습니다!", "success", { button: "완료"});
 }
+function deletePost(fbCode) {
+	let form = document.getElementById("serverForm");
+	
+	// 경고
+    swal({
+        title: "삭제하시겠습니까?",
+        text: "삭제된 게시글은 복구할 수 수 없습니다.",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    })
+        .then((willDelete) => {
+            if (willDelete) {
+            	form.appendChild(createInput("hidden","fbCode",fbCode,null,null));
 
-
+            	form.action = "DeleteFBPost";
+            	form.method = "post";
+            	
+            	form.submit();
+            } else {
+                swal("삭제를 취소하셨습니다.");
+            }
+    });
+}
 </script>
 </head>
 <body onload="getInfo()" id="body">
@@ -223,7 +246,7 @@ function postComment(ajaxData) {
 					<ul class="menus">
 						<li class="nav-text"><span>게시판</span></li>
 						<li class="nav-sText" onclick="movePage('MoveBoardPage')"><span>전체글</span></li>
-						<li class="nav-sText" onclick="movePage('MoveFreeBoard')"><span>자유게시판</span></li>
+						<li class="nav-sText" onclick="movePage('MoveBoardPage')"><span>자유게시판</span></li>
 						<li class="nav-sText" onclick="movePage('MoveInfoBoard')"><span>육아정보</span></li>
 					</ul>
 				</nav>
