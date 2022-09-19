@@ -101,13 +101,6 @@ public class JpHomeController {
 		this.board.backController(mav, 58);
 		return mav;
 	}
-	//전체 게시판 조회
-	@RequestMapping(value = "/MoveBoardPage", method = RequestMethod.GET)
-	public ModelAndView moveBoardPage(ModelAndView mav, @ModelAttribute PostBean pb) {
-		mav.addObject(pb);
-		this.board.backController(mav, 8);
-		return mav;
-	}
  
 	//감성일기 정렬
 	@RequestMapping(value = "/ChangeDailyDiary", method = RequestMethod.GET)

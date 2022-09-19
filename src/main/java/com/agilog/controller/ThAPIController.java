@@ -23,14 +23,6 @@ public class ThAPIController {
 	@Autowired
 	DailyDiary2 dailyDiary;
 
-	@PostMapping("/upload_ok2")
-	public Model upload_ok2(Model model, MultipartHttpServletRequest files) {
-		
-		System.out.println("API 컨트롤러 진입 체크1");
-		this.board.backController(model, files, 1);
-		return model;
-	}
-
 	//피드 내용 불러오기
 	@SuppressWarnings("unchecked")
 	@PostMapping("/GetDailyDiaryFeed")

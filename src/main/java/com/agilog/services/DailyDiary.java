@@ -61,6 +61,9 @@ public class DailyDiary implements ServiceRule {
 		if(d!=null&&d.getMoveWrite()!=null&&d.getMoveWrite().equals("1")) {
 			mav.addObject("isWrite",true);
 		}
+		if (d.getReturnAction() != null) {
+			mav.addObject("returnAction", d.getReturnAction());
+		}
 		// db에서 최신순으로 전체피드 가져옴
 		mav.addObject("allDailyDiaryList", this.makeDialyFeed(this.session.selectList("getDailyDiaryFeed")));
 		mav.setViewName("dailyDiary");

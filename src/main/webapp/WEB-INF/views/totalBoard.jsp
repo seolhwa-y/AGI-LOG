@@ -86,6 +86,16 @@ function kakaoLogout() {
 		Kakao.Auth.setAccessToken(undefined)
 	}
 }
+
+function boardContent(num) {
+	let form = document.getElementById("serverForm");
+	
+	form.appendChild(createInput("hidden","fbCode",num,null,null));
+
+	form.action = "MoveShowFbPost";
+	form.method = "post";
+	form.submit();
+}
 </script>
 </head>
 <body onload="getInfo()" id="body">

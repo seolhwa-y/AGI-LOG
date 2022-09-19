@@ -1,0 +1,262 @@
+ul {
+    list-style: none;
+	}
+	.feed {
+		float: left;
+		margin-left: 2%;
+		margin-right: 6%;
+		margin-bottom: 2%;
+	}
+
+	#rightArea{
+		width: 85%;
+		height: 100%;
+		overflow-x:hidden;
+		padding: 0.4% 0 0 0;
+	}
+	#rightArea_top{
+		width: 100%;
+    	height: 5%;
+    	padding: 1% 5%;
+    	margin-left: 3px;
+	}
+	#rightArea_middle{
+		margin-top: 1%;
+		width: 100%;
+		height: 89%;
+		overflow-x:hidden;
+		overflow-y: scroll;
+	}
+	.like{
+	    color: red;
+	    font-size: 130%;
+	    float: right;
+	    margin-right: 4%;
+	}
+	.feed{
+		width: 25%;
+		height: 389px;
+		border-radius: 5px;
+		background-color: white;
+		box-shadow: 4px 4px 10px;
+	}
+	.feed_top{
+		width: 100%;
+		height: 70%;
+		border-bottom: 1px solid #616161;
+	}
+	.feed_bottom{
+
+		width: 90%;
+		height: 23%;
+		margin: 3% auto;
+		font-size: 140%;
+	}
+	#sortArea{ 
+
+		float: left;
+		height: 95%;
+		width: 10%;
+	}
+	#hashTagArea{
+
+		float: left;
+		height: 95%;
+		width: 19%;
+		margin-left: 4%;
+	}
+	#writeFeedArea{
+
+		float: right;
+		height: 95%;
+		width: 10%;
+		margin-right: 7%;
+	}
+	#sort{
+		height: 100%;
+		width: 100%;
+		font-size: 140%;
+	}
+	#hashTag{
+		height: 90%;
+		width: 100%;
+		font-size: 140%;
+	}
+	#writeFeed{
+		height: 90%;
+		width: 100%;
+		font-size: 140%;
+	}
+
+	#feedDate{
+		margin-bottom: 3%;
+		border-bottom: 1px solid dimgray;
+	}
+	#searchHashTag{
+		border: solid 1px black;
+		width: 5%;
+		height: 100%;
+		margin-left: 2%;
+		font-size: 110%;
+	}
+	
+	/* 모달창 */
+	
+	.insWriteTable{
+		margin-left: 1%;
+		margin-top: 3rem;
+		font-size: 1.5rem;
+		
+	}
+	.tdValue{
+		text-align: left;
+		padding-top: 4%;
+	}
+	.tdName{
+		padding-top: 4%;
+		text-align: center;
+		width : 7rem;
+	}
+	.mBasicInput {
+    width: 30rem;
+    height: 2rem;
+	}
+	.mMiniInput {
+    height: 20rem;
+    width: 20rem;
+	}
+	.statusCheck {
+	
+	}
+	.modal{
+		color: dimgray;
+	}
+	.name{
+		font-size: 1.4rem;
+		margin: 1%;
+		color: dimgray;
+	}
+	.mBtnO {
+    height: 2.5rem;
+    width: 20rem;
+    box-shadow: 0px 5px 0px 0px rgb(239 157 171);
+    background-color: rgb(255, 194, 204);
+    font-size: 1.1rem;
+    color: dimgray;
+    margin-left: 20%;
+	}
+	.modal_foot{
+		position: relative;
+	    display: flex;
+	    margin: 5% auto;
+	    justify-content: space-between;
+	    width: 70%;
+    	margin-left: 20%;
+	}
+	.modal_head{
+		font-size: 3rem;
+		height: 8%;
+    	margin-left: 7%;
+	}
+	.modal_content{
+		height: 70%;
+    	margin-left: 10%;
+	}
+	.close{
+		float:right;
+	}
+	.dateInput{
+		width: 70%;
+	}
+	.ddModal_body {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    width: 640px;
+    height: 730px;
+    padding: 20px;
+    text-align: center;
+    /*background-color: rgb(255, 255, 255);*/
+    background-image: url("/res/img/newModal.png");
+    background-size : cover;
+    border-radius: 10px;
+    box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+    transform: translateX(-50%) translateY(-50%);
+    
+	}
+
+	.viewFeedHead {
+	    width: 50%;
+	    margin-left: 25%;
+		margin-top : 5%;
+	    display: flex;
+	}
+	
+	#feed_top, img {
+	    width: 100%;
+	    height: 100%;
+	    border-radius: 5px 5px 0 0;
+    	margin-right: 37%;
+	}
+	
+	svg:not(:host).svg-inline--fa, svg:not(:root).svg-inline--fa {
+	    overflow: visible;
+	    box-sizing: content-box;
+	    margin-top: -5%;
+	}
+	
+	.viewLike {
+	    color: red;
+	    float: right;
+    	margin-right: 13%;
+    	margin-top: 41.5%;
+	    font-size: 1.5rem;
+    }
+    
+    .viewLike:hover{
+    	cursor: pointer;
+	}
+    
+    #viewFeedDate {
+	    float: left;
+	    margin-top: 43%;
+	    font-size: 1.5rem;
+	    width: 66%;
+    }
+    
+    #viewFeedContent {
+	    margin-top: 48%;
+	    border-top: 1px black solid;
+	    width: 83%;
+	    margin-left: 7%;
+	    text-align: left;
+	    font-size: 2rem;
+    }
+    
+    #UDIcon {
+	    margin-left: 75%;
+	    margin-top : -4%;
+	    width: 20%;
+    }
+    
+    #updContent {
+	    height: 7rem;
+	    width: 25rem;
+	    font-size: 1.5rem;
+    	resize: none;
+    }
+    #dailySelect{
+    	box-sizing: border-box;
+		width: 7.5rem;
+		height: 2.5rem;
+		padding: 4px;
+		font-size: 20px;
+		border-radius: 6px;
+		color: dimgray;
+	}
+	option {
+  		padding: 4px;
+  		font-size: 20px;
+  		color: dimgray;
+	}
+    
