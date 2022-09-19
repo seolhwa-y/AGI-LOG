@@ -26,9 +26,11 @@ import com.agilog.beans.BoardBean;
 import com.agilog.beans.CompanyBean;
 import com.agilog.beans.MultiUploadVO;
 import com.agilog.beans.PostBean;
+import com.agilog.beans.PostCommentBean;
 import com.agilog.beans.PostPhotoBean;
 import com.agilog.beans.ReservationBean;
 import com.agilog.beans.UploadVO;
+import com.agilog.services3.Board3;
 import com.agilog.utils.Encryption;
 import com.agilog.utils.Paging;
 import com.agilog.utils.ProjectUtils;
@@ -41,7 +43,8 @@ public class Board2 {
 	@Autowired
 	private ProjectUtils pu;
 	private Paging page;
-	
+	@Autowired
+	private Board3 board;
 	public Board2() {}
 	
 	public void backController(ModelAndView mav, int serviceCode) {
@@ -120,8 +123,6 @@ public class Board2 {
 				PostBean pb = (PostBean) mav.getModel().get("postBean");
 				PostPhotoBean ppb = new PostPhotoBean();
 				ppb.setFpFbCode(pb.getFbCode());
-				
-				System.out.println(ppb.getFpFbCode());
 				
 				List<PostPhotoBean> ppbl = this.session.selectList("getPhotoList", ppb);
 				
@@ -203,10 +204,85 @@ public class Board2 {
 	
 	private void moveShowFbPostCtl(ModelAndView mav) {
 		PostBean pb = (PostBean) mav.getModel().get("postBean");
-		
+
 		mav.addObject("content",this.makePostView(this.session.selectOne("getFbPostContent", pb)));
+		this.showFreePostCtl(mav,pb);
 		mav.setViewName("post");
 	}
+	
+	// 특정 게시글 댓글 내용 보기
+		private void showFreePostCtl(ModelAndView mav, PostBean pb) {
+			PostCommentBean pcb = new PostCommentBean();
+			StringBuffer sb = new StringBuffer();
+
+			pcb.setFcFbCode(pb.getFbCode());
+			pcb.setFcFbSuCode(pb.getFbSuCode());
+			pcb.setFcFbDate(pb.getFbDate());
+			
+			List<PostCommentBean> pcList = this.session.selectList("getPostCommentList", pcb);
+
+			try {
+				AuthBean ab = (AuthBean) this.pu.getAttribute("accessInfo");
+				
+				if(ab != null) {
+					if(pcList.size() != 0) {
+						mav.addObject("fbComment", this.makeCommentHTML(pcList));
+					} else {
+						sb.append("<div>");
+						sb.append("<input class=\"fbComment commentInput\" />");
+						sb.append("<button class=\"submitBtn btn\" onClick=\"insertBoardComment('"+ pcb.getFcFbCode() + "','" + pcb.getFcFbSuCode() + "','" + pcb.getFcFbDate() + "')\">확인</button>");
+						sb.append("</div>");
+						sb.append("<div id='commentList'></div>");
+						mav.addObject("fbComment", sb.toString());
+					}
+				} 
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		// 댓글 내용 양식 만들기
+		private String makeCommentHTML(List<PostCommentBean> pcList) {
+			StringBuffer sb = new StringBuffer();
+			int i = -1;
+
+			sb.append("<div id='commentList'>");
+
+			for(PostCommentBean pb : pcList) {
+				i++;
+
+				try {
+					AuthBean ab = (AuthBean)this.pu.getAttribute("accessInfo");
+
+					sb.append("<div class = 'comment " + i + "'>");
+					// 기본 프로필 사진 or 내가 등록한 프로필 사진
+					if(pcList.get(i).getSuPhoto() != null) {
+						sb.append("<img class='profileImage' src=" + pcList.get(i).getSuPhoto() + ">");
+					} else {
+						sb.append("<img class='profileImage' src='/res/img/profile_default.png'>");
+					}
+
+					sb.append("<div class = 'suNickname'>" + pcList.get(i).getSuNickname() + "</div>");
+					sb.append("<div class=\"fcContent " + pcList.get(i).getFcDate() + "\">" + pcList.get(i).getFcContent() + "</div>");
+
+					// 댓글 수정, 삭제 버튼 :: 내가 쓴 댓글의 경우만 수정, 삭제 버튼 생성
+					if(ab.getSuCode().equals(pcList.get(i).getFcSuCode())) {
+						sb.append("<i class=\"fa-solid fa-pen updBtn editBtn\" onClick=\"updateInput(" + pcList.get(i).getFcFbCode() + "," + pcList.get(i).getFcFbSuCode() + "," + pcList.get(i).getFcCode() + "," + pcList.get(i).getFcDate() + "," + pcList.get(i).getFcFbDate() + ")\"></i>");
+						sb.append("<i class=\"fa-solid fa-trash-can delBtn editBtn\" onClick=\"deleteBoardComment(" + pcList.get(i).getFcFbCode() + "," + pcList.get(i).getFcFbSuCode() + "," + pcList.get(i).getFcCode() + "," + pcList.get(i).getFcDate() + "," + pcList.get(i).getFcFbDate() + ")\"></i>");
+					}
+					sb.append("</div>");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			sb.append("</div>");
+			sb.append("<div>");
+			sb.append("<input class=\"fbComment commentInput\" />");
+			sb.append("<button class=\"submitBtn btn\" onClick=\"insertBoardComment("+ pcList.get(0).getFcFbCode() + "," + pcList.get(0).getFcFbSuCode() + "," + pcList.get(0).getFcFbDate() + ")\">확인</button>");
+			sb.append("</div>");
+
+			return sb.toString();
+		}
 	
 	private void searchPostCtl(ModelAndView mav) {
 		
@@ -431,7 +507,7 @@ public class Board2 {
 			sb.append("</tr>");
 			for(int idx=0; idx<fbBoardList.size(); idx++) {
 				PostBean pb = (PostBean)fbBoardList.get(idx);
-				sb.append("<tr class=\"selectBoard\" onClick=\"boardContent("+ pb.getFbCode() +")\">");
+				sb.append("<tr class=\"selectBoard\" onClick=\"boardContent('"+ pb.getFbCode() + "','" + pb.getFbSuCode() + "','" + pb.getFbDate() +"')\">\n");
 				sb.append("<td class=\"freeBoardTitle\">"+ pb.getFbTitle() +"</td>");
 				try {
 					sb.append("<td class=\"freeBoardWriter\">"+ this.enc.aesDecode(pb.getFbSuName(), pb.getFbSuCode()) +"</td>");

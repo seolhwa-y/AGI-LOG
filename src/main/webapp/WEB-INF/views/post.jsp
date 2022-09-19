@@ -49,10 +49,10 @@ function getInfo() {
 		accessArea.innerHTML = "";
 		accessArea.innerHTML = "<span onclick=\"movePage('MoveMyPage')\"> ${accessInfo.suNickName}님 </span>";
 		if ("${accessInfo.type}"== "kakao") {
-			accessArea.innerHTML +="<span onclick=\"kakaoLogout();\">로그아웃</span>"
+			accessArea.innerHTML +="<span onclick=\"kakaoLogout();\">로그아웃</span>";
 		} else if ("${ accessInfo.type }"== "naver") {
-			accessArea.innerHTML +="<span onclick=\"naverLogout(); return false;\">로그아웃</span>"
-		} else ;
+			accessArea.innerHTML +="<span onclick=\"naverLogout(); return false;\">로그아웃</span>";
+		} else 
 		accessArea.innerHTML += "<span onclick=\"movePage('MoveCompanyLoginPage')\">기업회원</span>";
 	}
 }
@@ -156,35 +156,36 @@ function postComment(ajaxData) {
 	const fbComment = ajax.fbComment;
 	const suCode = ajax.suCode;
 	console.log(ajax);
-
-	document.getElementsByClassName("fbComment")[0].value = "";
-	let commentList = document.getElementById("commentList");
 	
-	commentList.innerHTML = "";
+	let commentList = document.getElementById("commentList");
+	document.getElementsByClassName("fbComment")[0].value = "";
+	
+	let comment = "";
 
 	for(i = 0; i < fbComment.length; i++){
-		commentList.innerHTML += "<div class = 'comment " + i + "'>";
+		comment += "<div class = 'comment " + i + "'>";
 		// 프로필 사진이 없을 경우 기본 이미지
 		if(fbComment[i].suPhoto != null) {
-			commentList.innerHTML += "<img class='profileImage' src=" + fbComment[i].suPhoto + ">";
+			comment += "<img class='profileImage' src=" + fbComment[i].suPhoto + ">";
 		} else {
-			commentList.innerHTML += "<img class='profileImage' src='/res/img/profile_default.png'>";
+			comment += "<img class='profileImage' src='/res/img/profile_default.png'>";
 		}
 		
 		// 닉네임
-		commentList.innerHTML += "<div class = 'suNickname'>" + fbComment[i].suNickname + "</div>";
+		comment += "<div class = 'suNickname'>" + fbComment[i].suNickname + "</div>";
 
 		// 댓글 내용
-		commentList.innerHTML += "<div class='fcContent'" + fbComment[i].fcDate + ">" + fbComment[i].fcContent + "</div>";
+		comment += "<div class='fcContent'" + fbComment[i].fcDate + ">" + fbComment[i].fcContent + "</div>";
 
 		// 수정 삭제 버튼
 		if(suCode === fbComment[i].fcSuCode) {
-			commentList.innerHTML += "<i class='fa-solid fa-pen updBtn editBtn' onClick='updateInput(" + fbComment[i].fcFbCode + "," + fbComment[i].fcFbSuCode + "," + fbComment[i].fcCode + "," + fbComment[i].fcDate +")'></i>";
-			commentList.innerHTML += "<i class='fa-solid fa-trash-can delBtn editBtn' onClick='deleteBoardComment(" + fbComment[i].fcFbCode + "," + fbComment[i].fcFbSuCode + "," + fbComment[i].fcCode + "," + fbComment[i].fcDate +")'></i>";
+			comment += "<i class='fa-solid fa-pen updBtn editBtn' onClick='updateInput(" + fbComment[i].fcFbCode + "," + fbComment[i].fcFbSuCode + "," + fbComment[i].fcCode + "," + fbComment[i].fcDate +")'></i>";
+			comment += "<i class='fa-solid fa-trash-can delBtn editBtn' onClick='deleteBoardComment(" + fbComment[i].fcFbCode + "," + fbComment[i].fcFbSuCode + "," + fbComment[i].fcCode + "," + fbComment[i].fcDate +")'></i>";
 		}
-		commentList.innerHTML += "</div>";
+		comment += "</div>";
+		commentList.innerHTML = comment;
 	}
-	
+
 	swal("요청", "요청하신 작업을 완료하였습니다!", "success", { button: "완료"});
 }
 function updatePost(fbCode) {
@@ -218,6 +219,7 @@ function deletePost(fbCode) {
                 swal("삭제를 취소하셨습니다.");
             }
     });
+}
 </script>
 </head>
 <body onload="getInfo()" id="body">

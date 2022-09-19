@@ -25,6 +25,32 @@
 <script>
 	Kakao.init('2afdabad57ed92e1cc9de5bd4baed321');
 	function getInfo() {	
+		/* 테마 이미지 or 단순색상 */
+		let body = document.getElementById("body");
+		
+		let suTheme = "${accessInfo.suTheme}";
+		let sideMenu = document.querySelector(".side-menu");
+		if(suTheme != ""){
+			if(suTheme.indexOf("#") == 0){
+				//단순색상
+				/* 테마 사용자값으로 설정 */
+				//배경css제거
+				body.className = "";
+				
+				let color = suTheme.split(":");
+
+				body.style.background = color[0];
+				sideMenu.style.background= color[1];
+
+			}else{
+				//배경이미지
+				body.style.background = "none";
+				body.className = "bgImage"+suTheme;
+				sideMenu.style.background= "whitesmoke";
+
+			}
+		}
+		
 		let accessArea = document.getElementById("accessArea");
 		if ("${accessInfo.type}" != null && "${accessInfo.type}" != "") {
 			accessArea.innerHTML = "";
@@ -112,7 +138,7 @@
     
                 function animate(){
                     requestAnimationFrame(animate);
-                    gltf.scene.rotation.y -= 0.08;
+                    gltf.scene.rotation.y += 0.03;
                     renderer.render(scene, camera);
                 }
                 animate();
@@ -147,7 +173,7 @@
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
 						<path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
 					</svg>
-				   	회원가입시 등록한 주소 기반으로 검색됩니다.
+				   	회원가입 시 등록한 주소 기반으로 검색됩니다.
 				</div>
 	        </div>
             <div class="map_wrap" style = "margin: 0 auto; width: 100%; height: 90%;">
@@ -239,7 +265,7 @@
             			var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 
             			//  결과값으로 받은 위치를 마커로 표시합니다
-            			 var marker = new kakao.maps.Marker({
+            			 marker = new kakao.maps.Marker({
             			     map: map,
             			     position: coords
             			 });
@@ -256,7 +282,7 @@
 
             			// 마커에 클릭 이벤트를 등록한다 (우클릭 : rightclick)
             			 kakao.maps.event.addListener(marker, 'click', function () {
-
+            				 alert("회원가입 시 주소지 입니다.");
             			 });
             		}
             	}); 
@@ -516,13 +542,13 @@
         			alert('키워드를 입력해주세요!');
         			return false;
         		}
-        		
+        		callSearchPlaces(keyword);
         		if(keyword.includes("동") || keyword.includes("구")){
         			console.log("1");
-        			callSearchPlaces();
+        			callSearchPlaces(keyword);
         		}  else {
         			console.log("2");
-        			callSearchPlaces();
+        			callSearchPlaces(keyword);
 /*             		postAjaxJson("GetBabyListInfo", "", "callSearchPlaces"); */
         		} 
 
@@ -532,11 +558,22 @@
         	function callSearchPlaces(ajaxData) {
         		let keyword = document.getElementById('keyword').value;
         		
-        		// 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
-        		ps.keywordSearch(keyword, placesSearchCB, {
-        			// 특정 위치에서 검색
-        		    location: new kakao.maps.LatLng(37.566826, 126.9786567)
-        		});
+        		if(keyword.includes("동") || keyword.includes("구")){
+        			console.log("1");
+            		// 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
+            		ps.keywordSearch(keyword, placesSearchCB, {
+            			// 특정 위치에서 검색
+            		    location: new kakao.maps.LatLng(37.566826, 126.9786567)
+            		});
+
+        		}  else {
+        			console.log("2");
+            		// 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
+            		ps.keywordSearch(keyword + suAddress, placesSearchCB, {
+            			// 특정 위치에서 검색
+            		    location: new kakao.maps.LatLng(37.566826, 126.9786567)
+            		});
+        		} 
         	}
 
         	// 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
@@ -607,7 +644,8 @@
 					</div>
 					<div id = "cans">
 	    				<canvas id = "canvas"></canvas>
-	    				<h3>예약신청 되었습니다.<br>문자를 확인해 주세요.</h3>
+	    				<h1>예약신청 되었습니다.</h1>
+	    				<h3 style="color:#b0adad">예약이 완료가 되면 문자가 도착합니다.</h3>
     				</div>
 				</div>
             <div class="modal_foot">

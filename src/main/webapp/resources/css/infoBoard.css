@@ -82,8 +82,9 @@
 	margin: 0 auto;
 	margin-top: 1rem;
 	width: 79rem;
-    height: 43rem;
+/*     height: 43rem; */
 }
+
 .pTitle{
 	margin: 0 auto;
     width: 49rem;
@@ -170,4 +171,34 @@
 	float: left;
     margin-left: 46%;
     margin-top: 2rem;
+}
+
+#commentList{
+	width: 79rem;
+	overflow : auto;
+}
+
+.comment {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin-left: 6%;
+	margin-top: 2%;
+	margin-right: 3%;
+}
+
+
+.profileImage {
+	width: 2rem;
+	height: 2rem;
+}
+
+.suNickname {
+	width: 10%;
+	text-align: left;
+}
+
+.fcContent {
+	width: 79%;
+	text-align: left;
 }
