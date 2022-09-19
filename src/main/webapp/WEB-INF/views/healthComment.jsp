@@ -134,7 +134,7 @@ function kakaoLogout() {
 				<div id="buttonArea">
                 </div>
                 <div id="diaryArea">
-                    ${commentList}
+                   ${commentList}
                 </div>
                 <div class="up"><a href="#buttonArea">위로</a></div>
 			</div>

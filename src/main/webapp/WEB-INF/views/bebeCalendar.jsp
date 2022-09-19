@@ -437,10 +437,13 @@ function showDateDetail(ajaxData){
 	resInfoCheck = dateInfo.reservationInfo;
 	if(resInfoCheck == null){
 		//예약내역 없을 떄
+		alert("예약내역 없음");
 		resInfo.innerHTML = "예약 : ";
 	}else{
 		//예약내역 있을 때
-		resInfo.innerHTML = "예약 : "+dateInfo.reservationInfo[0].resCoName+"&nbsp&nbsp<i class=\"fa-solid fa-trash-can delBtn\" onclick=\"deleteReservation(\'"+dateInfo.reservationInfo[0].resCode+","+dateInfo.reservationInfo[0].resDate+","+dateInfo.reservationInfo[0].resCoName+"\')\"></i>";
+		alert("예약내역 있음");
+		alert(dateInfo.reservationInfo[0].resCoName);
+		resInfo.innerHTML = "예약 : "+dateInfo.reservationInfo[0].resDate+"&nbsp&nbsp"+dateInfo.reservationInfo[0].resCoName+"&nbsp&nbsp<i class=\"fa-solid fa-trash-can delBtn\" onclick=\"deleteReservation(\'"+dateInfo.reservationInfo[0].resCode+","+dateInfo.reservationInfo[0].resDate+","+dateInfo.reservationInfo[0].resCoName+"\')\"></i>";
 	}
 	// 개인일정여부에 따라 내용 표시
 	schList.innerHTML="";
@@ -486,11 +489,11 @@ function deleteReservation(resInfo){
 	//code,date,coName
 	let info = [];
 	info = resInfo.split(",");
-	
+	let date = document.getElementById("modalTitle").innerText;
 	let delConfirm = confirm(info[2]+" 예약을 취소하시겠습니까?");
 	if(delConfirm){
 		//확인 누름
-		let clientData = "resCode="+info[0]+"&resDate="+info[1];
+		let clientData = "resCode="+info[0]+"&resTime="+info[1]+"&resDate="+date;
 		postAjaxJson("DeleteReservation",clientData,"showDateDetail");
 	}else{
 		//취소 누름

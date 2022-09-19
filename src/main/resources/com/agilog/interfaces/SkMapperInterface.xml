@@ -66,7 +66,15 @@
 	</delete>
 	<!-- 전체 진료기록 조회 -->
 	<select id="getDoctorCommentList" parameterType="com.agilog.beans.ReservationBean" resultType="com.agilog.beans.ReservationBean">
-		SELECT * FROM COMMENTLIST WHERE SUCODE = #{resSuCode}
+		SELECT BBCODE AS RESBBCODE,
+		       BBNAME AS RESBBNAME,
+		       CONAME AS RESCONAME,
+		       COCODE AS RESCOCODE,
+		       DONAME AS RESDONAME,
+		       RESDATE AS RESDATE,
+		       BBPHOTO AS RESBBPHOTO,
+		       DOCOMMENT AS DOCOMMENT
+		FROM COMMENTLIST WHERE SUCODE = #{resSuCode}
 	</select>
 	<!-- 특정 건강일기 메모 수정 -->
 	<update id="updMyHealthDiary" parameterType="com.agilog.beans.HealthDiaryBean" >

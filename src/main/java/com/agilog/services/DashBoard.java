@@ -50,11 +50,11 @@ public class DashBoard implements ServiceRule {
 			}
 			
 			List<DailyDiaryPhotoBean> ddpList = this.session.selectList("getDairyDiaryPhoto");
-			
-			for(int i = 0; i < 9; i++) {
-				sb.append("<img src='"+ ddpList.get(i).getDpLink() +"' onclick=\"me('"+ ddpList.get(i).getDpDdCode() +"')\" class=\"todayPhoto\">");
+			if(ddpList.size()!=0) {
+				for(int i = 0; i < ddpList.size(); i++) {
+					sb.append("<img src='"+ ddpList.get(i).getDpLink() +"' onclick=\"me('"+ ddpList.get(i).getDpDdCode() +"')\" class=\"todayPhoto\">");
+				}
 			}
-			
 			mav.addObject("dailyDiaryPhoto", sb.toString());
 			mav.setViewName("dashBoard");
 		} catch (Exception e) {
