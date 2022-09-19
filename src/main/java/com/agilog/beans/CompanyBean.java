@@ -11,6 +11,7 @@ public class CompanyBean {
 	private String coAddress;
 	private String coEmail;
 	private String coManagerCode;
+	private String coPhoto;
 	private int clAction;
 	
 	

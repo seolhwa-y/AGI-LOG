@@ -140,6 +140,22 @@
     flex-direction: row-reverse;
     justify-content: space-around;
 }
+
+#profile{
+	border: 1px solid dimgray;
+    display: block;
+    float: left;
+    width: 8%;
+    height: 130%;
+    border-radius: 50%;
+}
+.profileImg{
+	max-width: 100%;
+    max-height: 100%;
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+}
 </style>
 <script>
 function init() {
@@ -149,6 +165,11 @@ function init() {
 
 		accessArea.innerHTML = "<span> ${companyAccessInfo.coName}님 </span>";
 		accessArea.innerHTML += "<span onclick=\"movePage(\'CompanyLogout\')\">로그아웃</span>";
+		
+		alert("${companyAccessInfo.coPhoto}");
+		/* let profile = document.getElementById("profile");
+		
+		profile.innerHTML = "<img class='profileImg' src='"+"${companyAccessInfo.coPhoto}"+"'>"; */
 	}
 }
 /*********************캘린더************************/
@@ -189,7 +210,7 @@ var calendar = new FullCalendar.Calendar(calendarEl, {
 	    let modal = document.querySelector(".modal");
 		modal.style.display="block";
 	    let modalHead = document.getElementsByClassName("modal_head")[0];
-	    modalHead.innerHTML = modalHead.innerHTML+"<span id='date'>"+info.dateStr+"<span><i class='fa-solid fa-xmark closeBtn editBtn' onclick='modalClose()'></i>";
+	    modalHead.innerHTML = "<div id='profile'><img class='profileImg' src='"+"${companyAccessInfo.coPhoto}"+"'></div><span id='date'>"+info.dateStr+"<span><i class='fa-solid fa-xmark closeBtn editBtn' onclick='modalClose()'></i>";
 	    
 	    let clientData = "resDate="+info.dateStr;
 	    postAjaxJson("CoResDetail",clientData,"resManageMent");

@@ -1,12 +1,15 @@
 package com.agilog.services2;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.agilog.beans.AuthBean;
@@ -14,6 +17,7 @@ import com.agilog.beans.DailyDiaryBean;
 import com.agilog.beans.DailyDiaryCommentBean;
 import com.agilog.beans.DailyDiaryPhotoBean;
 import com.agilog.beans.PostBean;
+import com.agilog.beans.PostPhotoBean;
 import com.agilog.interfaces.ServiceRule;
 import com.agilog.utils.Encryption;
 import com.agilog.utils.ProjectUtils;
@@ -128,24 +132,110 @@ public class DailyDiary2 implements ServiceRule {
 		try {
 			AuthBean ab = ((AuthBean) this.pu.getAttribute("accessInfo"));
 			if(ab != null) {
+				//게시글 이미지 삽입 성공 여부
+				boolean flag = true;
 				//디디빈 세팅
 				DailyDiaryBean db = (DailyDiaryBean) mav.getModel().get("dailyDiaryBean");
 
-				System.out.println("코드 체크 : " + ab.getSuCode());
+				//작성자 코드 설정
 				db.setSuCode(ab.getSuCode());
 
+				//피드 코드 설정. 피드가 없으면 1로 설정하고 있으면 마지막 피드 코드+1값으로 설정함
 				if (this.session.selectOne("getFbCode") == null) {
 					db.setDdCode("1");
 				} else {
-					System.out.println("코드 체크1 : " + (this.session.selectOne("getDdCode")));
+					
 					db.setDdCode(Integer.toString((int)this.session.selectOne("getDdCode")+1));
 				}
-				System.out.println("코드 체크2 : " + db.getDdCode());
-				System.out.println("상태 체크 : " + db.getDdStatus());
-				System.out.println("유저 코드 체크 : " + db.getSuCode());
-				System.out.println("컨텐츠 체크 : " + db.getDdContent());
+				
+				System.out.println("ddCode : " + db.getDdCode());
+
+				//이미지 파일 설정
+				MultipartFile files = ((MultipartFile)mav.getModel().get("files"));
+				
+				/* 저장 폴더 경로 설정 */
+				String path = "C:\\Users\\user\\git\\agi-log\\src\\main\\webapp\\resources\\img\\"+ab.getSuCode()+"\\DD\\";
 				
 				if(this.convertToBoolean(this.session.insert("insDd", db))) {
+					//이미지 파일이 있는지 체크
+					if (files.getSize() != 0) {
+						DailyDiaryPhotoBean ddpb = new DailyDiaryPhotoBean();
+						
+						//랜덤 이름 생성
+						UUID uuid = UUID.randomUUID();
+						String[] uuids = uuid.toString().split("-");
+						
+						String uniqueName = uuids[0];
+
+						//확장자 획득
+						int pos = files.getOriginalFilename().lastIndexOf(".");
+						String ext = files.getOriginalFilename().substring(pos);
+						//생성된 랜덤이름 + 확장자 저장 
+						String fileName = uniqueName+ext;
+		
+						File realPath = new File(path,fileName);//최종 경로로 파일 저장
+						files.transferTo(realPath);//파일 실제 전송
+
+						//이미지 코드 설정. 이미지가 없으면 1로 설정하고 있으면 마지막 게시글 코드+1값으로 설정함
+						if (this.session.selectOne("getDdpCode", db) == null) {
+							ddpb.setDpCode("1");
+						} else {
+							ddpb.setDpCode(Integer.toString((int)this.session.selectOne("getDdpCode", db)+1));
+						}
+						
+						//DB에 삽입할 정보 세팅
+						System.out.println("ddCode : " + db.getDdCode());
+						ddpb.setDpDdCode(db.getDdCode());
+						System.out.println("dpDdCode : " + ddpb.getDpDdCode());
+						System.out.println(ddpb.getDpDdCode().equals(db.getDdCode()));
+
+						System.out.println("suCode : " + db.getSuCode());
+						ddpb.setDpDdSuCode(db.getSuCode());
+						System.out.println("dpDdSuCode : " + ddpb.getDpDdSuCode());
+						System.out.println(ddpb.getDpDdSuCode().equals(db.getSuCode()));
+						
+						String ddDate = ((DailyDiaryBean)this.session.selectOne("getDdDate", db)).getDdDate();
+						StringBuffer sb = new StringBuffer();
+						sb.append(ddDate.substring(0, 4));
+						sb.append(ddDate.substring(5, 7));
+						sb.append(ddDate.substring(8, 10));
+						sb.append(ddDate.substring(11, 13));
+						sb.append(ddDate.substring(14, 16));
+						sb.append(ddDate.substring(17, 19));
+						
+						ddpb.setDpDdDate(sb.toString());
+						System.out.println(ddpb.getDpDdDate().equals(db.getDdDate()));
+						ddpb.setDpLink(realPath.toString());
+						
+						System.out.println("ddpb : " + ddpb);
+						
+						//이미지 삽입 성공시 flag를 true로 설정. 실패시 flag를 false로 설정하고 반복문 탈출
+						if(this.convertToBoolean(this.session.insert("insDDP", ddpb))) {
+							System.out.println("이미지 삽입 성공");
+							flag = true;
+						} else {
+							flag = false;
+						}
+					
+						
+						//flag가 트루면 자유게시판으로. flase면 DB에 저장됐던 정보들을 지우고 자유게시판으로.
+						if (flag) {
+							mav.addObject("allDailyDiaryList", this.makeDialyFeed(this.session.selectList("getDailyDiaryFeed")));
+							mav.setViewName("dailyDiary");
+						} else {
+							this.session.delete("delDd", db);
+							this.session.delete("delDdPhoto", ddpb);
+							
+							mav.addObject("message", "네트워크가 불안정합니다. 잠시 후 다시 시도해 주세요.");
+							mav.addObject("allDailyDiaryList", this.makeDialyFeed(this.session.selectList("getDailyDiaryFeed")));
+							mav.setViewName("dailyDiary");
+						}
+					} else {
+						mav.addObject("allDailyDiaryList", this.makeDialyFeed(this.session.selectList("getDailyDiaryFeed")));
+						mav.setViewName("dailyDiary");
+					}
+				} else {
+					mav.addObject("message", "네트워크가 불안정합니다. 잠시 후 다시 시도해 주세요.");
 					mav.addObject("allDailyDiaryList", this.makeDialyFeed(this.session.selectList("getDailyDiaryFeed")));
 					mav.setViewName("dailyDiary");
 				}
@@ -224,6 +314,7 @@ public class DailyDiary2 implements ServiceRule {
 		for(DailyDiaryBean fl : feedList) {
 			sb.append("<li class=\'feed\' onClick=\'getFeed(" + fl.getDdCode() + ")\'>");
 			sb.append("<div class=\'feed_top\'>");
+			sb.append("<i class='fa-solid fa-xmark closeBtn editBtn' onclick='modalClose('')'>");
 			
 			if(fl.getDpLink()!=null) {
 				sb.append("<img src=\'"+fl.getDpLink()+"\'>");

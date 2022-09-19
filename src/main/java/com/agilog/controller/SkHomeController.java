@@ -95,13 +95,6 @@ public class SkHomeController {
 		return mav;
 	}
 
-	@RequestMapping(value = "/MoveMapPage", method = RequestMethod.GET)
-	public ModelAndView moveMapPage(ModelAndView mav) {
-		this.bebeMap.backController(mav, 6);
-
-		return mav;
-	}
-
 	@RequestMapping(value = "/MoveCalendarPage", method = RequestMethod.GET)
 	public ModelAndView moveCalendarPage(ModelAndView mav, @ModelAttribute BebeCalendarBean bcb) {
 		mav.addObject(bcb);

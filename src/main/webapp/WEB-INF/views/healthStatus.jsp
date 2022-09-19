@@ -9,12 +9,11 @@
 <script src="/res/js/agiMain.js"></script>
 <script src="https://use.fontawesome.com/releases/v6.1.2/js/all.js"></script>
 <link rel="stylesheet" href="/res/css/agiMain.css">
+<link rel="stylesheet" href="/res/css/healthStatus.css">
 <!-- 카카오 스크립트 -->
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 <!-- 네이버 스크립트 -->
 <script	src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
-<!-- 테마 CSS -->
-<link rel="stylesheet" href="https://naver.github.io/billboard.js/release/latest/dist/theme/datalab.min.css">
 <!-- 차트 JAVA SCRIPT -->
 <script src="https://naver.github.io/billboard.js/release/latest/dist/billboard.pkgd.min.js"></script>
 <script>
@@ -59,7 +58,7 @@ function getInfo() {
 	}
 	
 	// 추세 그래프 불러오기	
-	splineChart("${babyStatusList}", 1); 
+	lineChart("${babyStatusList}", 1); 
 }
 
 function openPopUp() {
@@ -97,7 +96,8 @@ function kakaoLogout() {
 
 /*****************전체 영역 차트******************/
 
-function splineChart(data, check){
+// 1. 아이 건강 통계 기록 페이지 :: 차트 그리기
+function lineChart(data, check){
 	// 만나이(7개) :: 0, 1, 2, 3, 4, 5, 6, 7
 	// 평균 데이터 삽입 :: 키, 몸무게, 머리둘레
 	// 표현 데이터 삽입 :: 키, 몸무게, 머리둘레
@@ -131,156 +131,69 @@ function splineChart(data, check){
 	console.log("splineChart_height :: " + height);
 	console.log("splineChart_weight :: " + weight);
 	console.log("splineChart_head :: " + head);
-
-	// 아이 나이 평균 데이터
-	let all = bb
-			.generate({
-				data : {
-					columns : [["평균 머리둘레", 34.1, 45.5, 48.1, 49.2, 49.9, 50.2, 50.5 ],
-								["평균 키", 49.6, 77, 88.2, 95.6, 102.7, 109.4, 115.5, 122.4 ],
-								["평균 몸무게", 3.2, 9.8, 12.5, 14.3, 16.3, 18.4, 20.7, 23.9 ]],
-					type : "spline", // for ESM specify as: line()
-				},
-				bindto : "#splineChart"
-			});
-
-	// 머리둘레 표현
-	setTimeout(function() {
-		all.load({
-			columns : [[ "머리둘레", head[0], head[1], head[2], head[3], head[4], head[5], head[6], head[7] ]]
-		});
-	}, 1000);
 	
-	// 몸무게 표현
-	setTimeout(function() {
-		all.load({
-			columns : [[ "몸무게", weight[0], weight[1], weight[2], weight[3], weight[4], weight[5], weight[6], weight[7] ]]
-		});
-	}, 1500);
-	
-	// 키 표현
-	setTimeout(function() {
-		all.load({
-			columns : [[ "키", height[0], height[1], height[2], height[3], height[4], height[5], height[6], height[7] ]]
-		});
-	}, 2000);
-
-/* 	// 평균 머리둘레 제거
-	setTimeout(function() {
-		chart.unload({
-			ids : "평균 머리둘레"
-		});
-	}, 2001);
-
-	// 평균 몸무게 제거
-	setTimeout(function() {
-		chart.unload({
-			ids : "평균 몸무게"
-		});
-	}, 2002);
-
-	// 평균 키 제거
-	setTimeout(function() {
-		chart.unload({
-			ids : "평균 키",
-		});
-	}, 2003); */
-	
-	dddd();
-}
-
-/*****************항목별 영역 차트******************/
-
-function dddd(){
-	let height = bb.generate({
-	  data: {
-	    x: "x",
-	    columns: [
-		["x", "2013-01-01", "2013-01-02", "2013-01-03", "2013-01-04", "2013-01-05", "2013-01-06"],
-		["data1", 30, 200, 100, 400, 150, 250],
-		["data2", 130, 340, 200, 500, 250, 350]
-	    ],
-	    type: "line", // for ESM specify as: line()
-	  },
-	  axis: {
-	    x: {
-	      type: "timeseries",
-	      tick: {
-	      format: "%Y-%m-%d"
-	      }
-	    }
-	  },
-	  bindto: "#timeseriesChart_height"
-	});
-	
-	setTimeout(function() {
-		height.load({
-			columns: [
-				["data3", 400, 500, 450, 700, 600, 500]
-			]
-		});
-	}, 1000);
-
-	let weight = bb.generate({
+	/* 아이 키 */
+	let heightChart = bb.generate({
 		  data: {
-		    x: "x",
-		    columns: [
-			["x", "2013-01-01", "2013-01-02", "2013-01-03", "2013-01-04", "2013-01-05", "2013-01-06"],
-			["data1", 30, 200, 100, 400, 150, 250],
-			["data2", 130, 340, 200, 500, 250, 350]
-		    ],
-		    type: "line", // for ESM specify as: line()
-		  },
-		  axis: {
-		    x: {
-		      type: "timeseries",
-		      tick: {
-		        format: "%Y-%m-%d"
-		      }
-		    }
-		  },
-		  bindto: "#timeseriesChart_weight"
-		});
-		
-		setTimeout(function() {
-			weight.load({
-				columns: [
-					["data3", 400, 500, 450, 700, 600, 500]
-				]
-			});
-		}, 1000);
-		
-		let head = bb.generate({
-			  data: {
-			    x: "x",
 			    columns: [
-				["x", "2013-01-01", "2013-01-02", "2013-01-03", "2013-01-04", "2013-01-05", "2013-01-06"],
-				["data1", 30, 200, 100, 400, 150, 250],
-				["data2", 130, 340, 200, 500, 250, 350]
+				[ "키", height[0], height[1], height[2], height[3], height[4], height[5], height[6], height[7] ]
 			    ],
 			    type: "line", // for ESM specify as: line()
 			  },
-			  axis: {
-			    x: {
-			      type: "timeseries",
-			      tick: {
-			        format: "%Y-%m-%d"
-			      }
-			    }
+	  bindto: "#lineChart_height"
+	});
+	
+	/* 아이 몸무게 */
+	let weightChart = bb.generate({
+		  data: {
+			    columns: [
+			    [ "몸무게", weight[0], weight[1], weight[2], weight[3], weight[4], weight[5], weight[6], weight[7] ]
+			    ],
+			    type: "line", // for ESM specify as: line()
 			  },
-			  bindto: "#timeseriesChart_head"
-			});
-			
-			setTimeout(function() {
-				head.load({
-					columns: [
-						["data3", 400, 500, 450, 700, 600, 500]
-					]
-				});
-			}, 1000);
+		  bindto: "#lineChart_weight"
+	});
+	
+	/* 아이 머리둘레 */
+	let headChart = bb.generate({
+			data: {
+				  columns: [
+				  [ "머리둘레", head[0], head[1], head[2], head[3], head[4], head[5], head[6], head[7] ]
+				  ],
+				  type: "line", // for ESM specify as: line()
+				},
+			bindto: "#lineChart_head"
+	});
+	
+	/* 평균 키 추가 */
+	setTimeout(function() {
+		heightChart.load({
+			columns: [
+			    ["평균 키", 49.6, 77, 88.2, 95.6, 102.7, 109.4, 115.5, 122.4 ]
+			]
+		});
+	}, 1500);
+	
+	/* 평균 몸무게 추가 */
+	setTimeout(function() {
+		weightChart.load({
+			columns: [
+			    ["평균 몸무게", 3.2, 9.8, 12.5, 14.3, 16.3, 18.4, 20.7, 23.9 ]
+			]
+		});
+	}, 1500);
+
+	/* 평균 머리둘레 추가 */
+	setTimeout(function() {
+		headChart.load({
+			columns: [
+				["평균 머리둘레", 34.1, 45.5, 48.1, 49.2, 49.9, 50.2, 50.5 ]
+			]
+		});
+	}, 1500);
 }
 
-//셀렉트 박스 선택시 아이 추세 변경
+// 2. 아이 변경시 추세 변경 서버요청
 function cngHealthStatus() {
 	// 선택된 아기의 코드
 	let babyCode = document.getElementById("babyName").value;
@@ -291,38 +204,20 @@ function cngHealthStatus() {
 	postAjaxJson("SelectBaby", clientData, "cngLineChert");
 }
 
-//콜백 함수 
+// 2-1. 변경된 아이 추세 데이터 받아서 해당함수에 전송 
 function cngLineChert(ajax) {
 	let babyStatusList = JSON.parse(ajax);
 	
 	console.log("cngLineChert_babyStatusList :: " + babyStatusList);
 	
-	document.getElementById("splineChart").innerHTML = "";
+	document.getElementsByClassName("aChart")[0].innerHTML = "";
+	document.getElementsByClassName("aChart")[1].innerHTML = "";
+	document.getElementsByClassName("aChart")[2].innerHTML = "";
 	
-	splineChart(babyStatusList, 0);
+	lineChart(babyStatusList, 0);
 }
 
 </script>
-<style>
-    #splineChart {
-    	margin-top: 4rem;
-        width: 100%;
-        height:40%;
-    }
-     
-    #chart {
-        width: 100%;
-        height:40%;
-        display: flex;
-        justify-content: space-between;
-		align-items: center;
-    }
-    
-    .aChart {
-        width: 30%;
-        height:50%;
-    }
-</style>
 </head>
 <body onload="getInfo()" id="body">
 </head>
@@ -349,10 +244,6 @@ function cngLineChert(ajax) {
 		</div>
 		<div id="middle">
 			<div id="leftArea">
-				<!-- navigator -->
-				<!-- ------------------------------------------------------------------------ -->
-
-
 				<nav class="side-menu">
 					<ul class="menus">
 						<li class="nav-text"><span>감성일기</span></li>
@@ -365,30 +256,37 @@ function cngLineChert(ajax) {
 
 					</ul>
 				</nav>
-
-				<!-- ------------------------------------------------------------------------ -->
 			</div>
 			<div id="rightArea" class="scrollBar">
 				<div>
 					<!-- 아이 선택 버튼 -->
-			   		${babyStatusList.babyList} 
-			   	</div>
-			
-			    <div id="splineChart">
-			    	<!--전체 차트 영역 :: 키, 몸무게, 머리둘레 -->
-			    </div>
-				<div id="chart" >
-					<div id="timeseriesChart_height" class = "aChart">
-						<!-- 키 차트 영역 -->
+					${babyStatusList.babyList}
+				</div>
+				
+				<!-- 슬라이드 차트 -->
+				<div class="slider"> 
+					<input type="radio" name="slide" id="slide1" checked> 
+					<input type="radio" name="slide" id="slide2"> 
+					<input type="radio"	name="slide" id="slide3">
+					<div class="sliderwrap">
+						<ul id="chartHolder" class="charts">
+							<li>
+								<div id="lineChart_height" class="aChart"></div>
+							</li>
+							<li>
+								<div id="lineChart_weight" class="aChart"></div>
+							</li>
+							<li>
+								<div id="lineChart_head" class="aChart"></div>
+							</li>
+						</ul>
+						<div class="bullets">
+							<label for="slide1">&nbsp;</label> 
+							<label for="slide2">&nbsp;</label>
+							<label for="slide3">&nbsp;</label>
+						</div>
 					</div>
-					<div id="timeseriesChart_weight" class = "aChart">
-						<!-- 몸무게 차트 영역 -->
-					</div>
-					<div id="timeseriesChart_head" class = "aChart">
-						<!-- 머리둘레 차트 영역 -->
-					</div>
-			    </div>
-
+				</div>
 			</div>
 		</div>
 		<div class="modal">
@@ -403,5 +301,4 @@ function cngLineChert(ajax) {
 	</div>
 	<form id="serverForm"></form>
 </body>
-
 </html>

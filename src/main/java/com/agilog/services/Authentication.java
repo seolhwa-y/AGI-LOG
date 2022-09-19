@@ -1,6 +1,7 @@
 package com.agilog.services;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -17,6 +18,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.agilog.beans.AuthBean;
@@ -182,7 +184,7 @@ public class Authentication implements ServiceRule {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		mav.setViewName("companyLogin");
+		mav.setViewName("dashBoard");
 	}
 
 	// 추가해주기~~~~
@@ -198,7 +200,7 @@ public class Authentication implements ServiceRule {
 			// 일치함
 			// 로그인상태인지 로그아웃상태인지 확인
 			String accessState = this.session.selectOne("isCompanyAccess", cb);
-
+			
 		    if (accessState.equals("1")) {
 				// 로그아웃 안된 상태, 로그아웃 AccessLog찍어주기
 				cb.setClAction(-1);
@@ -213,7 +215,7 @@ public class Authentication implements ServiceRule {
 					// 세션에 저장할 로그인 유저 정보 가져오기
 					CompanyBean company = (CompanyBean) this.session.selectList("getCompanyAccessInfo", cb).get(0);
 					company.setCoName(this.enc.aesDecode(company.getCoName(), company.getCoCode()));
-
+					System.out.println(company.getCoPhoto());
 					// 세션에 userCode저장
 					this.pu.setAttribute("companyAccessInfo", company);
 					// 병원이름 mav에 저장
@@ -411,7 +413,8 @@ public class Authentication implements ServiceRule {
 	@Transactional(rollbackFor = SQLException.class)
 	private void companyJoinCtl(ModelAndView mav) {
 		CompanyBean cb = (CompanyBean) mav.getModel().get("companyBean");
-
+		MultipartFile file = (MultipartFile)mav.getModel().get("file");
+		
 		try {
 			// 섀도우 방식 암호화 : 비밀번호, 메일
 			cb.setCoPassword(this.enc.encode(cb.getCoPassword()));
@@ -422,11 +425,51 @@ public class Authentication implements ServiceRule {
 			cb.setCoPhone(this.enc.aesEncode(cb.getCoPhone(), cb.getCoCode()));
 			cb.setCoAddress(this.enc.aesEncode(cb.getCoAddress(), cb.getCoCode()));
 			cb.setCoManagerCode(this.enc.aesEncode(cb.getCoManagerCode(), cb.getCoCode()));
+			
+			if(file!=null) {
+				//기업 프로필이미지가 존재할 때
+				System.out.println("이미지있음");
+				/* 확장자 뽑아내서 파일이름 만들어주기 */
+				int pos = file.getOriginalFilename().lastIndexOf(".");
+				String ext = file.getOriginalFilename().substring(pos);
+				String fileName = cb.getCoCode()+ext; //유저코드 + 확장자
+				
+				String suPhoto = "/res/img/"+cb.getCoCode()+"/"+fileName;
+				cb.setCoPhoto(suPhoto);
+			}else {
+				//기업 프로필이미지가 존재하지 않을 때
+				System.out.println("이미지없음");
+				
+				String suPhoto = "/res/img/profile_default.png";
+				cb.setCoPhoto(suPhoto);
+				
+				
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		if (this.convertToBoolean(this.session.insert("insCompanyInfo", cb))) {
+			if(file !=null) {
+				/* 회원가입 성공시 기업별로 /res/img/기업코드로 폴더 생성*/
+				String path = "C:\\Users\\js94\\git\\agi-log\\src\\main\\webapp\\resources\\img\\"+cb.getCoCode();
+				File uploadPath = new File(path);
+				if (!uploadPath.exists()) uploadPath.mkdirs();
+				
+				/* 확장자 뽑아내서 파일이름 만들어주기 */
+				int pos = file.getOriginalFilename().lastIndexOf(".");
+				String ext = file.getOriginalFilename().substring(pos);
+				String fileName = cb.getCoCode()+ext; //유저코드 + 확장자
+				
+				/* 기업 프로필이미지 경로에 집어넣기 */
+				File realPath = new File(path,fileName);
+				try {
+					file.transferTo(realPath);
+				} catch (IllegalStateException | IOException e) {
+					e.printStackTrace();
+				}
+				
+			}
 			mav.setViewName("companyLogin");
 		} else {
 			System.out.println("SHY : 기업 회원가입 실패");

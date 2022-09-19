@@ -38,8 +38,7 @@ public class JpHomeController {
 	}
 	//환자관리 의사인증 페이지 이동 : 재필
 	@RequestMapping(value = "/IntoCheckDoctor", method = RequestMethod.GET)
-	public ModelAndView intoCheckDoctor(ModelAndView mav,@ModelAttribute CompanyBean cb) {
-		mav.addObject(cb);
+	public ModelAndView intoCheckDoctor(ModelAndView mav) {
 		mav.setViewName("checkDoctor");
 		return mav;
 	}
@@ -47,7 +46,7 @@ public class JpHomeController {
 	
 	//전문의 관리 페이지 이동
 	@RequestMapping(value = "/MoveDoctorManagement", method = RequestMethod.GET)
-	public ModelAndView moveDoctorManagementCtl(HttpServletRequest req,ModelAndView mav, @ModelAttribute CompanyBean cb) {
+	public ModelAndView moveDoctorManagementCtl(ModelAndView mav, @ModelAttribute CompanyBean cb) {
 		mav.addObject(cb);
 		this.company.backController(mav, 77);
 		return mav;
@@ -75,7 +74,7 @@ public class JpHomeController {
 		return mav;
 	}
 	//의사 소견 입력 작업
-	@RequestMapping(value = "/UpdateDoctorComment", method = RequestMethod.POST)
+	@RequestMapping(value = "/InsertDoctorComment", method = RequestMethod.POST)
 	public ModelAndView updDoctorComment(ModelAndView mav, @ModelAttribute ReservationBean rb) {
 		mav.addObject(rb);
 		this.company.backController(mav, 84);
@@ -89,8 +88,6 @@ public class JpHomeController {
 	@RequestMapping(value = "/MoveInfoBoard", method = RequestMethod.GET)
 	public ModelAndView moveInfoBoardPage(ModelAndView mav, @ModelAttribute PostBean pb) {
 		mav.addObject(pb);
-		System.out.println("페이지번호 : " + pb.getPageNum());
-		System.out.println("정렬 : " + pb.getIbSort());
 		this.board.backController(mav, 56);
 		return mav;
 	}
@@ -101,26 +98,19 @@ public class JpHomeController {
 		this.board.backController(mav, 58);
 		return mav;
 	}
-	//전체 게시판 조회
-	@RequestMapping(value = "/MoveBoardPage", method = RequestMethod.GET)
-	public ModelAndView moveBoardPage(ModelAndView mav, @ModelAttribute PostBean pb) {
-		mav.addObject(pb);
-		this.board.backController(mav, 8);
-		return mav;
-	}
  
 	//감성일기 정렬
 	@RequestMapping(value = "/ChangeDailyDiary", method = RequestMethod.GET)
 	public ModelAndView changeDailyDiary(ModelAndView mav, @ModelAttribute DailyDiaryBean db) {
 		mav.addObject(db);
-		this.dailyDiary.backController(mav, 300);
+		this.dailyDiary.backController(mav, 86);
 		return mav;
 	}
 	//감성일기 정렬
 		@RequestMapping(value = "/ChangeMyDailyDiary", method = RequestMethod.GET)
 		public ModelAndView changeMyDailyDiary(ModelAndView mav, @ModelAttribute DailyDiaryBean db) {
 			mav.addObject(db);
-			this.dailyDiary.backController(mav, 400);
+			this.dailyDiary.backController(mav, 121);
 			return mav;
 		}
 	

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.agilog.beans.AuthBean;
@@ -64,7 +65,8 @@ public class ShHomeController {
 	
 	// 기업 회원가입 완료
 	@RequestMapping(value = "/CompanyJoin", method = RequestMethod.POST)
-	public ModelAndView companyJoin(ModelAndView mav, @ModelAttribute CompanyBean cb) {
+	public ModelAndView companyJoin(MultipartFile file,ModelAndView mav, @ModelAttribute CompanyBean cb) {
+		mav.addObject("file",file);
 		mav.addObject("companyBean", cb);
 		this.auth.backController(mav, 21);
 
@@ -89,13 +91,11 @@ public class ShHomeController {
 		return mav;
 	}
 	
-	// 지도 예약완료
-	@RequestMapping(value = "/Reservation", method = RequestMethod.POST)
-	public ModelAndView reservation(ModelAndView mav, @ModelAttribute ReservationBean rb){
-		mav.addObject("reservationBean", rb);
-		this.bebeMap.backController(mav, 44);
-		
+	// 지도 페이지 이동
+	@RequestMapping(value = "/MoveMapPage", method = RequestMethod.GET)
+	public ModelAndView moveMapPage(ModelAndView mav) {
+		this.bebeMap.backController(mav, 6);
+
 		return mav;
 	}
-	
 }

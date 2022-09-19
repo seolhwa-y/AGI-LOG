@@ -50,7 +50,6 @@ public class JpAPIController {
 	@RequestMapping(value = "/DeleteDoctor", method = RequestMethod.POST)
 	public List<DoctorBean> deleteDoctorCtl(Model model, @ModelAttribute DoctorBean db) {
 		model.addAttribute(db);	
-		System.out.println("의사정보" + db);
 		this.company.backController(model, 78);
 		return (List<DoctorBean>) model.getAttribute("doctor");
 	}

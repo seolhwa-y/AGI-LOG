@@ -37,9 +37,9 @@
 	
 	<!-- 자유게시판 댓글 코드 MAX + 1 -->
 	<select id="getFcCode" parameterType="com.agilog.beans.PostCommentBean" resultType="string">
-		SELECT TO_CHAR(TO_NUMBER(MAX(FC_CODE))+1) AS FCCODE
+		SELECT NVL(TO_CHAR(MAX(FC_CODE)+1), '1') AS FCCODE
 		FROM FC
-		WHERE FC_SUCODE = #{fcSuCode}
+		WHERE FC_FBCODE = #{fcFbCode}
 	</select>
 	
 	<!-- 자유게시판 댓글 리스트 조회 -->
@@ -69,7 +69,7 @@
 	
 	<!-- 감성일기 댓글 코드 MAX + 1 -->
 	<select id="getDcCode" parameterType="com.agilog.beans.DailyDiaryCommentBean" resultType="string">
-		SELECT TO_CHAR(MAX(DC_CODE)+1) AS DCCODE
+		SELECT NVL(TO_CHAR(MAX(DC_CODE)+1), '1') AS DCCODE
 		FROM DC
 		WHERE DC_DDCODE = #{dcDdCode}
 	</select>
@@ -99,6 +99,13 @@
 		WHERE DC_CODE = #{dcCode} AND DC_DDCODE = #{dcDdCode} AND DC_DDSUCODE = #{dcDdSuCode} AND DC_SUCODE = #{dcSuCode}
 	</delete> 
 	
+	<!-- 지도 본인 지역 확인 -->
+	<select id="getSuAddress" parameterType="com.agilog.beans.AuthBean" resultType="com.agilog.beans.AuthBean">
+		SELECT SU_ADDRESS AS SUADDRESS
+		FROM SU
+		WHERE SU_CODE = #{suCode}
+	</select>
+	
 	<!-- 지도에서 만든 마커는 우리랑 연계되어 있는가? -->
 	<select id="getCoCode" parameterType="com.agilog.beans.CompanyBean" resultType="string">
 		SELECT CO_CODE AS COCODE
@@ -115,9 +122,9 @@
 	
 	<!-- 지도 댓글 코드 MAX + 1 -->
 	<select id="getMcCode" parameterType="com.agilog.beans.BebeMapCommentBean" resultType="string">
-		SELECT TO_CHAR(TO_NUMBER(MAX(MC_CODE))+1) AS MCCODE
+		SELECT NVL(TO_CHAR(MAX(MC_CODE)+1), '1') AS MCCODE
 		FROM MC
-		WHERE MC_SUCODE = #{mcSuCode}
+		WHERE MC_COCODE = #{mcCoCode}
 	</select>
 	
 	<!-- 지도 댓글 등록 -->
@@ -140,15 +147,39 @@
 	
 	<!-- 지도에서 예약시 데이터 조회 :: 일정 -->
 	<select id="getReservationList" parameterType="com.agilog.beans.ReservationBean" resultType="com.agilog.beans.ReservationBean">
-		SELECT * 
-		FROM ISRESERVATION ISRES
-		WHERE ISRES.COCODE = #{resCoCode} AND ISRES.DOCODE = #{resDoCode} AND ISRES.RESDATE = #{resDate}, 'YYYYMMDDHH24'
+		SELECT  RT_DOCOCODE AS RESCOCODE,
+				RT_DOCODE AS RESDOCODE,
+				TO_CHAR(RT_DATE, 'YYYYMMDD') AS RESDATE,
+				RT_TIME AS RESTIME,
+				RT_COUNT AS RESCOUNT
+		FROM RT
+		WHERE RT_DOCOCODE = #{resCoCode} AND RT_DOCODE = #{resDoCode} AND RT_DATE = TO_DATE(#{resDate}, 'YYYYMMDDHH24MISS')
 	</select>
+	
+	<!-- 예약코드 조회 + 1 -->
+	<select id="getResCode" parameterType="com.agilog.beans.ReservationBean" resultType="string">
+		SELECT NVL(TO_CHAR(MAX(RE_CODE)+1), TO_CHAR(TO_DATE(#{resDate}, 'YYYYMMDDHH24MISS'), 'YYYYMMDD') || '01') AS RECODE
+		FROM RE
+        WHERE RE_DOCOCODE = #{resCoCode} AND RE_DOCODE = #{resDoCode} AND TO_CHAR(RE_DATE, 'YYYYMMDD') = TO_CHAR(TO_DATE(#{resDate}, 'YYYYMMDDHH24MISS'), 'YYYYMMDD')
+ 	</select>
 	
 	<!-- 지도에서 병원 예약 완료 후 예약내역 등록 -->
  	<insert id="insReservationList" parameterType="com.agilog.beans.ReservationBean">
-		INSERT INTO RE (RE_CODE, RE_DATE, RE_ACCESS, RE_DOCOCODE, RE_DOCODE, RE_RCCODE, RE_BBSUCODE, RE_BBCODE, RE_COMMENT)
-		VALUES (#{resCode}, TO_DATE(#{resDate}, 'YYYYMMDDHH24MISS'), #{resAccess}, #{resCoCode}, #{resDoCode}, DEFAULT, #{resSuCode}, #{resBbCode}, NULL)
+		INSERT INTO RE
+		VALUES (#{resCode}, TO_DATE(TO_CHAR(TO_DATE(#{resDate}, 'YYYYMMDDHH24MISS'), 'YYYYMMDD') || #{resTime} || '00', 'YYYYMMDDHH24MISS'), #{resAccess}, #{resCoCode}, #{resDoCode}, DEFAULT, #{resSuCode}, #{resBbCode}, NULL)
 	</insert>
+	
+ 	<!-- 예약 인원수 조회 + 1 -->
+ 	<select id="getResCountPlus" parameterType="com.agilog.beans.ReservationBean" resultType="int">
+        SELECT TO_CHAR(MAX(RT_COUNT)+1) AS RESCOUNT
+		FROM RT
+        WHERE RT_DOCOCODE = #{resCoCode} AND RT_DOCODE = #{resDoCode} AND RT_DATE = TO_DATE(#{resDate}, 'YYYYMMDDHH24MISS') AND RT_TIME = #{resTime}
+   	</select>
+	
+	<!-- 병원 예약 인원수 수정 -->
+	<update id="updResTime" parameterType="com.agilog.beans.ReservationBean">
+		UPDATE RT SET RT_COUNT = #{resCount}
+		WHERE RT_DOCOCODE = #{resCoCode} AND RT_DOCODE = #{resDoCode} AND RT_DATE = TO_DATE(#{resDate}, 'YYYYMMDDHH24MISS') AND RT_TIME = #{resTime}
+	</update>
 	
 </mapper>

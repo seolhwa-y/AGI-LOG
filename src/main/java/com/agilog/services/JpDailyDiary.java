@@ -29,10 +29,10 @@ public class JpDailyDiary implements ServiceRule {
 	// Controller��
 	public void backController(ModelAndView mav, int serviceCode) {
 		switch (serviceCode) {
-		case 300:
+		case 86:
 			this.selectFeedSortCtl(mav);
 			break;
-		case 400:
+		case 121:
 			this.selectMyFeedSortCtl(mav);
 			break;
 		}

@@ -11,6 +11,13 @@
 <link rel="stylesheet" href="/res/css/company.css">
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<style>
+.accessInput-input-group2 {
+ width:32.4rem;
+ margin:0 auto;
+ position: relative;
+}
+</style>
 <script>
 	/* 주소 검색 API */
 	window.onload = function(){
@@ -143,6 +150,7 @@
 	
 	/* 기업회원 회월가입 완료 */
 	function companyJoin(action) {
+		
 		// 상호 체크 
 		let coName = document.getElementsByName("coName")[0];
 		if(isCharLength(coName.value, 2)){
@@ -159,11 +167,22 @@
 		// 다시 비밀번호 체크
 		checkPassword();
 		
+		let isFile = document.getElementsByName("coProfile")[0];
+		let file = document.getElementsByName("file")[0];
 		let form = document.getElementById("serverForm");
-
+		
+		if(isFile.value!=""){
+			//파일 올렸을 때
+			alert("하이염");
+			form.appendChild(file);
+			form.enctype = "multipart/form-data";
+		}
+		
+		
+		
 	 	form.action = action;
 		form.method = "post";
-		form.submit();   
+		form.submit();
 	}
 	
 	function next(num){
@@ -183,8 +202,18 @@
 		}
 	}
 	
-	
-	
+	//프로필사진 추가 ::  hidden처리한 input type="file" 연결
+	function onClickUpload() {
+			// 파일 선택하는 인풋 연결
+			let imgInput = document.getElementsByName("file")[0];
+			imgInput.click();
+	}
+	function submitPhoto(){
+		//올린 파일 이름 찍어주기
+		let imgInput = document.getElementsByName("file")[0].value;
+		let coProfile = document.getElementsByName("coProfile")[0];
+		coProfile.value = imgInput;
+	}
 </script>
 </head>
 <body>
@@ -255,8 +284,10 @@
 									<div class = "accessInput-input-group2">
 										<input type = "text" name = "coEmail" class="basicInput" placeholder="이메일">
 									</div>
-						
-									
+									<div class = "accessInput-input-group2">
+										<input type = "text" name = "coProfile" placeholder="프로필사진" class="basicInput" onclick="onClickUpload()">
+									</div>
+										<input style="visibility: hidden;" type="file" name="file" onchange="submitPhoto()" accept="image/*">
 									<div>
 										<input type = "button" class="checkBtn btn form" onClick="next('2')" value="Previous">
 										<input type = "button" value = "회 원 가 입" onclick="companyJoin('CompanyJoin')" class="checkBtn btn joinconfirm"> 

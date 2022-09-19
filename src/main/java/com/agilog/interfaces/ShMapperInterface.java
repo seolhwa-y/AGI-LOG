@@ -52,6 +52,8 @@ public interface ShMapperInterface {
 	// 감성일기 댓글 삭제
 	public int delDailyDiaryComment(DailyDiaryCommentBean ddcb);
 	
+	// 지도 본인 지역 확인
+	public AuthBean getSuAddress(AuthBean ab);
 	// 지도 기업 연계 정보 조회
 	public String getCoCode(CompanyBean cb);
 	// 지도 댓글 조회
@@ -69,6 +71,12 @@ public interface ShMapperInterface {
 
 	// 지도 예약 가능 일정 조회
 	public List<ReservationBean> getReservationList(ReservationBean rb);
-	// 지도 예약시간정 등록
+	// 지도 예약 코드 MAX + 1
+	public String getResCode(ReservationBean rb);
+	// 지도 예약일정 등록
 	public int insReservationList(ReservationBean rb);
+	// 지도 예약 인원수 MAX + 1
+	public int getResCountPlus(ReservationBean rb);
+	// 지도 예약인원 수정
+	public int updResTime(ReservationBean rb);
 }

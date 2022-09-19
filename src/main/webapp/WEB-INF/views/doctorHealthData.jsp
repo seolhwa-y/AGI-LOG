@@ -19,14 +19,14 @@ function init(){
 		accessArea.innerHTML += "<span onclick=\"movePage(\'CompanyLogout\')\">로그아웃</span>";	
 	}
 }
-function updDoctorComment(data1,data2) {
+function insDoctorComment(data1,data2) {
 	let form = document.getElementById("serverForm");
 	let doComment = document.getElementsByName("doctorComment")[0].value;
 	
 	form.appendChild(createInput("hidden","doComment",doComment,null,null));
 	form.appendChild(createInput("hidden","resCode",data1,null,null));
 	
-	form.action = "UpdateDoctorComment";
+	form.action = "InsertDoctorComment";
 	form.method = "post";
 	form.submit();
 }
@@ -55,7 +55,8 @@ function updDoctorComment(data1,data2) {
 			<div id="rightArea" class="scrollBar">
 			
 				<div id="healthList">${healthDataList}</div>
-
+				<div>${doctorComment}</div>
+				<div>${message}</div>
 			</div>
 		
 		</div>
