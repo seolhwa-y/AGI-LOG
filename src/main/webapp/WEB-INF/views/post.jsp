@@ -187,6 +187,15 @@ function postComment(ajaxData) {
 	
 	swal("요청", "요청하신 작업을 완료하였습니다!", "success", { button: "완료"});
 }
+function updatePost(fbCode) {
+	let form = document.getElementById("serverForm");
+	
+	form.appendChild(createInput("hidden","fbCode",fbCode,null,null));
+	form.action = "MoveUpdateFBPost";
+	form.method = "post";
+	
+	form.submit();
+}
 function deletePost(fbCode) {
 	let form = document.getElementById("serverForm");
 	
@@ -201,7 +210,6 @@ function deletePost(fbCode) {
         .then((willDelete) => {
             if (willDelete) {
             	form.appendChild(createInput("hidden","fbCode",fbCode,null,null));
-
             	form.action = "DeleteFBPost";
             	form.method = "post";
             	
@@ -210,7 +218,6 @@ function deletePost(fbCode) {
                 swal("삭제를 취소하셨습니다.");
             }
     });
-}
 </script>
 </head>
 <body onload="getInfo()" id="body">

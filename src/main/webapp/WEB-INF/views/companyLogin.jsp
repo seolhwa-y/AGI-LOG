@@ -24,6 +24,15 @@
 		
 		let companyCF = document.getElementsByClassName("companyCF")[0];
 
+		if(id.value == ""){
+			alert("아이디를 입력하세요");
+			return;
+		}
+		if(pw.value == ""){
+			alert("패스워드를 입력하세요");
+			return;
+		}
+		
 		companyCF.appendChild(form);
 		
 		form.appendChild(id);

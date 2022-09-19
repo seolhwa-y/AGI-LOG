@@ -11,6 +11,9 @@ public class DailyDiaryBean {
 	private String ddContent;
 	private String dpLink;
 	
+	//캘린더 되돌아가기
+	private String returnAction;
+	
 	private String ddStatus;
 	private String ddSuCode;
 	
