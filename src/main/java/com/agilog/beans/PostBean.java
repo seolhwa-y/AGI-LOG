@@ -21,6 +21,7 @@ public class PostBean {
 //	private int ibLike;
 	
 	private String ibSort;
+	private String fbSort;
 	private int pageNum;
 	
 	private int likes; //좋아요 개수

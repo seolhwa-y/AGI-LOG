@@ -67,9 +67,13 @@
 	
 	
 	
-	
+	<!-- 정보게시판 글의 총 갯수 조회 -->
 	<select id="InfoCount" parameterType="com.agilog.beans.PostBean" resultType="int">
 	    SELECT COUNT(*) FROM IB
+	</select>
+	<!-- 자유게시판 글의 총 갯수 조회 -->
+	<select id="fInfoCount" parameterType="com.agilog.beans.PostBean" resultType="int">
+	    SELECT COUNT(*) FROM FB
 	</select>
 	
 
@@ -139,6 +143,38 @@
 	   FROM INFOBOARD
 	   WHERE IB_CODE = #{ibCode}
 	</select>
+	
+	
+	<!-- 자유게시판 정렬 -->
+	<select id="getFreeInfo" parameterType="com.agilog.beans.PostBean" resultType="com.agilog.beans.PostBean">
+		SELECT*FROM(SELECT ROWNUM AS NUM, A.*
+		FROM(
+		SELECT * FROM FBPOSTLIST ORDER BY FBDATE DESC
+		) A)WHERE NUM BETWEEN 1+10*(#{pageNum}-1) AND 10*#{pageNum}
+	</select>
+	
+	<!-- 육아정보 게시판 리스트 불러오기 오래된 순 정렬 -->
+	<select id="getFreeInfoOld" parameterType="com.agilog.beans.PostBean" resultType="com.agilog.beans.PostBean">
+	   	SELECT*FROM(SELECT ROWNUM AS NUM, A.*
+		FROM(
+		SELECT * FROM FBPOSTLIST ORDER BY FBDATE ASC
+		) A)WHERE NUM BETWEEN 1+10*(#{pageNum}-1) AND 10*#{pageNum}
+	</select>
+		<!-- 육아정보 게시판 리스트 불러오기 좋아요 순 정렬 -->
+	<select id="getFreeInfoLike" parameterType="com.agilog.beans.PostBean" resultType="com.agilog.beans.PostBean">
+	   	SELECT*FROM(SELECT ROWNUM AS NUM, A.*
+		FROM(
+		SELECT * FROM FBPOSTLIST ORDER BY LIKES DESC
+		) A)WHERE NUM BETWEEN 1+10*(#{pageNum}-1) AND 10*#{pageNum}
+	</select>
+		<!-- 육아정보 게시판 리스트 불러오기 조회수 순 정렬 -->
+	<select id="getFreeInfoView" parameterType="com.agilog.beans.PostBean" resultType="com.agilog.beans.PostBean">
+	    SELECT*FROM(SELECT ROWNUM AS NUM, A.*
+		FROM(
+		SELECT * FROM FBPOSTLIST ORDER BY FBVIEW DESC
+		) A)WHERE NUM BETWEEN 1+10*(#{pageNum}-1) AND 10*#{pageNum}
+	</select>
+	
 	
 	
 	

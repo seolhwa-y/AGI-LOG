@@ -214,7 +214,6 @@ public class Board implements ServiceRule {
 			sb.append("</div>");
 			sb.append("<button class=\"likeBtn\" onClick=\"likeBtn('"+pb.getIbCode()+ "','" + pb.getIbDate()+ "')\">좋아요</button>");
 			sb.append("<button class=\"backList\" onClick=\"movePage('MoveInfoBoard')\">목록</button>");
-				System.out.println("좋아요 정리 :" + pb.getIbCode() + pb.getIbDate());
 		sb.append("</div");
 		//}
 		return sb.toString();
