@@ -54,8 +54,8 @@ public class Board3 implements ServiceRule {
 		}
 	}
 	
-	// 특정 게시글 내용 보기
-	private String showFreePostCtl(ModelAndView mav) {
+	// 특정 게시글 댓글 내용 보기
+	private void showFreePostCtl(ModelAndView mav) {
 		PostCommentBean pcb = new PostCommentBean();
 		StringBuffer sb = new StringBuffer();
 
@@ -64,21 +64,20 @@ public class Board3 implements ServiceRule {
 		pcb.setFcFbCode(pb.getFbCode());
 		pcb.setFcFbDate(pb.getFbDate());
 		pcb.setFcFbSuCode(pb.getFbSuCode());
+		System.out.println(pcb);
 		
 		List<PostCommentBean> pcList = this.session.selectList("getPostCommentList", pcb);
 
 		if(pcList.size() != 0) {
 			mav.addObject("fbComment", this.makeCommentHTML(pcList));
 		}else {
-			sb.append("<div><hr></div>");
 			sb.append("<div>");
 			sb.append("<input class=\"fbComment commentInput\" />");
 			sb.append("<button class=\"submitBtn btn\" onClick=\"insertBoardComment("+ pcb.getFcFbCode() + "," + pcb.getFcFbSuCode() + "," + pcb.getFcFbDate() + ")\">확인</button>");
 			sb.append("</div>");
 			sb.append("<div id='commentList'></div>");
+			mav.addObject("fbComment", sb.toString());
 		}
-	
-		return sb.toString();
 	}
 	
 	// 댓글 내용 양식 만들기
@@ -86,11 +85,6 @@ public class Board3 implements ServiceRule {
 		StringBuffer sb = new StringBuffer();
 		int i = -1;
 
-		sb.append("<div><hr></div>");
-		sb.append("<div>");
-		sb.append("<input class=\"fbComment commentInput\" />");
-		sb.append("<button class=\"submitBtn btn\" onClick=\"insertBoardComment("+ pcList.get(0).getFcFbCode() + "," + pcList.get(0).getFcFbSuCode() + "," + pcList.get(0).getFcFbDate() + ")\">확인</button>");
-		sb.append("</div>");
 		sb.append("<div id='commentList'>");
 
 		for(PostCommentBean pb : pcList) {
@@ -121,6 +115,10 @@ public class Board3 implements ServiceRule {
 			}
 		}
 		sb.append("</div>");
+		sb.append("<div>");
+		sb.append("<input class=\"fbComment commentInput\" />");
+		sb.append("<button class=\"submitBtn btn\" onClick=\"insertBoardComment("+ pcList.get(0).getFcFbCode() + "," + pcList.get(0).getFcFbSuCode() + "," + pcList.get(0).getFcFbDate() + ")\">확인</button>");
+		sb.append("</div>");
 
 		return sb.toString();
 	}
@@ -135,12 +133,8 @@ public class Board3 implements ServiceRule {
 			AuthBean ab = (AuthBean)this.pu.getAttribute("accessInfo");
 			
 			pcb.setFcSuCode(ab.getSuCode());
-	
-			pcb.setFcCode(this.session.selectOne("getFcCode", pcb.getFcSuCode()));
-			if(pcb.getFcCode() == null) {
-				pcb.setFcCode("1");
-			}
-			
+			pcb.setFcCode((String)this.session.selectOne("getFcCode", pcb.getFcFbCode()));
+			System.out.println(pcb);
 			if(this.convertToBoolean(this.session.insert("insPostComment", pcb))) {
 				System.out.println("자유게시판 댓글 등록 성공");
 				

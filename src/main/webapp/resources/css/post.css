@@ -1,90 +1,43 @@
 @charset "UTF-8";
-.infoBoard{
-	width: 79.3rem;
-    height: 42rem;
-}
-.infoTable{
-	background-color:white;
-	margin:0 auto;
-	margin-top: 1.4rem;
-	border-collapse:collapse;
-}
-.infoBoardH{
-	font-size:2rem;
-	width:14rem;
-	padding: 25px;
-}
-.infoBoardM{
-	font-size:1.2rem;
-	padding: 9px;
-	border: solid 2px;
-    background-color: #cfcfcf;
-}
-.no{
-	width:5rem;
-}
-.title{
-	width:43rem;
-	word-spacing: 6rem;
-}
-.date{
-	width:10rem;
-}
-.like{
-	width:5rem;
-}
-.view{
-	width:7rem;
-}
-.thead{
-	text-align: left;
+.pWriter {
+	width: 16rem;
+    text-align: center;
+    float: left;
+    margin-left: -4rem;
 }
 
-.infoBoardB{
-	font-size: 1.1rem;
+.pUDIcon {
+	width: 8rem;
     text-align: center;
-    border:solid 2px;
-    padding:6px;
+    float: right;
 }
-.infoBoardTitle{
-	font-size: 1.1rem;
-    text-align: left;
-    border:solid 2px;
-    padding:6px;
+
+.updatePost {
+    background-color: white;
+    border: white;
+    font-size: 1.2rem;
+	color:grey;
 }
-	#infoBoardSelect{
-		width: 6.5rem;
-    	height: 1.8rem;
-    	font-size: 1.2rem;
-	    float: right;
-	    margin-right: 4.6rem;
-	    margin-top: -1rem;
-	    box-sizing: border-box;
-	    border-radius: 6px;
-		color: dimgray;
-	}
-	option {
-  		padding: 4px;
-  		font-size: 20px;
-  		color: dimgray;
-	}
-.selectBoard{
-	background-color:white;
-	cursor: pointer;
+
+.deletePost {
+    background-color: white;
+    border: white;
+    font-size: 1.2rem;
+	color:grey;
 }
-.selectBoard:hover{
-    background-color:#bbb;
-    transition: all 0.3s;
+.imgContainer {
+	margin-right : 1%
 }
+
+
 
 .postContent{
 	background-color:white;
 	margin: 0 auto;
 	margin-top: 1rem;
 	width: 79rem;
-/*     height: 43rem; */
+    height: 100%;
 }
-
 .pTitle{
 	margin: 0 auto;
     width: 49rem;
@@ -105,7 +58,7 @@
 	width: 16rem;
     text-align: center;
     float: left;
-    margin-left: 19rem;
+    margin-left: 8rem;
 }
 .sDate{
 	color:grey;
@@ -128,6 +81,7 @@
 }
 .pBody{
 	width: 73rem;
+    height: 68.5%;
     padding: 2rem;
     border: 1px solid;
     border-width: 0px 0px 2px 0px;
@@ -135,8 +89,18 @@
     margin-top: 1.3rem;
 }
 .pContent{
+	float : left;
 	background-color:white;
+    margin-top: -3%;
+    width : 50%; height : 110%;
+    border-right : 1px black solid;
 }
+.pPhoto {
+	float: right;
+    width: 49%; height: 110%;
+    margin-top: -3%;
+}
+
 .likeBtn{
 	font-size: 15px;
     padding: 5px 9px 3px;
@@ -171,36 +135,4 @@
 	float: left;
     margin-left: 46%;
     margin-top: 2rem;
-}
-.myLike {
-	color: crimson;
-}
-#commentList{
-	width: 79rem;
-	overflow : auto;
-}
-
-.comment {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	margin-left: 6%;
-	margin-top: 2%;
-	margin-right: 3%;
-}
-
-
-.profileImage {
-	width: 2rem;
-	height: 2rem;
-}
-
-.suNickname {
-	width: 10%;
-	text-align: left;
-}
-
-.fcContent {
-	width: 79%;
-	text-align: left;
 }

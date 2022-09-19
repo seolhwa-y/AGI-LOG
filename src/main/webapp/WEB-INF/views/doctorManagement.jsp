@@ -141,19 +141,18 @@
 		let info = "";
 		
 
-		info += "<table class=\"doctorMgr\">" ;
+		info += "<table class=\"doctorMgrH\">" ;
 		info += "<tr>";
-		info += "<th>직원코드</th>";
-		info += "<th>직원이름</th>";
-		info += "<th>관리</th>";
+		info += "<th class=\"doctorMgrM\">직원코드</th>";
+		info += "<th class=\"doctorMgrM\">직원이름</th>";
+		info += "<th class=\"doctorMgrM\">관리</th>";
 		info += "</tr>";
 		for(idx=0; idx<data.length; idx++) {
 			info += "<tr>";
-			info += "<td>" + data[idx].doCode + "</td>";
-			info += "<td>" + data[idx].doName + "</td>";
-			info += "<td><button class=\"delBtn\">";
-			info += "<i class=\"fa-solid fa-trash-can delBtn editBtn\" "
-					+ "onClick=\"deleteDoctor("+ data[idx].doCode +")\"></i>삭제</button>";
+			info += "<td class=\"doctorMgrB\">" + data[idx].doCode + "</td>";
+			info += "<td class=\"doctorMgrB\">" + data[idx].doName + "</td>";
+			info += "<td class=\"doctorMgrB\"><button class=\"delBtn\" onClick=\"deleteDoctor("+ data[idx].doCode +")\">";
+			info += "<i class=\"fa-solid fa-trash-can delBtn\"></i>삭제</button>";
 					info += "</td>";
 					info += "</tr>";
 		}
@@ -201,13 +200,13 @@
 				<div id="doctorMgrTitleDiv">
 					<p id="doctorMgrTitle">전문의 관리</p>
 					<button class="updBtn" id="addDocBtn" onClick="cModal('1')">
-						<i class="fa-solid fa-pen updBtn editBtn"></i>추가하기
+						<i class="fa-solid fa-pen updBtn"></i>추가하기
 					</button>
 				</div>
 				<div id="doctorList">${doctor}</div>
-
-
-				<div class="modal">
+			</div>
+		</div>
+		<div class="modal">
 					<div class="modal_body">
 						<div class="modal_head">
 							<div class="smallJoinTitle">전문의 추가</div>
@@ -247,8 +246,6 @@
 						</div>
 					</div>
 				</div>
-			</div>
-		</div>
 	</div>
 	<form id="serverForm"></form>
 </body>

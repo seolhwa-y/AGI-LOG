@@ -55,7 +55,7 @@
 		SELECT COCODE AS RESCOCODE,
 		       CONAME AS RESCONAME,
 		       RECODE AS RESCODE,
-		       TO_CHAR(REDATE,'YYYY-MM-DD') AS RESDATE,
+		       TO_CHAR(REDATE,'HH24') AS RESDATE,
 		       BBNAME AS RESBBNAME
 		FROM CORE WHERE TO_CHAR(REDATE, 'YYYY-MM-DD') = #{date} AND SUCODE = #{suCode} AND STATUS ='CP'
 	</select>
@@ -79,7 +79,7 @@
 		DELETE FROM SC WHERE SC_CODE = #{scheduleCode} AND SC_SUCODE = #{suCode}
 	</delete>
 	<update id="updateReservationStatus" parameterType="com.agilog.beans.ReservationBean">
-		UPDATE RE SET RE_RCCODE = #{rcCode} WHERE RE_CODE = #{resCode} AND TO_CHAR(RE_DATE,'YYYY-MM-DD') = #{resDate} AND RE_BBSUCODE = #{suCode} AND RE_RCCODE = 'CP'
+		UPDATE RE SET RE_RCCODE = #{rcCode} WHERE RE_CODE = #{resCode} AND TO_CHAR(RE_DATE,'YYYY-MM-DD') = #{resDate} AND RE_BBSUCODE = #{resSuCode} AND RE_RCCODE = 'CP'
 	</update>
 	<select id="getDailyDiaryFeed"  resultType="com.agilog.beans.DailyDiaryBean">
 		SELECT DD_CODE AS DDCODE,
@@ -89,7 +89,7 @@
 		       DP_LINK AS DPLINK
 		FROM DAILYDIARY LEFT OUTER JOIN DAILYDIARYPHOTO ON DD_CODE = DP_DDCODE
 		WHERE DD_STATUS = '1'
-		ORDER BY DD_DATE
+		ORDER BY DD_DATE DESC
 	</select>
 	<select id="getMyDailyDiary" parameterType="com.agilog.beans.AuthBean" resultType="com.agilog.beans.DailyDiaryBean">
 		SELECT DD_CODE AS DDCODE,

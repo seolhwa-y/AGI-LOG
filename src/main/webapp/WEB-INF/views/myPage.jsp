@@ -585,7 +585,7 @@ function changeParentInfo(){
 	let nickName = document.getElementsByName("suNickName")[0];
 	let address = document.getElementsByName("suAddress")[0];
 	let form = document.getElementById("serverForm");
-	
+	alert(nickName.value);
 	if((nickName.value==""&&address.value=="")){
 		alert("바꾸실 정보를 입력하세요");
 		nickName.focus();

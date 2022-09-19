@@ -313,7 +313,7 @@ function viewFeed(ajaxData) {
 	let modalFoot = document.querySelector(".modal_foot");
 	modal.style.display = "block";
 
-	modalHead.innerHTML = "<div class='viewFeedHead'><img style=\"filter: drop-shadow(10px 6px 6px #5D5D5D)\" src=\'" + ddFeed.dpLink + "'><i class='fa-solid fa-xmark closeBtn editBtn' onclick='modalClose('')'></div>";
+	modalHead.innerHTML = "<div class='viewFeedHead'><img style=\"filter: drop-shadow(10px 6px 6px #5D5D5D)\" src=\'" + ddFeed.dpLink + "'><i class=\"fa-solid fa-xmark closeBtn \" onclick =\"modalClose('')\"style=\"float: right;\"></i></div>";
 	modalContent.innerHTML = "<br/><div id='viewFeedDate'>" + ddFeed.ddDate.substring(0, 4) + "년 " + ddFeed.ddDate.substring(4, 6) + "월 " + ddFeed.ddDate.substring(6, 8) + "일 " + ddFeed.ddDate.substring(8, 10) + ":" + ddFeed.ddDate.substring(10, 12) + ":" + ddFeed.ddDate.substring(12, 14) + "</div><div class='viewLike' onClick='dailyDiaryLike(" + ddFeed.ddCode + "," + ddFeed.ddDate + "," + ddFeed.suCode + ")'>❤ " + ddFeed.likes + "</div>"
 							 +"<div id='viewFeedContent'><br/>" + ddFeed.ddContent + "</div>";
 	if("${accessInfo.suCode}" == ddFeed.suCode) {
@@ -359,12 +359,14 @@ function viewFeed(ajaxData) {
 		comment += "</div>";
 	}
 	comment += "</div>";
-
-	input += "<div style = 'margin-top: 9%;'>";
-	input += "<input class=\"ddComment mEditInput\" />";
-	input += "<button class=\"mMiniBtn btn\" onClick=\"insertDailyDiaryComment("+ ddFeed.ddCode + "," + ddFeed.suCode + "," + ddFeed.ddDate + ")\">확인</button>";
-	input += "</div>";
 	
+	if(suCode != null){
+		input += "<div style = 'margin-top: 9%;'>";
+		input += "<input class=\"ddComment mEditInput\" />";
+		input += "<button class=\"mMiniBtn btn\" onClick=\"insertDailyDiaryComment("+ ddFeed.ddCode + "," + ddFeed.suCode + "," + ddFeed.ddDate + ")\">확인</button>";
+		input += "</div>";
+	}
+
 	modalContent.innerHTML += comment;
 	modalFoot.innerHTML += input;
 }
@@ -507,10 +509,6 @@ function changeSort(){
 							<option value = "likeList">좋아요순</option>
 						</select>
 					</div>
-					<div id="hashTagArea">
-						<input id="hashTag" type="text" placeholder=" # 해시태그">
-					</div>
-					<input id="searchHashTag" class="writeBtn btn" type="button" style="cursor:pointer;" value="검색">
 					<div id="writeFeedArea">
 						<input id="writeFeed"type="button" class="writeBtn btn" style="cursor:pointer;" onClick="moveWriteFeed()" value="글쓰기" >
 					</div>

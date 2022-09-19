@@ -9,7 +9,12 @@
 <script src="https://use.fontawesome.com/releases/v6.1.2/js/all.js"></script>
 <link rel="stylesheet" href="/res/css/agiMain.css">
 <link rel="stylesheet" href="/res/css/company.css">
-
+<style>
+@import url("//fonts.googleapis.com/earlyaccess/nanumgothic.css" );
+.passw[type=password]{
+	font-family:"Nanum Gothic", sans-serif !important;
+}
+</style>
 <script>
 	function init(){
 		if("${message}" != ""){
@@ -73,7 +78,7 @@
 					<p id="checkCompanyTitle">기업 로그인</p>
 					<div class="companyCF">
 						<input type="text" name="coCode" class="basicInput" placeholder="기업 아이디">
-						<input type="password" name="coPassword" class="basicInput" placeholder="기업 비밀번호">
+						<input type="password" name="coPassword" class="basicInput passw" placeholder="기업 비밀번호">
 						<input type="button" value="로그인" class="basicBtn btn" onclick="companyLogin()">
 					</div>
 				</div>

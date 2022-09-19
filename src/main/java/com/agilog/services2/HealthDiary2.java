@@ -116,7 +116,7 @@ public class HealthDiary2 implements ServiceRule {
 		
 		if(babyList.size()!=0 && babyList != null) {
 			// 기본 고정은 아이를 첫번째 등록한 아이
-			sb.append("<option value = '" + babyList.get(0).getBbCode() + "' disabled selected> " + babyList.get(0).getBbName() + "</option>");
+			sb.append("<option disabled selected>아이 선택</option>");
 			
 			// 선택 가능한 아이 리스트
 			for(BabyBean bb : babyList) {

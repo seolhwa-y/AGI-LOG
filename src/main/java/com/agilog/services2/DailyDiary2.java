@@ -194,18 +194,9 @@ public class DailyDiary2 implements ServiceRule {
 						System.out.println("dpDdSuCode : " + ddpb.getDpDdSuCode());
 						System.out.println(ddpb.getDpDdSuCode().equals(db.getSuCode()));
 						
-						String ddDate = ((DailyDiaryBean)this.session.selectOne("getDdDate", db)).getDdDate();
-						StringBuffer sb = new StringBuffer();
-						sb.append(ddDate.substring(0, 4));
-						sb.append(ddDate.substring(5, 7));
-						sb.append(ddDate.substring(8, 10));
-						sb.append(ddDate.substring(11, 13));
-						sb.append(ddDate.substring(14, 16));
-						sb.append(ddDate.substring(17, 19));
-						
-						ddpb.setDpDdDate(sb.toString());
+						ddpb.setDpDdDate(((DailyDiaryBean)this.session.selectOne("getDdDate", db)).getDdDate());
 						System.out.println(ddpb.getDpDdDate().equals(db.getDdDate()));
-						ddpb.setDpLink(realPath.toString());
+						ddpb.setDpLink("/res/img/"+ddpb.getDpDdSuCode()+"/DD/"+fileName);
 						
 						System.out.println("ddpb : " + ddpb);
 						

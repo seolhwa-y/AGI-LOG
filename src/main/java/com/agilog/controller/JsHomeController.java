@@ -68,7 +68,6 @@ public class JsHomeController {
 	@RequestMapping(value = "/ChangeParentInfo", method = RequestMethod.POST)
 	public ModelAndView updateProfile(ModelAndView mav, @ModelAttribute MyPageBean mb) {
 		mav.addObject(mb);
-	
 		this.myPage.backController(mav, 91);
 		
 		return mav;
