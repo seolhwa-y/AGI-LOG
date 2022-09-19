@@ -70,7 +70,7 @@ public class JpHomeController {
 	@RequestMapping(value = "/MoveHealthDataList", method = RequestMethod.POST)
 	public ModelAndView moveHealthDataList(ModelAndView mav, @ModelAttribute ReservationBean rb) {
 		mav.addObject(rb);
-		this.company.backController(mav, 800);
+		this.company.backController(mav, 83);
 		return mav;
 	}
 	//의사 소견 입력 작업

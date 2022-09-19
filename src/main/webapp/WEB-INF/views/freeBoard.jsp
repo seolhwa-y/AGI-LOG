@@ -133,7 +133,6 @@ function boardContent(num) {
 				<nav class="side-menu">
 					<ul class="menus">
 						<li class="nav-text"><span>게시판</span></li>
-						<li class="nav-sText" onclick="movePage('MoveBoardPage')"><span>전체글</span></li>
 						<li class="nav-sText" onclick="movePage('MoveBoardPage')"><span>자유게시판</span></li>
 						<li class="nav-sText" onclick="movePage('MoveInfoBoard')"><span>육아정보</span></li>
 					</ul>

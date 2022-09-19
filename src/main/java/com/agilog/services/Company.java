@@ -64,7 +64,7 @@ public class Company implements ServiceRule {
 				case 84:
 					this.insertDoctorComment(mav);
 					break;
-				case 800:
+				case 83:
 					this.moveHealthDataList(mav);
 					break;
 				default:
