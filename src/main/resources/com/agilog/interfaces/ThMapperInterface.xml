@@ -3,9 +3,8 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.agilog.interfaces.ThMapperInterface">
 	<select id="getCompanyAccessAllInfo" parameterType="com.agilog.beans.CompanyBean" resultType="com.agilog.beans.CompanyBean">
-		SELECT CO_CODE AS COCODE,CO_NAME AS CONAME, CO_EMAIL AS COEMAIL, CO_MANAGERCODE AS COMANAGERCODE FROM CO WHERE CO_CODE = #{coCode}
-	</select>
-	
+        SELECT CO_CODE AS COCODE,CO_NAME AS CONAME, CO_EMAIL AS COEMAIL, CO_MANAGERCODE AS COMANAGERCODE, CO_PHOTO AS COPHOTO FROM CO WHERE CO_CODE = #{coCode}
+    </select>
 	<select id="isManagerCode" parameterType="com.agilog.beans.CompanyBean" resultType="int">
 		SELECT COUNT(*) FROM CO WHERE CO_MANAGERCODE = #{coManagerCode}
 	</select>
@@ -20,7 +19,7 @@
 		UPDATE RE SET RE_RCCODE = #{rcCode}
 		WHERE RE_CODE = #{resCode} AND RE_DOCOCODE = #{resCoCode}
 	</update>
-	<select id="getFbCode" parameterType="com.agilog.beans.PostBean" resultType="int">
+	<select id="getFbCode" resultType="int">
 		SELECT MAX(TO_NUMBER(FB_CODE)) FROM FREEBOARD
 	</select>
 	<insert id="insFbPost" parameterType="com.agilog.beans.PostBean">
@@ -34,7 +33,7 @@
 		SELECT * FROM FBPOSTCONTENT WHERE FBCODE = #{fbCode}
 	</select>
 	<select id="getDdCode" parameterType="com.agilog.beans.PostBean" resultType="int">
-		SELECT MAX(DD_CODE) FROM DAILYDIARY
+		SELECT MAX(TO_NUMBER(DD_CODE)) FROM DAILYDIARY
 	</select>
 	<insert id="insDd" parameterType="com.agilog.beans.DailyDiaryBean">
 		INSERT INTO DAILYDIARY(DD_CODE, DD_DATE, DD_SUCODE, DD_STATUS, DD_CONTENT, DD_VIEW, DD_LIKE) 
@@ -61,5 +60,44 @@
                 INNER JOIN RC ON RC_CODE = RE_RCCODE
                 INNER JOIN DO ON DO_COCODE = CO_CODE AND DO_CODE = RE_DOCODE
         WHERE RE_CODE = #{resCode}
+	</select>
+	<select id="getFpCode" parameterType="com.agilog.beans.PostPhotoBean" resultType="int">
+		SELECT MAX(TO_NUMBER(FP_CODE)) FROM FREEBOARDPHOTO WHERE FP_PBCODE = #{fbCode}
+	</select>
+	<insert id="insFp" parameterType="com.agilog.beans.PostPhotoBean">
+		INSERT INTO FREEBOARDPHOTO(FP_CODE, FP_FBCODE, FP_FBSUCODE, FP_FBDATE, FP_LINK) 
+		VALUES(#{fpCode}, #{fpFbCode}, #{fpFbSuCode}, TO_DATE(#{fpFbDate}, 'YYYYMMDDHH24MISS'), #{fpLink})
+	</insert>
+	<delete id="delFbPost" parameterType="com.agilog.beans.PostBean">
+		DELETE FROM FREEBOARD WHERE FB_CODE = #{fbCode}
+	</delete>
+	<delete id="delFbPostPhoto" parameterType="com.agilog.beans.PostPhotoBean">
+		DELETE FROM FREEBOARDPHOTO WHERE FP_FBCODE = #{fpFbCode}
+	</delete>
+	<select id="getFbDate" parameterType="com.agilog.beans.PostBean" resultType="com.agilog.beans.PostBean">
+		SELECT TO_CHAR(FBDATE,'YYYYMMDDHH24MISS') AS FBDATE
+		FROM FBPOSTCONTENT WHERE FBCODE = #{fbCode}
+	</select>
+	<select id="getTnC" parameterType="com.agilog.beans.PostBean" resultType="com.agilog.beans.PostBean">
+		SELECT FB_CODE AS FBCODE, FB_TITLE AS FBTITLE, FB_CONTENT AS FBCONTENT
+		FROM FREEBOARD WHERE FB_CODE = #{fbCode}
+	</select>
+	<update id="updFbPost" parameterType="com.agilog.beans.PostBean">
+		UPDATE FREEBOARD SET FB_TITLE = #{fbTitle}, FB_CONTENT = #{fbContent}
+		WHERE FB_CODE = #{fbCode}
+	</update>
+	<select id="getDdDate" parameterType="com.agilog.beans.DailyDiaryBean" resultType="com.agilog.beans.DailyDiaryBean">
+		SELECT DD_DATE AS DDDATE
+		FROM DAILYDIARY WHERE DD_CODE = #{ddCode}
+	</select>
+	<insert id="insDDP" parameterType="com.agilog.beans.DailyDiaryPhotoBean">
+		INSERT INTO DAILYDIARYPHOTO(DP_CODE, DP_DDCODE, DP_DDSUCODE, DP_DDDATE, DP_LINK) 
+		VALUES(#{dpCode}, #{dpDdCode}, #{dpDdSuCode}, TO_DATE(#{dpDdDate}, 'YYYYMMDDHH24MISS'), #{dpLink})
+	</insert>
+	<delete id="delDdPhoto" parameterType="com.agilog.beans.DailyDiaryPhotoBean">
+		DELETE FROM DAILYDIARYPHOTO WHERE FP_FBCODE = #{dpDdCode}
+	</delete>
+	<select id="getDdpCode" parameterType="com.agilog.beans.DailyDiaryBean" resultType="int">
+		SELECT MAX(TO_NUMBER(DP_CODE)) FROM DAILYDIARYPHOTO WHERE DP_DDCODE = #{ddCode}
 	</select>
 </mapper>

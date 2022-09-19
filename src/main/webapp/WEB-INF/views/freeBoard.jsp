@@ -8,7 +8,7 @@
 <script src="/res/js/agiMain.js"></script>
 <script src="https://use.fontawesome.com/releases/v6.1.2/js/all.js"></script>
 <link rel="stylesheet" href="/res/css/agiMain.css">
-<link rel="stylesheet" href="/res/css/infoBoard.css">
+<link rel="stylesheet" href="/res/css/freeBoard.css">
 
 <!-- 카카오 스크립트 -->
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
@@ -55,12 +55,14 @@ function getInfo() {
 		accessArea.innerHTML += "<span onclick=\"movePage('MoveCompanyLoginPage')\">기업회원</span>";
 	}
 }
+
 function openPopUp() {
 	testPopUp = window
 		.open("https://nid.naver.com/nidlogin.logout",
 			"_blank",
 			"toolbar=yes,scrollbars=yes,resizable=yes,width=1,height=1");
 }
+
 function closePopUp() {
 	testPopUp.close();
 }
@@ -72,6 +74,7 @@ function naverLogout() {
         logout();
     }, 1000);
 }
+
 function kakaoLogout() {
 	if (Kakao.Auth.getAccessToken()) {
 		Kakao.API.request({
@@ -85,6 +88,16 @@ function kakaoLogout() {
 		})
 		Kakao.Auth.setAccessToken(undefined)
 	}
+}
+
+function boardContent(num) {
+    let form = document.getElementById("serverForm");
+
+    form.appendChild(createInput("hidden","fbCode",num,null,null));
+
+    form.action = "MoveShowFbPost";
+    form.method = "post";
+    form.submit();
 }
 </script>
 </head>
@@ -121,7 +134,7 @@ function kakaoLogout() {
 					<ul class="menus">
 						<li class="nav-text"><span>게시판</span></li>
 						<li class="nav-sText" onclick="movePage('MoveBoardPage')"><span>전체글</span></li>
-						<li class="nav-sText" onclick="movePage('MoveFreeBoard')"><span>자유게시판</span></li>
+						<li class="nav-sText" onclick="movePage('MoveBoardPage')"><span>자유게시판</span></li>
 						<li class="nav-sText" onclick="movePage('MoveInfoBoard')"><span>육아정보</span></li>
 					</ul>
 				</nav>

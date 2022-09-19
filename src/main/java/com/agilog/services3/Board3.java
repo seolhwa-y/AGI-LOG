@@ -36,11 +36,7 @@ public class Board3 implements ServiceRule {
 		try {
 			if (this.pu.getAttribute("accessInfo") != null) {
 				switch (serviceCode) {
-				
 				case 580 : this.showFreePostCtl(mav); break;
-				
-				
-
 				}
 			} else {
 				mav.setViewName("login");
@@ -59,15 +55,15 @@ public class Board3 implements ServiceRule {
 	}
 	
 	// 특정 게시글 내용 보기
-	private void showFreePostCtl(ModelAndView mav) {
+	private String showFreePostCtl(ModelAndView mav) {
 		PostCommentBean pcb = new PostCommentBean();
 		StringBuffer sb = new StringBuffer();
 
-		//PostBean pb = (PostBean)mav.getModel().get("postBean");
+		PostBean pb = (PostBean)mav.getModel().get("postBean");
 
-		pcb.setFcFbCode("1");
-		pcb.setFcFbDate("20220907212024");
-		pcb.setFcFbSuCode("2417407163");
+		pcb.setFcFbCode(pb.getFbCode());
+		pcb.setFcFbDate(pb.getFbDate());
+		pcb.setFcFbSuCode(pb.getFbSuCode());
 		
 		List<PostCommentBean> pcList = this.session.selectList("getPostCommentList", pcb);
 
@@ -80,10 +76,9 @@ public class Board3 implements ServiceRule {
 			sb.append("<button class=\"submitBtn btn\" onClick=\"insertBoardComment("+ pcb.getFcFbCode() + "," + pcb.getFcFbSuCode() + "," + pcb.getFcFbDate() + ")\">확인</button>");
 			sb.append("</div>");
 			sb.append("<div id='commentList'></div>");
-			mav.addObject("fbComment", sb.toString());
 		}
-		
-		mav.setViewName("post");
+	
+		return sb.toString();
 	}
 	
 	// 댓글 내용 양식 만들기

@@ -18,16 +18,16 @@
 		SELECT CO_PASSWORD AS COPASSWORD FROM CO WHERE CO_CODE = #{coCode}
 	</select>
 	<select id="isCompanyAccess" parameterType="com.agilog.beans.CompanyBean" resultType="string">
-		SELECT SUM(CL_ACTION) FROM COMPANYLOG WHERE CL_COCODE = #{coCode}
+		SELECT NVL(SUM(CL_ACTION),0) FROM COMPANYLOG WHERE CL_COCODE = #{coCode}
 	</select>
 	<insert id="insCompanyAuthLog" parameterType="com.agilog.beans.CompanyBean" >
 		INSERT INTO COMPANYLOG VALUES(DEFAULT,#{clAction},#{coCode})
 	</insert>
 	<select id="getCompanyAccessInfo" parameterType="com.agilog.beans.CompanyBean" resultType="com.agilog.beans.CompanyBean">
-		SELECT CO_CODE AS COCODE,CO_NAME AS CONAME, CO_EMAIL AS COEMAIL FROM CO WHERE CO_CODE = #{coCode}
+		SELECT CO_CODE AS COCODE,CO_NAME AS CONAME, CO_EMAIL AS COEMAIL, CO_PHOTO AS COPHOTO FROM CO WHERE CO_CODE = #{coCode}
 	</select>
 	<select id="insCompanyInfo" parameterType="com.agilog.beans.CompanyBean">
-		INSERT INTO CO VALUES(#{coCode}, #{coPassword}, #{coManagerCode}, #{coName}, #{coPhone}, #{coEmail}, #{coAddress})
+		INSERT INTO CO VALUES(#{coCode}, #{coPassword}, #{coManagerCode}, #{coName}, #{coPhone}, #{coEmail}, #{coAddress},#{coPhoto})
 	</select>
 	<select id="checkNickName" parameterType="com.agilog.beans.AuthBean" resultType="String">
 		SELECT COUNT(*) FROM SU WHERE SU_NICKNAME = #{suNickName}
