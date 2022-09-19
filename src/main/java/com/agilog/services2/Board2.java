@@ -284,7 +284,7 @@ public class Board2 {
 							ppb.setFpFbCode(pb.getFbCode());
 							ppb.setFpFbSuCode(pb.getFbSuCode());
 							ppb.setFpFbDate(((PostBean)this.session.selectOne("getFbDate", pb)).getFbDate());
-							ppb.setFpLink(realPath.toString());
+							ppb.setFpLink("/res/img/"+ppb.getFpFbSuCode()+"/board/"+fileName);
 							
 							//이미지 삽입 성공시 flag를 true로 설정. 실패시 flag를 false로 설정하고 반복문 탈출
 							if(this.convertToBoolean(this.session.insert("insFp", ppb))) {
@@ -359,27 +359,37 @@ public class Board2 {
 		AuthBean ab;
 		try {
 			ab = (AuthBean) this.pu.getAttribute("accessInfo");
-		
+			List<PostPhotoBean> ppb = this.session.selectList("getFbPp", pb);
 			if(ab != null) {
 				sb.append("<div class=\"pTitle\">" + pb.getFbTitle() + "</div>");
 				sb.append("<div class=\"pHead\">");
-				sb.append("<div class=\"pDate\">작성일&ensp;<small class=\"sDate\">" + pb.getFbDate() +"</small></div>");
-				sb.append("<div class=\"pView\">조회수&ensp;<small class=\"sView\">" + pb.getFbView() + "</small></div>");
-				sb.append("<div class=\"pLike\">좋아요&ensp;<small class=\"sLike\">" + pb.getLikes() + "</small></div>");
-				sb.append("</div>");
-				sb.append("<div class=\"pBody\">");
-				sb.append("<div class=\"pInfoLine\">");
 				try {
-					sb.append("<div class=\"pWriter\">" + this.enc.aesDecode(pb.getFbSuName(), pb.getFbSuCode()) + "</div>");
+					sb.append("<div class=\"pWriter\">작성자&ensp;<small class=\"swriter\">" + this.enc.aesDecode(pb.getFbSuName(), pb.getFbSuCode()) + "</small></div>");
 				} catch (InvalidKeyException | UnsupportedEncodingException | NoSuchAlgorithmException | NoSuchPaddingException
 						| InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException e) {
 					e.printStackTrace();
 				}
+				sb.append("<div class=\"pDate\">작성일&ensp;<small class=\"sDate\">" + pb.getFbDate() +"</small></div>");
+				sb.append("<div class=\"pView\">조회수&ensp;<small class=\"sView\">" + pb.getFbView() + "</small></div>");
+				sb.append("<div class=\"pLike\">좋아요&ensp;<small class=\"sLike\">" + pb.getLikes() + "</small></div>");
 				if (pb.getFbSuCode().equals(ab.getSuCode())) {
 					sb.append("<div class=\"pUDIcon\">" + "<input type='button' class='updatePost' value='수정' onClick='updatePost(" + pb.getFbCode() + ")'> | <input type='button' class='deletePost' value='삭제' onClick='deletePost(" + pb.getFbCode() + ")'>" + "</div>");
 				}
 				sb.append("</div>");
+				sb.append("<div class=\"pBody\">");
 				sb.append("<div class=\"pContent\"> " + pb.getFbContent() + " </div>");	
+				sb.append("<div class=\"pPhoto\"> ");
+				if (ppb != null) {
+					for (int idx = 0; idx < ppb.size(); idx++) {
+						if (idx%2 == 0) {
+							sb.append("<div class='imgContainer' style='width:280px;float: left;'><img src='" + ppb.get(idx).getFpLink() + "'>");
+						} else {
+							sb.append("<div class='imgContainer' style='width:280px;float: right;'><img src='" + ppb.get(idx).getFpLink() + "'>");
+						}
+						sb.append("</div>");
+					}
+				}
+				sb.append("</div>");
 				sb.append("</div>");
 				sb.append("<button class=\"likeBtn\" onClick=\"likeBtn()\">좋아요</button>");
 				sb.append("<button class=\"backList\" onClick=\"movePage('MoveBoardPage')\">목록</button>");
@@ -387,20 +397,30 @@ public class Board2 {
 			} else {
 				sb.append("<div class=\"pTitle\">" + pb.getFbTitle() + "</div>");
 				sb.append("<div class=\"pHead\">");
+				try {
+					sb.append("<div class=\"pWriter\">작성자&ensp;<small class=\"sWriter\">" + this.enc.aesDecode(pb.getFbSuName(), pb.getFbSuCode()) + "</small></div>");
+				} catch (InvalidKeyException | UnsupportedEncodingException | NoSuchAlgorithmException | NoSuchPaddingException
+						| InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException e) {
+					e.printStackTrace();
+				}
 				sb.append("<div class=\"pDate\">작성일&ensp;<small class=\"sDate\">" + pb.getFbDate() +"</small></div>");
 				sb.append("<div class=\"pView\">조회수&ensp;<small class=\"sView\">" + pb.getFbView() + "</small></div>");
 				sb.append("<div class=\"pLike\">좋아요&ensp;<small class=\"sLike\">" + pb.getLikes() + "</small></div>");
 				sb.append("</div>");
 				sb.append("<div class=\"pBody\">");
-				sb.append("<div class=\"pInfoLine\">");
-				try {
-					sb.append("<div class=\"pWriter\">" + this.enc.aesDecode(pb.getFbSuName(), pb.getFbSuCode()) + "</div>");
-				} catch (InvalidKeyException | UnsupportedEncodingException | NoSuchAlgorithmException | NoSuchPaddingException
-						| InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException e) {
-					e.printStackTrace();
+				sb.append("<div class=\"pContent\"> " + pb.getFbContent() + " </div>");
+				sb.append("<div class=\"pPhoto\"> ");
+				if (ppb != null) {
+					for (int idx = 0; idx < ppb.size(); idx++) {
+						if (idx%2 == 0) {
+							sb.append("<div class='imgContainer' style='width:280px;float: left;'><img src='" + ppb.get(idx).getFpLink() + "'>");
+						} else {
+							sb.append("<div class='imgContainer' style='width:280px;float: right;'><img src='" + ppb.get(idx).getFpLink() + "'>");
+						}
+						sb.append("</div>");
+					}
 				}
 				sb.append("</div>");
-				sb.append("<div class=\"pContent\"> " + pb.getFbContent() + " </div>");	
 				sb.append("</div>");
 				sb.append("<button class=\"backList\" onClick=\"movePage('MoveBoardPage')\">목록</button>");
 				sb.append("</div");
@@ -431,7 +451,7 @@ public class Board2 {
 			sb.append("</tr>");
 			for(int idx=0; idx<fbBoardList.size(); idx++) {
 				PostBean pb = (PostBean)fbBoardList.get(idx);
-				sb.append("<tr class=\"selectBoard\" onClick=\"boardContent("+ pb.getFbCode() +")\">");
+				sb.append("<tr class=\"selectBoard\" onClick=\"boardContent('"+ pb.getFbCode() + "','" + pb.getFbSuCode() + "','" + pb.getFbDate() +"')\">\n");
 				sb.append("<td class=\"freeBoardTitle\">"+ pb.getFbTitle() +"</td>");
 				try {
 					sb.append("<td class=\"freeBoardWriter\">"+ this.enc.aesDecode(pb.getFbSuName(), pb.getFbSuCode()) +"</td>");

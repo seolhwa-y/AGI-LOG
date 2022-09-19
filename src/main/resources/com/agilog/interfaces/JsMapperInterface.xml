@@ -89,7 +89,7 @@
 		       DP_LINK AS DPLINK
 		FROM DAILYDIARY LEFT OUTER JOIN DAILYDIARYPHOTO ON DD_CODE = DP_DDCODE
 		WHERE DD_STATUS = '1'
-		ORDER BY DD_DATE
+		ORDER BY DD_DATE DESC
 	</select>
 	<select id="getMyDailyDiary" parameterType="com.agilog.beans.AuthBean" resultType="com.agilog.beans.DailyDiaryBean">
 		SELECT DD_CODE AS DDCODE,
