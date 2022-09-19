@@ -87,7 +87,7 @@ function kakaoLogout() {
 
 var submitObject = new Object();
 
-function submitContents() {
+function submitContents(fbCode) {
 	let form = document.getElementById("upload");
 	oEditors.getById["ir1"].exec("UPDATE_CONTENTS_FIELD", []);	// 에디터의 내용이 textarea에 적용됩니다.
 	const files = submitObject.files;
@@ -110,21 +110,21 @@ function submitContents() {
 	form.appendChild(createInput("hidden","fbTitle",fbTitle,null,null));
 	form.appendChild(createInput("hidden","fbContent",fbContent,null,null));
 	
-	//for (idx = 0; idx < files.length; idx++) {
-    //	alert(files[idx].name);
-    //	form.appendChild(createInput("hidden","files["+idx+"].fileName",files[idx].name, null, null));
-	//}
+	if(fbCode == "") {
+		form.action = "InsertPost";
+	} else {
+		form.appendChild(createInput("hidden","fbCode",fbCode,null,null));
+		
+		form.action = "UpdatePost";
+	}
 	
-	console.log(form);
-	
-	form.action = "InsertPost";
 	form.method = "post";
 	//form.enctype= "multipart/form-data";
 	form.submit();
+	
 }
 
 function uploadFile(){
-	alert("aaaa");
 	const form = document.getElementById("upload");
 	form.method = "post";
 	console.log(form);
@@ -292,8 +292,8 @@ function validation(obj){
 		</div>
 		<div id="middle">
 			<div id="rightArea" class="scrollBar">
-				<div style="width:54%">제목 : <input type="text" id="fbTitle" style="width:92%" placeholder="제목을 입력해 주세요"/></div>
-				<textarea name="ir1" id="ir1" rows="40" cols="90"></textarea>
+				<div style="width:54%">제목 : <input type="text" id="fbTitle" style="width:92%" placeholder="제목을 입력해 주세요" value="${postBean.fbTitle}"/></div>
+				<textarea name="ir1" id="ir1" rows="40" cols="90">${postBean.fbContent}</textarea>
 				<script type="text/javascript">
 					var oEditors = [];
 					nhn.husky.EZCreator.createInIFrame({
@@ -304,12 +304,12 @@ function validation(obj){
 					});
 				</script>
 				<form id="upload" enctype="multipart/form-data">
-				<div id="USdiv">
-					<input style="display: block;" type="file" name="files" id="input-multiple-image" multiple />
-					<div id="multiple-container"></div>
-					<input type="button" value="취소" style=" font-size:1.5rem;position: absolute;right: 12%;bottom: -8%;">
-					<input type="button" onclick="submitContents();" value="작성" style="font-size:1.5rem;position: absolute;right: -1%;bottom: -8%;">
-				</div>
+					<div id="USdiv">
+						<input style="display: block;" type="file" name="files" id="input-multiple-image" multiple />
+						<div id="multiple-container"></div>
+						<input type="button" onclick="movePage('MoveFreeBoard')" value="취소" style=" font-size:1.5rem;position: absolute;right: 12%;bottom: -8%;">
+						<input type="button" onclick="submitContents('${postBean.fbCode}');" value="작성" style="font-size:1.5rem;position: absolute;right: -1%;bottom: -8%;">
+					</div>
 				</form>
 			</div>
 		</div>
@@ -323,10 +323,6 @@ function validation(obj){
             </div>
         </div>
 	</div>
-	<!-- <form id="upload" action="Upload" enctype="multipart/form-data">
-		<input type="file" name="files" multiple />
-	</form>
-	<input type="button" value="파일전송" onClick="uploadFile()"/> -->
 	<form id="serverForm"></form>
 </body>
 <script type="text/javascript">

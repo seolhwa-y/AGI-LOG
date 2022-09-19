@@ -165,7 +165,10 @@
 	margin:0 auto;
 	margin-top:2rem;
 	width:40rem;
-	height:45rem;
+	height:40rem;
+}
+.formOne{
+	margin-left: 7.5rem;
 }
 .joinTitle{
 	margin:0 auto;

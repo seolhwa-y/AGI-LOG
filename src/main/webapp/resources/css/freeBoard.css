@@ -3,18 +3,18 @@
 	width: 79.3rem;
     height: 42rem;
 }
-.fbTable{
+.freeTable{
 	background-color:white;
 	margin:0 auto;
 	margin-top: 1.4rem;
 	border-collapse:collapse;
 }
-.fbBoardH{
+.freeBoardH{
 	font-size:2rem;
 	width:14rem;
 	padding: 25px;
 }
-.fbBoardM{
+.freeBoardM{
 	font-size:1.2rem;
 	padding: 9px;
 	border: solid 2px;
@@ -40,26 +40,40 @@
 	text-align: left;
 }
 
-.fbBoardB{
+.freeBoardB{
 	font-size: 1.1rem;
     text-align: center;
     border:solid 2px;
     padding:6px;
 }
-.fbBoardTitle{
+.freeBoardTitle{
 	font-size: 1.1rem;
     text-align: left;
     border:solid 2px;
     padding:6px;
 }
-#fbBoardSelect{
+.freeBoardWriter{
+	font-size: 1.1rem;
+    text-align: left;
+    border:solid 2px;
+    padding:6px;
+}
+#freeBoardSelect{
 	width: 6rem;
     height: 1.5rem;
     font-size: 1rem;
     float: right;
     margin-right: 1.4rem;
     margin-top: -1rem;
+    box-sizing: border-box;
+    border-radius: 6px;
+	color: dimgray;
 }
+	option {
+  		padding: 4px;
+  		font-size: 20px;
+  		color: dimgray;
+	}
 .selectBoard{
 	background-color:white;
 	cursor: pointer;
@@ -147,4 +161,19 @@
     margin-top: 1rem;
     margin-left: 1.3rem;
     cursor:pointer;
+}
+.pagenum{
+	margin:0 auto;
+	margin-left: 7px;
+    font-size: 21px;
+    padding: 5px 9px 3px;
+    border-radius: 3px;
+    border: 1px solid #BDBDBD;
+    background-color:white;
+    cursor:pointer;
+}
+.paging{
+	float: left;
+    margin-left: 46%;
+    margin-top: 2rem;
 }
