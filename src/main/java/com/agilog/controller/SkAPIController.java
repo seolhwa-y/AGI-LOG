@@ -78,26 +78,26 @@ public class SkAPIController {
 	}
 	
 	@PostMapping("/DailyDiaryLike")
-	public DailyDiaryBean dailyDiaryLike(Model model, @ModelAttribute DailyDiaryBean ddb) {
+	public HashMap<String, Object> dailyDiaryLike(Model model, @ModelAttribute DailyDiaryBean ddb) {
 		model.addAttribute(ddb);
 		this.dd.backController(model, 110);
-		return (DailyDiaryBean)model.getAttribute("ddLike");
+		return (HashMap<String, Object>)model.getAttribute("ddLike");
 	}
 	
 	@SuppressWarnings("unchecked")
 	@PostMapping("/FreeBoardLike")
-	public Map<String, Object> freeBoardLike(Model model, @ModelAttribute PostBean pb) {
+	public HashMap<String, Object> freeBoardLike(Model model, @ModelAttribute PostBean pb) {
 		model.addAttribute(pb);
 		this.board.backController(model, 111);
-		return (Map<String, Object>)model.getAttribute("fbLike");
+		return (HashMap<String, Object>)model.getAttribute("fbLike");
 	}
 	
 	@SuppressWarnings("unchecked")
 	@PostMapping("/InfoBoardLike")
-	public Map<String, Object> infoBoardLike(Model model, @ModelAttribute PostBean pb) {
+	public HashMap<String, Object> infoBoardLike(Model model, @ModelAttribute PostBean pb) {
 		model.addAttribute(pb);
 		this.board.backController(model, 112);
-		return (Map<String, Object>)model.getAttribute("ibLike");
+		return (HashMap<String, Object>)model.getAttribute("ibLike");
 	}
 
 	@SuppressWarnings("unchecked")
@@ -113,8 +113,8 @@ public class SkAPIController {
 	@RequestMapping(value="/GetDoctorResTime", method=RequestMethod.POST)
 	public HashMap<String,Object> getDoctorResTime(Model model, @ModelAttribute ReservationBean rb) {
 		model.addAttribute(rb);
-		this.company.backController(model, 72);
+		this.company.backController(model, 120);
 		
-		return (HashMap<String,Object>)model.getAttribute("dateInfo");
+		return (HashMap<String,Object>)model.getAttribute("time");
 	}
 }

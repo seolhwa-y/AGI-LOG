@@ -63,7 +63,7 @@ public class SkDailyDiary implements ServiceRule {
 				Date d = form.parse(ddb.getDdDate());
 				ddb.setDdDate(sdf.format(d));
 				
-				Map<String, Object> map = new HashMap<String, Object>();
+				HashMap<String, Object> map = new HashMap<String, Object>();
 				
 				// 0개 일때 !false=>좋아요 누른적 없음 => 좋아요 등록
 				if (!this.convertToBoolean(this.session.selectOne("isDdLike", ddb))) {

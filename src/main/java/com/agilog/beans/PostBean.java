@@ -11,14 +11,14 @@ public class PostBean {
 	private String fbTitle;
 	private String fbContent;
 	private int fbView;
-	private int fbLike;
+//	private int fbLike;
 	
 	private String ibCode;
 	private String ibDate;
 	private String ibTitle;
 	private String ibContent;
 	private int ibView;
-	private int ibLike;
+//	private int ibLike;
 	
 	private String ibSort;
 	private int pageNum;

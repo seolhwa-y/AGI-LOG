@@ -440,9 +440,9 @@ public class Board2 {
 						| BadPaddingException e) {
 					e.printStackTrace();
 				}
-				sb.append("<td class=\"freeBoardB\">"+ pb.getFbDate() +"</td>");
-				sb.append("<td class=\"freeBoardB\">"+ pb.getFbLike() +"</td>");
-				sb.append("<td class=\"freeBoardB\">"+ pb.getFbView() +"</td>");
+				sb.append("<td class=\"fbBoardB\">"+ pb.getFbDate() +"</td>");
+				sb.append("<td class=\"fbBoardB\">"+ pb.getLikes() +"</td>");
+				sb.append("<td class=\"fbBoardB\">"+ pb.getFbView() +"</td>");
 				sb.append("</tr>");
 			//this.page.makePageGroup();	
 			}

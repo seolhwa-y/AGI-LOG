@@ -111,6 +111,15 @@ public class DailyDiary2 implements ServiceRule {
 
 		System.out.println("comment check : " + this.session.selectList("getDailyDiaryComment", ddcb));
 		
+		// 0개 일때 !false=>좋아요 누른적 없음
+		if (!this.convertToBoolean(this.session.selectOne("isDdLike", ddb))) {
+				// 현재 유저의 좋아요 여부 저장
+				ddb.setLike(true);
+		} else { // 1개 일때 !true=>좋아요 누른적 있음
+				// 현재 유저의 좋아요 여부 저장
+				ddb.setLike(false);
+		}
+		
 		map.put("ddFeed", ddb);
 		map.put("ddComment", this.session.selectList("getDailyDiaryComment", ddcb));
 		model.addAttribute("dailyDiaryFeed", map);

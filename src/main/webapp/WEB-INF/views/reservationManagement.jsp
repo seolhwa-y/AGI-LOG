@@ -78,16 +78,17 @@
 .resD select {
 	font-size: 1.2rem;
 }
+#doctor select {
+	font-size: 1.2rem;
+}
 .saveBtn {
 	box-shadow: 0px 5px 0px 0px rgb(239 157 171);
     background-color: rgb(255, 194, 204);
 }
-</style>
-<style>
 .timeTitle{
     width: 100%;
     margin-top: 20px;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
     font-size: 199%;
 }
 #timeContent{
@@ -115,7 +116,7 @@
 .mBtnO {
     height: 2.5rem;
     width: 10rem;
-    box-shadow: 0px 5px 0px 0px rgb(239 157 171);
+    box-shadow: 0px 5px 0px 0px rgb(149 149 149);
     background-color: gainsboro;
     font-size: 1.5rem;
     color: dimgray;
@@ -124,28 +125,22 @@
 .disable{
     height: 2.5rem;
     width: 10rem;
-    box-shadow: 0px 5px 0px 0px rgb(182, 182, 182);
+    box-shadow: 0px 5px 0px 0px rgb(255, 194, 204);
     background: rgb(255, 194, 204);
     margin: 1.4rem;
 }
 .disable:hover {
-	height: 2.5rem;
-    width: 10rem;
-    box-shadow: 0px 5px 0px 0px rgb(182, 182, 182);
     background: rgb(255, 194, 204);
-    margin: 1.4rem;
-}
-.realDisable{
-	height: 2.5rem;
-    width: 10rem;
-    box-shadow: 0px 5px 0px 0px rgb(182, 182, 182);
-    background: rgb(255, 194, 204);
-    margin: 1.4rem;
-    border: 1px solid black;
 }
 .scrollBar::-webkit-scrollbar-track {
 	background:none;
 }
+#doctorContent {
+	display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-around;
+}
+
 #profile{
 	border: 1px solid dimgray;
     display: block;
@@ -257,17 +252,20 @@ function setResTime(obj){
 	
 }
 //수정 콜백
-function callbackTime(){
-	alert("예약가능시간 수정 완료");
+function callbackTime(ajaxData){
+	let info = JSON.parse(ajaxData);
+	
+	let timeContent = document.getElementById("timeContent");
+	timeContent.innerHTML = info.time;
 }
 //의사 변경
 function chageDoctor() {
-	let doctor = document.getElementsByName("docTime")[0].options[doctor.selectedIndex].value;
+	let doctor = document.getElementsByName("docTime")[0];
 	let date = document.getElementById("date").innerText;
 	let clientData;
-	clientData = "resDate="+date+"&resDoCode="+doctor;
+	clientData = "resDate="+date+"&resDoCode="+doctor.options[doctor.selectedIndex].value;
 	
-	postAjavJson("GetDoctorResTime",clientData,"callbackDocTime");
+	postAjaxJson("GetDoctorResTime",clientData,"callbackDocTime");
 }
 //해당의사의 예약시간 콜백
 function callbackDocTime(ajaxData) {
@@ -278,18 +276,23 @@ let info = JSON.parse(ajaxData);
 //예약상태 변경
 function updateReservation(resCode, idx, idx2) {
 	let form = document.getElementById("serverForm");
-	alert(resCode + "," + idx + "," + idx2);
+	//상태코드
 	let rcCode = document.getElementsByName("selectResState")[idx];
 	let rcCode2 = rcCode.options[rcCode.selectedIndex].value;
+	//날짜, 시간
 	let date = document.getElementById("date").innerText;
+	let time = document.getElementsByClassName("resTime")[idx].innerText;
+	//의사 코드
+	let doCode = document.getElementsByName("resDoCode")[idx].value;
 	
-	let clientData = "rcCode="+rcCode2+"&resCode="+resCode+"&resDate="+date;
+	let clientData = "rcCode="+rcCode2+"&resCode="+resCode+"&resDate="+date+"&resTime="+time.split(":")[0]+"&resDoCode="+doCode;
+	alert(clientData);
 
-	if (idx2 != "") {
-		let doCode = document.getElementsByName("selectDoctor")[idx2];
-		let doCode2 = doCode.options[doCode.selectedIndex].value;
-		clientData += "&resDoCode="+doCode2;
-	}
+//	if (idx2 != "") {
+//		let doCode = document.getElementsByName("selectDoctor")[idx2];
+//		let doCode2 = doCode.options[doCode.selectedIndex].value;
+//		clientData += "&resDoCode="+doCode2;
+//	}
 
 	postAjaxJson("UpdateReservation",clientData,"resManageMent");
 }
@@ -337,7 +340,13 @@ function modalClose(){
 				<div class="modal_content">
 					<div id="time">
 					<div class="timeTitle">* 예약시간 관리 *</div>
-						<div id="doctor">
+						<div id="doctorContent">
+							<div id="tip" style="display: flex">
+								<div style="background-color: rgb(255, 194, 204); width: 1rem; height: 1rem; margin-right: 2px;"></div>예약열림
+								<div style="background-color: gainsboro; width: 1rem; height: 1rem; margin-right: 2px; margin-left: 5px;"></div>예약닫힘
+							</div>
+							<div id="doctor">
+							</div>
 						</div>
 						<div id="timeContent">
 						</div>

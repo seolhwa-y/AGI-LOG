@@ -108,12 +108,13 @@ public class JsAPIController {
 
         return (HashMap<String,Object>)model.getAttribute("dateInfo");
     }
-    @PostMapping("/SetResTime")
-    public ReservationBean setResTime(Model model, @ModelAttribute ReservationBean rb){
+	
+    @SuppressWarnings("unchecked")
+	@PostMapping("/SetResTime")
+    public HashMap<String,Object> setResTime(Model model, @ModelAttribute ReservationBean rb){
         model.addAttribute(rb);
-        System.out.println("api에서의rb:"+rb);
         company.backController(model, 119);
 
-        return (ReservationBean)model.getAttribute("reservationBean");
+        return (HashMap<String,Object>)model.getAttribute("time");
     }
 }

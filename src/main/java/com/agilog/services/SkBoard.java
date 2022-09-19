@@ -68,7 +68,7 @@ public class SkBoard implements ServiceRule {
 				Date d = form.parse(pb.getFbDate());
 				pb.setFbDate(sdf.format(d));
 				
-				Map<String, Object> map = new HashMap<String, Object>();
+				HashMap<String, Object> map = new HashMap<String, Object>();
 				
 				// 0개 일때 !false=>좋아요 누른적 없음 => 좋아요 등록
 				if (!this.convertToBoolean(this.session.selectOne("isFbLike", pb))) {
@@ -119,7 +119,7 @@ public class SkBoard implements ServiceRule {
 					Date d = form.parse(pb.getIbDate());
 					pb.setIbDate(sdf.format(d));
 					
-					Map<String, Object> map = new HashMap<String, Object>();
+					HashMap<String, Object> map = new HashMap<String, Object>();
 					
 					// 0개 일때 !false=>좋아요 누른적 없음 => 좋아요 등록
 					if (!this.convertToBoolean(this.session.selectOne("isIbLike", pb))) {
@@ -152,7 +152,6 @@ public class SkBoard implements ServiceRule {
 				e.printStackTrace();
 			}
 		}
-
 
 	private boolean convertToBoolean(int booleanCheck) {
 		return booleanCheck == 0 ? false : true;

@@ -213,8 +213,14 @@
 	<insert id="insDoctorResTime" parameterType="com.agilog.beans.ReservationBean">
 		INSERT INTO RT VALUES(#{resCoCode},#{resDoCode},TO_DATE(#{resDate}),#{resTime},0)
 	</insert>
+	<!-- 예약가능 시간 조회 후 업데이트 -->
+	<!-- 시간별 예약 개수 조회 -->
+	<select id="getTimeResCount" parameterType = "com.agilog.beans.ReservationBean" resultType="int">
+		SELECT COUNT(RE_CODE) AS RESCOUNT FROM RE WHERE RE_RCCODE != 'CC' AND RE_RCCODE != 'MC' AND TO_CHAR(RE_DATE,'YYYY-MM-DD') = #{resDate} AND TO_CHAR(RE_DATE,'HH24') = #{resTime}
+	</select>
+	<!-- 업데이트 -->
 	<update id="updDoctorResTime" parameterType="com.agilog.beans.ReservationBean">
-		UPDATE RT SET RT_COUNT = #{resCount} WHERE RT_DOCOCODE = #{resCoCode} AND RT_DOCODE = #{resDoCode} AND RT_DATE = #{resDate}
+		UPDATE RT SET RT_COUNT = #{resCount} WHERE RT_DOCOCODE = #{resCoCode} AND RT_DOCODE = #{resDoCode} AND RT_DATE = #{resDate} AND RT_TIME = #{resTime}
 	</update>
 	
 	<!-- 마이페이지 주소 변경 -->

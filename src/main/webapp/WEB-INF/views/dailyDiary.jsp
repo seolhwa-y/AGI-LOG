@@ -201,7 +201,6 @@ function modalClose(returnAction){
 		movePage(returnAction);
 	}
 }
-
 /* 감성일기 댓글 작업 */
 // 댓글 수정 버튼
 function updateInput(ddCode, ddSuCode, dcCode, dcDate, ddDate){
@@ -320,6 +319,14 @@ function viewFeed(ajaxData) {
 	if("${accessInfo.suCode}" == ddFeed.suCode) {
 		modalContent.innerHTML += "<div id='UDIcon'><i class='fa-solid fa-pen updBtn editBtn' onClick='feedUpdateInput(" + ddFeed.ddCode + ")' style='margin-right:20%'></i><i class='fa-solid fa-trash-can delBtn editBtn' onClick='deleteDailyDiaryFeed(" + ddFeed.ddCode + ")'></i></div>";
 	}
+	
+	let viewLike = document.querySelector(".viewLike");
+	console.log(ddFeed);
+	if(ddFeed.like) {
+		viewLike.className = "viewLike myViewLike";
+	} else {
+		viewLike.className = "viewLike";
+	}
 	//modalFoot.innerHTML = "<button class='mBtnX' onclick='modalClose()'>취소</button><button class='mBtnO' onclick='insertDailyDiary()'>등록</button>";
 		
 	//댓글
@@ -421,9 +428,14 @@ function dailyDiaryLike(ddCode, ddDate, suCode) {
 function updLike(ajaxData) {
 	const ajax = JSON.parse(ajaxData);
 	
-	let viewLike = document.getElementsByClassName("viewLike")[0];
+	let viewLike = document.querySelector(".viewLike");
+	if(ajax.ddLike.like) {
+		viewLike.className = "viewLike myViewLike";
+	} else {
+		viewLike.className = "viewLike";
+	}
 	
-	viewLike.innerHTML = "❤ " + ajax.likes;
+	viewLike.innerText = "❤ " + ajax.ddLike.likes;
 }
 function changeSort(){
 	let form = document.getElementById("serverForm");

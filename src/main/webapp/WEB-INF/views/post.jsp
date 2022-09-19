@@ -95,10 +95,10 @@ function likeBtn(ibCode, ibDate) {
 
 function upbLikes(ajaxData){
 	alert("콜백 췤");
+	console.log(ajax);
 	const ajax = JSON.parse(ajaxData);
 	let sLike = document.getElementsByClassName("sLike")[0];
-	sLike.innerText = ajax.ibLike;
-	
+	sLike.innerText = ajax.ibLike.likes;
 }
 /* 게시글 댓글 작업 */
 	// 댓글 수정 버튼
