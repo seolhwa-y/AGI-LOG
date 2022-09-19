@@ -16,272 +16,331 @@
 <!-- 네이버 스크립트 -->
 <script	src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
 <style>
-	ul {
-    list-style: none;
-	}
-	.feed {
-		float: left;
-		margin-left: 2%;
-		margin-right: 6%;
-		margin-bottom: 2%;
-	}
+ul {
+	list-style: none;
+}
 
-	#rightArea{
-		width: 85%;
-		height: 100%;
-		overflow-x:hidden;
-		padding: 0.4% 0 0 0;
-	}
-	#rightArea_top{
-		width: 100%;
-    	height: 5%;
-    	padding: 1% 5%;
-    	margin-left: 3px;
-	}
-	#rightArea_middle{
-		margin-top: 1%;
-		width: 100%;
-		height: 89%;
-		overflow-x:hidden;
-		overflow-y: scroll;
-	}
-	.like{
-	    color: red;
-	    font-size: 130%;
-	    float: right;
-	    margin-right: 4%;
-	}
-	.feed{
-		width: 25%;
-		height: 389px;
-		border-radius: 5px;
-		background-color: white;
-		box-shadow: 4px 4px 10px;
-	}
-	.feed_top{
-		width: 100%;
-		height: 70%;
-		border-bottom: 1px solid #616161;
-	}
-	.feed_bottom{
+.feed {
+	float: left;
+	margin-left: 2%;
+	margin-right: 6%;
+	margin-bottom: 2%;
+}
 
-		width: 90%;
-		height: 23%;
-		margin: 3% auto;
-		font-size: 140%;
-	}
-	#sortArea{ 
+#rightArea {
+	width: 85%;
+	height: 100%;
+	overflow-x: hidden;
+	padding: 0.4% 0 0 0;
+}
 
-		float: left;
-		height: 95%;
-		width: 10%;
-	}
-	#hashTagArea{
+#rightArea_top {
+	width: 100%;
+	height: 5%;
+	padding: 1% 5%;
+	margin-left: 3px;
+}
 
-		float: left;
-		height: 95%;
-		width: 19%;
-		margin-left: 4%;
-	}
-	#writeFeedArea{
+#rightArea_middle {
+	margin-top: 1%;
+	width: 100%;
+	height: 89%;
+	overflow-x: hidden;
+	overflow-y: scroll;
+}
 
-		float: right;
-		height: 95%;
-		width: 10%;
-		margin-right: 7%;
-	}
-	#sort{
-		height: 100%;
-		width: 100%;
-		font-size: 140%;
-	}
-	#hashTag{
-		height: 90%;
-		width: 100%;
-		font-size: 140%;
-	}
-	#writeFeed{
-		height: 90%;
-		width: 100%;
-		font-size: 140%;
-	}
-	#feed_top ,img{
-		width: 100%;
-    	height: 100%;
-		border-radius: 5px 5px 0 0;
-	}
-	#feedDate{
-		margin-bottom: 3%;
-		border-bottom: 1px solid dimgray;
-	}
-	#searchHashTag{
-		border: solid 1px black;
-		width: 5%;
-		height: 100%;
-		margin-left: 2%;
-		font-size: 110%;
-	}
+.like {
+	color: red;
+	font-size: 130%;
+	float: right;
+	margin-right: 4%;
+}
+
+.feed {
+	width: 25%;
+	height: 389px;
+	border-radius: 5px;
+	background-color: white;
+	box-shadow: 4px 4px 10px;
+}
+
+.feed_top {
+	width: 100%;
+	height: 70%;
+	border-bottom: 1px solid #616161;
+}
+
+.feed_bottom {
+	width: 90%;
+	height: 23%;
+	margin: 3% auto;
+	font-size: 140%;
+}
+
+#sortArea {
+	float: left;
+	height: 95%;
+	width: 10%;
+}
+
+#hashTagArea {
+	float: left;
+	height: 95%;
+	width: 19%;
+	margin-left: 4%;
+}
+
+#writeFeedArea {
+	float: right;
+	height: 95%;
+	width: 10%;
+	margin-right: 7%;
+}
+
+#sort {
+	height: 100%;
+	width: 100%;
+	font-size: 140%;
+}
+
+#hashTag {
+	height: 90%;
+	width: 100%;
+	font-size: 140%;
+}
+
+#writeFeed {
+	height: 90%;
+	width: 100%;
+	font-size: 140%;
+}
+
+#feed_top, img {
+	width: 100%;
+	height: 100%;
+	border-radius: 5px 5px 0 0;
+}
+
+#feedDate {
+	margin-bottom: 3%;
+	border-bottom: 1px solid dimgray;
+}
+
+#searchHashTag {
+	border: solid 1px black;
+	width: 5%;
+	height: 100%;
+	margin-left: 2%;
+	font-size: 110%;
+}
+
+/* 모달창 */
+.insWriteTable {
+	margin-left: 1%;
+	margin-top: 3rem;
+	font-size: 1.5rem;
+}
+
+.tdValue {
+	text-align: left;
+	padding-top: 4%;
+}
+
+.tdName {
+	padding-top: 4%;
+	text-align: center;
+	width: 7rem;
+}
+
+.mBasicInput {
+	width: 30rem;
+	height: 2rem;
+}
+
+.mMiniInput {
+	height: 20rem;
+	width: 20rem;
+}
+
+.statusCheck {
 	
-	/* 모달창 */
-	
-	.insWriteTable{
-		margin-left: 1%;
-		margin-top: 3rem;
-		font-size: 1.5rem;
-		
-	}
-	.tdValue{
-		text-align: left;
-		padding-top: 4%;
-	}
-	.tdName{
-		padding-top: 4%;
-		text-align: center;
-		width : 7rem;
-	}
-	.mBasicInput {
-    width: 30rem;
-    height: 2rem;
-	}
-	.mMiniInput {
-    height: 20rem;
-    width: 20rem;
-	}
-	.statusCheck {
-	
-	}
-	.modal{
-		color: dimgray;
-	}
-	.name{
-		font-size: 1.4rem;
-		margin: 1%;
-		color: dimgray;
-	}
-	.mBtnO {
-    height: 2.5rem;
-    width: 20rem;
-    box-shadow: 0px 5px 0px 0px rgb(239 157 171);
-    background-color: rgb(255, 194, 204);
-    font-size: 1.1rem;
-    color: dimgray;
-    margin-left: 20%;
-	}
-	.modal_foot{
-		position: relative;
-	    display: flex;
-	    margin: 5% auto;
-	    justify-content: space-between;
-	    width: 70%;
-    	margin-left: 20%;
-	}
-	.modal_head{
-		font-size: 3rem;
-		height: 8%;
-    	margin-left: 7%;
-	}
-	.modal_content{
-		height: 70%;
-    	margin-left: 10%;
-	}
-	.close{
-		float:right;
-	}
-	.dateInput{
-		width: 70%;
-	}
-	.ddModal_body {
-    position: relative;
-    top: 50%;
-    left: 50%;
-    width: 640px;
-    height: 730px;
-    padding: 20px;
+}
+
+.modal {
+	color: dimgray;
+}
+
+.name {
+	font-size: 1.4rem;
+	margin: 1%;
+	color: dimgray;
+}
+
+.mBtnO {
+	height: 2.5rem;
+	width: 20rem;
+	box-shadow: 0px 5px 0px 0px rgb(239, 157, 171);
+	background-color: rgb(255, 194, 204);
+	font-size: 1.1rem;
+	color: dimgray;
+	margin-left: 20%;
+}
+
+.modal_foot {
+	position: relative;
+	display: flex;
+	margin: 5% auto;
+	justify-content: space-between;
+	width: 70%;
+	margin-left: 20%;
+}
+
+.modal_head {
+	font-size: 3rem;
+	height: 8%;
+	margin-left: 7%;
+}
+
+.modal_content {
+	height: 70%;
+	margin-left: 10%;
+}
+
+.close {
+	float: right;
+}
+
+.dateInput {
+	width: 70%;
+}
+
+.ddModal_body {
+	position: relative;
+	top: 50%;
+	left: 50%;
+	width: 640px;
+	height: 730px;
+	padding: 20px;
+	text-align: center;
+	/*background-color: rgb(255, 255, 255);*/
+	background-image: url("/res/img/newModal.png");
+	background-size: cover;
+	border-radius: 10px;
+	box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+	transform: translateX(-50%) translateY(-50%);
+}
+
+.viewFeedHead {
+	width: 50%;
+	margin-left: 25%;
+	margin-top: 5%;
+	display: flex;
+}
+
+#feed_top, img {
+	width: 100%;
+	height: 100%;
+	border-radius: 5px 5px 0 0;
+/* 	margin-right: 37%; */
+}
+
+svg:not(:host).svg-inline--fa, svg:not(:root).svg-inline--fa {
+	overflow: visible;
+	box-sizing: content-box;
+	margin-top: -5%;
+}
+
+.viewLike {
+	color: red;
+	float: right;
+	margin-right: 13%;
+	margin-top: 41.5%;
+	font-size: 1.5rem;
+}
+
+.viewLike:hover {
+	cursor: pointer;
+}
+
+#viewFeedDate {
+	float: left;
+	margin-top: 43%;
+	font-size: 1.5rem;
+	width: 66%;
+}
+
+#viewFeedContent {
+	margin-top: 48%;
+	border-top: 1px black solid;
+	width: 83%;
+	margin-left: 7%;
+	text-align: left;
+	font-size: 2rem;
+}
+
+#UDIcon {
+	margin-left: 75%;
+	margin-top: -4%;
+	width: 20%;
+}
+
+#updContent {
+	height: 7rem;
+	width: 25rem;
+	font-size: 1.5rem;
+	resize: none;
+}
+
+#dailySelect {
+	box-sizing: border-box;
+	width: 7.5rem;
+	height: 2.5rem;
+	padding: 4px;
+	font-size: 20px;
+	border-radius: 6px;
+	color: dimgray;
+}
+
+option {
+	padding: 4px;
+	font-size: 20px;
+	color: dimgray;
+}
+
+#commentList {
+	width: 95%;
+	height: 11rem;
+	overflow: auto;
+	margin-top: 1%;
+}
+
+.comment {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 6%;
+    margin-top: 2%;
+    margin-right: 3%;
+}
+
+.profileImage {
+	width: 2rem;
+	height: 2rem;
+}
+.suNickname{
+	width: 20%;
     text-align: center;
-    /*background-color: rgb(255, 255, 255);*/
-    background-image: url("/res/img/newModal.png");
-    background-size : cover;
-    border-radius: 10px;
-    box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
-    transform: translateX(-50%) translateY(-50%);
-    
-	}
+}
 
-	.viewFeedHead {
-	    width: 50%;
-	    margin-left: 25%;
-		margin-top : 5%;
-	    display: flex;
-	}
-	
-	#feed_top, img {
-	    width: 100%;
-	    height: 100%;
-	    border-radius: 5px 5px 0 0;
-    	margin-right: 37%;
-	}
-	
-	svg:not(:host).svg-inline--fa, svg:not(:root).svg-inline--fa {
-	    overflow: visible;
-	    box-sizing: content-box;
-	    margin-top: -5%;
-	}
-	
-	.viewLike {
-	    color: red;
-	    float: right;
-    	margin-right: 13%;
-    	margin-top: 41.5%;
-	    font-size: 1.5rem;
-    }
-    
-    .viewLike:hover{
-    	cursor: pointer;
-	}
-    
-    #viewFeedDate {
-	    float: left;
-	    margin-top: 43%;
-	    font-size: 1.5rem;
-	    width: 66%;
-    }
-    
-    #viewFeedContent {
-	    margin-top: 48%;
-	    border-top: 1px black solid;
-	    width: 83%;
-	    margin-left: 7%;
-	    text-align: left;
-	    font-size: 2rem;
-    }
-    
-    #UDIcon {
-	    margin-left: 75%;
-	    margin-top : -4%;
-	    width: 20%;
-    }
-    
-    #updContent {
-	    height: 7rem;
-	    width: 25rem;
-	    font-size: 1.5rem;
-    	resize: none;
-    }
-    #dailySelect{
-    	box-sizing: border-box;
-		width: 7.5rem;
-		height: 2.5rem;
-		padding: 4px;
-		font-size: 20px;
-		border-radius: 6px;
-		color: dimgray;
-	}
-	option {
-  		padding: 4px;
-  		font-size: 20px;
-  		color: dimgray;
-	}
-    }
+.dcContent{
+	width: 64%;
+    text-align: left;
+}
+
+.ueBtn{
+    width: 13%;
+    float: right;
+}
 </style>
 <script>
 Kakao.init('2afdabad57ed92e1cc9de5bd4baed321');
@@ -427,9 +486,9 @@ function modalClose(){
 // 댓글 수정 버튼
 function updateInput(ddCode, ddSuCode, dcCode, dcDate, ddDate){
 	let dcContent = document.getElementsByClassName(dcDate)[0];
-	
+	document.getElementsByClassName("ueBtn")[0].style.display = "none";
 	dcContent.innerHTML = "";
-	dcContent.innerHTML += "<input class ='updDbComment commentInput'>";
+	dcContent.innerHTML += "<input class ='updDbComment mEditInput'>";
 	dcContent.innerHTML += "<button class='submitBtn btn' onClick='updateDailyDiaryComment(" + ddCode + "," + ddSuCode + "," + dcCode + "," + dcDate + "," + ddDate +")'>확인</button>";
 
 }
@@ -471,6 +530,49 @@ function deleteDailyDiaryComment(ddCode, ddSuCode, dcCode, dcDate, ddDate) {
         });
 }
 
+// 4. 댓글 콜백
+function dailyDiaryComment(ajaxData){
+	console.log(ajaxData);
+	const ajax = JSON.parse(ajaxData);
+	const suCode = ajax.suCode;
+	const ddComment = ajax.ddComment;
+
+	document.getElementsByClassName("ddComment")[0].value = "";
+	let commentList = document.getElementById("commentList");
+	commentList.innerHTML = "";
+	//댓글
+	let comment = "", input = "";
+	
+	comment += "<div id='commentList'>";
+	
+	for(i = 0; i < ddComment.length; i++) {
+		comment += "<div class = 'comment " + i + "'>";
+		// 프로필 사진이 없을 경우 기본 이미지
+		if(ddComment[i].suPhoto != null) {
+			comment += "<img class='profileImage' src=" + ddComment[i].suPhoto + ">";
+		} else {
+			comment += "<img class='profileImage' src='/res/img/profile_default.png'>";
+		}
+	
+		// 닉네임
+		comment += "<div class = 'suNickname'>" +  ddComment[i].suNickname + "</div>";
+	
+		// 댓글 내용
+		comment += "<div class='dcContent " + ddComment[i].dcDate + "'>" + ddComment[i].dcContent + "</div>";
+		
+		// 수정 삭제 버튼
+		if(suCode === ddComment[i].dcSuCode) {
+			comment += "<div class = 'ueBtn '" + ddComment[i].dcDate+ ">"
+			comment += "<i class='fa-solid fa-pen updBtn editBtn' onClick='updateInput(" + ddComment[i].dcDdCode + "," + ddComment[i].dcDdSuCode + "," + ddComment[i].dcCode + "," + ddComment[i].dcDate + "," + ddComment[i].dcDdDate +")'></i>";
+			comment += "<i class='fa-solid fa-trash-can delBtn editBtn' style ='margin-left: 12%;' onClick='deleteDailyDiaryComment(" + ddComment[i].dcDdCode + "," + ddComment[i].dcDdSuCode + "," + ddComment[i].dcCode + "," + ddComment[i].dcDate + "," + ddComment[i].dcDdDate +")'></i>";
+			comment += "</div>"
+		} 
+		comment += "</div>";
+	}
+	comment += "</div>";
+	
+	commentList.innerHTML += comment;
+}
 
 //피드 클릭시 확대
 function getFeed(ddCode){
@@ -481,14 +583,11 @@ function getFeed(ddCode){
 
 //피드 콜백
 function viewFeed(ajaxData) {
-	alert("콜백 췤");
 	const ajax = JSON.parse(ajaxData);
 	const suCode = ajax.suCode;
 	const ddComment = ajax.ddComment;
 	const ddFeed = ajax.ddFeed;
 	console.log(ajax);
-	
-	alert(${accessInfo.suCode});
 	
 	let modal = document.querySelector(".modal");
 	let modalHead = document.querySelector(".modal_head");
@@ -508,43 +607,43 @@ function viewFeed(ajaxData) {
 	//modalFoot.innerHTML = "<button class='mBtnX' onclick='modalClose()'>취소</button><button class='mBtnO' onclick='insertDailyDiary()'>등록</button>";
 	
 	//댓글
-	let modalBody = document.getElementsByClassName("modal_content")[0];
+	let comment = "", input = "";
 	
-	alert(ddComment[0].dcDdCode);
-	
-	modalBody.innerHTML += "<div><hr></div>";
-	modalBody.innerHTML += "<div>";
-	modalBody.innerHTML += "<input class=\"ddComment mEditInput\" />";
-	modalBody.innerHTML += "<button class=\"mMiniBtn btn\" onClick=\"insertDailyDiaryComment("+ ddComment[0].dcDdCode + "," + ddComment[0].dcDdSuCode + "," + ddComment[0].dcDdDate + ")\">확인</button>";
-	modalBody.innerHTML += "</div>";
-	modalBody.innerHTML += "<div id='commentList'>";
-	
+	comment += "<div id='commentList'>";
 	
 	for(i = 0; i < ddComment.length; i++) {
-		modalBody.innerHTML += "<div class = 'comment " + i + "'>";
+		comment += "<div class = 'comment " + i + "'>";
 		// 프로필 사진이 없을 경우 기본 이미지
 		if(ddComment[i].suPhoto != null) {
-			modalBody.innerHTML += "<img class='profileImage' src=" + ddComment[i].suPhoto + ">";
+			comment += "<img class='profileImage' src=" + ddComment[i].suPhoto + ">";
 		} else {
-			modalBody.innerHTML += "<img class='profileImage' src='/res/img/profile_default.png'>";
+			comment += "<img class='profileImage' src='/res/img/profile_default.png'>";
 		}
 	
 		// 닉네임
-		modalBody.innerHTML += "<div class = 'suNickname'>" +  ddComment[i].suNickname + "</div>";
+		comment += "<div class = 'suNickname'>" +  ddComment[i].suNickname + "</div>";
 	
 		// 댓글 내용
-		modalBody.innerHTML += "<div class='dcContent " + ddComment[i].dcDate + "'>" + ddComment[i].dcContent + "</div>";
+		comment += "<div class='dcContent " + ddComment[i].dcDate + "'>" + ddComment[i].dcContent + "</div>";
 		
 		// 수정 삭제 버튼
 		if(suCode === ddComment[i].dcSuCode) {
-			modalBody.innerHTML += "<i class='fa-solid fa-pen updBtn editBtn' onClick='updateInput(" + ddComment[i].dcDdCode + "," + ddComment[i].dcDdSuCode + "," + ddComment[i].dcCode + "," + ddComment[i].dcDate + "," + ddComment[i].dcDdDate +")'></i>";
-			modalBody.innerHTML += "<i class='fa-solid fa-trash-can delBtn editBtn' onClick='deleteDailyDiaryComment(" + ddComment[i].dcDdCode + "," + ddComment[i].dcDdSuCode + "," + ddComment[i].dcCode + "," + ddComment[i].dcDate + "," + ddComment[i].dcDdDate +")'></i>";
+			comment += "<div class = 'ueBtn'>"
+			comment += "<i class='fa-solid fa-pen updBtn editBtn' onClick='updateInput(" + ddComment[i].dcDdCode + "," + ddComment[i].dcDdSuCode + "," + ddComment[i].dcCode + "," + ddComment[i].dcDate + "," + ddComment[i].dcDdDate +")'></i>";
+			comment += "<i class='fa-solid fa-trash-can delBtn editBtn' style ='margin-left: 12%;' onClick='deleteDailyDiaryComment(" + ddComment[i].dcDdCode + "," + ddComment[i].dcDdSuCode + "," + ddComment[i].dcCode + "," + ddComment[i].dcDate + "," + ddComment[i].dcDdDate +")'></i>";
+			comment += "</div>"
 		} 
-		modalBody.innerHTML += "</div>";
+		comment += "</div>";
 	}
-	modalBody.innerHTML += "</div>";
+	comment += "</div>";
+
+	input += "<div style = 'margin-top: 9%;'>";
+	input += "<input class=\"ddComment mEditInput\" />";
+	input += "<button class=\"mMiniBtn btn\" onClick=\"insertDailyDiaryComment("+ ddFeed.ddCode + "," + ddFeed.suCode + "," + ddFeed.ddDate + ")\">확인</button>";
+	input += "</div>";
 	
-	swal("요청", "요청하신 작업을 완료하였습니다!", "success", { button: "완료"});
+	modalContent.innerHTML += comment;
+	modalFoot.innerHTML += input;
 }
 
 function feedUpdateInput(ddCode) {

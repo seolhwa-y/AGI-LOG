@@ -89,13 +89,11 @@ public class ShHomeController {
 		return mav;
 	}
 	
-	// 지도 예약완료
-	@RequestMapping(value = "/Reservation", method = RequestMethod.POST)
-	public ModelAndView reservation(ModelAndView mav, @ModelAttribute ReservationBean rb){
-		mav.addObject("reservationBean", rb);
-		this.bebeMap.backController(mav, 44);
-		
+	// 지도 페이지 이동
+	@RequestMapping(value = "/MoveMapPage", method = RequestMethod.GET)
+	public ModelAndView moveMapPage(ModelAndView mav) {
+		this.bebeMap.backController(mav, 6);
+
 		return mav;
 	}
-	
 }

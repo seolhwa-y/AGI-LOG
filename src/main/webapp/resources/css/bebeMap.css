@@ -3,7 +3,7 @@
 .map_wrap, .map_wrap * {
 	margin: 0;
 	padding: 0;
-	font-size: 0.9rem;
+	font-size: 1.25rem;
 }
 
 .map_wrap a, .map_wrap a:hover, .map_wrap a:active {
@@ -28,8 +28,9 @@
 	overflow-y: auto;
 	background: rgba(255, 255, 255, 0.7);
 	z-index: 1;
-	font-size: 1.4rem;
+	font-size: 1.25rem;
 	border-radius: 10px;
+
 }
 
 .bg_white {
@@ -183,4 +184,260 @@
 	font-weight: bold;
 	cursor: default;
 	color: #777;
+}
+
+.placeinfo_wrap {
+	position: absolute;
+	bottom: 28px;
+	left: -150px;
+	width: 00px;
+}
+
+.placeinfo {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	font-weight: bold;
+	font-size: 1.25rem;
+	padding: 10px;
+    width: 25rem;
+    height: 25rem;
+	border-radius: 6px;
+	border: 1px solid #ccc;
+	border-bottom: 2px solid #ddd;
+	background: #fff;
+}
+
+.placeinfo:nth-of-type(n) {
+	border: 0;
+	box-shadow: 0px 1px 2px #888;
+}
+
+.placeinfo_wrap .after {
+	content: '';
+	position: relative;
+	margin-left: 96px;
+	left: 50%;
+	width: 22px;
+	height: 12px;
+	background:
+		url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')
+}
+
+.placeinfo span {
+	display: block;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+.placeinfo span {
+	margin: 5px 5px 0 5px;
+	cursor: default;
+	font-size: 1.25rem;
+}
+
+.placeinfo .tel {
+	color: #0f7833;
+}
+
+.placeinfo .jibun {
+	color: #999;
+	font-size: 1rem;
+	margin-top: 0;
+}
+
+#rightArea {
+	height: 100%;
+	width: 100%;
+}
+
+#commentList {
+	width: 95%;
+	height: 11rem;
+	overflow: auto;
+	margin-top: 1%;
+}
+
+.comment {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin-left: 6%;
+	margin-top: 2%;
+	margin-right: 3%;
+}
+
+.profileImage {
+	width: 2rem;
+	height: 2rem;
+}
+
+.suNickname {
+	width: 20%;
+	text-align: center;
+}
+
+.dcContent {
+	width: 64%;
+	text-align: left;
+}
+
+.ueBtn {
+	width: 13%;
+	float: right;
+}
+
+.wrapper {
+	height: 8%;
+	display: grid;
+	place-items: flex-start;
+	background-color: rgb(255 255 255/ 68%);
+	border-radius: 24px;
+	margin: -1% 0% 1.5% 1%;
+}
+
+.typing {
+	width: 30rem;
+ 	animation: typing 5s steps(60), blink 0.5s step-end infinite alternate;
+	white-space: nowrap;
+	overflow: hidden;
+	border-right: 3px solid;
+	margin-top: 9px;
+	margin-left: 2%;
+	font-family: monospace;
+	font-size: 1.5em;
+}
+
+@keyframes typing {
+	from { 
+		width : 0;
+	}
+}
+
+@keyframes blink {
+	50% {
+		border-color : transparent;
+	}
+}
+
+.toggleSwitch {
+  width: 6rem;
+  margin: 10px;
+  height: 3rem;
+  display: block;
+  position: relative;
+  border-radius: 2rem;
+  background-color: #fff;
+  box-shadow: 0 0 1rem 3px rgba(0 0 0 / 15%);
+  cursor: pointer;
+  float: right;
+}
+
+.toggleSwitch .toggleButton {
+  width: 2.6rem;
+  height: 2.6rem;
+  position: absolute;
+  top: 50%;
+  left: .2rem;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: #f67280;
+}
+
+/* 체크박스가 체크되면 변경 이벤트 */
+#toggle:checked ~ .toggleSwitch {
+  background: #f67280;
+}
+
+#toggle:checked ~ .toggleSwitch .toggleButton {
+  left: calc(100% - 2.8rem);
+  background: #fff;
+}
+
+.toggleSwitch, .toggleButton {
+  transition: all 0.2s ease-in;
+}
+
+.time {
+	width: 7rem;
+    height: 3rem;
+    font-size: 26px;
+	padding: 1% 2% 0 2%;
+    border-radius: 10rem;
+    background-color: rgb(255, 194, 204);
+    color: #fff;
+    text-align: center;
+    margin: 2%;
+}
+
+.time:active{
+	background-color: #f67280;
+}
+
+#babyName, #doctorName {
+    box-sizing: border-box;
+    width: 13.5rem;
+    height: 2.5rem;
+    padding: 4px;
+    font-size: 20px;
+    text-align: center;
+    border-radius: 15px;
+    margin-top: 3%;
+    color: dimgray;
+}
+
+#selectBaby, #selectDoctor {
+    width: 100%;
+    height: 3rem;
+    font-size: 24px;
+    margin: 2% 0;
+}
+
+.mon, .aft {
+	display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.resTime {
+	margin-top: 4%;
+    font-size: 24px;
+}
+
+.checkHealth {
+	display: flex;
+    align-items: center;
+    justify-content: flex-end;
+	margin-top: 3%;
+	font-size: 20px;
+}
+
+.modal_head{
+	height: 2rem;
+}
+
+.modal_body{
+	height: 58rem;
+    padding: 2rem;
+}
+
+.modal_foot{
+	margin-left: -25px;
+    position: absolute;
+    height: 4rem;
+    width: 100%;
+    bottom: 0;
+}
+
+#cans{
+	display: none;
+    font-size: 30px;
+    margin: 11% -1%;
+}
+
+#canvas {
+	width: 40rem;
+    height: 40rem;
 }

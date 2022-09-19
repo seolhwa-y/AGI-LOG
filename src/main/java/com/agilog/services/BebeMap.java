@@ -8,10 +8,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,17 +23,29 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
+import org.json.XML;
 
 import com.agilog.beans.AuthBean;
+import com.agilog.beans.BabyBean;
+import com.agilog.beans.BebeMapBean;
 import com.agilog.beans.BebeMapCommentBean;
 import com.agilog.beans.CompanyBean;
 import com.agilog.beans.DailyDiaryCommentBean;
+import com.agilog.beans.DoctorBean;
+import com.agilog.beans.ReservationBean;
 import com.agilog.interfaces.ServiceRule;
 import com.agilog.utils.Encryption;
 import com.agilog.utils.ProjectUtils;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.io.BufferedReader;
@@ -48,32 +64,38 @@ public class BebeMap implements ServiceRule {
 	}
 
 	public void backController(ModelAndView mav, int serviceCode) {
-		switch (serviceCode) {
-		case 6: this.moveMapCtl(mav); break;
-		case 44 : this.reservationCtl(mav); break;
-		}
-	}
-
-	public void backController(Model model, int serviceCode) {
 		try {
 			if(this.pu.getAttribute("accessInfo") != null) {
 				switch (serviceCode) {
-				case 42 : this.viewCompanyInfoCtl(model); break;
-				case 45 : this.insertMapCommentCtl(model); break;
-				case 97 : this.updateMapCommentCtl(model); break;
-				case 85 : this.deleteMapCommentCtl(model); break;
-				case 43 : this.showReservationCtl(model); break;
+				case 6: this.moveMapCtl(mav); break;
+//				case 44 : this.reservationCtl(mav); break;
 				}
-			} 
+			} else {
+				mav.setViewName("login");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
+	public void backController(Model model, int serviceCode) {
+		switch (serviceCode) {
+		case 42 : this.viewCompanyInfoCtl(model); break;
+		case 45 : this.insertMapCommentCtl(model); break;
+		case 97 : this.updateMapCommentCtl(model); break;
+		case 85 : this.deleteMapCommentCtl(model); break;
+		case 43 : this.showReservationCtl(model); break;
+		case 44 : this.reservationCtl(model); break;
+		case 200 : this.getResTime(model); break;
+		}
+	}
+
 	private void moveMapCtl(ModelAndView mav) {
-		AuthBean ab;
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		Gson gson = new Gson();
+		
 		try {
-			ab = (AuthBean) this.pu.getAttribute("accessInfo");
+			AuthBean ab = (AuthBean) this.pu.getAttribute("accessInfo");
 			if (ab != null) {
 				if (ab.getSuCode().length() == 10) {
 					ab.setType("kakao");
@@ -81,11 +103,109 @@ public class BebeMap implements ServiceRule {
 					ab.setType("naver");
 				}
 				mav.addObject("accessInfo", ab);
+				
+				List<BebeMapBean> bmbList = this.ApiExplorer(mav);
+				String bmList = gson.toJson(bmbList);
+				
+				ab = this.session.selectOne("getSuAddress", ab);
+				String suInfo = gson.toJson(ab);
+				
+				map.put("bmList", bmList);
+				map.put("suInfo", suInfo);
+				
+				mav.setViewName("bebeMap");
+				
+				mav.addObject("suInfo", suInfo);
+				mav.addObject("bmList", bmList);
+				//mav.addObject("bmList", map);
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		mav.setViewName("bebeMap");
+	}
+	
+	// API 국립중앙의료원 :: 전국 병·의원 찾기 서비스 :: 달빛어린이병원 및 소아전문센터
+	public List<BebeMapBean> ApiExplorer(ModelAndView mav) throws IOException {
+		/* 소아전문 */
+		String url = "http://apis.data.go.kr/B552657/HsptlAsembySearchService/getBabyListInfoInqire";	// EndPoint
+		String key = "?serviceKey=O1knyhqepuJAw4ayaaud9WPTKZtq0t8v8MKi6RidO7aqPOqF1o%2B8NNqgqpPV4%2BG4fqiFdK4RzH0vE%2BV5Viv1%2BQ%3D%3D";		// Encoding
+		String callURL = url + key + "&ORD=NAME";
+		/* 병원 전체 */
+//		String url = "http://apis.data.go.kr/B552657/HsptlAsembySearchService/getHsptlMdcncListInfoInqire";	// EndPoint
+//		String key = "?serviceKey=O1knyhqepuJAw4ayaaud9WPTKZtq0t8v8MKi6RidO7aqPOqF1o%2B8NNqgqpPV4%2BG4fqiFdK4RzH0vE%2BV5Viv1%2BQ%3D%3D";		// Encoding
+//		String callURL = url + key + "&QZ=B&ORD=NAME&pageNo=1&numOfRows=15";
+		
+		// openAPI에서 받아온 데이터를 JSON으로 파싱
+		Map<String, Object> map = this.getApi(callURL);
+		
+		// 받아온 데이터 분리해서 저장
+		List<BebeMapBean> bmList = this.jsonParser(map);
+
+		return bmList;
+	}
+	
+	// API DATA -> JSON
+	private Map<String, Object> getApi(String callURL) throws MalformedURLException, IOException {
+		Map<String, Object> map = new HashMap<String, Object>();
+		URL url;
+		url = new URL(callURL);
+
+		// API 호출
+		BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
+		StringBuffer sb = new StringBuffer();
+		String tempStr = null;
+
+		while((tempStr = br.readLine()) != null) {
+			sb.append(tempStr.trim());
+		}
+
+		br.close();
+
+		// 받아온 xml데이터 -> json 형태로 변환
+		org.json.JSONObject xmlJSONObj = XML.toJSONObject(sb.toString());
+		String xmlJSONObjString = xmlJSONObj.toString();
+		ObjectMapper objectMapper = new ObjectMapper();
+
+		map = objectMapper.readValue(xmlJSONObjString, new TypeReference<Map<String, Object>>() {});
+
+		return map;
+	}
+	
+	// JSON DATA -> List<BebeMapBean>
+	@SuppressWarnings("unchecked")
+	private List<BebeMapBean> jsonParser(Map<String, Object> map) {
+		Map<String, Object> response = (Map<String, Object>) map.get("response");
+		Map<String, Object> body = (Map<String, Object>) response.get("body");
+		Map<String, Object> items = (Map<String, Object>) body.get("items");
+		//Map<String, Object> page = (Map<String, Object>) items.get("pageNo");
+		List<Map<String, Object>> itemList = (List<Map<String, Object>>) items.get("item");
+		List<BebeMapBean> bmList = new ArrayList<BebeMapBean>();
+		
+		int i = -1;
+		if(itemList.size() != 0) {
+			for(Map<String, Object> item : itemList) {
+				i++;
+				BebeMapBean bmb = new BebeMapBean();
+				// 상호
+				bmb.setName((String)item.get("dutyName"));
+
+				// 주소 + 상세주소
+				bmb.setAddress((String) item.get("dutyAddr"));
+				// 연락처
+				bmb.setTell((String) item.get("dutyTel1")); 
+				// 정보
+				bmb.setInfo((String) item.get("dutyInf"));
+				// 위도 X
+				bmb.setX((Double) item.get("wgs84Lat"));
+				// 경도 Y
+				bmb.setY((Double) item.get("wgs84Lon"));
+
+				bmList.add(bmb);
+			}
+		}else {System.out.println("요청한 지역의 정보가 없습니다.");}
+
+		return bmList;
 	}
 
 	// 지도 정보 확인 후 댓글 불러오기
@@ -118,7 +238,7 @@ public class BebeMap implements ServiceRule {
 			AuthBean ab = (AuthBean)this.pu.getAttribute("accessInfo");
 			
 			bmcb.setMcSuCode(ab.getSuCode());
-			bmcb.setMcCode(this.session.selectOne("getMcCode", bmcb.getMcSuCode()));
+			bmcb.setMcCode(this.session.selectOne("getMcCode", bmcb.getCoCode()));
 			
 			if(bmcb.getMcCode() == null) {
 				bmcb.setMcCode("1");
@@ -180,49 +300,65 @@ public class BebeMap implements ServiceRule {
 		}
 	}
 	
-	// 해당 병원에 얘약 가능여부 불러오기
+	// 내 아기 정보, 해당 병원에 의사정보 및 예약 가능여부 불러오기
 	private void showReservationCtl(Model model) {
-		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		ReservationBean rb = (ReservationBean)model.getAttribute("reservationBean");
+		DoctorBean db = new DoctorBean();
+		try {
+			AuthBean ab = (AuthBean)this.pu.getAttribute("accessInfo");
+			
+			// 아이 정보 불러오기
+			List<BabyBean> babyList = this.session.selectList("getTotalBabyCode", ab);
+			map.put("babyList", babyList); 
+			
+			// 의사 정보 불러오기
+			db.setCoCode(rb.getResCoCode());
+			List<DoctorBean> doctorList = this.session.selectList("getDoctorInfo", db);
+			map.put("doctorList", doctorList); 
+			
+//			// 해당 병원 
+//			List<ReservationBean> resList = this.session.selectList("getResList", rb);
+//			map.put("resList", resList); 
+			
+			model.addAttribute("resInfo", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+			
+		model.addAttribute("resList", rb);
 	}
 
-	// 지도 예약완료
-	@Transactional(rollbackFor = SQLException.class)
-	private void reservationCtl(ModelAndView mav) {
-		mav.setViewName("bebeMap");
+	private void getResTime(Model model) {
+		ReservationBean rb = (ReservationBean)model.getAttribute("reservationBean");
+		
+		// 해당 병원 
+		List<ReservationBean> resList = this.session.selectList("getReservationList", rb);
+		
+		model.addAttribute("resTime", resList);
 	}
 	
-	/* 공공데이터 API :: 건강보험심사평가원_병원정보서비스 */
-	// 클라이언트쪽에서 동을 String으로 받아서 DB에서 like를 이용하여 시군구코드를 뽑아와서 넣어준다.
-	// 결과값으로 x 축 y 축을 받아서 마커에 표시
-	// 요청 변수 :: 서비스코드,  1페이지, 한 페이지 표기 45개, 시군구코드
-	// 출력 변수 ::  x좌표, Y좌표
-	public void ApiExplorer(String[] args) throws IOException {
-		StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/B551182/hospInfoService1/getHospBasisList1"); /*URL*/
-		urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=O1knyhqepuJAw4ayaaud9WPTKZtq0t8v8MKi6RidO7aqPOqF1o%2B8NNqgqpPV4%2BG4fqiFdK4RzH0vE%2BV5Viv1%2BQ%3D%3D"); /*Service Key*/
-        urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지번호*/
-        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("10", "UTF-8")); /*한 페이지 결과 수*/
-		urlBuilder.append("&" + URLEncoder.encode("sgguCd","UTF-8") + "=" + URLEncoder.encode("110019", "UTF-8")); /*시군구코드*/
-
-		URL url = new URL(urlBuilder.toString());
-		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-		conn.setRequestMethod("GET");
-		conn.setRequestProperty("Content-type", "application/json");
-		System.out.println("Response code: " + conn.getResponseCode());
-		BufferedReader rd;
-		if(conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
-			rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-		} else {
-			rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+	// 지도 예약완료
+	@Transactional(rollbackFor = SQLException.class)
+	//private void reservationCtl(ModelAndView mav) {
+	private void reservationCtl(Model model) {
+		System.out.println("어서와");
+		ReservationBean rb = (ReservationBean)model.getAttribute("reservationBean");
+		
+		rb.setResCode(this.session.selectOne("getResCode", rb));
+		rb.setResCount(this.session.selectOne("getResCountPlus", rb));
+//		rb.setResCount(rb.getResCount()+1);
+		
+		if(this.convertToBoolean(this.session.insert("insReservationList", rb))) {
+			System.out.println("지도 예약 성공");
+			if(this.convertToBoolean(this.session.update("updResTime", rb))) {
+				System.out.println("지도 예약 인원 추가 성공");
+			}
 		}
-		StringBuilder sb = new StringBuilder();
-		String line;
-		while ((line = rd.readLine()) != null) {
-			sb.append(line);
-		}
-		rd.close();
-		conn.disconnect();
-		System.out.println(sb.toString());
 	}
+	
+
+	
 	
 	private boolean convertToBoolean(int booleanCheck) {
 		return booleanCheck == 0? false : true;

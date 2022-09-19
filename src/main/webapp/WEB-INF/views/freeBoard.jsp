@@ -55,12 +55,14 @@ function getInfo() {
 		accessArea.innerHTML += "<span onclick=\"movePage('MoveCompanyLoginPage')\">기업회원</span>";
 	}
 }
+
 function openPopUp() {
 	testPopUp = window
 		.open("https://nid.naver.com/nidlogin.logout",
 			"_blank",
 			"toolbar=yes,scrollbars=yes,resizable=yes,width=1,height=1");
 }
+
 function closePopUp() {
 	testPopUp.close();
 }
@@ -72,6 +74,7 @@ function naverLogout() {
         logout();
     }, 1000);
 }
+
 function kakaoLogout() {
 	if (Kakao.Auth.getAccessToken()) {
 		Kakao.API.request({
@@ -85,6 +88,16 @@ function kakaoLogout() {
 		})
 		Kakao.Auth.setAccessToken(undefined)
 	}
+}
+
+function boardContent(num) {
+    let form = document.getElementById("serverForm");
+
+    form.appendChild(createInput("hidden","fbCode",num,null,null));
+
+    form.action = "MoveShowFbPost";
+    form.method = "post";
+    form.submit();
 }
 </script>
 </head>

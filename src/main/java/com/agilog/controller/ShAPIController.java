@@ -182,7 +182,25 @@ public class ShAPIController {
 		model.addAttribute(rb);
 		this.bebeMap.backController(model, 43);
 		
-		return (HashMap<String, Object>)model.getAttribute("reservationBean");
+		return (HashMap<String, Object>) model.getAttribute("resInfo");
 	}
 	
+	// 예약 가능한 시간대 불러오기
+	@SuppressWarnings("unchecked")
+	@PostMapping("/GetResTime")
+	public List<ReservationBean> getBabyListInfo(Model model, @ModelAttribute ReservationBean rb){
+		System.out.println(rb);
+		model.addAttribute(rb);
+		this.bebeMap.backController(model, 200);
+	
+		return (List<ReservationBean>)model.getAttribute("resTime");
+	}
+	
+	// 지도 예약완료
+	@PostMapping("/Reservation")
+	public void reservation(Model model, @ModelAttribute ReservationBean rb){
+		System.out.println(rb);
+		model.addAttribute(rb);
+		this.bebeMap.backController(model, 44);
+	}
 }
