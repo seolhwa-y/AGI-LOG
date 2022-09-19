@@ -361,6 +361,7 @@ public class Board2 {
 			ab = (AuthBean) this.pu.getAttribute("accessInfo");
 		
 			if(ab != null) {
+				pb.setSuCode(ab.getSuCode());
 				sb.append("<div class=\"pTitle\">" + pb.getFbTitle() + "</div>");
 				sb.append("<div class=\"pHead\">");
 				sb.append("<div class=\"pDate\">작성일&ensp;<small class=\"sDate\">" + pb.getFbDate() +"</small></div>");
@@ -381,8 +382,14 @@ public class Board2 {
 				sb.append("</div>");
 				sb.append("<div class=\"pContent\"> " + pb.getFbContent() + " </div>");	
 				sb.append("</div>");
-				sb.append("<button class=\"likeBtn\" onClick=\"likeBtn()\">좋아요</button>");
+				// 0개 일때 !false=>좋아요 누른적 없음
+				if (!this.convertToBoolean(this.session.selectOne("isFbLike", pb))) {
+					sb.append("<button class=\"likeBtn\" onClick=\"likeBtn('"+pb.getFbCode()+"','"+pb.getFbDate()+"','1')\">좋아요♥</button>");
+				} else { // 1개 일때 !true=>좋아요 누른적 있음
+					sb.append("<button class=\"likeBtn myLike\" onClick=\"likeBtn('"+pb.getFbCode()+"','"+pb.getFbDate()+"','1')\">좋아요♥</button>");
+				}
 				sb.append("<button class=\"backList\" onClick=\"movePage('MoveBoardPage')\">목록</button>");
+				sb.append("<input id=\"writer\" type=\"hidden\" value=\""+pb.getFbSuCode()+"\"");
 				sb.append("</div");
 			} else {
 				sb.append("<div class=\"pTitle\">" + pb.getFbTitle() + "</div>");

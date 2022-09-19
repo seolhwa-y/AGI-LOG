@@ -455,6 +455,8 @@ public class Company implements ServiceRule {
 		StringBuffer sb = new StringBuffer();
 		int idx = 0;
 		if(re.size()!=0) {
+			System.out.println(re);
+			System.out.println(re.size());
 			for (ReservationBean rb:re) {
 				sb.append("{start:'" + rb.getResDate() + "'");
 				sb.append(",title:'" + rb.getResCount() + "'");

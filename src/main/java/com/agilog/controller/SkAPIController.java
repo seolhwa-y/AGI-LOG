@@ -55,7 +55,7 @@ public class SkAPIController {
 	@Autowired
 	MyPage myPage;
 	
-	@PostMapping("/CheckPersonalOverlap")
+	@RequestMapping(value="/CheckPersonalOverlap", method=RequestMethod.POST, produces = "application/text; charset=UTF-8;")
 	public String checkPersonalOverlap(Model model, HttpServletRequest req, @ModelAttribute AuthBean ab) {
 		model.addAttribute("code",req.getParameter("code"));
 		model.addAttribute(ab);

@@ -527,7 +527,8 @@ function changeParentProfile(){
 	//주소
 	let address = document.getElementById("address");
 	//수정가능한 부분을 인풋박스로 바꿔줌 
-	parentNickName.innerHTML = "<input type=\"text\" name='suNickName' class=\"profileInput\" placeholder=\"${mypageInfo.suNickName}\">";
+	parentNickName.innerHTML = "<input type=\"text\" name='suNickName' class=\"profileInput\" onchange=\"change()\" placeholder=\"${mypageInfo.suNickName}\">"
+					+"<input type = \"button\" value=\"중복체크\" class=\"checkBtn btn\" onclick = \"checkOverlap()\">";
 	address.innerHTML = "<input type =\"text\" name =\"suAddress\" class=\"profileInput\" placeholder=\"${mypageInfo.suAddress}\" readonly/>"
 					+"<input type = \"button\" value=\"주소검색\" id = \"checkSuAddress\" class=\"checkBtn btn\" onclick = \"checkAddress()\">";
 	
@@ -542,6 +543,33 @@ function changeParentProfile(){
 	editConfirmBtn1.style.display = "block";
 	leftWest.style.display =  "none";
 	rightWest.style.display = "none";
+}
+let check = false;
+//닉네임 중복체크
+function checkOverlap() {
+	//0:? 1:닉네임
+	let nickName = document.getElementsByName("suNickName")[0];
+	if(nickName.value!=""){
+		let clientData = "code=1&suNickName="+nickName.value;
+		postAjaxJson("CheckPersonalOverlap",clientData,"callBackOverlap");
+	} else {
+		alert("변경할 닉네임을 입력하세요");
+	}
+}
+//중복체크 콜백
+function callBackOverlap(ajaxData) {
+	if(ajaxData=="ok"){
+		alert("사용가능");
+		check = true;
+	}
+	else {
+		alert(ajaxData);
+		check = false;
+	}
+}
+//닉네임 중복체크 후 다시 변경 시
+function change() {
+	check = false;
 }
 /* 주소 검색 API */
 function checkAddress() {
@@ -567,7 +595,7 @@ function changeParentInfo(){
 	}
 	else{
 		form.appendChild(createInput("hidden","suNickName",nickName.value,null,null));
-		form.appendChild(createInput("hidden","suNickName",address.value,null,null));
+		form.appendChild(createInput("hidden","suAddress",address.value,null,null));
 		form.action = "ChangeParentInfo";
 		form.method = "post";
 		
@@ -850,7 +878,6 @@ function changeTheme(num){
 		clientData = "suTheme=5";
 		break;
 	}
-	alert(clientData);
 	postAjaxJson("ChangeTheme",clientData,"callBackTheme");
 	
 }

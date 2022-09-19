@@ -87,18 +87,46 @@ function kakaoLogout() {
 		Kakao.Auth.setAccessToken(undefined)
 	}
 }
-function likeBtn(ibCode, ibDate) {
-	const clientData = "ibCode=" + ibCode + "&ibDate=" + ibDate;
-	alert(clientData);
-	postAjaxJson("InfoBoardLike", clientData, "updLikes");
+function likeBtn(bCode, bDate, bType) {
+	let clientData;
+	let jobCode;
+	if(bType=="0"){
+		clientData = "ibCode=" + bCode + "&ibDate=" + bDate;
+		jobCode = "InfoBoardLike";
+	} else if(bType=="1") {
+		clientData = "fbCode=" + bCode + "&fbDate=" + bDate + "&fbSuCode=" + document.getElementById("writer").value;;
+		jobCode = "FreeBoardLike";
+	}
+	//InfoBoardLike, FreeBoardLike
+	postAjaxJson(jobCode, clientData, "updLikes");
 }
 
-function upbLikes(ajaxData){
-	alert("콜백 췤");
-	console.log(ajax);
+function updLikes(ajaxData){
 	const ajax = JSON.parse(ajaxData);
+	//좋아요 수
 	let sLike = document.getElementsByClassName("sLike")[0];
-	sLike.innerText = ajax.ibLike.likes;
+	//좋아요 버튼
+	let like = document.getElementsByClassName("likeBtn")[0];
+	//정보게시판/자유게시판 좋아요 판단
+	if(ajax.ibLike != undefined) {
+		//내가 좋아요를 누른 게시글인 경우
+		if(ajax.ibLike.like) {
+			like.className = "likeBtn myLike";
+		} else { //내가 좋아요를 안누른 게시글인 경우
+			like.className = "likeBtn";
+		}
+		sLike.innerText = ajax.ibLike.likes;
+	} else if(ajax.fbLike != undefined) {
+		//내가 좋아요를 누른 게시글인 경우
+		if(ajax.fbLike.like) {
+			like.className = "likeBtn myLike";
+		} else { //내가 좋아요를 안누른 게시글인 경우
+			like.className = "likeBtn";
+		}
+		sLike.innerText = ajax.fbLike.likes;
+	} else {
+		alert("좋아요 실패!");
+	}
 }
 /* 게시글 댓글 작업 */
 	// 댓글 수정 버튼
@@ -218,6 +246,7 @@ function deletePost(fbCode) {
                 swal("삭제를 취소하셨습니다.");
             }
     });
+}
 </script>
 </head>
 <body onload="getInfo()" id="body">

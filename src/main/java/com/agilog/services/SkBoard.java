@@ -76,7 +76,7 @@ public class SkBoard implements ServiceRule {
 						// 현재 유저의 좋아요 여부 저장
 						pb.setLike(true);
 						// 해당게시글 전체 좋아요 수 조회
-						pb.setLikes(Integer.parseInt(this.session.selectOne("getFbLike", pb)));
+						pb.setLikes(this.session.selectOne("getFbLike", pb));
 						// 해당게시글 좋아요 수 업데이트
 						if (this.convertToBoolean(this.session.update("updFbLike", pb))) {
 							map.put("fbLike", pb);
@@ -88,7 +88,7 @@ public class SkBoard implements ServiceRule {
 						// 현재 유저의 좋아요 여부 저장
 						pb.setLike(false);
 						// 해당게시글 전체 좋아요 수 조회
-						pb.setLikes(Integer.parseInt(this.session.selectOne("getFbLike", pb)));
+						pb.setLikes(this.session.selectOne("getFbLike", pb));
 						// 해당게시글 좋아요 수 업데이트
 						if (this.convertToBoolean(this.session.update("updFbLike", pb))) {
 							map.put("fbLike", pb);

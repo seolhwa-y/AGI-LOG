@@ -97,7 +97,7 @@
 	</select>
 	<!-- 캘린더 예약 여부 조회 -->
 	<select id="checkReservation" parameterType="com.agilog.beans.BebeCalendarBean" resultType="com.agilog.beans.BebeCalendarBean">
-		SELECT COUNT(RE_CODE) AS RESERVATION, TO_CHAR(RE_DATE,'YYYY-MM-DD') AS REDATE, RE_BBSUCODE
+		SELECT COUNT(RE_CODE) AS RESERVATION, TO_CHAR(RE_DATE,'YYYY-MM-DD') AS RESDATE, RE_BBSUCODE AS SUCODE
 		FROM RE
 		WHERE RE_BBSUCODE  = #{suCode} AND RE_RCCODE = 'CP'
 		GROUP BY TO_CHAR(RE_DATE,'YYYY-MM-DD'), RE_BBSUCODE
@@ -152,11 +152,11 @@
 		DELETE FROM FL WHERE FL_FBCODE = #{fbCode} AND FL_FBSUCODE = #{fbSuCode} AND FL_FBDATE = TO_DATE(#{fbDate},'YYYYMMDDHH24MISS') AND FL_SUCODE = #{suCode}
 	</delete>
 	<!-- 해당게시글 좋아요 수 조회 -->
-	<select id="getFdLike" parameterType="com.agilog.beans.PostBean" resultType="int">
-		SELECT COUNT(*) AS LIKES FROM FL WHERE WHERE FL_FBCODE = #{fbCode} AND FL_FBSUCODE = #{fbSuCode} AND FL_FBDATE = TO_DATE(#{fbDate},'YYYYMMDDHH24MISS')
+	<select id="getFbLike" parameterType="com.agilog.beans.PostBean" resultType="int">
+		SELECT COUNT(*) AS LIKES FROM FL WHERE FL_FBCODE = #{fbCode} AND FL_FBSUCODE = #{fbSuCode} AND FL_FBDATE = TO_DATE(#{fbDate},'YYYYMMDDHH24MISS')
 	</select>
 	<!-- 해당게시글 좋아요 수 업데이트 -->
-	<update id="updFdLike" parameterType="com.agilog.beans.PostBean" >
+	<update id="updFbLike" parameterType="com.agilog.beans.PostBean" >
 		UPDATE FB SET FB_LIKE = #{likes} WHERE FB_CODE = #{fbCode} AND FB_SUCODE = #{fbSuCode} AND FB_DATE = TO_DATE(#{fbDate},'YYYYMMDDHH24MISS')
 	</update>
 	
@@ -184,7 +184,7 @@
 	
 	<!-- 예약관리 캘린더에 띄울 예약정보(개수) 조회 -->
 	<select id="getResCount" parameterType="com.agilog.beans.CompanyBean" resultType="com.agilog.beans.ReservationBean">
-		SELECT COUNT(RE_CODE)AS RESCOUNT, TO_CHAR(RE_DATE,'YYYY-MM-DD') AS RESDATE FROM RE WHERE RE_DOCOCODE = #{coCode} GROUP BY RE_DATE
+		SELECT COUNT(RE_CODE)AS RESCOUNT, TO_CHAR(RE_DATE,'YYYY-MM-DD') AS RESDATE FROM RE WHERE RE_DOCOCODE = #{coCode} GROUP BY TO_CHAR(RE_DATE,'YYYY-MM-DD')
 	</select>
 	<!-- 해당 날짜 예약정보 조회 -->
 	<select id="getDateResInfo" parameterType="com.agilog.beans.ReservationBean" resultType="com.agilog.beans.ReservationBean">

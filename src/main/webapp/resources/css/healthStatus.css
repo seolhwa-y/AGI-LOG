@@ -25,6 +25,13 @@
 	-ms-user-select: none;
 	user-select: none
 }
+.bb .bb-legend g{
+	transform: translate(0, 540);
+}
+
+.bb .bb-legend text {
+	font-size: 25\px;
+}
 
 .bb-axis {
 	stroke-width: 1.2px
@@ -137,7 +144,7 @@
 
 .bb-legend-item line.bb-legend-item-tile {
 	stroke-linecap: round;
-	stroke-width: 4px;
+	stroke-width: 10px;
 	stroke-dasharray: 1 20;
 	transform: translate(7px, 1px)
 }
@@ -387,7 +394,7 @@ tspan{
 /*     border: 1px solid black; */
     position: relative;
 /*     margin: 12px auto; */
-    margin-top: 2%;
+    margin-top: 1.3%;
     overflow: hidden;
     z-index: 0;
 }
@@ -437,7 +444,13 @@ tspan{
 	display: inline-block;
 	border-radius: 50%;
 	background-color: rgba(0, 0, 0, 0.55);
-	width: 10px;
-	height: 10px;
+	width: 13px;
+	height: 13px;
 	cursor: pointer;
+	margin-left: 10px;
+}
+
+#chartHolder {
+	height: fit-content;
+    margin-bottom: 0;
 }
