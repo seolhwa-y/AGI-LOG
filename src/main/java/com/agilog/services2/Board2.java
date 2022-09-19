@@ -256,7 +256,7 @@ public class Board2 {
 		sb.append("<div class=\"pHead\">");
 		sb.append("<div class=\"pDate\">작성일&ensp;<small class=\"sDate\">" + pb.getFbDate() +"</small></div>");
 		sb.append("<div class=\"pView\">조회수&ensp;<small class=\"sView\">" + pb.getFbView() + "</small></div>");
-		sb.append("<div class=\"pLike\">좋아요&ensp;<small class=\"sLike\">" + pb.getFbLike() + "</small></div>");
+		sb.append("<div class=\"pLike\">좋아요&ensp;<small class=\"sLike\">" + pb.getLikes() + "</small></div>");
 		sb.append("</div>");
 		sb.append("<div class=\"pBody\">");
 		sb.append("<div class=\"pContent\"> " + pb.getFbContent() + " </div>");	
@@ -301,7 +301,7 @@ public class Board2 {
 					e.printStackTrace();
 				}
 				sb.append("<td class=\"fbBoardB\">"+ pb.getFbDate() +"</td>");
-				sb.append("<td class=\"fbBoardB\">"+ pb.getFbLike() +"</td>");
+				sb.append("<td class=\"fbBoardB\">"+ pb.getLikes() +"</td>");
 				sb.append("<td class=\"fbBoardB\">"+ pb.getFbView() +"</td>");
 				sb.append("</tr>");
 			//this.page.makePageGroup();	

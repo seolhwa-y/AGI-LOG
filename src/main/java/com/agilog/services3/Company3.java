@@ -48,34 +48,50 @@ public class Company3 implements ServiceRule {
 
 	public void backController(Model model, int serviceCode) {
 		switch(serviceCode) {
-		case 118: this.resManagementCtl(model); break;
-		case 119: this.setResTimeCtl(model);
 		case 72: this.updateReservationCtl(model); break;
+		case 118: this.resManagementCtl(model); break;
+		case 119: this.setResTimeCtl(model); break;
+		case 120: this.getDoctorResTimeCtl(model); break;
 		default:
 			break;
 		}	
 	}
-	@Transactional(rollbackFor = SQLException.class)
-	private void setResTimeCtl(Model model) {
+	//의사변경
+	private void getDoctorResTimeCtl(Model model) {
+		HashMap<String,String> map = new HashMap<String,String>();
 		try {
-			ReservationBean rb = (ReservationBean) model.getAttribute("reservationBean");
-			rb.setResCoCode(((CompanyBean) this.pu.getAttribute("companyAccessInfo")).getCoCode());
-			// 예약가능시간 삽입 rt->insert
-			if (this.convertToBoolean(this.session.insert("insDoctorResTime", rb))) {
-				// 성공
-				System.out.println("성공");
-			} else {
-				// 실패
-				System.out.println("실패");
+			CompanyBean cb = (CompanyBean) this.pu.getAttribute("companyAccessInfo");
+			if(cb != null) {
+				ReservationBean rb = (ReservationBean) model.getAttribute("reservationBean");
+				if(cb.getCoManagerCode()!=null) {
+					if(this.convertToBoolean(this.session.selectOne("isManagerCode", cb))) {
+						rb.setResCoCode(cb.getCoCode());
+						//의사정보 가져오기
+						//해당 의사의 시간정보 가져오기
+						List<ReservationBean> r = this.session.selectList("getDoctorResTime",rb);
+						map.put("time", this.makeTimeInfo(r, rb));
+						
+//						SimpleDateFormat form = new SimpleDateFormat("yyyy-MM-dd");
+//						SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+//						Date d = form.parse(rb.getResDate());
+//						rb.setResDate(sdf.format(d));
+//						
+//						map.put("resInfo", this.makeHTMLCReservation(this.session.selectList("getDoctorInfo", cb), this.session.selectList("getDateResInfo", rb)));
+//						model.addAttribute("dateInfo", map);
+						model.addAttribute("time", map);
+					}
+					else {
+					}
+				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+			else {
+				System.out.println("세션만료");
+			}
+		} catch (Exception e) {e.printStackTrace();}
 	}
 	
 	@Transactional(rollbackFor = SQLException.class)
 	private void updateReservationCtl(Model model) {
-		System.out.println("업데이트 진입 체크");
 		try {
 			//세션 획득 후 체크. 없으면 로그인 페이지로
 			CompanyBean cb = ((CompanyBean) this.pu.getAttribute("companyAccessInfo"));
@@ -86,35 +102,47 @@ public class Company3 implements ServiceRule {
 				
 				//닥터 코드가 있으면 닥터 코드를 포함하여 업데이트, 없으면 닥터 코드를 제외한 업데이트
 				if (rb.getResDoCode() != null) {
-					System.out.println("rd 진입 체크");
-					this.convertToBoolean(this.session.update("updRDRes", rb));
-					
-					//예약상태 변경 문자보내기
-					rb = this.session.selectOne("getResInfoForSms", rb);
-					HashMap<String,String> map = new HashMap<String,String>();
-					map.put("resDate", rb.getResDate());
-					map.put("resSuName", this.enc.aesDecode(rb.getResSuName(), rb.getResSuCode()));
-					map.put("resSuPhone", this.enc.aesDecode(rb.getResSuPhone(), rb.getResSuCode()));
-					map.put("resCoName", this.enc.aesDecode(rb.getResCoName(), rb.getResCoCode()));
-					map.put("resBbName", rb.getResBbName());
-					map.put("resActionName", rb.getResActionName());
-					map.put("resDoName", rb.getResDoName());
-					//sms.sendSMS(map);
+					System.out.println("doCode유");
+					if(this.convertToBoolean(this.session.update("updRDRes", rb))) {
+						if(rb.getRcCode().equals("CC")) {
+							rb.setResCount(this.session.selectOne("getTimeResCount",rb));
+							//예약취소 시 예약시간 테이블 count컬럼 -1 업데이트
+							if(this.convertToBoolean(this.session.update("updDoctorResTime",rb))) {
+								//예약상태 변경 문자보내기
+								rb = this.session.selectOne("getResInfoForSms", rb);
+								HashMap<String,String> map = new HashMap<String,String>();
+								map.put("resDate", rb.getResDate());
+								map.put("resSuName", this.enc.aesDecode(rb.getResSuName(), rb.getResSuCode()));
+								map.put("resSuPhone", this.enc.aesDecode(rb.getResSuPhone(), rb.getResSuCode()));
+								map.put("resCoName", this.enc.aesDecode(rb.getResCoName(), rb.getResCoCode()));
+								map.put("resBbName", rb.getResBbName());
+								map.put("resActionName", rb.getResActionName());
+								map.put("resDoName", rb.getResDoName());
+								//sms.sendSMS(map);
+							}
+						}
+					}
 				} else {
-					System.out.println("cp 진입 체크");
-					this.convertToBoolean(this.session.update("updCPRes", rb));
-					
-					//예약상태 변경 문자보내기
-					rb = this.session.selectOne("getResInfoForSms", rb);
-					HashMap<String,String> map = new HashMap<String,String>();
-					map.put("resDate", rb.getResDate());
-					map.put("resSuName", this.enc.aesDecode(rb.getResSuName(), rb.getResSuCode()));
-					map.put("resSuPhone", this.enc.aesDecode(rb.getResSuPhone(), rb.getResSuCode()));
-					map.put("resCoName", this.enc.aesDecode(rb.getResCoName(), rb.getResCoCode()));
-					map.put("resBbName", rb.getResBbName());
-					map.put("resActionName", rb.getResActionName());
-					map.put("resDoName", rb.getResDoName());
-					//sms.sendSMS(map);
+					System.out.println("doCode무");
+					if(this.convertToBoolean(this.session.update("updCPRes", rb))) {
+						if(rb.getRcCode().equals("CC")) {
+							rb.setResCount(this.session.selectOne("getTimeResCount",rb));
+							//예약취소 시 예약시간 테이블 count컬럼 -1 업데이트
+							if(this.convertToBoolean(this.session.update("updDoctorResTime",rb))) {
+								//예약상태 변경 문자보내기
+								rb = this.session.selectOne("getResInfoForSms", rb);
+								HashMap<String,String> map = new HashMap<String,String>();
+								map.put("resDate", rb.getResDate());
+								map.put("resSuName", this.enc.aesDecode(rb.getResSuName(), rb.getResSuCode()));
+								map.put("resSuPhone", this.enc.aesDecode(rb.getResSuPhone(), rb.getResSuCode()));
+								map.put("resCoName", this.enc.aesDecode(rb.getResCoName(), rb.getResCoCode()));
+								map.put("resBbName", rb.getResBbName());
+								map.put("resActionName", rb.getResActionName());
+								map.put("resDoName", rb.getResDoName());
+								//sms.sendSMS(map);
+							}
+						}
+					}
 				}
 				//새 표 작성 후 페이지 리다이렉트
 				this.resManagementCtl(model);
@@ -165,6 +193,28 @@ public class Company3 implements ServiceRule {
 		} catch (Exception e) {e.printStackTrace();}
 	}
 	
+	//시간 업데이트
+	@Transactional(rollbackFor = SQLException.class)
+	private void setResTimeCtl(Model model) {
+		HashMap<String,String> map = new HashMap<String,String>();
+		try {
+			ReservationBean rb = (ReservationBean) model.getAttribute("reservationBean");
+			rb.setResCoCode(((CompanyBean) this.pu.getAttribute("companyAccessInfo")).getCoCode());
+			// 예약가능시간 삽입 rt->insert
+			if (this.convertToBoolean(this.session.insert("insDoctorResTime", rb))) {
+				// 성공
+				List<ReservationBean> r = this.session.selectList("getDoctorResTime",rb);
+				map.put("time", this.makeTimeInfo(r, rb));
+				model.addAttribute("time", map);
+			} else {
+				// 실패
+				System.out.println("실패");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	private String makeDoctorSelect(List<DoctorBean> doctorList) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<select name = 'docTime' onchange='chageDoctor()'>\n");
@@ -182,19 +232,20 @@ public class Company3 implements ServiceRule {
 	private String makeTimeInfo(List<ReservationBean> r, ReservationBean rb) {
 		String sample[] = {"09","10","11","12","14","15","16","17"};
 		StringBuffer sb = new StringBuffer();
-		System.out.println(r);
 		sb.append("<div id=\'morning\'>");
-		for(int idx=0;idx<8;idx++) {
-			sb.append("<button class=\'mBtnO btn");
+		
+		
+		for(int idx=0;idx<sample.length;idx++) {
+			sb.append("<button value=\'"+rb.getResDate()+":"+sample[idx]+"\' ");
 			for(int a=0;a<r.size();a++) {
 				if(sample[idx].equals(r.get(a).getResTime())) {
 					//그냥 연 예약시간
-					sb.append(" disable\' disabled");
-				} else {
-					sb.append("realDisable");
+					sb.append("class=\'mBtnO disable\' disabled ");
+					break;
 				}
 			}
-			sb.append("\' onclick=\'setResTime(this)\' value=\'"+rb.getResDate()+":"+sample[idx]+"\'>"+sample[idx]+":00</button>");
+			sb.append("class=\'mBtnO btn\' onclick=\'setResTime(this)\'");
+			sb.append(">"+sample[idx]+":00</button>");
 			
 			if(idx==3) {
 				sb.append("</div>");
@@ -202,8 +253,8 @@ public class Company3 implements ServiceRule {
 				sb.append("<div id=\'afternoon\'>");
 			}
 		}
-		sb.append("</div>");
 		
+		sb.append("</div>");
 		return sb.toString();
 	}
 	
@@ -222,33 +273,28 @@ public class Company3 implements ServiceRule {
 			sb.append("<tr>\n");
 			for(ReservationBean rb : reservationList) {
 				sb.append("<tr >\n");
-				sb.append("<td class='resD'>\n" + rb.getResTime().substring(0, 2)+":00" + "</td>\n");
+				sb.append("<td class='resD resTime'>" + rb.getResTime().substring(0, 2)+":00" + "</td>\n");
 				sb.append("<td class='resD'>\n" + rb.getResBbName() + "</td>\n");
 				switch(rb.getRcCode()) {
 				case "RD" :
-					sb.append("<td class='resD'>\n");
-					sb.append("<select name = 'selectDoctor'>\n");
-					for (DoctorBean db : doctorList) {
-						sb.append("<option value='"+ db.getDoCode() +"'>\n" + db.getDoName() + "</option>\n");
-					}
-					sb.append("</td class='resD'>\n");
+					sb.append("<td class='resD'>\n" + rb.getResDoName() + "<input type='hidden' name='resDoCode' value='" + rb.getResDoCode() + "'/></td>\n");
 					sb.append("<td class='resD'>\n");
 					sb.append("<select name = 'selectResState'>\n");
 					sb.append("<option disabled selected>예약중</option>\n");
 					sb.append("<option value='CP'>예약완료</option>\n");
 					sb.append("<option value='CC'>예약취소</option>\n");
-					sb.append("</td class='resD'>\n");
+					sb.append("</td>\n");
 					sb.append("<td class='resD'><input type='button' value='저장' class='saveBtn' onClick=\"updateReservation('" + rb.getResCode() + "','" + idx + "','" + idx2 + "')\"></td>\n");
 					idx++;
 					idx2++;
 					break;
 				case "CP" :
-					sb.append("<td class='resD'>\n" + rb.getResDoName() + "</td>\n");
+					sb.append("<td class='resD'>\n" + rb.getResDoName() + "<input type='hidden' name='resDoCode' value='" + rb.getResDoCode() + "'/></td>\n");
 					sb.append("<td class='resD'>\n");
 					sb.append("<select name = 'selectResState'>\n");
 					sb.append("<option disabled selected>예약완료</option>\n");
 					sb.append("<option value='CC'>예약취소</option>\n");
-					sb.append("</td class='resD'>\n");
+					sb.append("</td>\n");
 					sb.append("<td class='resD'><input type='button' value='저장' class='saveBtn' onClick=\"updateReservation('" + rb.getResCode() + "','" + idx + "', '')\"></td>\n");
 					idx++;
 					break;
@@ -256,7 +302,7 @@ public class Company3 implements ServiceRule {
 					sb.append("<td class='resD'></td>\n");
 					sb.append("<td class='resD'>\n");
 					sb.append("<option disabled selected>예약취소</option>\n");
-					sb.append("</td class='resD'>\n");
+					sb.append("</td>\n");
 					sb.append("<td class='resD'></td>\n");
 					break;
 				case "MC" :

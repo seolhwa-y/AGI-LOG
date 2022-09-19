@@ -228,7 +228,7 @@
 	}
 	
 	.viewLike {
-	    color: red;
+	    color: black;
 	    float: right;
     	margin-right: 13%;
     	margin-top: 41.5%;
@@ -237,6 +237,10 @@
     
     .viewLike:hover{
     	cursor: pointer;
+	}
+	
+	.myViewLike {
+		color: red;
 	}
     
     #viewFeedDate {
@@ -500,10 +504,18 @@ function viewFeed(ajaxData) {
 	modalContent.innerHTML = "<br/><div id='viewFeedDate'>" + ddFeed.ddDate.substring(0, 4) + "년 " + ddFeed.ddDate.substring(4, 6) + "월 " + ddFeed.ddDate.substring(6, 8) + "일 " + ddFeed.ddDate.substring(8, 10) + ":" + ddFeed.ddDate.substring(10, 12) + ":" + ddFeed.ddDate.substring(12, 14) + "</div><div class='viewLike' onClick='dailyDiaryLike(" + ddFeed.ddCode + "," + ddFeed.ddDate + "," + ddFeed.suCode + ")'>❤ " + ddFeed.likes + "</div>"
 							 +"<div id='viewFeedContent'><br/>" + ddFeed.ddContent + "</div>";
 	if("${accessInfo.suCode}" == ddFeed.suCode) {
-		alert("똑같음" + "${accessInfo.suCode}" + "==" + ddFeed.suCode);
+		console.log("똑같음" + "${accessInfo.suCode}" + "==" + ddFeed.suCode);
 		modalContent.innerHTML += "<div id='UDIcon'><i class='fa-solid fa-pen updBtn editBtn' onClick='feedUpdateInput(" + ddFeed.ddCode + ")' style='margin-right:20%'></i><i class='fa-solid fa-trash-can delBtn editBtn' onClick='deleteDailyDiaryFeed(" + ddFeed.ddCode + ")'></i></div>";
 	} else {
-		alert("다름" + "${accessInfo.suCode}" + "==" + ddFeed.suCode);
+		console.log("다름" + "${accessInfo.suCode}" + "==" + ddFeed.suCode);
+	}
+	
+	let viewLike = document.querySelector(".viewLike");
+	console.log(ddFeed);
+	if(ddFeed.like) {
+		viewLike.className = "viewLike myViewLike";
+	} else {
+		viewLike.className = "viewLike";
 	}
 	//modalFoot.innerHTML = "<button class='mBtnX' onclick='modalClose()'>취소</button><button class='mBtnO' onclick='insertDailyDiary()'>등록</button>";
 	
@@ -604,18 +616,22 @@ function dailyDiaryLike(ddCode, ddDate, suCode) {
 	alert("피라테");
 	
 	const clientData = "ddCode=" + ddCode + "&ddDate=" + ddDate + "&ddSuCode=" + suCode;
-	alert(clientData);
+	console.log(clientData);
 	postAjaxJson("DailyDiaryLike", clientData, "updLike");
 }
 
 function updLike(ajaxData) {
-	alert("updlike 콜백 췤");
+	console.log("updlike 콜백 췤");
 	const ajax = JSON.parse(ajaxData);
 	
-	alert(ajax.likes);
-	let viewLike = document.getElementsByClassName("viewLike")[0];
+	let viewLike = document.querySelector(".viewLike");
+	if(ajax.ddLike.like) {
+		viewLike.className = "viewLike myViewLike";
+	} else {
+		viewLike.className = "viewLike";
+	}
 	
-	viewLike.innerHTML = "❤ " + ajax.likes;
+	viewLike.innerText = "❤ " + ajax.ddLike.likes;
 }
 function changeSort(){
 	let form = document.getElementById("serverForm");

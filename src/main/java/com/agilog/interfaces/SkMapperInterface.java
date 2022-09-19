@@ -60,4 +60,6 @@ public interface SkMapperInterface {
 	
 	public List<ReservationBean> getDoctorResTime(ReservationBean rb);
 	public int insDoctorResTime(ReservationBean rb);
+	public int getTimeResCount(ReservationBean rb);
+	public int updDoctorResTime(ReservationBean rb);
 }

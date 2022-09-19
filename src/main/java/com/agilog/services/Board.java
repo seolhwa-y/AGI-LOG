@@ -207,12 +207,12 @@ public class Board implements ServiceRule {
 			sb.append("<div class=\"pHead\">");
 			sb.append("<div class=\"pDate\">작성일&ensp;<small class=\"sDate\">" + pb.getIbDate() +"</small></div>");
 			sb.append("<div class=\"pView\">조회수&ensp;<small class=\"sView\">" + pb.getIbView() + "</small></div>");
-			sb.append("<div class=\"pLike\">좋아요&ensp;<small class=\"sLike\">" + pb.getIbLike() + "</small></div>");
+			sb.append("<div class=\"pLike\">좋아요&ensp;<small class=\"sLike\">" + pb.getLikes() + "</small></div>");
 			sb.append("</div>");
 			sb.append("<div class=\"pBody\">");
 			sb.append("<div class=\"pContent\"> " + pb.getIbContent() + " </div>");	
 			sb.append("</div>");
-			sb.append("<button class=\"likeBtn\" onClick=\"likeBtn('"+pb.getIbCode()+ "','" + pb.getIbDate()+ "','" + pb.getSuCode()+ "')\">좋아요</button>");
+			sb.append("<button class=\"likeBtn\" onClick=\"likeBtn('"+pb.getIbCode()+ "','" + pb.getIbDate()+ "')\">좋아요</button>");
 			sb.append("<button class=\"backList\" onClick=\"movePage('MoveInfoBoard')\">목록</button>");
 				System.out.println("좋아요 정리 :" + pb.getIbCode() + pb.getIbDate());
 		sb.append("</div");
@@ -270,7 +270,7 @@ public class Board implements ServiceRule {
 				sb.append("<tr class=\"selectBoard\" onClick=\"boardContent("+ pb.getIbCode() +")\">");
 				sb.append("<td class=\"infoBoardB\">"+ pb.getIbDate() +"</td>");
 				sb.append("<td class=\"infoBoardTitle\">"+ pb.getIbTitle() +"</td>");
-				sb.append("<td class=\"infoBoardB\">"+ pb.getIbLike() +"</td>");
+				sb.append("<td class=\"infoBoardB\">"+ pb.getLikes() +"</td>");
 				sb.append("<td class=\"infoBoardB\">"+ pb.getIbView() +"</td>");
 				sb.append("</tr>");	
 			}
