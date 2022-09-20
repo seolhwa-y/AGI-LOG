@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -117,6 +119,8 @@ public class DailyDiary2 implements ServiceRule {
 	}
 
 	private void insertDailyDiaryCtl(ModelAndView mav) {
+		HttpServletRequest req = (HttpServletRequest)mav.getModel().get("req");
+
 		try {
 			AuthBean ab = ((AuthBean) this.pu.getAttribute("accessInfo"));
 			if(ab != null) {
@@ -132,7 +136,7 @@ public class DailyDiary2 implements ServiceRule {
 				db.setSuCode(ab.getSuCode());
 
 				//피드 코드 설정. 피드가 없으면 1로 설정하고 있으면 마지막 피드 코드+1값으로 설정함
-				if (this.session.selectOne("getFbCode") == null) {
+				if (this.session.selectOne("getDdCode") == null) {
 					db.setDdCode("1");
 				} else {
 					
@@ -143,7 +147,7 @@ public class DailyDiary2 implements ServiceRule {
 				MultipartFile files = ((MultipartFile)mav.getModel().get("files"));
 				
 				/* 저장 폴더 경로 설정 */
-				String path = "C:\\Users\\user\\git\\agi-log\\src\\main\\webapp\\resources\\img\\"+ab.getSuCode()+"\\DD\\";
+				String path = req.getSession().getServletContext().getRealPath("/resources/img/")+ab.getSuCode()+"\\dailydiary\\";
 				
 				if(this.convertToBoolean(this.session.insert("insDd", db))) {
 					//이미지 파일이 있는지 체크
@@ -176,7 +180,7 @@ public class DailyDiary2 implements ServiceRule {
 						ddpb.setDpDdCode(db.getDdCode());
 						ddpb.setDpDdSuCode(db.getSuCode());
 						ddpb.setDpDdDate(((DailyDiaryBean)this.session.selectOne("getDdDate", db)).getDdDate());
-						ddpb.setDpLink("/res/img/"+ddpb.getDpDdSuCode()+"/DD/"+fileName);
+						ddpb.setDpLink("/res/img/"+ddpb.getDpDdSuCode()+"/dailydiary/"+fileName);
 						
 						
 						//이미지 삽입 성공시 flag를 true로 설정. 실패시 flag를 false로 설정하고 반복문 탈출

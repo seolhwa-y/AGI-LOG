@@ -64,7 +64,6 @@ public class Board3 implements ServiceRule {
 		pcb.setFcFbCode(pb.getFbCode());
 		pcb.setFcFbDate(pb.getFbDate());
 		pcb.setFcFbSuCode(pb.getFbSuCode());
-		System.out.println(pcb);
 		
 		List<PostCommentBean> pcList = this.session.selectList("getPostCommentList", pcb);
 
@@ -134,7 +133,6 @@ public class Board3 implements ServiceRule {
 			
 			pcb.setFcSuCode(ab.getSuCode());
 			pcb.setFcCode((String)this.session.selectOne("getFcCode", pcb.getFcFbCode()));
-			System.out.println(pcb);
 			if(this.convertToBoolean(this.session.insert("insPostComment", pcb))) {
 				System.out.println("자유게시판 댓글 등록 성공");
 				

@@ -62,7 +62,7 @@
         WHERE RE_CODE = #{resCode}
 	</select>
 	<select id="getFpCode" parameterType="com.agilog.beans.PostPhotoBean" resultType="int">
-		SELECT MAX(TO_NUMBER(FP_CODE)) FROM FREEBOARDPHOTO WHERE FP_PBCODE = #{fbCode}
+		SELECT MAX(TO_NUMBER(FP_CODE)) FROM FREEBOARDPHOTO WHERE FP_FBCODE = #{fbCode}
 	</select>
 	<insert id="insFp" parameterType="com.agilog.beans.PostPhotoBean">
 		INSERT INTO FREEBOARDPHOTO(FP_CODE, FP_FBCODE, FP_FBSUCODE, FP_FBDATE, FP_LINK) 

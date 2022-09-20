@@ -167,32 +167,33 @@ function lineChart(data, check){
 	});
 	
 	/* 평균 키 추가 */
-	setTimeout(function() {
-		heightChart.load({
-			columns: [
-			    ["평균 키", 49.6, 77, 88.2, 95.6, 102.7, 109.4, 115.5, 122.4 ]
-			]
-		});
-	}, 1500);
-	
-	/* 평균 몸무게 추가 */
-	setTimeout(function() {
-		weightChart.load({
-			columns: [
-			    ["평균 몸무게", 3.2, 9.8, 12.5, 14.3, 16.3, 18.4, 20.7, 23.9 ]
-			]
-		});
-	}, 1500);
+    setTimeout(function() {
+        heightChart.load({
+            columns: [
+                ["평균 키", 0, 49.6, 77, 88.2, 95.6, 102.7, 109.4, 115.5, 122.4 ]
+            ]
+        });
+    }, 1500);
 
-	/* 평균 머리둘레 추가 */
-	setTimeout(function() {
-		headChart.load({
-			columns: [
-				["평균 머리둘레", 34.1, 45.5, 48.1, 49.2, 49.9, 50.2, 50.5 ]
-			]
-		});
-	}, 1500);
+    /* 평균 몸무게 추가 */
+    setTimeout(function() {
+        weightChart.load({
+            columns: [
+                ["평균 몸무게", 0, 3.2, 9.8, 12.5, 14.3, 16.3, 18.4, 20.7, 23.9 ]
+            ]
+        });
+    }, 1500);
+
+    /* 평균 머리둘레 추가 */
+    setTimeout(function() {
+        headChart.load({
+            columns: [
+                ["평균 머리둘레", 0, 34.1, 45.5, 48.1, 49.2, 49.9, 50.2, 50.5 ]
+            ]
+        });
+    }, 1500);
 }
+
 
 // 2. 아이 변경시 추세 변경 서버요청
 function cngHealthStatus() {

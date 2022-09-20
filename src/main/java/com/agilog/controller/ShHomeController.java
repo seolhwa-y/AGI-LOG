@@ -2,6 +2,8 @@ package com.agilog.controller;
 
 import java.util.HashMap;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -65,7 +67,8 @@ public class ShHomeController {
 	
 	// 기업 회원가입 완료
 	@RequestMapping(value = "/CompanyJoin", method = RequestMethod.POST)
-	public ModelAndView companyJoin(MultipartFile file,ModelAndView mav, @ModelAttribute CompanyBean cb) {
+	public ModelAndView companyJoin(MultipartFile file,ModelAndView mav, @ModelAttribute CompanyBean cb,HttpServletRequest req) {
+		mav.addObject("req",req);
 		mav.addObject("file",file);
 		mav.addObject("companyBean", cb);
 		this.auth.backController(mav, 21);

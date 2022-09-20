@@ -51,6 +51,7 @@ public class SkHomeController {
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView home(ModelAndView mav) {
+
 		this.dashBoard.backController(mav, 4);
 		return mav;
 	}
@@ -166,7 +167,8 @@ public class SkHomeController {
 	}	
 	
 	@RequestMapping(value = "/SocialJoin", method = RequestMethod.POST)
-	public ModelAndView socialJoin(ModelAndView mav, @ModelAttribute AuthBean ab) {
+	public ModelAndView socialJoin(ModelAndView mav, @ModelAttribute AuthBean ab,HttpServletRequest req) {
+		mav.addObject("req",req);
 		mav.addObject(ab);
 		this.auth.backController(mav, 20);
 		
