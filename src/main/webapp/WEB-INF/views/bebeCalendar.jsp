@@ -221,8 +221,8 @@ function getInfo() {
 			accessArea.innerHTML +="<span onclick=\"kakaoLogout();\">로그아웃</span>"
 		} else if ("${ accessInfo.type }"== "naver") {
 			accessArea.innerHTML +="<span onclick=\"naverLogout(); return false;\">로그아웃</span>"
-		} else ;
-		accessArea.innerHTML += "<span onclick=\"movePage('MoveCompanyLoginPage')\">기업회원</span>";
+		} else
+			accessArea.innerHTML += "<span onclick=\"movePage('MoveCompanyLoginPage')\">기업회원</span>";
 	}
 	document.getElementsByClassName("fc-writeDDBtn-button")[0].style.backgroundColor="lightpink";
 	document.getElementsByClassName("fc-writeDDBtn-button")[0].style.border="solid 2px dimgray";
@@ -437,12 +437,9 @@ function showDateDetail(ajaxData){
 	resInfoCheck = dateInfo.reservationInfo;
 	if(resInfoCheck == null){
 		//예약내역 없을 떄
-		alert("예약내역 없음");
 		resInfo.innerHTML = "예약 : ";
 	}else{
 		//예약내역 있을 때
-		alert("예약내역 있음");
-		alert(dateInfo.reservationInfo[0].resCoName);
 		resInfo.innerHTML = "예약 : "+dateInfo.reservationInfo[0].resDate+"&nbsp&nbsp"+dateInfo.reservationInfo[0].resCoName+"&nbsp&nbsp<i class=\"fa-solid fa-trash-can delBtn\" onclick=\"deleteReservation(\'"+dateInfo.reservationInfo[0].resCode+","+dateInfo.reservationInfo[0].resDate+","+dateInfo.reservationInfo[0].resCoName+"\')\"></i>";
 	}
 	// 개인일정여부에 따라 내용 표시

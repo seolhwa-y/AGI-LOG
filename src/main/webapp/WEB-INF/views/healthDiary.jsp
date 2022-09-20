@@ -57,8 +57,9 @@
                     accessArea.innerHTML += "<span onclick=\"kakaoLogout();\">로그아웃</span>"
                 } else if ("${ accessInfo.type }" == "naver") {
                     accessArea.innerHTML += "<span onclick=\"naverLogout(); return false;\">로그아웃</span>"
-                } else;
-                accessArea.innerHTML += "<span onclick=\"movePage('MoveCompanyLoginPage')\">기업회원</span>";
+                } else {
+        			accessArea.innerHTML += "<span onclick=\"movePage('MoveCompanyLoginPage')\">기업회원</span>";
+        		}
             }
             //아이 정보가 있는 경우 전처리(전체보기 옵션 삽입,아이 변경 시 이벤트 추가)
             if (document.getElementsByClassName("babyInfo")[0] != undefined) {

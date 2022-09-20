@@ -296,8 +296,9 @@ function getInfo() {
 			accessArea.innerHTML +="<span onclick=\"kakaoLogout();\">로그아웃</span>"
 		} else if ("${ accessInfo.type }"== "naver") {
 			accessArea.innerHTML +="<span onclick=\"naverLogout(); return false;\">로그아웃</span>"
-		} else ;
-		accessArea.innerHTML += "<span onclick=\"movePage('MoveCompanyLoginPage')\">기업회원</span>";
+		} else {
+			accessArea.innerHTML += "<span onclick=\"movePage('MoveCompanyLoginPage')\">기업회원</span>";
+		}
 	}
 	
 	//처음화면에서 필요없는 버튼숨기기

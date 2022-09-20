@@ -90,8 +90,8 @@ function getInfo() {
 			accessArea.innerHTML +="<span onclick=\"kakaoLogout();\">로그아웃</span>"
 		} else if ("${ accessInfo.type }"== "naver") {
 			accessArea.innerHTML +="<span onclick=\"naverLogout(); return false;\">로그아웃</span>"
-		} else ;
-		accessArea.innerHTML += "<span onclick=\"movePage('MoveCompanyLoginPage')\">기업회원</span>";
+		} else
+			accessArea.innerHTML += "<span onclick=\"movePage('MoveCompanyLoginPage')\">기업회원</span>";
 	}
 
 	let feedList = document.getElementById("feedList");
@@ -169,6 +169,9 @@ function insertDailyDiary(returnAction){
 		}
 	}
 
+	if (returnAction != '') {
+		form.appendChild(createInput("hidden","returnAction",returnAction,null,null));
+	}
 	form.appendChild(createInput("hidden","ddContent",ddContent,null,null));
 	form.appendChild(document.getElementById("input-image"));
 			
@@ -178,10 +181,6 @@ function insertDailyDiary(returnAction){
 	
 	form.submit();
 
-	if (returnAction != '') {
-		alert("test1 : " + returnAction);
-		movePage(returnAction);
-	}
 }
 //모달닫기
 function modalClose(returnAction){

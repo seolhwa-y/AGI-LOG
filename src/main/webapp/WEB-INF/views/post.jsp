@@ -135,8 +135,8 @@ function updateInput(fbCode, fbSuCode, fcCode, fcDate, fbDate){
 	let fcContent = document.getElementsByClassName(fcDate)[0];
 	
 	fcContent.innerHTML = "";
-	fcContent.innerHTML += "<input class ='updFbComment commentInput'>";
-	fcContent.innerHTML += "<button class='submitBtn btn' onClick='updateBoardComment(" + fbCode + "," + fbSuCode + "," + fcCode + "," + fcDate + "," + fbDate +")'>확인</button>";
+	fcContent.innerHTML += "<input class ='updFbComment commentInput'/>";
+	fcContent.innerHTML += "<button class='submitBtn btn' onClick='updateBoardComment(\"" + fbCode + "\",\"" + fbSuCode + "\",\"" + fcCode + "\",\"" + fcDate + "\",\"" + fbDate +"\")'>확인</button>";
 }
 
 // 자유게시판 댓글 전부 AJAX
