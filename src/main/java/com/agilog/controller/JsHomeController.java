@@ -88,14 +88,16 @@ public class JsHomeController {
 		return mav;
 	}
 	@RequestMapping(value = "/UploadParentImage", method = RequestMethod.POST)
-	public ModelAndView uploadFile(MultipartFile file, ModelAndView mav, @ModelAttribute MyPageBean mb) {
+	public ModelAndView uploadFile(MultipartFile file, ModelAndView mav, @ModelAttribute MyPageBean mb,HttpServletRequest req) {
+		mav.addObject("req",req);
 		mav.addObject("file",file);
 		mav.addObject(mb);
 		this.myPage.backController(mav, 108);
 		return mav;
 	}
 	@RequestMapping(value = "/UploadBabyImage", method = RequestMethod.POST)
-	public ModelAndView uploadBabyImage(MultipartFile file, ModelAndView mav, @ModelAttribute BabyBean bb) {
+	public ModelAndView uploadBabyImage(MultipartFile file, ModelAndView mav, @ModelAttribute BabyBean bb,HttpServletRequest req) {
+		mav.addObject("req",req);
 		mav.addObject("file",file);
 		mav.addObject(bb);
 		this.myPage.backController(mav, 109);

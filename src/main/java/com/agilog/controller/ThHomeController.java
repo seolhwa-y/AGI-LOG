@@ -1,5 +1,7 @@
 package com.agilog.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -66,8 +68,8 @@ public class ThHomeController {
 	}
 	
 	@RequestMapping(value = "/InsertPost", method = RequestMethod.POST)
-	public ModelAndView insertPost(ModelAndView mav, @RequestParam() MultipartFile[] files, @ModelAttribute PostBean pb) {
-		System.out.println("인설트 포스트 컨트롤러 진입 체크1");
+	public ModelAndView insertPost(HttpServletRequest req,ModelAndView mav, @RequestParam() MultipartFile[] files, @ModelAttribute PostBean pb) {
+		mav.addObject("req",req);
 		mav.addObject("files", files);
 		mav.addObject(pb);
 		this.board.backController(mav, 65);
@@ -76,7 +78,6 @@ public class ThHomeController {
 	
 	@RequestMapping(value = "/UpdatePost", method = RequestMethod.POST)
 	public ModelAndView updatePost(ModelAndView mav, @ModelAttribute PostBean pb) {
-		System.out.println("upd 포스트 컨트롤러 진입 체크1");
 		mav.addObject(pb);
 		this.board.backController(mav, 102);
 		return mav;
@@ -117,10 +118,9 @@ public class ThHomeController {
 
 	//감성일기 등록
 	@RequestMapping(value = "/InsertDailyDiary", method = RequestMethod.POST)
-	public ModelAndView insertDailyDiary(ModelAndView mav, @RequestParam() MultipartFile files, @ModelAttribute DailyDiaryBean db) {
-		System.out.println("insert daily diary 진입 체크1");
+	public ModelAndView insertDailyDiary(HttpServletRequest req,ModelAndView mav, @RequestParam() MultipartFile files, @ModelAttribute DailyDiaryBean db) {
+		mav.addObject("req",req);
 		mav.addObject("files", files);
-		System.out.println(files.getOriginalFilename());
 		mav.addObject(db);
 		this.dailyDiary.backController(mav, 35);
 		return mav;

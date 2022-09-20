@@ -12,6 +12,7 @@ import java.util.UUID;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import javax.servlet.http.HttpServletRequest;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -210,8 +211,6 @@ public class Board2 {
 				PostPhotoBean ppb = new PostPhotoBean();
 				ppb.setFpFbCode(pb.getFbCode());
 				
-				System.out.println(ppb.getFpFbCode());
-				
 				List<PostPhotoBean> ppbl = this.session.selectList("getPhotoList", ppb);
 				
 				if (ppbl != null) {
@@ -234,6 +233,7 @@ public class Board2 {
 				this.session.delete("delFbPost", pb);
 				//포스트 이미지 DB 삭제
 				this.session.delete("delFbPostPhoto", ppb);
+				//포스트 댓글 삭제
 				
 				mav.addObject("freeBoardList", this.makeBoardList(this.session.selectList("getFbPostList")));
 				mav.setViewName("freeBoard");
@@ -315,7 +315,7 @@ public class Board2 {
 	}
 	
 	private void insertPostCtl(ModelAndView mav) {
-		System.out.println("인서트 진입 체크1");
+		HttpServletRequest req = (HttpServletRequest)mav.getModel().get("req");
 		
 		try {
 			AuthBean ab = ((AuthBean) this.pu.getAttribute("accessInfo"));
@@ -339,8 +339,7 @@ public class Board2 {
 				MultipartFile[] files = ((MultipartFile[])mav.getModel().get("files"));
 
 				/* 저장 폴더 경로 설정 */
-				String path = "C:\\Users\\user\\git\\agi-log\\src\\main\\webapp\\resources\\img\\"+ab.getSuCode()+"\\board\\";
-				
+				String path = req.getSession().getServletContext().getRealPath("/resources/img/")+ab.getSuCode()+"\\board\\";
 				//게시글 DB 삽입.
 				if(this.convertToBoolean(this.session.insert("insFbPost", pb))) {
 					//이미지 파일이 있는지 체크
@@ -378,7 +377,6 @@ public class Board2 {
 							
 							//이미지 삽입 성공시 flag를 true로 설정. 실패시 flag를 false로 설정하고 반복문 탈출
 							if(this.convertToBoolean(this.session.insert("insFp", ppb))) {
-								System.out.println("이미지 삽입 성공");
 								flag = true;
 							} else {
 								flag = false;
@@ -400,6 +398,7 @@ public class Board2 {
 							mav.setViewName("freeBoard");
 						}
 					} else {
+						pb.setFbDate(((PostBean)this.session.selectOne("getFbDate", pb)).getFbDate());
 						mav.addObject("content",this.makePostView(this.session.selectOne("getFbPostContent", pb)));
 						this.showFreePostCtl(mav,pb);
 						mav.setViewName("post");
@@ -456,7 +455,6 @@ public class Board2 {
 		pcb.setFcFbDate(pb.getFbDate());
 
 		List<PostCommentBean> pcList = this.session.selectList("getPostCommentList", pcb);
-
 		try {
 			AuthBean ab = (AuthBean) this.pu.getAttribute("accessInfo");
 
@@ -522,7 +520,6 @@ public class Board2 {
 	
 	//자유게시판 게시글 EL 작업
 	private String makePostView(PostBean pb) {
-		System.out.println("makepostview check");
 		StringBuffer sb = new StringBuffer();
 		AuthBean ab;
 		try {

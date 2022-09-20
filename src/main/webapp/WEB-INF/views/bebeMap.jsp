@@ -29,7 +29,7 @@
 		let body = document.getElementById("body");
 		
 		let suTheme = "${accessInfo.suTheme}";
-		let sideMenu = document.querySelector(".side-menu");
+		
 		if(suTheme != ""){
 			if(suTheme.indexOf("#") == 0){
 				//단순색상
@@ -40,25 +40,23 @@
 				let color = suTheme.split(":");
 
 				body.style.background = color[0];
-				sideMenu.style.background= color[1];
 
 			}else{
 				//배경이미지
 				body.style.background = "none";
 				body.className = "bgImage"+suTheme;
-				sideMenu.style.background= "whitesmoke";
 
 			}
 		}
-		
+		alert("${accessInfo}");
 		let accessArea = document.getElementById("accessArea");
-		if ("${accessInfo.type}" != null && "${accessInfo.type}" != "") {
+		if ("${accessInfo.type}"!= null&&"${accessInfo.type}"!="") {
 			accessArea.innerHTML = "";
-			accessArea.innerHTML = "<span> ${accessInfo.suNickName}님 </span>";
-			if ("${accessInfo.type}" == "kakao") {
-				accessArea.innerHTML += "<span onclick=\"kakaoLogout();\">로그아웃</span>"
-			} else if ("${ accessInfo.type }" == "naver") {
-				accessArea.innerHTML += "<span onclick=\"naverLogout(); return false;\">로그아웃</span>"
+			accessArea.innerHTML = "<span onclick=\"movePage('MoveMyPage')\"> ${accessInfo.suNickName}님 </span>";
+			if ("${accessInfo.type}"== "kakao") {
+				accessArea.innerHTML +="<span onclick=\"kakaoLogout();\">로그아웃</span>"
+			} else if ("${ accessInfo.type }"== "naver") {
+				accessArea.innerHTML +="<span onclick=\"naverLogout(); return false;\">로그아웃</span>"
 			} else {
 				accessArea.innerHTML += "<span onclick=\"movePage('MoveCompanyLoginPage')\">기업회원</span>";
 			}
@@ -145,13 +143,13 @@
             });
         </script>
 </head>
-<body onload="getInfo()">
+<body onload="getInfo()" id="body">
 <div id="background">
     <div id="top">
         <div id="accessArea">
-            <span onclick="movePage('MoveLoginPage')">로그인</span> <span
-                onclick="movePage('MoveJoinPage')">회원가입</span> <span
-                onclick="movePage('MoveCompanyLoginPage')">기업회원</span>
+            <span onclick="movePage('MoveLoginPage')">로그인</span> 
+            <span onclick="movePage('MoveJoinPage')">회원가입</span> 
+            <span onclick="movePage('MoveCompanyLoginPage')">기업회원</span>
         </div>
         <div id="logo" onclick="movePage('MoveMainPage')"><span id="txt">아기-로그</span>
             <img src="/res/img/logo.png" alt="images">

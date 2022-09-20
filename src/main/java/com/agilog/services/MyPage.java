@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -300,13 +303,15 @@ public class MyPage implements ServiceRule {
 	@Transactional(rollbackFor = SQLException.class)
 	private void uploadBabyImageCtl(ModelAndView mav) {
 		MultipartFile file = (MultipartFile)mav.getModel().get("file");
+		HttpServletRequest req = (HttpServletRequest)mav.getModel().get("req");
 		try {
 			BabyBean bb = (BabyBean) mav.getModel().get("babyBean");
 			bb.setSuCode(((AuthBean)this.pu.getAttribute("accessInfo")).getSuCode());
 			String suCode = bb.getSuCode();
 			String babyCode = bb.getBbCode();
+			//ServletContext context = request.getSession().getServletContext();
 			/* 저장 폴더 경로 설정 */
-			String path = "C:\\Users\\js94\\git\\agi-log\\src\\main\\webapp\\resources\\img\\"+suCode+"\\profile\\";
+			String path = req.getSession().getServletContext().getRealPath("/resources/img/")+suCode+"\\profile\\";
 			
 			/* 확장자 뽑아내서 파일이름(아이코드) 만들어주기 */
 			int pos = file.getOriginalFilename().lastIndexOf(".");
@@ -345,14 +350,16 @@ public class MyPage implements ServiceRule {
 	@Transactional(rollbackFor = SQLException.class)
 	private void uploadParentImageCtl(ModelAndView mav) {
 		MultipartFile file = (MultipartFile)mav.getModel().get("file");
-
+		HttpServletRequest req = (HttpServletRequest)mav.getModel().get("req");
+		
 		MyPageBean mb = (MyPageBean) mav.getModel().get("myPageBean");
 		String suCode = mb.getSuCode();
 		/* 저장 폴더 경로 설정 */
 		//String path = "C:\\upload\\profile\\"+suCode;
-		String path = "C:\\Users\\js94\\git\\agi-log\\src\\main\\webapp\\resources\\img\\"+suCode+"\\profile\\";
-		
+		String path = req.getSession().getServletContext().getRealPath("/resources/img/")+suCode+"\\profile\\";
+		System.out.println("path:"+path);
 		//String path = "/res/img/"+suCode;
+		
 		/* 확장자 뽑아내서 파일이름 만들어주기 */
 		int pos = file.getOriginalFilename().lastIndexOf(".");
 		String ext = file.getOriginalFilename().substring(pos);

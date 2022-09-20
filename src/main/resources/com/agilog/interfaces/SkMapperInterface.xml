@@ -54,7 +54,7 @@
 	</insert>
 	<insert id="insHDMemo" parameterType="com.agilog.beans.HealthDiaryBean" >
 		INSERT INTO HD(HD_CODE,HD_DATE,HD_CACODE,HD_BBSUCODE,HD_BBCODE,HD_VALUE) 
-		VALUES(#{hdCode},,#{caCode},#{suCode},#{bbCode},#{memo})
+		VALUES(#{hdCode},TO_DATE(#{hdDate},'YYYYMMDDHH24MISS'),#{caCode},#{suCode},#{bbCode},#{memo})
 	</insert>
 	<!-- 특정 건강일기 디테일 조회 -->
 	<select id="getHealthDiaryDetail" parameterType="com.agilog.beans.HealthDiaryBean" resultType="com.agilog.beans.HealthDiaryBean">

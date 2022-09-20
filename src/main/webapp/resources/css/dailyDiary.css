@@ -249,13 +249,13 @@ ul {
     	resize: none;
     }
     #dailySelect{
-    	box-sizing: border-box;
-		width: 7.5rem;
-		height: 2.5rem;
-		padding: 4px;
-		font-size: 20px;
-		border-radius: 6px;
-		color: dimgray;
+	    box-sizing: border-box;
+	    width: 7.5rem;
+	    height: 2.5rem;
+	    padding: 4px;
+	    font-size: 20px;
+	    border-radius: 6px;
+	    color: dimgray;
 	}
 	option {
   		padding: 4px;

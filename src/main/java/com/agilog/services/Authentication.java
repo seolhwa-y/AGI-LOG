@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import javax.servlet.http.HttpServletRequest;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -144,8 +145,10 @@ public class Authentication implements ServiceRule {
 			e.printStackTrace();
 		}
 		if (this.convertToBoolean(this.session.insert("insSocialUser", ab))) {
+			HttpServletRequest req = (HttpServletRequest)mav.getModel().get("req");
+
 			/* 회원가입 성공시 유저별로 /res/img/유저코드로 폴더 생성*/
-			String path = "C:\\Users\\js94\\git\\agi-log\\src\\main\\webapp\\resources\\img\\"+ab.getSuCode();
+			String path = req.getSession().getServletContext().getRealPath("/resources/img/")+ab.getSuCode();
 			File uploadPath = new File(path);
 			if (!uploadPath.exists()) uploadPath.mkdirs();
 		
@@ -414,6 +417,7 @@ public class Authentication implements ServiceRule {
 	private void companyJoinCtl(ModelAndView mav) {
 		CompanyBean cb = (CompanyBean) mav.getModel().get("companyBean");
 		MultipartFile file = (MultipartFile)mav.getModel().get("file");
+		HttpServletRequest req = (HttpServletRequest)mav.getModel().get("req");
 		
 		try {
 			// 섀도우 방식 암호화 : 비밀번호, 메일
@@ -452,7 +456,7 @@ public class Authentication implements ServiceRule {
 		if (this.convertToBoolean(this.session.insert("insCompanyInfo", cb))) {
 			if(file !=null) {
 				/* 회원가입 성공시 기업별로 /res/img/기업코드로 폴더 생성*/
-				String path = "C:\\Users\\js94\\git\\agi-log\\src\\main\\webapp\\resources\\img\\"+cb.getCoCode();
+				String path = req.getSession().getServletContext().getRealPath("/resources/img/")+cb.getCoCode();
 				File uploadPath = new File(path);
 				if (!uploadPath.exists()) uploadPath.mkdirs();
 				
