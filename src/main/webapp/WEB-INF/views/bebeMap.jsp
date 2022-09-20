@@ -59,9 +59,9 @@
 				accessArea.innerHTML += "<span onclick=\"kakaoLogout();\">로그아웃</span>"
 			} else if ("${ accessInfo.type }" == "naver") {
 				accessArea.innerHTML += "<span onclick=\"naverLogout(); return false;\">로그아웃</span>"
-			} else
-				;
-			accessArea.innerHTML += "<span onclick=\"movePage('MoveCompanyLoginPage')\">기업회원</span>";
+			} else {
+				accessArea.innerHTML += "<span onclick=\"movePage('MoveCompanyLoginPage')\">기업회원</span>";
+			}
 		}
 	}
 
@@ -472,27 +472,24 @@
             		infowindow.open(map, marker);
             	} 
             	
-            	// 마크 눌렀을 때 CALLBACK
+             // 마크 눌렀을 때 CALLBACK
              	function callDisplayInfo(ajaxData) {
             		console.log(ajaxData);
+            		let infoWindow = document.getElementsByClassName("placeinfo")[0];
           		
             		if(ajaxData == "") {
+            			infoWindow.innerHTML += "<div id='commentList'><h6>아기로그에 등록된 업체가 아닙니다.<br> 예약을 하기 위해서는 해당 업체에 연락해주세요.</h6></div>";
             			return;
             		} else {
-
                 		const mcCommentList = JSON.parse(ajaxData);
                 		const suCode = mcCommentList.suCode;
                 		const mcComment = mcCommentList.mcComment;
-            			
-    	    			let infoWindow = document.getElementsByClassName("placeinfo")[0];
-    	    			
+
     	    			let mcList = ""
     	    			
     	 	        	if(suCode != null) {
     	 	        		mcList += "<input type = 'button' value = '예약' class='mResBtn btn' onClick = \"showReservation(\'" + mcComment[0].coCode + "\')\">";
     		        	} 
-    					
-
     	    			
     	    			mcList += "<div id='commentList'>";
     	    			
@@ -529,7 +526,7 @@
     	        		infowindow.setContent(infoWindow);
             		}
         			//swal("요청", "요청하신 작업을 완료하였습니다!", "success", { button: "완료"});
-            	} 
+            	}
             	
 
             

@@ -389,6 +389,7 @@ public class Board2 {
 						//flag가 트루면 자유게시판으로. flase면 DB에 저장됐던 정보들을 지우고 자유게시판으로.
 						if (flag) {
 							mav.addObject("content",this.makePostView(this.session.selectOne("getFbPostContent", pb)));
+							this.showFreePostCtl(mav,pb);
 							mav.setViewName("post");
 						} else {
 							this.session.delete("delFbPost", pb);
@@ -400,6 +401,7 @@ public class Board2 {
 						}
 					} else {
 						mav.addObject("content",this.makePostView(this.session.selectOne("getFbPostContent", pb)));
+						this.showFreePostCtl(mav,pb);
 						mav.setViewName("post");
 					}
 				} else {
@@ -428,6 +430,7 @@ public class Board2 {
 				
 				if(this.convertToBoolean(this.session.update("updFbPost", pb))) {
 					mav.addObject("content",this.makePostView(this.session.selectOne("getFbPostContent", pb)));
+					this.showFreePostCtl(mav,pb);
 					mav.setViewName("post");
 				} else {
 					mav.addObject("message", "네트워크가 불안정합니다. 잠시 후 다시 시도해 주세요.");
@@ -444,78 +447,78 @@ public class Board2 {
 	}
 	
 	// 특정 게시글 댓글 내용 보기
-			private void showFreePostCtl(ModelAndView mav, PostBean pb) {
-				PostCommentBean pcb = new PostCommentBean();
-				StringBuffer sb = new StringBuffer();
+	private void showFreePostCtl(ModelAndView mav, PostBean pb) {
+		PostCommentBean pcb = new PostCommentBean();
+		StringBuffer sb = new StringBuffer();
 
-				pcb.setFcFbCode(pb.getFbCode());
-				pcb.setFcFbSuCode(pb.getFbSuCode());
-				pcb.setFcFbDate(pb.getFbDate());
+		pcb.setFcFbCode(pb.getFbCode());
+		pcb.setFcFbSuCode(pb.getFbSuCode());
+		pcb.setFcFbDate(pb.getFbDate());
 
-				List<PostCommentBean> pcList = this.session.selectList("getPostCommentList", pcb);
+		List<PostCommentBean> pcList = this.session.selectList("getPostCommentList", pcb);
 
-				try {
-					AuthBean ab = (AuthBean) this.pu.getAttribute("accessInfo");
+		try {
+			AuthBean ab = (AuthBean) this.pu.getAttribute("accessInfo");
 
-					if(ab != null) {
-						if(pcList.size() != 0) {
-							mav.addObject("fbComment", this.makeCommentHTML(pcList));
-						} else {
-							sb.append("<div>");
-							sb.append("<input class=\"fbComment commentInput\" />");
-							sb.append("<button class=\"submitBtn btn\" onClick=\"insertBoardComment('"+ pcb.getFcFbCode() + "','" + pcb.getFcFbSuCode() + "','" + pcb.getFcFbDate() + "')\">확인</button>");
-							sb.append("</div>");
-							sb.append("<div id='commentList'></div>");
-							mav.addObject("fbComment", sb.toString());
-						}
-					} 
-				} catch (Exception e) {
-					e.printStackTrace();
+			if(ab != null) {
+				if(pcList.size() != 0) {
+					mav.addObject("fbComment", this.makeCommentHTML(pcList));
+				} else {
+					sb.append("<div>");
+					sb.append("<input class=\"fbComment commentInput\" />");
+					sb.append("<button class=\"submitBtn btn\" onClick=\"insertBoardComment('"+ pcb.getFcFbCode() + "','" + pcb.getFcFbSuCode() + "','" + pcb.getFcFbDate() + "')\">확인</button>");
+					sb.append("</div>");
+					sb.append("<div id='commentList'></div>");
+					mav.addObject("fbComment", sb.toString());
 				}
-			}
+			} 
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-			// 댓글 내용 양식 만들기
-			private String makeCommentHTML(List<PostCommentBean> pcList) {
-				StringBuffer sb = new StringBuffer();
-				int i = -1;
+	// 댓글 내용 양식 만들기
+	private String makeCommentHTML(List<PostCommentBean> pcList) {
+		StringBuffer sb = new StringBuffer();
+		int i = -1;
 
-				sb.append("<div id='commentList'>");
+		sb.append("<div id='commentList'>");
 
-				for(PostCommentBean pb : pcList) {
-					i++;
+		for(PostCommentBean pb : pcList) {
+			i++;
 
-					try {
-						AuthBean ab = (AuthBean)this.pu.getAttribute("accessInfo");
+			try {
+				AuthBean ab = (AuthBean)this.pu.getAttribute("accessInfo");
 
-						sb.append("<div class = 'comment " + i + "'>");
-						// 기본 프로필 사진 or 내가 등록한 프로필 사진
-						if(pcList.get(i).getSuPhoto() != null) {
-							sb.append("<img class='profileImage' src=" + pcList.get(i).getSuPhoto() + ">");
-						} else {
-							sb.append("<img class='profileImage' src='/res/img/profile_default.png'>");
-						}
+				sb.append("<div class = 'comment " + i + "'>");
+				// 기본 프로필 사진 or 내가 등록한 프로필 사진
+				if(pcList.get(i).getSuPhoto() != null) {
+					sb.append("<img class='profileImage' src=" + pcList.get(i).getSuPhoto() + ">");
+				} else {
+					sb.append("<img class='profileImage' src='/res/img/profile_default.png'>");
+				}
 
-						sb.append("<div class = 'suNickname'>" + pcList.get(i).getSuNickname() + "</div>");
-						sb.append("<div class=\"fcContent " + pcList.get(i).getFcDate() + "\">" + pcList.get(i).getFcContent() + "</div>");
+				sb.append("<div class = 'suNickname'>" + pcList.get(i).getSuNickname() + "</div>");
+				sb.append("<div class=\"fcContent " + pcList.get(i).getFcDate() + "\">" + pcList.get(i).getFcContent() + "</div>");
 
-						// 댓글 수정, 삭제 버튼 :: 내가 쓴 댓글의 경우만 수정, 삭제 버튼 생성
-						if(ab.getSuCode().equals(pcList.get(i).getFcSuCode())) {
-							sb.append("<i class=\"fa-solid fa-pen updBtn editBtn\" onClick=\"updateInput(" + pcList.get(i).getFcFbCode() + "," + pcList.get(i).getFcFbSuCode() + "," + pcList.get(i).getFcCode() + "," + pcList.get(i).getFcDate() + "," + pcList.get(i).getFcFbDate() + ")\"></i>");
-							sb.append("<i class=\"fa-solid fa-trash-can delBtn editBtn\" onClick=\"deleteBoardComment(" + pcList.get(i).getFcFbCode() + "," + pcList.get(i).getFcFbSuCode() + "," + pcList.get(i).getFcCode() + "," + pcList.get(i).getFcDate() + "," + pcList.get(i).getFcFbDate() + ")\"></i>");
-						}
-						sb.append("</div>");
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
+				// 댓글 수정, 삭제 버튼 :: 내가 쓴 댓글의 경우만 수정, 삭제 버튼 생성
+				if(ab.getSuCode().equals(pcList.get(i).getFcSuCode())) {
+					sb.append("<i class=\"fa-solid fa-pen updBtn editBtn\" onClick=\"updateInput(" + pcList.get(i).getFcFbCode() + "," + pcList.get(i).getFcFbSuCode() + "," + pcList.get(i).getFcCode() + "," + pcList.get(i).getFcDate() + "," + pcList.get(i).getFcFbDate() + ")\"></i>");
+					sb.append("<i class=\"fa-solid fa-trash-can delBtn editBtn\" onClick=\"deleteBoardComment(" + pcList.get(i).getFcFbCode() + "," + pcList.get(i).getFcFbSuCode() + "," + pcList.get(i).getFcCode() + "," + pcList.get(i).getFcDate() + "," + pcList.get(i).getFcFbDate() + ")\"></i>");
 				}
 				sb.append("</div>");
-				sb.append("<div>");
-				sb.append("<input class=\"fbComment commentInput\" />");
-				sb.append("<button class=\"submitBtn btn\" onClick=\"insertBoardComment("+ pcList.get(0).getFcFbCode() + "," + pcList.get(0).getFcFbSuCode() + "," + pcList.get(0).getFcFbDate() + ")\">확인</button>");
-				sb.append("</div>");
-
-				return sb.toString();
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
+		}
+		sb.append("</div>");
+		sb.append("<div>");
+		sb.append("<input class=\"fbComment commentInput\" />");
+		sb.append("<button class=\"submitBtn btn\" onClick=\"insertBoardComment("+ pcList.get(0).getFcFbCode() + "," + pcList.get(0).getFcFbSuCode() + "," + pcList.get(0).getFcFbDate() + ")\">확인</button>");
+		sb.append("</div>");
+
+		return sb.toString();
+	}
 	
 	//자유게시판 게시글 EL 작업
 	private String makePostView(PostBean pb) {
@@ -529,12 +532,9 @@ public class Board2 {
 				pb.setSuCode(ab.getSuCode());
 				sb.append("<div class=\"pTitle\">" + pb.getFbTitle() + "</div>");
 				sb.append("<div class=\"pHead\">");
-				try {
-					sb.append("<div class=\"pWriter\">작성자&ensp;<small class=\"swriter\">" + this.enc.aesDecode(pb.getFbSuName(), pb.getFbSuCode()) + "</small></div>");
-				} catch (InvalidKeyException | UnsupportedEncodingException | NoSuchAlgorithmException | NoSuchPaddingException
-						| InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException e) {
-					e.printStackTrace();
-				}
+				
+				sb.append("<div class=\"pWriter\">작성자&ensp;<small class=\"swriter\">" + pb.getFbSuName() + "</small></div>");
+				
 				sb.append("<div class=\"pDate\">작성일&ensp;<small class=\"sDate\">" + pb.getFbDate() +"</small></div>");
 				sb.append("<div class=\"pView\">조회수&ensp;<small class=\"sView\">" + pb.getFbView() + "</small></div>");
 				sb.append("<div class=\"pLike\">좋아요&ensp;<small class=\"sLike\">" + pb.getLikes() + "</small></div>");
@@ -559,6 +559,7 @@ public class Board2 {
 				}
 				sb.append("</div>");
 				sb.append("</div>");
+				sb.append("<input type=\"hidden\" id=\"writer\" value=\""+pb.getFbSuCode()+"\">");
 				// 0개 일때 !false=>좋아요 누른적 없음
 				if (!this.convertToBoolean(this.session.selectOne("isFbLike", pb))) {
 					sb.append("<button class=\"likeBtn\" onClick=\"likeBtn('"+pb.getFbCode()+"','"+pb.getFbDate()+"','1')\">좋아요♥</button>");
@@ -571,12 +572,9 @@ public class Board2 {
 			} else {
 				sb.append("<div class=\"pTitle\">" + pb.getFbTitle() + "</div>");
 				sb.append("<div class=\"pHead\">");
-				try {
-					sb.append("<div class=\"pWriter\">작성자&ensp;<small class=\"sWriter\">" + this.enc.aesDecode(pb.getFbSuName(), pb.getFbSuCode()) + "</small></div>");
-				} catch (InvalidKeyException | UnsupportedEncodingException | NoSuchAlgorithmException | NoSuchPaddingException
-						| InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException e) {
-					e.printStackTrace();
-				}
+				
+				sb.append("<div class=\"pWriter\">작성자&ensp;<small class=\"sWriter\">" + pb.getFbSuName() + "</small></div>");
+				
 				sb.append("<div class=\"pDate\">작성일&ensp;<small class=\"sDate\">" + pb.getFbDate() +"</small></div>");
 				sb.append("<div class=\"pView\">조회수&ensp;<small class=\"sView\">" + pb.getFbView() + "</small></div>");
 				sb.append("<div class=\"pLike\">좋아요&ensp;<small class=\"sLike\">" + pb.getLikes() + "</small></div>");
@@ -629,13 +627,9 @@ public class Board2 {
 				sb.append("<tr class=\"selectBoard\" onClick=\"boardContent('"+ pb.getFbCode() + "','" + pb.getFbSuCode() + "','" + pb.getFbDate() +"')\">\n");
 				sb.append("<td class=\"freeBoardB\">"+ pb.getFbDate() +"</td>");
 				sb.append("<td class=\"freeBoardTitle\">"+ pb.getFbTitle() +"</td>");
-				try {
-					sb.append("<td class=\"freeBoardWriter\">"+ this.enc.aesDecode(pb.getFbSuName(), pb.getFbSuCode()) +"</td>");
-				} catch (InvalidKeyException | UnsupportedEncodingException | NoSuchAlgorithmException
-						| NoSuchPaddingException | InvalidAlgorithmParameterException | IllegalBlockSizeException
-						| BadPaddingException e) {
-					e.printStackTrace();
-				}
+				
+				sb.append("<td class=\"freeBoardWriter\">"+ pb.getFbSuName() +"</td>");
+				
 				sb.append("<td class=\"freeBoardB\">"+ pb.getLikes() +"</td>");
 				sb.append("<td class=\"freeBoardB\">"+ pb.getFbView() +"</td>");
 				sb.append("</tr>");

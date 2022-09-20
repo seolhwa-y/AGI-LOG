@@ -77,7 +77,6 @@ public class DailyDiary2 implements ServiceRule {
 	}
 
 	private void getDailyDiaryFeedCtl(Model model) {
-		System.out.println("겟 디디 피드 진입 체크");
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		DailyDiaryCommentBean ddcb = (DailyDiaryCommentBean)model.getAttribute("dailyDiaryCommentBean");
 		DailyDiaryBean ddb = (DailyDiaryBean) model.getAttribute("dailyDiaryBean");
@@ -98,18 +97,9 @@ public class DailyDiary2 implements ServiceRule {
 		ddcb.setDcDdSuCode(ddb.getSuCode());//suCode == ddSuCode
 		ddcb.setDcDdDate(ddb.getDdDate());
 		
-		System.out.println("피드 코드 체크2 : " + ddcb.getDcDdCode());
-		System.out.println("작성자 체크 : " + ddcb.getDcDdSuCode());
-		System.out.println("날짜 체크 : " + ddcb.getDcDdDate());
-		System.out.println("이미지 체크1 : " + ddb.getDpLink());
-		
 		if(ddb.getDpLink() == null) {
 			ddb.setDpLink("/res/img/non_photo.png");
 		}
-		
-		System.out.println("이미지 체크2 : " + ddb.getDpLink());
-
-		System.out.println("comment check : " + this.session.selectList("getDailyDiaryComment", ddcb));
 		
 		// 0개 일때 !false=>좋아요 누른적 없음
 		if (!this.convertToBoolean(this.session.selectOne("isDdLike", ddb))) {
@@ -127,8 +117,6 @@ public class DailyDiary2 implements ServiceRule {
 	}
 
 	private void insertDailyDiaryCtl(ModelAndView mav) {
-		System.out.println("인설트 디디 진입 체크");
-		
 		try {
 			AuthBean ab = ((AuthBean) this.pu.getAttribute("accessInfo"));
 			if(ab != null) {
@@ -136,6 +124,9 @@ public class DailyDiary2 implements ServiceRule {
 				boolean flag = true;
 				//디디빈 세팅
 				DailyDiaryBean db = (DailyDiaryBean) mav.getModel().get("dailyDiaryBean");
+				//리턴 액션 세팅
+				String returnAction = db.getReturnAction();
+				System.out.println("returnAction : "+returnAction);
 
 				//작성자 코드 설정
 				db.setSuCode(ab.getSuCode());
@@ -147,8 +138,6 @@ public class DailyDiary2 implements ServiceRule {
 					
 					db.setDdCode(Integer.toString((int)this.session.selectOne("getDdCode")+1));
 				}
-				
-				System.out.println("ddCode : " + db.getDdCode());
 
 				//이미지 파일 설정
 				MultipartFile files = ((MultipartFile)mav.getModel().get("files"));
@@ -184,25 +173,14 @@ public class DailyDiary2 implements ServiceRule {
 						}
 						
 						//DB에 삽입할 정보 세팅
-						System.out.println("ddCode : " + db.getDdCode());
 						ddpb.setDpDdCode(db.getDdCode());
-						System.out.println("dpDdCode : " + ddpb.getDpDdCode());
-						System.out.println(ddpb.getDpDdCode().equals(db.getDdCode()));
-
-						System.out.println("suCode : " + db.getSuCode());
 						ddpb.setDpDdSuCode(db.getSuCode());
-						System.out.println("dpDdSuCode : " + ddpb.getDpDdSuCode());
-						System.out.println(ddpb.getDpDdSuCode().equals(db.getSuCode()));
-						
 						ddpb.setDpDdDate(((DailyDiaryBean)this.session.selectOne("getDdDate", db)).getDdDate());
-						System.out.println(ddpb.getDpDdDate().equals(db.getDdDate()));
 						ddpb.setDpLink("/res/img/"+ddpb.getDpDdSuCode()+"/DD/"+fileName);
 						
-						System.out.println("ddpb : " + ddpb);
 						
 						//이미지 삽입 성공시 flag를 true로 설정. 실패시 flag를 false로 설정하고 반복문 탈출
 						if(this.convertToBoolean(this.session.insert("insDDP", ddpb))) {
-							System.out.println("이미지 삽입 성공");
 							flag = true;
 						} else {
 							flag = false;
@@ -211,24 +189,39 @@ public class DailyDiary2 implements ServiceRule {
 						
 						//flag가 트루면 자유게시판으로. flase면 DB에 저장됐던 정보들을 지우고 자유게시판으로.
 						if (flag) {
-							mav.addObject("allDailyDiaryList", this.makeDialyFeed(this.session.selectList("getDailyDiaryFeed")));
-							mav.setViewName("dailyDiary");
+							if (returnAction != null) {
+								mav.setViewName("bebeCalendar");
+							} else {
+								mav.addObject("allDailyDiaryList", this.makeDialyFeed(this.session.selectList("getDailyDiaryFeed")));
+								mav.setViewName("dailyDiary");
+							}
 						} else {
 							this.session.delete("delDd", db);
 							this.session.delete("delDdPhoto", ddpb);
-							
-							mav.addObject("message", "네트워크가 불안정합니다. 잠시 후 다시 시도해 주세요.");
+
+							if (returnAction != null) {
+								mav.setViewName("bebeCalendar");
+							} else {
+								mav.addObject("allDailyDiaryList", this.makeDialyFeed(this.session.selectList("getDailyDiaryFeed")));
+								mav.setViewName("dailyDiary");
+							}
+						}
+					} else {
+						if (returnAction != null) {
+							mav.setViewName("bebeCalendar");
+						} else {
 							mav.addObject("allDailyDiaryList", this.makeDialyFeed(this.session.selectList("getDailyDiaryFeed")));
 							mav.setViewName("dailyDiary");
 						}
+					}
+				} else {
+					mav.addObject("message", "네트워크가 불안정합니다. 잠시 후 다시 시도해 주세요.");
+					if (returnAction != null) {
+						mav.setViewName("bebeCalendar");
 					} else {
 						mav.addObject("allDailyDiaryList", this.makeDialyFeed(this.session.selectList("getDailyDiaryFeed")));
 						mav.setViewName("dailyDiary");
 					}
-				} else {
-					mav.addObject("message", "네트워크가 불안정합니다. 잠시 후 다시 시도해 주세요.");
-					mav.addObject("allDailyDiaryList", this.makeDialyFeed(this.session.selectList("getDailyDiaryFeed")));
-					mav.setViewName("dailyDiary");
 				}
 			} else {
 				mav.addObject("message", "세션이 만료되었습니다. 다시 로그인 해주세요");
@@ -258,7 +251,6 @@ public class DailyDiary2 implements ServiceRule {
 	}
 
 	private void updateDailyDiaryFeedCtl(Model model) {
-		System.out.println("업데이트 디디 진입 체크");
 		DailyDiaryBean ddb = (DailyDiaryBean) model.getAttribute("dailyDiaryBean");
 		if(this.convertToBoolean(this.session.update("updDDFeed", ddb))) {
 			this.getDailyDiaryFeedCtl(model);
@@ -266,15 +258,11 @@ public class DailyDiary2 implements ServiceRule {
 	}
 
 	private void deleteDailyDiaryFeedCtl(ModelAndView mav) {
-		System.out.println("delete 디디 진입 체크");
-
 		try {
 			AuthBean ab = ((AuthBean) this.pu.getAttribute("accessInfo"));
 			if(ab != null) {
 				//디디빈 세팅
 				DailyDiaryBean db = (DailyDiaryBean) mav.getModel().get("dailyDiaryBean");
-
-				System.out.println("코드 체크 : " + db.getDdCode());
 				
 				if(this.convertToBoolean(this.session.insert("delDd", db))) {
 					mav.addObject("allDailyDiaryList", this.makeDialyFeed(this.session.selectList("getDailyDiaryFeed")));
