@@ -348,6 +348,8 @@ public class BebeMap implements ServiceRule {
 		System.out.println("어서와");
 		ReservationBean rb = (ReservationBean)model.getAttribute("reservationBean");
 		
+		System.out.println("rb : " + rb);
+		
 		rb.setResCode(this.session.selectOne("getResCode", rb));
 		rb.setResCount(this.session.selectOne("getResCountPlus", rb));
 //		rb.setResCount(rb.getResCount()+1);
