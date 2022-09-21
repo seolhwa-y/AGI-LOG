@@ -17,6 +17,10 @@
  margin:0 auto;
  position: relative;
 }
+.passw[type=password]{
+	font-family:"Nanum Gothic", sans-serif !important;
+	font-weight: bold;
+}
 </style>
 <script>
 	/* 주소 검색 API */
@@ -173,7 +177,6 @@
 		
 		if(isFile.value!=""){
 			//파일 올렸을 때
-			alert("하이염");
 			form.appendChild(file);
 			form.enctype = "multipart/form-data";
 		}
@@ -253,7 +256,7 @@
 										<!-- 비밀번호 동일한지 체크하여 보여줌 -->
 									</div>
 									<div class = "accessInput-input-group">
-										<input type = "text" name = "coAddress" class="basicInput" placeholder="주소"/>
+										<input type = "text" name = "coAddress" class="basicInput" placeholder="주소" readonly/>
 					    				<input type = "button" value="주소검색" id = "checkCoAddress" class="checkBtn btn">
 									</div>
 									<div class = "accessInput-input-group">
@@ -267,13 +270,13 @@
 									
 							<div class="formTwo" id="formTwo" style="display:none;">		
 									<div class = "accessInput-input-group2">
-										<input type = "password" name = "coPassword" onkeyup = "checkPassword()" class="basicInput" placeholder="비밀번호">
+										<input type = "password" name = "coPassword" onkeyup = "checkPassword()" class="basicInput passw" placeholder="비밀번호">
 									</div>
 									<div class = "CheckPW">
 										<!-- 비밀번호 유효성 체크하여 보여줌 -->
 									</div>
 									<div class = "accessInput-input-group2">
-										<input type = "password" name = "checkCoPassword" onkeyup = "isPassword()" class="basicInput" placeholder="비밀번호 확인">
+										<input type = "password" name = "checkCoPassword" onkeyup = "isPassword()" class="basicInput passw" placeholder="비밀번호 확인">
 									</div>
 									<div class = "isCheckPW">
 										<!-- 비밀번호 동일한지 체크하여 보여줌 -->
@@ -287,7 +290,7 @@
 									<div class = "accessInput-input-group2">
 										<input type = "text" name = "coProfile" placeholder="프로필사진" class="basicInput" onclick="onClickUpload()">
 									</div>
-										<input style="visibility: hidden;" type="file" name="file" onchange="submitPhoto()" accept="image/*">
+										<input style="visibility: hidden;" type="file" name="file" onchange="submitPhoto()" accept="image/*" readonly>
 									<div>
 										<input type = "button" class="checkBtn btn form" onClick="next('2')" value="Previous">
 										<input type = "button" value = "회 원 가 입" onclick="companyJoin('CompanyJoin')" class="checkBtn btn joinconfirm"> 
