@@ -183,7 +183,7 @@ window.onpageshow = function(event) {
 				<div class="infoBoard">
 					<div class="freeBoardH">자유 게시판</div>
 					${freeBoardList}
-					<input class="writeBtn" type="button" value="글쓰기" onClick="movePagePost('MoveWritePage')">
+					<input class="writeBtn btn" type="button" value="글쓰기" onClick="movePagePost('MoveWritePage')">
 					<div class="paging">${pagingList}</div>
 				</div>
 				

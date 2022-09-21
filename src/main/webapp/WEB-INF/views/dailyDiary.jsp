@@ -9,7 +9,6 @@
 <script src="https://use.fontawesome.com/releases/v6.1.2/js/all.js"></script>
 <link rel="stylesheet" href="/res/css/agiMain.css">
 <link rel="stylesheet" href="/res/css/dailyDiary.css">
-
 <!-- 알림창 꾸미기 -->
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <!-- 카카오 스크립트 -->
@@ -19,11 +18,19 @@
 <style>
 #commentList {
 	width: 95%;
-	height: 11rem;
+	height: 8rem;
 	overflow: auto;
 	margin-top: 1%;
 }
-
+.viewFeedHead > img{
+	height: 230px;
+    width: 300px;
+}
+	#writeFeed{
+		height: 90%;
+		width: 100%;
+		font-size: 140%;
+	}
 .comment {
     display: flex;
     flex-direction: row;
@@ -51,15 +58,58 @@
     width: 13%;
     float: right;
 }
+.feedDate {
+    margin-bottom: 3%;
+    border-bottom: 1px solid dimgray;
+}
+	#rightArea{
+		width: 120%;
+		height: 100%;
+		overflow-x:hidden;
+		padding: 0.4% 0 0 0;
+		margin-left : 4.5%;
+	}
+	#rightArea_top{
+		width: 100%;
+    	height: 10%;
+    	padding: 1% 5%;
+    	margin-left: 3px;
+	}
+		#rightArea_middle{
+		
+		width: 100%;
+		height: 88%;
+		overflow-x:hidden;
+		overflow-y: scroll;
+	}
+		#writeFeedArea{
+
+		float: right;
+		height: 95%;
+		width: 10%;
+		margin-right: 7%;
+	}
+	.submitBtn{
+	float: right;
+    margin-right: -2rem;
+    right: 13px;
+    height: 33px;
+    margin-top: 2px;
+    width:70px;
+	}
+	.udicon{
+	margin-top: -23.5rem;
+    margin-left: -23rem;
+	}
 </style>
 <script>
 Kakao.init('2afdabad57ed92e1cc9de5bd4baed321');
 function getInfo() {
 	/* 테마 이미지 or 단순색상 */
 	let body = document.getElementById("body");
+	
 	let suTheme = "${accessInfo.suTheme}";
 	let sideMenu = document.querySelector(".side-menu");
-
 	if(suTheme != ""){
 		if(suTheme.indexOf("#") == 0){
 			//단순색상
@@ -90,9 +140,8 @@ function getInfo() {
 			accessArea.innerHTML +="<span onclick=\"kakaoLogout();\">로그아웃</span>"
 		} else if ("${ accessInfo.type }"== "naver") {
 			accessArea.innerHTML +="<span onclick=\"naverLogout(); return false;\">로그아웃</span>"
-		} else {
+		} else
 			accessArea.innerHTML += "<span onclick=\"movePage('MoveCompanyLoginPage')\">기업회원</span>";
-		}
 	}
 
 	let feedList = document.getElementById("feedList");
@@ -310,11 +359,11 @@ function viewFeed(ajaxData) {
 	let modalFoot = document.querySelector(".modal_foot");
 	modal.style.display = "block";
 
-	modalHead.innerHTML = "<div class='viewFeedHead'><img style=\"filter: drop-shadow(10px 6px 6px #5D5D5D)\" src=\'" + ddFeed.dpLink + "'><i class=\"fa-solid fa-xmark closeBtn \" onclick =\"modalClose('')\"style=\"float: right;\"></i></div>";
+	modalHead.innerHTML = "<div class='viewFeedHead'><img style=\"filter: drop-shadow(10px 6px 6px #5D5D5D)\" src=\'" + ddFeed.dpLink + "'><i class=\"fa-solid fa-xmark closeBtn \" onclick =\"modalClose('')\"style=\"float: right;position: absolute; right: 26px;\"></i></div>";
 	modalContent.innerHTML = "<br/><div id='viewFeedDate'>" + ddFeed.ddDate.substring(0, 4) + "년 " + ddFeed.ddDate.substring(4, 6) + "월 " + ddFeed.ddDate.substring(6, 8) + "일 " + ddFeed.ddDate.substring(8, 10) + ":" + ddFeed.ddDate.substring(10, 12) + ":" + ddFeed.ddDate.substring(12, 14) + "</div><div class='viewLike' onClick='dailyDiaryLike(" + ddFeed.ddCode + "," + ddFeed.ddDate + "," + ddFeed.suCode + ")'>❤ " + ddFeed.likes + "</div>"
 							 +"<div id='viewFeedContent'><br/>" + ddFeed.ddContent + "</div>";
 	if("${accessInfo.suCode}" == ddFeed.suCode) {
-		modalContent.innerHTML += "<div id='UDIcon'><i class='fa-solid fa-pen updBtn editBtn' onClick='feedUpdateInput(" + ddFeed.ddCode + ")' style='margin-right:20%'></i><i class='fa-solid fa-trash-can delBtn editBtn' onClick='deleteDailyDiaryFeed(" + ddFeed.ddCode + ")'></i></div>";
+		modalContent.innerHTML += "<div id='UDIcon' class='udicon'><i class='fa-solid fa-pen updBtn editBtn' onClick='feedUpdateInput(" + ddFeed.ddCode + ")' style='margin-right:20%'></i><i class='fa-solid fa-trash-can delBtn editBtn' onClick='deleteDailyDiaryFeed(" + ddFeed.ddCode + ")'></i></div>";
 	}
 	
 	let viewLike = document.querySelector(".viewLike");
@@ -364,7 +413,7 @@ function viewFeed(ajaxData) {
 	if(suCode != null){
 		input += "<div style = 'margin-top: 9%;'>";
 		input += "<input class=\"ddComment mEditInput\" />";
-		input += "<button class=\"mMiniBtn btn\" onClick=\"insertDailyDiaryComment("+ ddFeed.ddCode + "," + ddFeed.suCode + "," + ddFeed.ddDate + ")\">확인</button>";
+		input += "<button class=\"mMiniBtn btn ddbtn\" onClick=\"insertDailyDiaryComment("+ ddFeed.ddCode + "," + ddFeed.suCode + "," + ddFeed.ddDate + ")\">확인</button>";
 		input += "</div>";
 	}
 
@@ -379,10 +428,11 @@ function feedUpdateInput(ddCode) {
 
 	viewFeedContent.innerHTML = "";
 	viewFeedContent.innerHTML = "<br/><textarea id='updContent'>" + content + "</textarea>";
-
+	
+	UDIcon.className="";
 	UDIcon.innerHTML = "";
 	UDIcon.innerHTML = "<button class='submitBtn btn' onClick='updateDailyDiaryFeed(" + ddCode + ")'>수정</button>";
-	UDIcon.style.marginTop="-14%";
+	//UDIcon.style.marginTop="-14%";
 }
 
 //피드 내용 수정

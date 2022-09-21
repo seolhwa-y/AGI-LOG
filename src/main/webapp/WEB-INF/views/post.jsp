@@ -15,6 +15,21 @@
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 <!-- 네이버 스크립트 -->
 <script	src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
+<style>
+.submitBtn{
+	margin-left: 2rem;
+	cursor:pointer;
+}
+.pContent > p {
+    overflow: auto;
+	margin-top: 0;
+    height: 100%;
+    font-size:1.3rem;
+}
+.updBtn{
+	margin-right:1rem;
+}
+</style>
 <script>
 Kakao.init('2afdabad57ed92e1cc9de5bd4baed321');
 function getInfo() {
@@ -293,11 +308,10 @@ function deletePost(fbCode) {
 			<div id="rightArea" class="scrollBar">
 				<div class="postContent">
 					${content}
-				</div>
-				<div>
 					<!-- 댓글 내용 불러오기 -->
 					${fbComment}
 				</div>
+				
 			</div>
 		</div>
 		<div class="modal">

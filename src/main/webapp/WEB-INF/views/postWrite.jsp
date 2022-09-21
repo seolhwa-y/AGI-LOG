@@ -15,6 +15,14 @@
 <script	src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
 <!-- 글쓰기 스크립트 -->
 <script type="text/javascript" src="/res/se2/js/service/HuskyEZCreator.js" charset="utf-8"></script>
+<style>
+#smart_editor2{
+	margin-top:2rem;
+}
+.top{
+margin-bottom: 2rem;
+}
+</style>
 <script>
 Kakao.init('2afdabad57ed92e1cc9de5bd4baed321');
 function getInfo() {
@@ -228,7 +236,7 @@ function validation(obj){
 }
 
 #multiple-container {
-	margin-top:5%;
+    /*margin-top: 10%;*/
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     height: 550px;
@@ -237,6 +245,7 @@ function validation(obj){
 }
 #multiple-container:hover{
     cursor: pointer;
+    
 }
 .image {
     display: block;
@@ -255,14 +264,41 @@ function validation(obj){
     height: 570px;
     float: right;
     position: relative;
-    margin-top: -48%;
+    margin-top: -44.3%;
 }
 
 #input-multiple-image{
-    display: block;
+        /*margin-top: 4rem;*/
     position: absolute;
     width: 100%;
-    height: 570px;
+    height: 561px;
+}
+.top{
+	    width: 99%;
+    display: flex;
+    /* flex-wrap: nowrap; */
+    flex-direction: column;
+    margin-top:1rem;
+}
+.topInner{
+	font-size:24px;
+}
+#fbTitle{
+	margin-left: 1rem;
+    font-size: 23px;
+}
+.topRight{
+	position: absolute;
+    right: 30px;
+   }
+.btn{
+	width: 114px;
+    margin-left: 1rem;
+    height: 35px;
+    cursor:pointer;
+}
+#ir1{
+	margin-top:2rem;
 }
 </style>
 
@@ -292,8 +328,15 @@ function validation(obj){
 		</div>
 		<div id="middle">
 			<div id="rightArea" class="scrollBar">
-				<div style="width:54%">제목 : <input type="text" id="fbTitle" style="width:92%" placeholder="제목을 입력해 주세요" value="${postBean.fbTitle}"/></div>
-				<textarea name="ir1" id="ir1" rows="40" cols="90">${postBean.fbContent}</textarea>
+				<div class="top" >
+					<span class="topInner">제목 :<input type="text" id="fbTitle" style="width:48.5%; height:30px;" placeholder="제목을 입력해 주세요" value="${postBean.fbTitle}"/></span>
+					<span class="topRight">
+						<input type="button" class="mBtnO btn" onclick="movePage('MoveBoardPage')" value="취소" >
+						<input type="button" class="mBtnX btn"onclick="submitContents('${postBean.fbCode}');" value="작성">
+					</span> 
+				</div>
+				<div>
+				<textarea name="ir1" id="ir1" rows="37" cols="90">${postBean.fbContent}</textarea>
 				<script type="text/javascript">
 					var oEditors = [];
 					nhn.husky.EZCreator.createInIFrame({
@@ -305,12 +348,13 @@ function validation(obj){
 				</script>
 				<form id="upload" enctype="multipart/form-data">
 					<div id="USdiv">
-						<input style="display: block;" type="file" name="files" id="input-multiple-image" multiple />
+						<input style="display: block;" type="file" name="files" maxlength="4" id="input-multiple-image" multiple />
 						<div id="multiple-container"></div>
-						<input type="button" onclick="movePage('MoveFreeBoard')" value="취소" style=" font-size:1.5rem;position: absolute;right: 12%;bottom: -8%;">
-						<input type="button" onclick="submitContents('${postBean.fbCode}');" value="작성" style="font-size:1.5rem;position: absolute;right: -1%;bottom: -8%;">
+						
 					</div>
 				</form>
+				</div>
+				
 			</div>
 		</div>
 		<div class="modal">

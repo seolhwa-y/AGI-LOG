@@ -8,12 +8,22 @@
 <script src="/res/js/agiMain.js"></script>
 <script src="https://use.fontawesome.com/releases/v6.1.2/js/all.js"></script>
 <link rel="stylesheet" href="/res/css/agiMain.css">
-
+<link rel="stylesheet" href="/res/css/dailyDiary.css">
 <!-- 카카오 스크립트 -->
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 <!-- 네이버 스크립트 -->
 <script	src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
 <style>
+#commentList {
+	width: 95%;
+	height: 8rem;
+	overflow: auto;
+	margin-top: 1%;
+}
+.viewFeedHead > img{
+	height: 230px;
+    width: 300px;
+}
 	ul {
     list-style: none;
 	}
@@ -32,14 +42,14 @@
 	}
 	#rightArea_top{
 		width: 100%;
-    	height: 5%;
+    	height: 10%;
     	padding: 1% 5%;
     	margin-left: 3px;
 	}
 	#rightArea_middle{
-		margin-top: 1%;
+		
 		width: 100%;
-		height: 89%;
+		height: 88%;
 		overflow-x:hidden;
 		overflow-y: scroll;
 	}
@@ -68,6 +78,21 @@
 		margin: 3% auto;
 		font-size: 140%;
 	}
+	.ddModal_body {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    width: 640px;
+    height: 730px;
+    padding: 20px;
+    text-align: center;
+    /* background-color: rgb(255, 255, 255); */
+    background-image: url(/res/img/newModal.png);
+    background-size: cover;
+    border-radius: 10px;
+    box-shadow: 0 2px 3px 0 rgb(34 36 38 / 15%);
+    transform: translateX(-50%) translateY(-50%);
+}
 	#sortArea{ 
 
 		float: left;
@@ -149,7 +174,41 @@
   		font-size: 20px;
   		color: dimgray;
 }
+.comment {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 6%;
+    margin-top: 2%;
+    margin-right: 3%;
+}
 
+.profileImage {
+	width: 2rem;
+	height: 2rem;
+}
+.suNickname{
+	width: 20%;
+    text-align: center;
+}
+
+
+.ueBtn{
+    width: 13%;
+    float: right;
+}
+.feedDate {
+    margin-bottom: 3%;
+    border-bottom: 1px solid dimgray;
+}
+	.submitBtn{
+	float: right;
+    margin-right: -2rem;
+    right: 13px;
+    height: 33px;
+    margin-top: 2px;
+    width:70px;
+	}
 </style>
 <script>
 Kakao.init('2afdabad57ed92e1cc9de5bd4baed321');
@@ -325,7 +384,7 @@ function changeSort(){
 						</select>
 					</div>
 					<div id="writeFeedArea">
-						<input id="writeFeed"type="button" class="writeBtn btn" style="cursor:pointer;" value="글쓰기" >
+						<input id="writeFeed"type="button" class="writeBtn btn" style="cursor:pointer;" onClick="moveWriteFeed()" value="글쓰기" >
 					</div>
 				</div>
 				<div id="rightArea_middle" class="scrollBar">
@@ -334,7 +393,7 @@ function changeSort(){
 			</div>
 		</div>
 		<div class="modal">
-            <div class="modal_body">
+            <div class="ddModal_body">
 				<div class="modal_head">
 					<i class="fa-solid fa-xmark closeBtn editBtn"></i><br />
 				</div>
