@@ -141,7 +141,6 @@ public class ShAPIController {
 	public HashMap<String, Object> viewCompanyInfo(Model model, @ModelAttribute CompanyBean cb){
 		model.addAttribute(cb);
 		this.bebeMap.backController(model, 42);
-		
 		return (HashMap<String, Object>)model.getAttribute("mcCommentList");
 	}
 	

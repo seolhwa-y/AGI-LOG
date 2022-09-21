@@ -211,7 +211,9 @@ public class BebeMap implements ServiceRule {
 	// 지도 정보 확인 후 댓글 불러오기
 	private void viewCompanyInfoCtl(Model model) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
+		
 		CompanyBean cb = (CompanyBean)model.getAttribute("companyBean");
+		
 		try {
 			AuthBean ab = (AuthBean)this.pu.getAttribute("accessInfo");
 			String coCode = this.session.selectOne("getCoCode", cb);
@@ -219,6 +221,7 @@ public class BebeMap implements ServiceRule {
 			cb.setCoCode(coCode);
 			if(cb.getCoCode() != null) {
 				map.put("suCode", ab.getSuCode());
+				map.put("coInfo", cb);
 				map.put("mcComment", this.session.selectList("getMapCommentList", cb));
 				model.addAttribute("mcCommentList", map);
 			}

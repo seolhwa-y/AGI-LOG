@@ -424,9 +424,9 @@ public class Authentication implements ServiceRule {
 			cb.setCoEmail(this.enc.encode(cb.getCoEmail()));
 
 			// aes 방식 암호화 : 이름, 연락처, 주소, 관리자코드 -> 키값은 사업자등록번호
-			cb.setCoName(this.enc.aesEncode(cb.getCoName(), cb.getCoCode()));
-			cb.setCoPhone(this.enc.aesEncode(cb.getCoPhone(), cb.getCoCode()));
-			cb.setCoAddress(this.enc.aesEncode(cb.getCoAddress(), cb.getCoCode()));
+//			cb.setCoName(this.enc.aesEncode(cb.getCoName(), cb.getCoCode()));
+//			cb.setCoPhone(this.enc.aesEncode(cb.getCoPhone(), cb.getCoCode()));
+//			cb.setCoAddress(this.enc.aesEncode(cb.getCoAddress(), cb.getCoCode()));
 			cb.setCoManagerCode(this.enc.aesEncode(cb.getCoManagerCode(), cb.getCoCode()));
 			
 			if(file!=null) {
