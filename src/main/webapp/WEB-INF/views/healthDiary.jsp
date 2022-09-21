@@ -271,10 +271,9 @@
 			form.appendChild(createInput("hidden","bbCode",bbCode,null,null));
 			form.appendChild(createInput("hidden","returnAction","${returnAction}",null,null));
 			form.appendChild(data);
-			
 			form.action = "InsertHealthDiary";
 			form.method = "post";
-
+			
 			form.submit();
         }
 		//수면시간 계산
