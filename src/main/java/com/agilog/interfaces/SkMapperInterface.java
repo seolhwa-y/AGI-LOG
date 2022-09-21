@@ -1,5 +1,6 @@
 package com.agilog.interfaces;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.agilog.beans.BebeCalendarBean;
@@ -36,6 +37,7 @@ public interface SkMapperInterface {
 	public List<BebeCalendarBean> getBabyBirth(BebeCalendarBean bcb);
 	
 	public int isDdLike(DailyDiaryBean ddb);
+	public int isDdLikeM(HashMap<String,String> map);
 	public int insDdLike(DailyDiaryBean ddb);
 	public int getDdLike(DailyDiaryBean ddb);
 	public int updDdLike(DailyDiaryBean ddb);

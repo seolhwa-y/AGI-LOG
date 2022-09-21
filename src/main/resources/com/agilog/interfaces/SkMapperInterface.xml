@@ -129,6 +129,11 @@
 	<select id="isDdLike" parameterType="com.agilog.beans.DailyDiaryBean" resultType="int">
 		SELECT COUNT(*) FROM DL WHERE DL_DDCODE = #{ddCode} AND DL_SUCODE = #{suCode}
 	</select>
+	<!-- 감성일기 좋아요 -->
+	<!-- 해당유저 해당감성일기 좋아요 내역 확인(모달확인용) -->
+	<select id="isDdLikeM" parameterType="java.util.HashMap" resultType="int">
+		SELECT COUNT(*) FROM DL WHERE DL_DDCODE = #{ddCode} AND DL_SUCODE = #{suCode}
+	</select>
 	<!-- 해당감성일기 좋아요 내역 저장 -->
 	<insert id="insDdLike" parameterType="com.agilog.beans.DailyDiaryBean" >
 		INSERT INTO DL VALUES(#{ddCode}, #{ddSuCode}, TO_DATE(#{ddDate},'YYYYMMDDHH24MISS'), #{suCode})

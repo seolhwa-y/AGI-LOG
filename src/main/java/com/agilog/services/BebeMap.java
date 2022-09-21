@@ -345,17 +345,21 @@ public class BebeMap implements ServiceRule {
 	@Transactional(rollbackFor = SQLException.class)
 	//private void reservationCtl(ModelAndView mav) {
 	private void reservationCtl(Model model) {
-		System.out.println("어서와");
 		ReservationBean rb = (ReservationBean)model.getAttribute("reservationBean");
 		
-		rb.setResCode(this.session.selectOne("getResCode", rb));
-		rb.setResCount(this.session.selectOne("getResCountPlus", rb));
-//		rb.setResCount(rb.getResCount()+1);
-		
-		if(this.convertToBoolean(this.session.insert("insReservationList", rb))) {
-			System.out.println("지도 예약 성공");
-			if(this.convertToBoolean(this.session.update("updResTime", rb))) {
-				System.out.println("지도 예약 인원 추가 성공");
+		if(this.convertToBoolean(this.session.selectOne("isResInfo", rb))) {
+			System.out.print("동일한 시간에 예약할 수 없습니다.");
+			model.addAttribute("message", "동일한 시간에 예약할 수 없습니다.");
+		} else { 
+			rb.setResCode(this.session.selectOne("getResCode", rb));
+			rb.setResCount(this.session.selectOne("getResCountPlus", rb));
+	//		rb.setResCount(rb.getResCount()+1);
+			
+			if(this.convertToBoolean(this.session.insert("insReservationList", rb))) {
+				System.out.println("지도 예약 성공");
+				if(this.convertToBoolean(this.session.update("updResTime", rb))) {
+					System.out.println("지도 예약 인원 추가 성공");
+				}
 			}
 		}
 	}

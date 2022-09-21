@@ -269,7 +269,11 @@
     		form.appendChild(createInput("hidden","hdDate",hdDate.value+" "+hours+":"+minutes+":"+seconds,null,null));
 			form.appendChild(createInput("hidden","sleep",sleepTime(),null,null));
 			form.appendChild(createInput("hidden","bbCode",bbCode,null,null));
-			form.appendChild(createInput("hidden","returnAction","${returnAction}",null,null));
+			
+			if ('${returnAction}' != '') {
+				form.appendChild(createInput("hidden","returnAction","${returnAction}",null,null));
+			}
+			
 			form.appendChild(data);
 			form.action = "InsertHealthDiary";
 			form.method = "post";

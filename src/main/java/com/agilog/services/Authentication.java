@@ -217,7 +217,7 @@ public class Authentication implements ServiceRule {
 				try {
 					// 세션에 저장할 로그인 유저 정보 가져오기
 					CompanyBean company = (CompanyBean) this.session.selectList("getCompanyAccessInfo", cb).get(0);
-					company.setCoName(this.enc.aesDecode(company.getCoName(), company.getCoCode()));
+					company.setCoName(company.getCoName());
 					// 세션에 userCode저장
 					this.pu.setAttribute("companyAccessInfo", company);
 					// 병원이름 mav에 저장
