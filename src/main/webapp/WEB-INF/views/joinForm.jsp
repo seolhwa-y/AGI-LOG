@@ -5,6 +5,8 @@
 <head>
 <meta charset="UTF-8">
 <title>회원가입</title>
+<!-- 알림창 꾸미기 -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="/res/js/agiMain.js"></script>
 <script src="https://use.fontawesome.com/releases/v6.1.2/js/all.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -33,11 +35,11 @@
 	
 	function callBackOverlap(ajaxData) {
 		if(ajaxData=="ok"){
-			alert("사용가능");
+			swal("닉네임 중복체크", "사용가능한 닉네임 입니다!", "success", { button: "확인"});
 			check = true;
 		}
 		else {
-			alert(ajaxData);
+			swal("닉네임 중복체크", "사용불가능한 닉네임 입니다!", "error", { button: "확인"});
 			check = false;
 		}
 	}
@@ -124,25 +126,25 @@
 		let phone = document.getElementsByName("suPhone")[0].value;
 		let nick = document.getElementsByName("suNickName")[1].value;
 		let address = document.getElementsByName("suAddress")[0].value;
-		
-		if(name.length > 11 && name.length == 0){
-			alert("이름은 10자 이내로 입력해주세요");
+
+		if(name.length > 11 || name == ""){
+			swal("회원가입 실패", "이름은 10자 이내로 입력해주세요!", "error", { button: "확인"});
 			return;
 		}
-		if(phone.length > 12 && phone.length == 0){
-			alert("전화번호를 확인해주세요");
+		if(phone.length != 11 || phone == ""){
+			swal("회원가입 실패", "전화번호를 확인해주세요!", "error", { button: "확인"});
 			return;
 		}
-		if(nick.length > 9 && nick.length == 0){
-			alert("닉네임은 8자리까지 입력 가능합니다");
+		if(nick.length > 9 || nick == ""){
+			swal("회원가입 실패", "닉네임은 8자리까지 입력 가능합니다!", "error", { button: "확인"});
 			return;
 		}
 		if(!check) {
-			alert("닉네임 중복확인을 해주세요");
+			swal("회원가입 실패", "닉네임 중복확인을 해주세요!", "error", { button: "확인"});
 			return;
 		}
-		if(address == null){
-			alert("주소를 입력해주세요.");
+		if(address == ""){
+			swal("회원가입 실패", "주소를 입력해주세요!", "error", { button: "확인"});
 			return;
 		}
 		form.appendChild(createInput("hidden","suEmail",email,null,null));
@@ -152,7 +154,6 @@
 		form.appendChild(createInput("hidden","suNickName",nick,null,null));
 		form.appendChild(createInput("hidden","suAddress",address,null,null));
 		
-		alert(nick);
 		
 		form.submit();
 	}
@@ -221,7 +222,7 @@
 							<div class="necessaryInfo">
 								<span class="necessaryPoint">*</span>주소
 							</div>
-							<input type = "text" name = "suAddress" class="basicInput" placeholder="주소"/>
+							<input type = "text" name = "suAddress" class="basicInput" placeholder="주소" readonly/>
 					    	<input type = "button" value="주소검색" id = "checkSuAddress" class="checkBtn btn" onclick = "checkAddress()">
 						</div>
 						<button class="checkBtn btn joinconfirm" onclick="joinCtl()">가입완료</button>

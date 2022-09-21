@@ -297,7 +297,7 @@ public class DailyDiary2 implements ServiceRule {
 		for(DailyDiaryBean fl : feedList) {
 			sb.append("<li class=\'feed\' onClick=\'getFeed(" + fl.getDdCode() + ")\'>");
 			sb.append("<div class=\'feed_top\'>");
-			sb.append("<i class='fa-solid fa-xmark closeBtn editBtn' onclick='modalClose('')'>");
+			//sb.append("<i class='fa-solid fa-xmark closeBtn editBtn' onclick=\'modalClose()\'>");
 			
 			if(fl.getDpLink()!=null) {
 				sb.append("<img src=\'"+fl.getDpLink()+"\'>");

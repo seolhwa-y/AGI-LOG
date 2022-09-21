@@ -315,13 +315,16 @@ function getInfo() {
 	let address = document.getElementById("address");
 	
 	//부모사진이 없으면 기본이미지 띄워줌
-	if("${mypageInfo.suPhoto}" != ""){
+	
+	if(!"${mypageInfo.suPhoto}" == ""){
 		pImage.innerHTML = "<img class='profileImage' src=\'"+"${mypageInfo.suPhoto}"+"\'>";
-	}else{ 
-		pImage.innerHTML = "<img class='profileImage' src='"+"/res/img/profile_default.png"+"'>";
+	}else{
+		alert("${mypageInfo.suPhoto}");
+		alert("없어염");
+		pImage.innerHTML = "<img class='profileImage' src='/res/img/profile_default.png'>";
+		//bImage.innerHTML = "<img class='profileImage' src='"+"/res/img/profile_default.png"+"'>";
 	}
 	
-	pImage.innerHTML = "<img class='profileImage' src=\'"+"${mypageInfo.suPhoto}"+"\'>";
 	parentName.innerText="${mypageInfo.suName}";
 	parentNickName.innerText="${mypageInfo.suNickName}";
 	address.innerText="${mypageInfo.suAddress}";
@@ -336,6 +339,7 @@ function getInfo() {
 	if(!"${mypageInfo.babyList[0].bbPhoto}" == ""){
 		bImage.innerHTML = "<img class='profileImage' src='"+"${mypageInfo.babyList[0].bbPhoto}"+"'>";
 	}else{ 
+		alert("애기도없어여");
 		bImage.innerHTML = "<img class='profileImage' src='"+"/res/img/profile_default.png"+"'>";
 	}
 	bbName.innerText="${mypageInfo.babyList[0].bbName}";

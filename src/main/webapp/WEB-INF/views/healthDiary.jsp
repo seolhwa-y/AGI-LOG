@@ -17,6 +17,13 @@
     <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
     <!-- 네이버 스크립트 -->
     <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
+    <style>
+    .saveBtn{
+    width: 100px;
+    height: 40px;
+    font-size: 20px;
+}
+    </style>
     <script>
         Kakao.init('2afdabad57ed92e1cc9de5bd4baed321');
         //초기화
@@ -68,8 +75,10 @@
                 babyInfo.addEventListener("change", selectBaby);
                 selectBaby();
             } else {
+            	let writhBtn = document.getElementById("writhBtn");
+            	writhBtn.style.display = "none";
             	let btnArea = document.getElementById("buttonArea");
-            	let btn = createInput("button",null,"아이등록","saveBtn",null);
+            	let btn = createInput("button",null,"아이등록","saveBtn insBaby",null);
             	btn.addEventListener("click",function() {
             		movePage("MoveMyPage");
             	});
@@ -441,7 +450,7 @@
                 <div id="rightArea" class="scrollBar">
                     <div id="buttonArea">
                         ${babyInfo}
-                        <button class="writeBtn btn" onclick="writeHealthDiary()">글쓰기</button>
+                        <button id="writhBtn"class="writeBtn btn" onclick="writeHealthDiary()">글쓰기</button>
                     </div>
                     <div id="diaryArea" class="scrollBar">
                         ${diaryList}
