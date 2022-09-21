@@ -361,7 +361,7 @@ function viewFeed(ajaxData) {
 
 	modalHead.innerHTML = "<div class='viewFeedHead'><img style=\"filter: drop-shadow(10px 6px 6px #5D5D5D)\" src=\'" + ddFeed.dpLink + "'><i class=\"fa-solid fa-xmark closeBtn \" onclick =\"modalClose('')\"style=\"float: right;position: absolute; right: 26px;\"></i></div>";
 	modalContent.innerHTML = "<br/><div id='viewFeedDate'>" + ddFeed.ddDate.substring(0, 4) + "년 " + ddFeed.ddDate.substring(4, 6) + "월 " + ddFeed.ddDate.substring(6, 8) + "일 " + ddFeed.ddDate.substring(8, 10) + ":" + ddFeed.ddDate.substring(10, 12) + ":" + ddFeed.ddDate.substring(12, 14) + "</div><div class='viewLike' onClick='dailyDiaryLike(" + ddFeed.ddCode + "," + ddFeed.ddDate + "," + ddFeed.suCode + ")'>❤ " + ddFeed.likes + "</div>"
-							 +"<div id='viewFeedContent'><br/>" + ddFeed.ddContent + "</div>";
+							 +"<div id='viewFeedContent' class='scrollBar'><br/>" + ddFeed.ddContent + "</div>";
 	if("${accessInfo.suCode}" == ddFeed.suCode) {
 		modalContent.innerHTML += "<div id='UDIcon' class='udicon'><i class='fa-solid fa-pen updBtn editBtn' onClick='feedUpdateInput(" + ddFeed.ddCode + ")' style='margin-right:20%'></i><i class='fa-solid fa-trash-can delBtn editBtn' onClick='deleteDailyDiaryFeed(" + ddFeed.ddCode + ")'></i></div>";
 	}
@@ -380,7 +380,7 @@ function viewFeed(ajaxData) {
 	
 	
 	
-	comment += "<div id='commentList'>";
+	comment += "<div id='commentList' class='scrollBar'>";
 	
 	for(i = 0; i < ddComment.length; i++) {
 		comment += "<div class = 'comment " + i + "'>";
