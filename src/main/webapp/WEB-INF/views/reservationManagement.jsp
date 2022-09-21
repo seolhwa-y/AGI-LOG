@@ -100,6 +100,7 @@
     height: 80%;
     overflow-x: hidden;
     overflow-y: scroll;
+    margin-left: 1rem;
 }
 #morning{
     margin: 1rem;

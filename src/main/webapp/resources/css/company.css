@@ -128,7 +128,7 @@
 }
 
 #addDocBtn {
-	float: right;
+	/*float: right;*/
 	margin-left: 59rem;
 }
 
@@ -215,7 +215,7 @@
 	margin:0 auto;
 	margin-top:1rem;
 	text-align:center;
-	font-size:1.5rem;
+	font-size:2.5rem;
 	letter-spacing: 7px;
 	width: 20rem;
 	padding: 10px;
@@ -314,7 +314,7 @@
 	height:1rem;
 }
 .vp{
-	margin-left:-4rem;
+	margin-left: -8.5rem;
 }
 .resAlert{
 	font-size: 3.5rem;

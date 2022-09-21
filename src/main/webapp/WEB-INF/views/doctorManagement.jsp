@@ -9,6 +9,30 @@
 <script src="/res/js/agiMain.js"></script>
 <link rel="stylesheet" href="/res/css/agiMain.css">
 <link rel="stylesheet" href="/res/css/company.css">
+<style>
+.modal_head {
+    margin-bottom: 6rem;
+}
+.modal_content {
+    margin-bottom: 3rem;
+}
+.mBtnO , .mBtnX{
+	width:300px;
+	margin: 0 1rem;
+}
+.passw[type=password]{
+	font-family:"Nanum Gothic", sans-serif !important;
+	font-weight: bold;
+}
+.checkPw{
+	margin-left: -2.6rem;
+    width: 120px;
+}
+.checkPW {
+    font-size: 16px;
+    height: 1rem;
+}
+</style>
 <script>
 	function cModal(num) {
 		if(num == 1){
@@ -227,14 +251,15 @@
 							<div class="mJoinGroup">
 								<span class="necessaryInfo">비밀번호</span>
 									<input type="password" name="doPassword"
-									onkeyup="checkPassword()" class="mBasicInput doc"
+									onkeyup="checkPassword()" class="mBasicInput doc passw"
 									placeholder="Password"/>
 							</div>
 								<!-- 비밀번호 유효성 체크하여 보여줌 -->
 								<div class="checkPW"></div>
 							<div class="mJoinGroup">
+								<span class="necessaryInfo checkPw">비밀번호 확인</span>
 								<input type="password" name="checkDoPassword" onkeyup="isPassword()"
-									class="mBasicInput vp" placeholder="Verify Password"/>
+									class="mBasicInput vp passw" placeholder="Verify Password"/>
 							</div>	
 								<!-- 비밀번호 동일한지 체크하여 보여줌 -->
 								<div class = "isCheckPW"></div>
