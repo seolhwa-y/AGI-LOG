@@ -24,6 +24,10 @@
                 INNER JOIN DO ON DO_COCODE = CO_CODE AND DO_CODE = RE_DOCODE
         WHERE RE_CODE = #{resCode}
 	</select>
+	<select id="isResInfo" parameterType="com.agilog.beans.ReservationBean" resultType="int">
+		SELECT COUNT(*) FROM RE
+		WHERE TO_CHAR(RE_DATE, 'YYYYMMDD') = TO_CHAR(TO_DATE(#{resDate}, 'YYYYMMDDHH24MISS'), 'YYYYMMDD') AND RE_DOCOCODE = #{resCoCode} AND RE_BBSUCODE = #{resSuCode} AND RE_BBCODE = #{resBbCode}  
+	</select>
 	
 	<update id="updRDRes" parameterType="com.agilog.beans.ReservationBean">
 		UPDATE RE SET RE_RCCODE = #{rcCode}, RE_DOCODE = #{resDoCode}

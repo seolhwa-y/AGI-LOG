@@ -113,7 +113,7 @@ public class Company3 implements ServiceRule {
 								map.put("resDate", rb.getResDate());
 								map.put("resSuName", this.enc.aesDecode(rb.getResSuName(), rb.getResSuCode()));
 								map.put("resSuPhone", this.enc.aesDecode(rb.getResSuPhone(), rb.getResSuCode()));
-								map.put("resCoName", this.enc.aesDecode(rb.getResCoName(), rb.getResCoCode()));
+								map.put("resCoName", rb.getResCoName());
 								map.put("resBbName", rb.getResBbName());
 								map.put("resActionName", rb.getResActionName());
 								map.put("resDoName", rb.getResDoName());
@@ -133,7 +133,7 @@ public class Company3 implements ServiceRule {
 								map.put("resDate", rb.getResDate());
 								map.put("resSuName", this.enc.aesDecode(rb.getResSuName(), rb.getResSuCode()));
 								map.put("resSuPhone", this.enc.aesDecode(rb.getResSuPhone(), rb.getResSuCode()));
-								map.put("resCoName", this.enc.aesDecode(rb.getResCoName(), rb.getResCoCode()));
+								map.put("resCoName", rb.getResCoName());
 								map.put("resBbName", rb.getResBbName());
 								map.put("resActionName", rb.getResActionName());
 								map.put("resDoName", rb.getResDoName());

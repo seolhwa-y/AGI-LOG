@@ -29,6 +29,7 @@ public interface ThMapperInterface {
 	
 	
 	//예약 관련
+	public int isResInfo(ReservationBean rb);
 	public ReservationBean getResInfoForSms(ReservationBean rb);
 	
 	public int updRDRes(ReservationBean rb);

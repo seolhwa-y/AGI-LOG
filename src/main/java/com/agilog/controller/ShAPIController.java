@@ -197,9 +197,11 @@ public class ShAPIController {
 	
 	// 지도 예약완료
 	@PostMapping("/Reservation")
-	public void reservation(Model model, @ModelAttribute ReservationBean rb){
+	public String reservation(Model model, @ModelAttribute ReservationBean rb){
 		System.out.println(rb);
 		model.addAttribute(rb);
 		this.bebeMap.backController(model, 44);
+		
+		return (String)model.getAttribute("message");
 	}
 }
