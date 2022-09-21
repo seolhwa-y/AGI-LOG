@@ -103,13 +103,19 @@ public class DailyDiary2 implements ServiceRule {
 			ddb.setDpLink("/res/img/non_photo.png");
 		}
 		
-		// 0개 일때 !false=>좋아요 누른적 없음
-		if (!this.convertToBoolean(this.session.selectOne("isDdLike", ddb))) {
+		HashMap<String,String> likeMap = new HashMap<String,String>();
+		likeMap.put("ddCode", ddb.getDdCode());
+		likeMap.put("suCode", (String)map.get("suCode"));
+		System.out.println(likeMap);
+		// 좋아요 누른적 있음
+		if (this.convertToBoolean(this.session.selectOne("isDdLikeM", likeMap))) {
 				// 현재 유저의 좋아요 여부 저장
 				ddb.setLike(true);
-		} else { // 1개 일때 !true=>좋아요 누른적 있음
+				System.out.println("좋아요");
+		} else { // 좋아요 누른적 없음
 				// 현재 유저의 좋아요 여부 저장
 				ddb.setLike(false);
+				System.out.println("아니요");
 		}
 		
 		map.put("ddFeed", ddb);

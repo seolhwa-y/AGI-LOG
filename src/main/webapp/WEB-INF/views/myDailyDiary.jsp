@@ -9,6 +9,9 @@
 <script src="https://use.fontawesome.com/releases/v6.1.2/js/all.js"></script>
 <link rel="stylesheet" href="/res/css/agiMain.css">
 <link rel="stylesheet" href="/res/css/dailyDiary.css">
+
+<!-- 알림창 꾸미기 -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <!-- 카카오 스크립트 -->
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 <!-- 네이버 스크립트 -->
@@ -385,7 +388,6 @@ function modalClose(returnAction){
 		movePage(returnAction);
 	}
 }
-/////////////////////
 //피드 클릭시 확대
 function getFeed(ddCode){
 	const clientData = "ddCode=" + ddCode;
@@ -407,9 +409,9 @@ function viewFeed(ajaxData) {
 
 	modalHead.innerHTML = "<div class='viewFeedHead'><img style=\"filter: drop-shadow(10px 6px 6px #5D5D5D)\" src=\'" + ddFeed.dpLink + "'><i class=\"fa-solid fa-xmark closeBtn \" onclick =\"modalClose('')\"style=\"float: right;position: absolute; right: 26px;\"></i></div>";
 	modalContent.innerHTML = "<br/><div id='viewFeedDate'>" + ddFeed.ddDate.substring(0, 4) + "년 " + ddFeed.ddDate.substring(4, 6) + "월 " + ddFeed.ddDate.substring(6, 8) + "일 " + ddFeed.ddDate.substring(8, 10) + ":" + ddFeed.ddDate.substring(10, 12) + ":" + ddFeed.ddDate.substring(12, 14) + "</div><div class='viewLike' onClick='dailyDiaryLike(" + ddFeed.ddCode + "," + ddFeed.ddDate + "," + ddFeed.suCode + ")'>❤ " + ddFeed.likes + "</div>"
-							 +"<div id='viewFeedContent'><br/>" + ddFeed.ddContent + "</div>";
+							 +"<div id='viewFeedContent' class='scrollBar'><br/>" + ddFeed.ddContent + "</div>";
 	if("${accessInfo.suCode}" == ddFeed.suCode) {
-		modalContent.innerHTML += "<div id='UDIcon'><i class='fa-solid fa-pen updBtn editBtn' onClick='feedUpdateInput(" + ddFeed.ddCode + ")' style='margin-right:20%'></i><i class='fa-solid fa-trash-can delBtn editBtn' onClick='deleteDailyDiaryFeed(" + ddFeed.ddCode + ")'></i></div>";
+		modalContent.innerHTML += "<div id='UDIcon' class='udicon'><i class='fa-solid fa-pen updBtn editBtn' onClick='feedUpdateInput(" + ddFeed.ddCode + ")' style='margin-right:20%'></i><i class='fa-solid fa-trash-can delBtn editBtn' onClick='deleteDailyDiaryFeed(" + ddFeed.ddCode + ")'></i></div>";
 	}
 	
 	let viewLike = document.querySelector(".viewLike");
@@ -424,7 +426,9 @@ function viewFeed(ajaxData) {
 	//댓글
 	let comment = "", input = "";
 	
-	comment += "<div id='commentList'>";
+	
+	
+	comment += "<div id='commentList' class='scrollBar'>";
 	
 	for(i = 0; i < ddComment.length; i++) {
 		comment += "<div class = 'comment " + i + "'>";
@@ -451,6 +455,8 @@ function viewFeed(ajaxData) {
 		comment += "</div>";
 	}
 	comment += "</div>";
+	
+	modalFoot.innerHTML = input;
 	
 	if(suCode != null){
 		input += "<div style = 'margin-top: 9%;'>";

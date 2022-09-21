@@ -1,6 +1,5 @@
 package com.agilog.services3;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -52,50 +51,26 @@ public class BebeCalendar3 implements ServiceRule {
 				}
 				mav.addObject("accessInfo", ab);
 
-				LocalDate todaysDate = LocalDate.now();
 				BebeCalendarBean bcb = (BebeCalendarBean) mav.getModel().get("bebeCalendarBean");
 				bcb.setSuCode(ab.getSuCode());
-				bcb.setDate(todaysDate.toString());
 				List<BebeCalendarBean> birthList = this.session.selectList("getBabyBirth", bcb);
 				List<BebeCalendarBean> ddList = this.session.selectList("checkWriteDD", bcb);
 				List<BebeCalendarBean> hdList = this.session.selectList("checkWriteHD", bcb);
 				List<BebeCalendarBean> reList = this.session.selectList("checkReservation", bcb);
 				List<BebeCalendarBean> scList = this.session.selectList("checkSchedule", bcb);
-				mav.addObject("birthList", this.makeEventBirth(birthList));
-				mav.addObject("ddList", this.makeEventDD(ddList));
-				mav.addObject("hdList", this.makeEventHD(hdList));
-				mav.addObject("reList", this.makeEventRe(reList));
-				mav.addObject("scList", this.makeEventSc(scList));
+				if(birthList.size()!=0) {
+					mav.addObject("birthList", this.makeEventBirth(birthList));
+					mav.addObject("ddList", this.makeEventDD(ddList));
+					mav.addObject("hdList", this.makeEventHD(hdList));
+					mav.addObject("reList", this.makeEventRe(reList));
+					mav.addObject("scList", this.makeEventSc(scList));
+				}
 				page = "bebeCalendar";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		mav.setViewName(page);
-	}
-
-	private void moveMonthCtl(Model model) {
-
-	}
-
-	private void dateDetailCtl(ModelAndView mav) {
-
-	}
-
-	private void deleteScheduleCtl(Model model) {
-
-	}
-
-	private void updateScheduleCtl(Model model) {
-
-	}
-
-	private void insertScheduleCtl(Model model) {
-
-	}
-
-	private void deleteReservationCtl(ModelAndView mav) {
-
 	}
 
 	private String makeEventBirth(List<BebeCalendarBean> birthList) {
@@ -194,9 +169,5 @@ public class BebeCalendar3 implements ServiceRule {
 		}
 
 		return sb.toString();
-	}
-
-	private boolean convertToBoolean(int booleanCheck) {
-		return booleanCheck==0?false:true;
 	}
 }
