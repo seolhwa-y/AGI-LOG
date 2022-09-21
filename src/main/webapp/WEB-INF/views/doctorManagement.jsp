@@ -32,14 +32,25 @@
     font-size: 16px;
     height: 1rem;
 }
+
 </style>
 <script>
+	
 	function cModal(num) {
+		let name = document.getElementsByName("doName")[0];
+		let doctorCode = document.getElementsByName("doCode")[0];
+		let password = document.getElementsByName("doPassword")[0];
+		let isPassword = document.getElementsByName("checkDoPassword")[0];
+		
 		if(num == 1){
 			let modal = document.querySelector(".modal");
 			modal.style.display = "block";
 		}else if(num == 2){
 			let modal = document.querySelector(".modal");
+			name.value = "";
+			doctorCode.value = "";
+			password.value = "";
+			isPassword.value = "";
 			modal.style.display = "none";
 		}
 	}
@@ -198,6 +209,7 @@
 			accessArea.innerHTML += "<span onclick=\"movePage(\'CompanyLogout\')\">로그아웃</span>";
 		}
 	}
+	
 </script>
 </head>
 <body onload="init()">

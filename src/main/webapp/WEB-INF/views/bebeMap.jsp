@@ -22,6 +22,37 @@
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 <!-- 네이버 스크립트 -->
 <script	src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
+<style>
+.keyword{
+    margin-left: -0.4rem;
+}
+.writeBtn{
+	border: 1px solid dimgray;
+}
+.mResBtn{
+    margin: 0 auto;
+    width: 200px;
+}
+.placeinfo{
+text-align: center;
+}
+.mcContent{
+    width: 280px;
+}
+#commentList{
+
+    border: 1px solid dimgray;
+    margin: 0 auto;
+    border-radius: 10px;
+}
+.editBtn{
+	margin-right: 6px;
+}
+.time{
+	cursor: pointer;
+}
+</style>
+
 <script>
 	Kakao.init('2afdabad57ed92e1cc9de5bd4baed321');
 	function getInfo() {	
@@ -48,7 +79,6 @@
 
 			}
 		}
-		alert("${accessInfo}");
 		let accessArea = document.getElementById("accessArea");
 		if ("${accessInfo.type}"!= null&&"${accessInfo.type}"!="") {
 			accessArea.innerHTML = "";
@@ -175,12 +205,12 @@
 				</div>
 	        </div>
             <div class="map_wrap" style = "margin: 0 auto; width: 100%; height: 90%;">
-                <div id="menu_wrap" class="bg_white" style = "width: 23%; height: 100%; float: left;">
+                <div id="menu_wrap" class="bg_white scrollBar" style = "width: 23%; height: 100%; float: left;">
                     <div class="option">
                         <div>
                             <form onsubmit="searchPlaces(); return false;">
-                                키워드 : <input type="text" value="" id="keyword" size="15"> 
-                                <button type="submit">검색하기</button> 
+                                <span class="keyword">키워드 :</span> <input type="text" value="" id="keyword" size="15"> 
+                                <button type="submit" class="writeBtn btn">검색</button> 
                             </form>
                         </div>
                     </div>
@@ -489,7 +519,7 @@
     	    		
     	 	        	mcList += "<input type = 'button' value = '예약' class='mResBtn btn' onClick = \"showReservation(\'" + coInfo.coCode + "\')\">";
     	    			
-    	    			mcList += "<div id='commentList'>";
+    	    			mcList += "<div id='commentList' class='scrollBar'>";
     	    			
     	    			if(mcComment != ""){
 	    	    			for(i = 0; i < mcComment.length; i++) {
@@ -518,7 +548,7 @@
     	    			mcList += "</div>";
     	    		
     	    			mcList += "<div style='display: flex; align-items: center; justify-content: space-evenly;'>";
-    	    			mcList += "<input class=\"mcContent mEditInput\" />";
+    	    			mcList += "<input class=\"mcContent mEditInput\" maxlength='30'/>";
     	    			mcList += "<button class=\"mMiniBtn btn\" onClick=\"insertMapComment("+ coInfo.coCode + ")\">확인</button>";
     	    			mcList += "</div>";
     	    			

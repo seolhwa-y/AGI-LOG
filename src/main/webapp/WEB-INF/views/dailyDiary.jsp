@@ -242,7 +242,6 @@ function modalClose(returnAction){
 	modalHead.innerHTML = "";
 	modalContent.innerHTML = "";
 	modalFoot.innerHTML = "";
-	
 
 	if (returnAction != '') {
 		movePage(returnAction);

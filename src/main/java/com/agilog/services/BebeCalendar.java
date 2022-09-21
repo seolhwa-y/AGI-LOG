@@ -90,7 +90,7 @@ public class BebeCalendar implements ServiceRule {
 			bcb.setDailyDiary(false);
 		}
 
-		try {
+		
 			/* 예약일정 가져오기 */
 			List<ReservationBean> rbList = new ArrayList<ReservationBean>();
 			
@@ -98,8 +98,6 @@ public class BebeCalendar implements ServiceRule {
 			
 			if(rbList.size()!=0) {
 				bcb.setReservationInfo(rbList);
-				//병원이름 복호화
-				bcb.getReservationInfo().get(0).setResCoName(this.enc.aesDecode(rbList.get(0).getResCoName(),rbList.get(0).getResCoCode()));
 			}
 			
 			/* 일반일정 가져오기 */
@@ -110,11 +108,7 @@ public class BebeCalendar implements ServiceRule {
 			if(scheduleList.size()!=0) {
 				bcb.setScheduleList(scheduleList);
 			}
-		} catch (InvalidKeyException | UnsupportedEncodingException | NoSuchAlgorithmException | NoSuchPaddingException
-				| InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException e) {
 	
-			e.printStackTrace();
-		}
 		model.addAttribute(bcb);
 	}
 

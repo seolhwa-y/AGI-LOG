@@ -441,7 +441,9 @@ function showDateDetail(ajaxData){
 		resInfo.innerHTML = "예약 : ";
 	}else{
 		//예약내역 있을 때
-		resInfo.innerHTML = "예약 : "+dateInfo.reservationInfo[0].resDate+"&nbsp&nbsp"+dateInfo.reservationInfo[0].resCoName+"&nbsp&nbsp<i class=\"fa-solid fa-trash-can delBtn\" onclick=\"deleteReservation(\'"+dateInfo.reservationInfo[0].resCode+","+dateInfo.reservationInfo[0].resDate+","+dateInfo.reservationInfo[0].resCoName+"\')\"></i>";
+		alert(dateInfo.reservationInfo[0].resDate);
+		alert(dateInfo.reservationInfo[0].resCoName);
+		resInfo.innerHTML = "예약 : "+dateInfo.reservationInfo[0].resDate+":00 &nbsp&nbsp"+dateInfo.reservationInfo[0].resCoName+"&nbsp&nbsp<i class=\"fa-solid fa-trash-can delBtn\" onclick=\"deleteReservation(\'"+dateInfo.reservationInfo[0].resCode+","+dateInfo.reservationInfo[0].resDate+","+dateInfo.reservationInfo[0].resCoName+"\')\"></i>";
 	}
 	// 개인일정여부에 따라 내용 표시
 	schList.innerHTML="";
