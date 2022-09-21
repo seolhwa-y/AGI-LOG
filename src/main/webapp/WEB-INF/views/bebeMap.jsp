@@ -208,7 +208,7 @@
             		level : 3, // 지도의 확대 레벨
             		mapTypeId : kakao.maps.MapTypeId.ROADMAP	// 지도종류
             	};
-             	
+             
             	// 지도를 생성합니다    
             	var map = new kakao.maps.Map(mapContainer, mapOption);
 
@@ -456,7 +456,7 @@
             		let clientData = "coName=" + name + "&coAddress=" + address + "&coPhone=" + tell;
             		
             		markers = marker;
-            		postAjaxJson("ViewCompanyInfo", clientData, "callDisplayInfo");
+            		//postAjaxJson("ViewCompanyInfo", clientData, "callDisplayInfo");
             	
             		let content = '<div class = "placeinfo" >';
         			content	+= '<div>'+ name + '</div>';
@@ -464,7 +464,7 @@
         			content	+= '<div>'+ tell + '</div>';
     		    	content += '</div>'; 
     		    	 
-    		    	postAjaxJson("ViewCompanyInfo", clientData, " callDisplayInfo");
+    		    	postAjaxJson("ViewCompanyInfo", clientData, "callDisplayInfo");
     		    	
             		infowindow.setContent(content);
             		infowindow.open(map, marker);
@@ -472,6 +472,7 @@
             	
              // 마크 눌렀을 때 CALLBACK
              	function callDisplayInfo(ajaxData) {
+            		console.log("여기야₩~~!~!~");
             		console.log(ajaxData);
             		let infoWindow = document.getElementsByClassName("placeinfo")[0];
           		
@@ -482,45 +483,47 @@
                 		const mcCommentList = JSON.parse(ajaxData);
                 		const suCode = mcCommentList.suCode;
                 		const mcComment = mcCommentList.mcComment;
-
-    	    			let mcList = ""
-    	    			
-    	 	        	if(suCode != null) {
-    	 	        		mcList += "<input type = 'button' value = '예약' class='mResBtn btn' onClick = \"showReservation(\'" + mcComment[0].coCode + "\')\">";
-    		        	} 
+                		const coInfo = mcCommentList.coInfo;
+						console.log(coInfo);
+    	    			let mcList = "";
+    	    		
+    	 	        	mcList += "<input type = 'button' value = '예약' class='mResBtn btn' onClick = \"showReservation(\'" + coInfo.coCode + "\')\">";
     	    			
     	    			mcList += "<div id='commentList'>";
     	    			
-    	    			for(i = 0; i < mcComment.length; i++) {
-    	    				mcList += "<div class = 'comment " + i + "'>";
-    	    				// 프로필 사진이 없을 경우 기본 이미지
-    	    				if(mcComment[i].suPhoto != null) {
-    	    					mcList += "<img class='profileImage' src=" + mcComment[i].suPhoto + ">";
-    	    				} else {
-    	    					mcList += "<img class='profileImage' src='/res/img/profile_default.png'>";
-    	    				}
-    	    			
-    	    				// 닉네임
-    	    				mcList += "<div class = 'suNickname'>" +  mcComment[i].suNickname + "</div>";
-    	    			
-    	    				// 댓글 내용
-    	    				mcList += "<div class='dcContent " + mcComment[i].mcDate + "'>" + mcComment[i].mcContent + "</div>";
-    	    				
-    	    				// 수정 삭제 버튼
-    	    				if(suCode === mcComment[i].mcSuCode) {
-    	    					mcList += "<i class='fa-solid fa-pen updBtn editBtn' onClick='updateInput(" + mcComment[i].coCode + "," + mcComment[i].mcCode + "," + mcComment[i].mcDate + "," + mcComment[i].mcSuCode + ")'></i>";
-    	    					mcList += "<i class='fa-solid fa-trash-can delBtn editBtn' onClick='deleteMapComment(" + mcComment[i].coCode + "," + mcComment[i].mcCode + "," + mcComment[i].mcDate + "," + mcComment[i].mcSuCode + ")'></i>";
-    	    				} 
-    	    				mcList += "</div>";
+    	    			if(mcComment != ""){
+	    	    			for(i = 0; i < mcComment.length; i++) {
+	    	    				mcList += "<div class = 'comment " + i + "'>";
+	    	    				// 프로필 사진이 없을 경우 기본 이미지
+	    	    				if(mcComment[i].suPhoto != null) {
+	    	    					mcList += "<img class='profileImage' src=" + mcComment[i].suPhoto + ">";
+	    	    				} else {
+	    	    					mcList += "<img class='profileImage' src='/res/img/profile_default.png'>";
+	    	    				}
+	    	    			
+	    	    				// 닉네임
+	    	    				mcList += "<div class = 'suNickname'>" +  mcComment[i].suNickname + "</div>";
+	    	    			
+	    	    				// 댓글 내용
+	    	    				mcList += "<div class='dcContent " + mcComment[i].mcDate + "'>" + mcComment[i].mcContent + "</div>";
+	    	    				
+	    	    				// 수정 삭제 버튼
+	    	    				if(suCode === mcComment[i].mcSuCode) {
+	    	    					mcList += "<i class='fa-solid fa-pen updBtn editBtn' onClick='updateInput(" + mcComment[i].coCode + "," + mcComment[i].mcCode + "," + mcComment[i].mcDate + "," + mcComment[i].mcSuCode + ")'></i>";
+	    	    					mcList += "<i class='fa-solid fa-trash-can delBtn editBtn' onClick='deleteMapComment(" + mcComment[i].coCode + "," + mcComment[i].mcCode + "," + mcComment[i].mcDate + "," + mcComment[i].mcSuCode + ")'></i>";
+	    	    				} 
+	    	    				mcList += "</div>";
+	    	    			}
     	    			}
     	    			mcList += "</div>";
     	    		
     	    			mcList += "<div style='display: flex; align-items: center; justify-content: space-evenly;'>";
     	    			mcList += "<input class=\"mcContent mEditInput\" />";
-    	    			mcList += "<button class=\"mMiniBtn btn\" onClick=\"insertMapComment("+ mcComment[0].coCode + ")\">확인</button>";
+    	    			mcList += "<button class=\"mMiniBtn btn\" onClick=\"insertMapComment("+ coInfo.coCode + ")\">확인</button>";
     	    			mcList += "</div>";
     	    			
     	    			infoWindow.innerHTML += mcList;
+    	    			console.log(mcList);
     	        		infowindow.setContent(infoWindow);
             		}
         			//swal("요청", "요청하신 작업을 완료하였습니다!", "success", { button: "완료"});

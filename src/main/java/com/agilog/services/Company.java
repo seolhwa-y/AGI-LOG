@@ -222,10 +222,15 @@ public class Company implements ServiceRule {
 
 	@SuppressWarnings("unused")
 	private void checkManager(ModelAndView mav) {
+		System.out.println("cManager1");
 		try {
 			CompanyBean cb = ((CompanyBean) this.pu.getAttribute("companyAccessInfo"));
 			if(cb != null) {
+				System.out.println("cManager2");
+				//매니저 코드 치고 로그인 성공 했을때
 				if(cb.getCoManagerCode()!=null) {
+					System.out.println("cManager3");
+					System.out.println(cb.getCoManagerCode());
 					//예약 갯수 조회
 					List<ReservationBean> re = this.session.selectList("getResCount",cb);
 					mav.addObject("resCount",this.makeEventResCount(re));
@@ -233,9 +238,14 @@ public class Company implements ServiceRule {
 					//mav.addObject("resInfo", this.makeHTMLCReservation(this.session.selectList("getDoctorInfo", cb), this.session.selectList("getResInfo", cb)));
 					mav.setViewName("reservationManagement");
 				}
+				//처음 매니저 코드 치고 로그인 해야할 때
 				else if(((CompanyBean)mav.getModel().get("companyBean")).getCoManagerCode()!=null) {
-					cb.setCoManagerCode(((CompanyBean)mav.getModel().get("companyBean")).getCoManagerCode());
+					System.out.println("cManager4");
+					System.out.println(((CompanyBean)mav.getModel().get("companyBean")).getCoManagerCode());
+					cb.setCoManagerCode(this.enc.aesEncode(((CompanyBean)mav.getModel().get("companyBean")).getCoManagerCode(), cb.getCoCode()));
+					System.out.println("coMaCd : " + cb.getCoManagerCode());
 					if(this.convertToBoolean(this.session.selectOne("isManagerCode", cb))) {
+						System.out.println("cManager5");
 						// 세션에 저장할 로그인 유저 정보 가져오기
 						CompanyBean company = (CompanyBean) this.session.selectList("getCompanyAccessAllInfo", cb).get(0);
 						company.setCoName(this.enc.aesDecode(company.getCoName(), company.getCoCode()));
@@ -250,12 +260,14 @@ public class Company implements ServiceRule {
 						mav.setViewName("reservationManagement");
 					}
 					else {
+						System.out.println("cManager6");
 						mav.addObject("message", "매니저 코드가 일치하지 않습니다. 다시 입력해주세요.");
 						mav.setViewName("redirect:/");
 					}
 				}
 			}
 			else {
+				System.out.println("cManager7");
 				mav.setViewName("companyLogin");
 				System.out.println("세션만료");
 			}
