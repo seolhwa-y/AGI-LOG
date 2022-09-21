@@ -160,7 +160,7 @@
 	<select id="getResCode" parameterType="com.agilog.beans.ReservationBean" resultType="string">
 		SELECT NVL(TO_CHAR(MAX(RE_CODE)+1), TO_CHAR(TO_DATE(#{resDate}, 'YYYYMMDDHH24MISS'), 'YYYYMMDD') || '01') AS RECODE
 		FROM RE
-        WHERE RE_DOCOCODE = #{resCoCode} AND RE_DOCODE = #{resDoCode} AND TO_CHAR(RE_DATE, 'YYYYMMDD') = TO_CHAR(TO_DATE(#{resDate}, 'YYYYMMDDHH24MISS'), 'YYYYMMDD')
+        WHERE RE_DOCOCODE = #{resCoCode} AND TO_CHAR(RE_DATE, 'YYYYMMDD') = TO_CHAR(TO_DATE(#{resDate}, 'YYYYMMDDHH24MISS'), 'YYYYMMDD')
  	</select>
 	
 	<!-- 지도에서 병원 예약 완료 후 예약내역 등록 -->
