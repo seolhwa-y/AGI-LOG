@@ -178,8 +178,6 @@ public class Board2 {
 		int start = (currentGroup * pageCount) - (pageCount - 1);
 		int end = (currentGroup * pageCount >= totalPage) ? totalPage : currentGroup * pageCount;
 
-		System.out.println("end : " + end);
-		System.out.println("totalpage : " + totalPage);
 
 		//페이지 번호 만들기
 		for (int i = start; i <= end; i++) {
@@ -468,7 +466,7 @@ public class Board2 {
 				if(pcList.size() != 0) {
 					mav.addObject("fbComment", this.makeCommentHTML(pcList));
 				} else {
-					sb.append("<div>");
+					sb.append("<div id='commentDiv'>");
 					sb.append("<input class=\"fbComment commentInput\" />");
 					sb.append("<button class=\"submitBtn btn\" onClick=\"insertBoardComment('"+ pcb.getFcFbCode() + "','" + pcb.getFcFbSuCode() + "','" + pcb.getFcFbDate() + "')\">확인</button>");
 					sb.append("</div>");
@@ -487,7 +485,10 @@ public class Board2 {
 		int i = -1;
 
 		sb.append("<div id='commentList'>");
-
+		sb.append("<div id='commentDiv'>");
+		sb.append("<input class=\"fbComment commentInput\" />");
+		sb.append("<button class=\"submitBtn btn\" onClick=\"insertBoardComment("+ pcList.get(0).getFcFbCode() + "," + pcList.get(0).getFcFbSuCode() + "," + pcList.get(0).getFcFbDate() + ")\">확인</button>");
+		sb.append("</div>");
 		for(PostCommentBean pb : pcList) {
 			i++;
 
@@ -516,10 +517,7 @@ public class Board2 {
 			}
 		}
 		sb.append("</div>");
-		sb.append("<div>");
-		sb.append("<input class=\"fbComment commentInput\" />");
-		sb.append("<button class=\"submitBtn btn\" onClick=\"insertBoardComment("+ pcList.get(0).getFcFbCode() + "," + pcList.get(0).getFcFbSuCode() + "," + pcList.get(0).getFcFbDate() + ")\">확인</button>");
-		sb.append("</div>");
+
 
 		return sb.toString();
 	}
@@ -542,7 +540,7 @@ public class Board2 {
 				sb.append("<div class=\"pView\">조회수&ensp;<small class=\"sView\">" + pb.getFbView() + "</small></div>");
 				sb.append("<div class=\"pLike\">좋아요&ensp;<small class=\"sLike\">" + pb.getLikes() + "</small></div>");
 				if (pb.getFbSuCode().equals(ab.getSuCode())) {
-					sb.append("<div class=\"pUDIcon\">" + "<input type='button' class='updatePost' value='수정' onClick='updatePost(" + pb.getFbCode() + ")'> | <input type='button' class='deletePost' value='삭제' onClick='deletePost(" + pb.getFbCode() + ")'>" + "</div>");
+					sb.append("<div class=\"pUDIcon\">" + "<input type='button' style='cursor:pointer;'class='updatePost' value='수정' onClick='updatePost(" + pb.getFbCode() + ")'> | <input type='button' style='cursor:pointer;' class='deletePost' value='삭제' onClick='deletePost(" + pb.getFbCode() + ")'>" + "</div>");
 				}
 				sb.append("</div>");
 				sb.append("<div class=\"pBody\">");
@@ -609,7 +607,6 @@ public class Board2 {
 	//자유게시판 목록 EL 작업
 	private String makeBoardList(List<PostBean> fbBoardList) {
 		StringBuffer sb = new StringBuffer();
-		System.out.println("list size : "+fbBoardList.size());
 		sb.append("<select id=\"freeBoardSelect\" onChange=\"changeSort()\">");
 			sb.append("<option value = \"none\" selected disabled>정렬순서</option>");
 			sb.append("<option value = \"newList\">최신순</option>");

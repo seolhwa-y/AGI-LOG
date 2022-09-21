@@ -95,8 +95,6 @@ public class DailyDiary2 implements ServiceRule {
 
 		ddb = this.session.selectOne("getDDFeed", ddb);
 		
-		System.out.println("ddb : " + ddb);
-		
 		ddcb.setDcDdCode(ddb.getDdCode());
 		ddcb.setDcDdSuCode(ddb.getSuCode());//suCode == ddSuCode
 		ddcb.setDcDdDate(ddb.getDdDate());
@@ -307,7 +305,7 @@ public class DailyDiary2 implements ServiceRule {
 		for(DailyDiaryBean fl : feedList) {
 			sb.append("<li class=\'feed\' onClick=\'getFeed(" + fl.getDdCode() + ")\'>");
 			sb.append("<div class=\'feed_top\'>");
-			sb.append("<i class='fa-solid fa-xmark closeBtn editBtn' onclick='modalClose('')'>");
+			//sb.append("<i class='fa-solid fa-xmark closeBtn editBtn' onclick=\'modalClose()\'>");
 			
 			if(fl.getDpLink()!=null) {
 				sb.append("<img src=\'"+fl.getDpLink()+"\'>");
