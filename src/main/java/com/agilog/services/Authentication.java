@@ -218,7 +218,6 @@ public class Authentication implements ServiceRule {
 					// 세션에 저장할 로그인 유저 정보 가져오기
 					CompanyBean company = (CompanyBean) this.session.selectList("getCompanyAccessInfo", cb).get(0);
 					company.setCoName(this.enc.aesDecode(company.getCoName(), company.getCoCode()));
-					System.out.println(company.getCoPhoto());
 					// 세션에 userCode저장
 					this.pu.setAttribute("companyAccessInfo", company);
 					// 병원이름 mav에 저장
@@ -431,8 +430,6 @@ public class Authentication implements ServiceRule {
 			cb.setCoManagerCode(this.enc.aesEncode(cb.getCoManagerCode(), cb.getCoCode()));
 			
 			if(file!=null) {
-				//기업 프로필이미지가 존재할 때
-				System.out.println("이미지있음");
 				/* 확장자 뽑아내서 파일이름 만들어주기 */
 				int pos = file.getOriginalFilename().lastIndexOf(".");
 				String ext = file.getOriginalFilename().substring(pos);
@@ -441,13 +438,8 @@ public class Authentication implements ServiceRule {
 				String suPhoto = "/res/img/"+cb.getCoCode()+"/"+fileName;
 				cb.setCoPhoto(suPhoto);
 			}else {
-				//기업 프로필이미지가 존재하지 않을 때
-				System.out.println("이미지없음");
-				
 				String suPhoto = "/res/img/profile_default.png";
 				cb.setCoPhoto(suPhoto);
-				
-				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

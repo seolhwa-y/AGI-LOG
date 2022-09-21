@@ -118,12 +118,13 @@ ul {
 		width : 7rem;
 	}
 	.mBasicInput {
-    width: 30rem;
-    height: 2rem;
+	    width: 30rem;
+	    height: 2rem;
 	}
 	.mMiniInput {
-    height: 20rem;
-    width: 20rem;
+	    height: 20rem;
+	    width: 20rem;
+    	resize: none;
 	}
 	.statusCheck {
 	

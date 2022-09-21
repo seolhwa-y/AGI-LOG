@@ -174,7 +174,6 @@ public class BebeCalendar3 implements ServiceRule {
 				}
 			}
 		}
-		System.out.println(sb.toString());
 		return sb.toString();
 	}
 

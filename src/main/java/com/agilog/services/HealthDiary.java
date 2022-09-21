@@ -19,6 +19,7 @@ import com.agilog.beans.BabyBean;
 import com.agilog.beans.HealthDiaryBean;
 import com.agilog.beans.ReservationBean;
 import com.agilog.interfaces.ServiceRule;
+import com.agilog.services3.BebeCalendar3;
 import com.agilog.utils.Encryption;
 import com.agilog.utils.ListSort;
 import com.agilog.utils.ProjectUtils;
@@ -104,6 +105,9 @@ public class HealthDiary implements ServiceRule {
 					
 					mav.addObject("showHdDate",h.getHdDate());
 				}
+				if (h.getReturnAction() != null) {
+					mav.addObject("returnAction", h.getReturnAction());
+				}
 				page="healthDiary";
 				
 			}
@@ -118,9 +122,11 @@ public class HealthDiary implements ServiceRule {
 	}
 	@Transactional(rollbackFor = SQLException.class)
 	private void insertHealthDiaryCtl(ModelAndView mav) {
+		System.out.println("test");
 		try {
 			boolean result = false;
 			HealthDiaryBean hb = (HealthDiaryBean) mav.getModel().get("healthDiaryBean");
+			System.out.println("returnAction : " + hb.getReturnAction());
 			//세션검사
 			AuthBean ab = (AuthBean)this.pu.getAttribute("accessInfo");
 			//세션존재 -> insert
@@ -206,8 +212,16 @@ public class HealthDiary implements ServiceRule {
 					else result = false;
 				}
 				if(result) {
+					if (hb.getReturnAction() != null) {
+						System.out.println("check");
+						System.out.println(hb.getReturnAction());
+						mav.addObject("returnAction2", hb.getReturnAction());
+					}
 					mav.setViewName("redirect:/MoveHealthDiaryPage");
 				} else {
+					if (hb.getReturnAction() != null) {
+						mav.addObject("returnAction2", hb.getReturnAction());
+					}
 					mav.addObject("fail", "일기 작성 오류");
 					mav.setViewName("redirect:/MoveHealthDiaryPage");
 				}
@@ -354,7 +368,6 @@ public class HealthDiary implements ServiceRule {
 			try {
 				for(ReservationBean rb:commentList) {
 					if(rb.getDoComment()!=null) {
-						System.out.println(rb);
 						sb.append("<div class=\"diary "+rb.getResBbCode()+"\" >");
 						sb.append("<div>");
 						sb.append("<div class=\"miniProfile\">");

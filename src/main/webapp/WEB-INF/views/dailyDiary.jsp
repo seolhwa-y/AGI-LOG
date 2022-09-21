@@ -57,9 +57,9 @@ Kakao.init('2afdabad57ed92e1cc9de5bd4baed321');
 function getInfo() {
 	/* 테마 이미지 or 단순색상 */
 	let body = document.getElementById("body");
-	
 	let suTheme = "${accessInfo.suTheme}";
 	let sideMenu = document.querySelector(".side-menu");
+
 	if(suTheme != ""){
 		if(suTheme.indexOf("#") == 0){
 			//단순색상
@@ -90,8 +90,9 @@ function getInfo() {
 			accessArea.innerHTML +="<span onclick=\"kakaoLogout();\">로그아웃</span>"
 		} else if ("${ accessInfo.type }"== "naver") {
 			accessArea.innerHTML +="<span onclick=\"naverLogout(); return false;\">로그아웃</span>"
-		} else
+		} else {
 			accessArea.innerHTML += "<span onclick=\"movePage('MoveCompanyLoginPage')\">기업회원</span>";
+		}
 	}
 
 	let feedList = document.getElementById("feedList");
@@ -150,7 +151,7 @@ function moveWriteFeed(){
 	modal.style.display = "block";
 	
 	modalHead.innerHTML = "<div class='insBabyTitle'>일기 쓰기</div>";
-	modalContent.innerHTML = "<table class='insWriteTable'><tr><td class='tdName'><span class='name'>내  용 :</span></td><td class='tdValue'><input class='mMiniInput name'type='textarea' name='ddContent' placeholder='내용을 입력하세요' required></td></tr>"
+	modalContent.innerHTML = "<table class='insWriteTable'><tr><td class='tdName'><span class='name'>내  용 :</span></td><td class='tdValue'><textarea class='mMiniInput name' name='ddContent' placeholder='내용을 입력하세요' required></textarea></td></tr>"
 							+"<tr><td></td><td><input style=\"display: block;width:100%\" type=\"file\" name=\"files\" id=\"input-image\"/></td></tr>"
 							+"<tr><td class='tdName'><span class='name'>공개 여부 :</span></td><td class='tdValue'><input class='statusCheck' type='radio' name='ddStatus' value='1' checked>공개<input class='statusCheck' type='radio' name='ddStatus' value='0'>비공개</td></tr></table>";
 	modalFoot.innerHTML = "<button class='mBtnX' onclick=\"modalClose('${returnAction}')\">취소</button><button class='mBtnO' onclick=\"insertDailyDiary('${returnAction}')\">등록</button>";
@@ -161,6 +162,7 @@ function insertDailyDiary(returnAction){
 	let form = document.getElementById("serverForm");
 	let ddContent = document.getElementsByName("ddContent")[0].value;
 	let ddStatus = document.getElementsByName("ddStatus");
+	ddContent = ddContent.replaceAll("\n", "<br>");
 	
 	for(idx = 0; idx < 2; idx++) {
 		if(ddStatus[idx].checked) {
@@ -168,10 +170,7 @@ function insertDailyDiary(returnAction){
 			break;
 		}
 	}
-
-	if (returnAction != '') {
-		form.appendChild(createInput("hidden","returnAction",returnAction,null,null));
-	}
+	
 	form.appendChild(createInput("hidden","ddContent",ddContent,null,null));
 	form.appendChild(document.getElementById("input-image"));
 			
@@ -180,7 +179,7 @@ function insertDailyDiary(returnAction){
 	form.enctype = "multipart/form-data";
 	
 	form.submit();
-
+	modalClose(returnAction);
 }
 //모달닫기
 function modalClose(returnAction){
@@ -260,7 +259,7 @@ function dailyDiaryComment(ajaxData){
 	//댓글
 	let comment = "", input = "";
 	
-	comment += "<div id='commentList'>";
+	
 	
 	for(i = 0; i < ddComment.length; i++) {
 		comment += "<div class = 'comment " + i + "'>";
@@ -286,7 +285,7 @@ function dailyDiaryComment(ajaxData){
 		} 
 		comment += "</div>";
 	}
-	comment += "</div>";
+	
 	
 	commentList.innerHTML += comment;
 }
@@ -330,6 +329,8 @@ function viewFeed(ajaxData) {
 	//댓글
 	let comment = "", input = "";
 	
+	
+	
 	comment += "<div id='commentList'>";
 	
 	for(i = 0; i < ddComment.length; i++) {
@@ -357,6 +358,8 @@ function viewFeed(ajaxData) {
 		comment += "</div>";
 	}
 	comment += "</div>";
+	
+	modalFoot.innerHTML = input;
 	
 	if(suCode != null){
 		input += "<div style = 'margin-top: 9%;'>";

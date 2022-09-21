@@ -288,6 +288,7 @@ function kakaoLogout() {
       	      click: function() {
       	    	let form = document.getElementById("serverForm");
     	        form.appendChild(createInput("hidden","moveWrite","1",null,null));
+    	        form.appendChild(createInput("hidden","returnAction","MoveCalendarPage",null,null));
     	        form.action = "MoveHealthDiaryPage";
     	        form.method = "post";
     	        form.submit();

@@ -42,11 +42,6 @@ public class BebeCalendar implements ServiceRule {
 	}
 
 	public void backController(ModelAndView mav, int serviceCode) {
-		switch (serviceCode) {
-		case 7:
-			this.moveCalendarCtl(mav);
-			break;
-		}
 	}
 
 	public void backController(Model model, int serviceCode) {
@@ -121,24 +116,6 @@ public class BebeCalendar implements ServiceRule {
 			e.printStackTrace();
 		}
 		model.addAttribute(bcb);
-	}
-
-	private void moveCalendarCtl(ModelAndView mav) {
-		AuthBean ab;
-		try {
-			ab = (AuthBean) this.pu.getAttribute("accessInfo");
-			if (ab != null) {
-				if (ab.getSuCode().length() == 10) {
-					ab.setType("kakao");
-				} else {
-					ab.setType("naver");
-				}
-				mav.addObject("accessInfo", ab);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		mav.setViewName("bebeCalendar");
 	}
 
 	private void moveMonthCtl(Model model) {

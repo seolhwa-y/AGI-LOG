@@ -21,32 +21,54 @@ import com.agilog.beans.ScheduleBean;
 
 public interface ThMapperInterface {
 
-	public CompanyBean getCompanyAccessAllInfo(CompanyBean cb);
-	public int isManagerCode(CompanyBean cb);
+	//컴퍼니 관련
 	public ReservationBean getResInfo(CompanyBean cb);
+	public CompanyBean getCompanyAccessAllInfo(CompanyBean cb);
+	
+	public int isManagerCode(CompanyBean cb);
+	
+	
+	//예약 관련
+	public ReservationBean getResInfoForSms(ReservationBean rb);
+	
 	public int updRDRes(ReservationBean rb);
 	public int updCPRes(ReservationBean rb);
-	public int getFbCode();
-	public int insFbPost(PostBean pb);
-	public List<PostBean> getFbPostList();
-	public PostBean getFbPostContent(PostBean pb);
+	
+	
+	//데일리 다이어리 관련
 	public int getDdCode(DailyDiaryBean db);
-	public int insDd(DailyDiaryBean db);
-	public DailyDiaryBean getDDFeed(DailyDiaryBean ddb);
-	public DailyDiaryBean getDDPhoto(DailyDiaryBean ddb);
-	public int updDDFeed(DailyDiaryBean ddb);
-	public int delDd(DailyDiaryBean ddb);
-	public ReservationBean getResInfoForSms(ReservationBean rb);
-	public int getFpCode(PostBean pb);
-	public int insFp(PostPhotoBean ppb);
-	public int delFbPost(PostBean pb);
-	public int delFbPostPhoto(PostPhotoBean ppb);
-	public PostBean getFbDate(PostBean pb);
-	public PostBean getTnC(PostBean pb);
-	public int updFbPost(PostBean pb);
-	public DailyDiaryBean getDdDate(DailyDiaryBean db);
-	public int insDDP(DailyDiaryPhotoBean ddpb);
-	public int delDdPhoto(DailyDiaryPhotoBean ddpb);
 	public int getDdpCode(DailyDiaryBean db);
-	public List<PostPhotoBean> getFbPp(PostPhotoBean ppb);
+	public DailyDiaryBean getDdDate(DailyDiaryBean db);
+	public DailyDiaryBean getDDFeed(DailyDiaryBean ddb);
+	public DailyDiaryPhotoBean getDDPhoto(DailyDiaryBean ddb);
+	
+	public int insDd(DailyDiaryBean db);
+	public int insDDP(DailyDiaryPhotoBean ddpb);
+	
+	public int updDDFeed(DailyDiaryBean ddb);
+	
+	public int delDd(DailyDiaryBean ddb);
+	public int delDdLike(DailyDiaryBean ddb);
+	public int delDdPhoto(DailyDiaryBean ddb);
+	public int delDdComment(DailyDiaryBean ddb);
+	
+	
+	//게시글 관련
+	public int getFbCode();
+	public int getFpCode(PostBean pb);
+	public PostBean getTnC(PostBean pb);
+	public PostBean getFbDate(PostBean pb);
+	public PostBean getFbPostContent(PostBean pb);
+	public List<PostBean> getFbPostList();
+	public List<PostPhotoBean> getFbPp(PostBean pb);
+	
+	public int insFbPost(PostBean pb);
+	public int insFp(PostPhotoBean ppb);
+
+	public int updFbPost(PostBean pb);
+	
+	public int delFbPost(PostBean pb);
+	public int delFbPostLike(PostBean pb);
+	public int delFbPostPhoto(PostBean pb);
+	public int delFbPostComment(PostBean pb);
 }

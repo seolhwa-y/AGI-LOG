@@ -68,7 +68,7 @@ public class ThHomeController {
 	}
 	
 	@RequestMapping(value = "/InsertPost", method = RequestMethod.POST)
-	public ModelAndView insertPost(HttpServletRequest req,ModelAndView mav, @RequestParam() MultipartFile[] files, @ModelAttribute PostBean pb) {
+	public ModelAndView insertPost(HttpServletRequest req, ModelAndView mav, @RequestParam() MultipartFile[] files, @ModelAttribute PostBean pb) {
 		mav.addObject("req",req);
 		mav.addObject("files", files);
 		mav.addObject(pb);
@@ -110,7 +110,8 @@ public class ThHomeController {
 
 	//게시글 삭제
 	@RequestMapping(value = "/DeleteFBPost", method = RequestMethod.POST)
-	public ModelAndView deleteFBPost(ModelAndView mav, @ModelAttribute PostBean pb) {
+	public ModelAndView deleteFBPost(HttpServletRequest req, ModelAndView mav, @ModelAttribute PostBean pb) {
+		mav.addObject("req",req);
 		mav.addObject(pb);
 		this.board.backController(mav, 96);
 		return mav;
@@ -128,7 +129,8 @@ public class ThHomeController {
 
 	//감성일기 등록
 	@RequestMapping(value = "/DeleteDailyDiaryFeed", method = RequestMethod.POST)
-	public ModelAndView deleteDailyDiaryFeed(ModelAndView mav, @ModelAttribute DailyDiaryBean db) {
+	public ModelAndView deleteDailyDiaryFeed(HttpServletRequest req, ModelAndView mav, @ModelAttribute DailyDiaryBean db) {
+		mav.addObject("req",req);
 		mav.addObject(db);
 		this.dailyDiary.backController(mav, 87);
 		return mav;

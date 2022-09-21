@@ -235,7 +235,7 @@
         function cancel() {
             let modal = document.getElementsByClassName("modal")[0];
             let m = document.getElementsByClassName("modal_content")[0];
-            m.innerHTML = "";
+            //m.innerHTML = "";
             modal.style.display = "none";
         }
 		//리스트에서 전체보기 항목 추가
@@ -260,10 +260,12 @@
     		form.appendChild(createInput("hidden","hdDate",hdDate.value+" "+hours+":"+minutes+":"+seconds,null,null));
 			form.appendChild(createInput("hidden","sleep",sleepTime(),null,null));
 			form.appendChild(createInput("hidden","bbCode",bbCode,null,null));
+			form.appendChild(createInput("hidden","returnAction","${returnAction}",null,null));
 			form.appendChild(data);
+			
 			form.action = "InsertHealthDiary";
 			form.method = "post";
-			
+
 			form.submit();
         }
 		//수면시간 계산

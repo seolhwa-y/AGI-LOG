@@ -33,4 +33,7 @@ public class HealthDiaryBean {
 	private int rnk;
 	
 	private String moveWrite;
+	
+	//캘린더 되돌아가기
+	private String returnAction;
 }

@@ -127,6 +127,8 @@ public class Board3 implements ServiceRule {
 	private void insertPostCommentCtl(Model model) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		PostCommentBean pcb = (PostCommentBean)model.getAttribute("postCommentBean");
+		System.out.println("날짜 확인 : " + pcb.getFcDate());
+		System.out.println("날짜 확인 : " + pcb.getFcFbDate());
 		
 		try {
 			AuthBean ab = (AuthBean)this.pu.getAttribute("accessInfo");

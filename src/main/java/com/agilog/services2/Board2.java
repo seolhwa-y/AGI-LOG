@@ -112,7 +112,7 @@ public class Board2 {
 		//----------------------자유게시판 페이징 및 출력--------------------
 		PostBean pb = (PostBean)mav.getModel().get("postBean");
 		int pageNum = 0;	// 현재 페이지 번호
-		int listCount = 5;	// 페이지당 나타낼 글의 갯수
+		int listCount = 10;	// 페이지당 나타낼 글의 갯수
 		int pageCount = 3;	// 페이지그룹당 페이지 갯수
 		int maxNum =0; // 전체 글의 숫자	
 
@@ -178,6 +178,8 @@ public class Board2 {
 		int start = (currentGroup * pageCount) - (pageCount - 1);
 		int end = (currentGroup * pageCount >= totalPage) ? totalPage : currentGroup * pageCount;
 
+		System.out.println("end : " + end);
+		System.out.println("totalpage : " + totalPage);
 
 		//페이지 번호 만들기
 		for (int i = start; i <= end; i++) {
@@ -210,16 +212,18 @@ public class Board2 {
 				PostBean pb = (PostBean) mav.getModel().get("postBean");
 				PostPhotoBean ppb = new PostPhotoBean();
 				ppb.setFpFbCode(pb.getFbCode());
-				
-				List<PostPhotoBean> ppbl = this.session.selectList("getPhotoList", ppb);
+				HttpServletRequest req = (HttpServletRequest)mav.getModel().get("req");
+				List<PostPhotoBean> ppbl = this.session.selectList("getFbPp", pb);
 				
 				if (ppbl != null) {
 					for (int idx = 0; idx < ppbl.size(); idx++) {
-						File file = new File(ppbl.get(idx).getFpLink());
+						File file = new File(req.getSession().getServletContext().getRealPath("/resources")+ppbl.get(idx).getFpLink().substring(4));
 				        
 				    	if( file.exists() ){
 				    		if(file.delete()){
 				    			System.out.println("파일삭제 성공");
+								//포스트 이미지 DB 삭제
+								this.session.delete("delFbPostPhoto", ppb);
 				    		}else{
 				    			System.out.println("파일삭제 실패");
 				    		}
@@ -229,11 +233,12 @@ public class Board2 {
 					}
 				}
 				
+				//포스트 댓글 삭제
+				this.session.delete("delFbPostComment", pb);
+				//포스트 좋아요 삭제
+				this.session.delete("delFbPostLike", pb);
 				//포스트 DB 삭제
 				this.session.delete("delFbPost", pb);
-				//포스트 이미지 DB 삭제
-				this.session.delete("delFbPostPhoto", ppb);
-				//포스트 댓글 삭제
 				
 				mav.addObject("freeBoardList", this.makeBoardList(this.session.selectList("getFbPostList")));
 				mav.setViewName("freeBoard");
@@ -342,6 +347,8 @@ public class Board2 {
 				String path = req.getSession().getServletContext().getRealPath("/resources/img/")+ab.getSuCode()+"\\board\\";
 				//게시글 DB 삽입.
 				if(this.convertToBoolean(this.session.insert("insFbPost", pb))) {
+					//댓글에서 사용할 fbDate 세팅
+					pb.setFbDate(((PostBean)this.session.selectOne("getFbDate", pb)).getFbDate());
 					//이미지 파일이 있는지 체크
 					if (files[0].getSize() != 0) {
 						PostPhotoBean ppb = new PostPhotoBean();
@@ -398,7 +405,6 @@ public class Board2 {
 							mav.setViewName("freeBoard");
 						}
 					} else {
-						pb.setFbDate(((PostBean)this.session.selectOne("getFbDate", pb)).getFbDate());
 						mav.addObject("content",this.makePostView(this.session.selectOne("getFbPostContent", pb)));
 						this.showFreePostCtl(mav,pb);
 						mav.setViewName("post");
@@ -603,6 +609,7 @@ public class Board2 {
 	//자유게시판 목록 EL 작업
 	private String makeBoardList(List<PostBean> fbBoardList) {
 		StringBuffer sb = new StringBuffer();
+		System.out.println("list size : "+fbBoardList.size());
 		sb.append("<select id=\"freeBoardSelect\" onChange=\"changeSort()\">");
 			sb.append("<option value = \"none\" selected disabled>정렬순서</option>");
 			sb.append("<option value = \"newList\">최신순</option>");

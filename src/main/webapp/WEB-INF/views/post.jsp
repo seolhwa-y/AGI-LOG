@@ -212,8 +212,8 @@ function postComment(ajaxData) {
 			comment += "<i class='fa-solid fa-trash-can delBtn editBtn' onClick='deleteBoardComment(" + fbComment[i].fcFbCode + "," + fbComment[i].fcFbSuCode + "," + fbComment[i].fcCode + "," + fbComment[i].fcDate +")'></i>";
 		}
 		comment += "</div>";
-		commentList.innerHTML = comment;
 	}
+	commentList.innerHTML = comment;
 
 	swal("요청", "요청하신 작업을 완료하였습니다!", "success", { button: "완료"});
 }

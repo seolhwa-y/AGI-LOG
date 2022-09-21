@@ -95,6 +95,8 @@ public class DailyDiary2 implements ServiceRule {
 
 		ddb = this.session.selectOne("getDDFeed", ddb);
 		
+		System.out.println("ddb : " + ddb);
+		
 		ddcb.setDcDdCode(ddb.getDdCode());
 		ddcb.setDcDdSuCode(ddb.getSuCode());//suCode == ddSuCode
 		ddcb.setDcDdDate(ddb.getDdDate());
@@ -128,9 +130,6 @@ public class DailyDiary2 implements ServiceRule {
 				boolean flag = true;
 				//디디빈 세팅
 				DailyDiaryBean db = (DailyDiaryBean) mav.getModel().get("dailyDiaryBean");
-				//리턴 액션 세팅
-				String returnAction = db.getReturnAction();
-				System.out.println("returnAction : "+returnAction);
 
 				//작성자 코드 설정
 				db.setSuCode(ab.getSuCode());
@@ -193,39 +192,23 @@ public class DailyDiary2 implements ServiceRule {
 						
 						//flag가 트루면 자유게시판으로. flase면 DB에 저장됐던 정보들을 지우고 자유게시판으로.
 						if (flag) {
-							if (returnAction != null) {
-								mav.setViewName("bebeCalendar");
-							} else {
-								mav.addObject("allDailyDiaryList", this.makeDialyFeed(this.session.selectList("getDailyDiaryFeed")));
-								mav.setViewName("dailyDiary");
-							}
+							mav.addObject("allDailyDiaryList", this.makeDialyFeed(this.session.selectList("getDailyDiaryFeed")));
+							mav.setViewName("dailyDiary");
 						} else {
 							this.session.delete("delDd", db);
 							this.session.delete("delDdPhoto", ddpb);
 
-							if (returnAction != null) {
-								mav.setViewName("bebeCalendar");
-							} else {
-								mav.addObject("allDailyDiaryList", this.makeDialyFeed(this.session.selectList("getDailyDiaryFeed")));
-								mav.setViewName("dailyDiary");
-							}
-						}
-					} else {
-						if (returnAction != null) {
-							mav.setViewName("bebeCalendar");
-						} else {
 							mav.addObject("allDailyDiaryList", this.makeDialyFeed(this.session.selectList("getDailyDiaryFeed")));
 							mav.setViewName("dailyDiary");
 						}
-					}
-				} else {
-					mav.addObject("message", "네트워크가 불안정합니다. 잠시 후 다시 시도해 주세요.");
-					if (returnAction != null) {
-						mav.setViewName("bebeCalendar");
 					} else {
 						mav.addObject("allDailyDiaryList", this.makeDialyFeed(this.session.selectList("getDailyDiaryFeed")));
 						mav.setViewName("dailyDiary");
 					}
+				} else {
+					mav.addObject("message", "네트워크가 불안정합니다. 잠시 후 다시 시도해 주세요.");
+					mav.addObject("allDailyDiaryList", this.makeDialyFeed(this.session.selectList("getDailyDiaryFeed")));
+					mav.setViewName("dailyDiary");
 				}
 			} else {
 				mav.addObject("message", "세션이 만료되었습니다. 다시 로그인 해주세요");
@@ -268,8 +251,35 @@ public class DailyDiary2 implements ServiceRule {
 				//디디빈 세팅
 				DailyDiaryBean db = (DailyDiaryBean) mav.getModel().get("dailyDiaryBean");
 				
-				if(this.convertToBoolean(this.session.insert("delDd", db))) {
+				HttpServletRequest req = (HttpServletRequest)mav.getModel().get("req");
+				DailyDiaryPhotoBean ddpb = this.session.selectOne("getDDPhoto", db);
+				
+				if (ddpb != null) {
+					File file = new File(req.getSession().getServletContext().getRealPath("/resources")+ddpb.getDpLink().substring(4));
+			        
+			    	if( file.exists() ){
+			    		if(file.delete()){
+			    			System.out.println("파일삭제 성공");
+			    			//데일리 다이어리 이미지 삭제
+			    			this.session.delete("delDdPhoto", db);
+			    		}else{
+			    			System.out.println("파일삭제 실패");
+			    		}
+			    	}else{
+			    		System.out.println("파일이 존재하지 않습니다.");
+			    	}
+				}
+				
+				//데일리 다이어리 댓글 삭제
+				this.session.delete("delDdComment", db);
+				//데일리 다이어리 좋아요 삭제
+				this.session.delete("delDdLike", db);
+				//데일리 다이어리 피드 삭제
+				if(this.convertToBoolean(this.session.delete("delDd", db))) {
 					mav.addObject("allDailyDiaryList", this.makeDialyFeed(this.session.selectList("getDailyDiaryFeed")));
+					mav.setViewName("dailyDiary");
+				} else {
+					mav.addObject("message", "네트워크가 불안정합니다.");
 					mav.setViewName("dailyDiary");
 				}
 			} else {

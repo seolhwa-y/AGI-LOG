@@ -177,6 +177,11 @@ public class MyPage implements ServiceRule {
 				}
 			}
 			if(mb.getSuAddress()!=""&&mb.getSuAddress()!=null) {
+				if (mb.getSuCode().length() > 10) {
+					mb.setSuAddress(this.enc.aesEncode(mb.getSuAddress(), mb.getSuCode().substring(0, 10)));
+				} else {
+					mb.setSuAddress(this.enc.aesEncode(mb.getSuAddress(), mb.getSuCode()));
+				}				
 				if(this.converToBoolean(this.session.update("updAddress",mb))) {
 					/* 업데이트 성공 */
 					/* 페이지 이동 */
@@ -244,13 +249,16 @@ public class MyPage implements ServiceRule {
 					ab.setType("kakao");
 					//이름 복호화
 					mpb.setSuName(this.enc.aesDecode(mpb.getSuName(), ab.getSuCode()));
-					} else {
+					//주소 복호화
+					mpb.setSuAddress(this.enc.aesDecode(mpb.getSuAddress(), ab.getSuCode()));
+				} else {
 					//네이버
 					ab.setType("naver");
 					String suCode = ab.getSuCode().substring(0, 10);
 					//이름 복호화
 					mpb.setSuName(this.enc.aesDecode(mpb.getSuName(),suCode));
-					
+					//주소 복호화
+					mpb.setSuAddress(this.enc.aesDecode(mpb.getSuAddress(), suCode));
 				}
 				ab.setSuNickName(mpb.getSuNickName());
 				mav.addObject("accessInfo", ab);

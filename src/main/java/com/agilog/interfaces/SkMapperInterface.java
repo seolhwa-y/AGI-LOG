@@ -36,7 +36,6 @@ public interface SkMapperInterface {
 	public List<BebeCalendarBean> getBabyBirth(BebeCalendarBean bcb);
 	
 	public int isDdLike(DailyDiaryBean ddb);
-	public int delDdLike(DailyDiaryBean ddb);
 	public int insDdLike(DailyDiaryBean ddb);
 	public int getDdLike(DailyDiaryBean ddb);
 	public int updDdLike(DailyDiaryBean ddb);

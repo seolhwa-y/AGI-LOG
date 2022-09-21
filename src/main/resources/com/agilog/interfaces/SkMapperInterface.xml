@@ -133,10 +133,6 @@
 	<insert id="insDdLike" parameterType="com.agilog.beans.DailyDiaryBean" >
 		INSERT INTO DL VALUES(#{ddCode}, #{ddSuCode}, TO_DATE(#{ddDate},'YYYYMMDDHH24MISS'), #{suCode})
 	</insert>
-	<!-- 해당감성일기 좋아요 내역 삭제 -->
-	<delete id="delDdLike" parameterType="com.agilog.beans.DailyDiaryBean" >
-		DELETE FROM DL WHERE DL_DDCODE = #{ddCode} AND DL_DDSUCODE = #{ddSuCode} AND DL_DDDATE = TO_DATE(#{ddDate},'YYYYMMDDHH24MISS') AND DL_SUCODE = #{suCode}
-	</delete>
 	<!-- 해당감성일기 좋아요 수 조회 -->
 	<select id="getDdLike" parameterType="com.agilog.beans.DailyDiaryBean" resultType="int">
 		SELECT COUNT(*) AS LIKES FROM DL WHERE DL_DDCODE = #{ddCode} AND DL_DDSUCODE = #{ddSuCode} AND DL_DDDATE = TO_DATE(#{ddDate},'YYYYMMDDHH24MISS')
