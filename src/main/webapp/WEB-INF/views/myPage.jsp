@@ -339,6 +339,7 @@ function getInfo() {
 	if(!"${mypageInfo.babyList[0].bbPhoto}" == ""){
 		bImage.innerHTML = "<img class='profileImage' src='"+"${mypageInfo.babyList[0].bbPhoto}"+"'>";
 	}else{ 
+		alert("애기도없어여");
 		bImage.innerHTML = "<img class='profileImage' src='"+"/res/img/profile_default.png"+"'>";
 	}
 	bbName.innerText="${mypageInfo.babyList[0].bbName}";
