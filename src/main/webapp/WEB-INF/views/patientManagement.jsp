@@ -33,6 +33,7 @@ function init(){
 		accessArea.innerHTML += "<span onclick=\"movePage(\'CompanyLogout\')\">로그아웃</span>";	
 	}
 }
+/*
 function init(){
 	if("${companyBean.coName}" != ""){
 		let accessArea = document.getElementById("accessArea");
@@ -41,7 +42,7 @@ function init(){
 		accessArea.innerHTML = "<span> ${companyBean.coName}님 </span>";
 		accessArea.innerHTML += "<span onclick=\"movePage(\'CompanyLogout\')\">로그아웃</span>";
 	}
-}
+}*/
 </script>
 </head>
 <body onload="init()">

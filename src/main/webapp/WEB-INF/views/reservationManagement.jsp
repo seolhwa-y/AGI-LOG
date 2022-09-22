@@ -171,7 +171,7 @@ function init() {
 		
 	}
 }
-function init(){
+/*function init(){
 	if("${companyBean.coName}" != ""){
 		let accessArea = document.getElementById("accessArea");
 		accessArea.innerHTML = "";
@@ -179,7 +179,7 @@ function init(){
 		accessArea.innerHTML = "<span> ${companyBean.coName}님 </span>";
 		accessArea.innerHTML += "<span onclick=\"movePage(\'CompanyLogout\')\">로그아웃</span>";
 	}
-}
+}/*
 /*********************캘린더************************/
 
 	// div 태그_캘린더에 이벤트 추가
