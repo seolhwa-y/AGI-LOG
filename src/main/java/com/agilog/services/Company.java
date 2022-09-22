@@ -182,6 +182,7 @@ public class Company implements ServiceRule {
 	}
 
 	private void moveHealthDataList(ModelAndView mav) {
+		System.out.println("hedali in test");
 		CompanyBean cb;
 		try {
 			cb = ((CompanyBean) this.pu.getAttribute("companyAccessInfo"));
@@ -199,10 +200,12 @@ public class Company implements ServiceRule {
 					System.out.println("정보공개");
 					System.out.println("컨버트 : " + rb.getResDoCode());
 					mav.addObject("healthDataList", this.makeHealthData(this.session.selectList("getHealthDataList", rb), rb));
-					mav.addObject("doctorComment",this.makePatientCo(this.session.selectOne("getPatientComment",rb)));
-				}else {
+					mav.addObject("doctorComment",this.makePatientCo((ReservationBean)this.session.selectOne("getPatientComment",rb)));
+				} else {
 					System.out.println("정보 비공개");
-					mav.addObject("doctorComment",this.makePatientCo(this.session.selectOne("getPatientComment",rb)));
+					System.out.println("rb.resCode : " + rb.getResCode());
+					System.out.println("rb : " + ((ReservationBean)this.session.selectOne("getPatientComment", rb)));
+					mav.addObject("doctorComment",this.makePatientCo((ReservationBean)this.session.selectOne("getPatientComment",rb)));
 
 				}mav.setViewName("doctorHealthData");
 
@@ -362,7 +365,7 @@ public class Company implements ServiceRule {
 			sb.append("<div class=\"docCo\">의사소견 입력<br/><br/>");
 			sb.append("<input type=\"text\" name=\"doctorComment\" class=\"commentInput\" placeholder=\"내용을 입력하세요.\"/>");
 			sb.append("<button class=\"submitBtn btn\" "
-					+ "onClick=\"insDoctorComment('"+ rb.getResCode()+"','"+ rb.getDoComment() + "')\">입력</button></div>");
+					+ "onClick=\"insDoctorComment('"+ rb.getResCode() + "')\">입력</button></div>");
 			System.out.println("소견서 정보 없음");
 		}
 		return sb.toString();

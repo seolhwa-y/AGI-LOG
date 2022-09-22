@@ -201,9 +201,11 @@ function postComment(ajaxData) {
 	const suCode = ajax.suCode;
 	console.log(ajax);
 	
-	let commentList = document.getElementById("commentList");
 	document.getElementsByClassName("fbComment")[0].value = "";
 	
+	let commentList = document.getElementById("commentList");
+
+	commentList.innerHTML = "";
 	let comment = "";
 
 	for(i = 0; i < fbComment.length; i++){
@@ -219,7 +221,7 @@ function postComment(ajaxData) {
 		comment += "<div class = 'suNickname'>" + fbComment[i].suNickname + "</div>";
 
 		// 댓글 내용
-		comment += "<div class='fcContent'" + fbComment[i].fcDate + ">" + fbComment[i].fcContent + "</div>";
+		comment += "<div class='fcContent " + fbComment[i].fcDate + "'>" + fbComment[i].fcContent + "</div>";
 
 		// 수정 삭제 버튼
 		if(suCode === fbComment[i].fcSuCode) {

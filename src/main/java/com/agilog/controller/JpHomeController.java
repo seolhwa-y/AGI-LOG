@@ -69,6 +69,7 @@ public class JpHomeController {
 	//환자관리 -> 건강기록지 페이지 이동
 	@RequestMapping(value = "/MoveHealthDataList", method = RequestMethod.POST)
 	public ModelAndView moveHealthDataList(ModelAndView mav, @ModelAttribute ReservationBean rb) {
+		System.out.println("test");
 		mav.addObject(rb);
 		this.company.backController(mav, 83);
 		return mav;

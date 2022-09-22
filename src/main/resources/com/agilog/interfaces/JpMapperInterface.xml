@@ -42,9 +42,8 @@
 	   		  BB_NAME AS RESBBNAME,
 	   		  RESACTIONNAME,
 	   		  DOCOMMENT
-	   FROM RESERVATIONFORDOC 
-	   INNER JOIN BB ON RESBBSUCODE = BB_SUCODE AND RESBBCODE = BB_CODE
-	   WHERE RESDOCODE = #{doCode}
+	   FROM RESERVATIONFORDOC INNER JOIN BB ON RESBBSUCODE = BB_SUCODE AND RESBBCODE = BB_CODE
+	   WHERE RESDOCODE = #{doCode} AND (RCCODE = 'CP' OR RCCODE = 'MC')
 	</select>
 	<!-- 환자 건강기록 전체 조회 -->
 	<select id="getHealthDataList" parameterType="com.agilog.beans.ReservationBean" resultType="com.agilog.beans.HealthDiaryBean">
@@ -53,7 +52,12 @@
 	 ORDER BY HDDATE DESC
 	</select>
 	<select id="getPatientComment" parameterType="com.agilog.beans.ReservationBean" resultType="com.agilog.beans.ReservationBean">
-	SELECT RE_COMMENT AS DOCOMMENT FROM RE WHERE RE_CODE = #{resCode} AND RE_BBCODE =#{resBbCode}
+		SELECT RE_CODE AS RESCODE, RE_COMMENT AS DOCOMMENT FROM RE WHERE RE_CODE = #{resCode}
+	</select>
+	
+	
+	<select id="getPatInfo" parameterType="com.agilog.beans.ReservationBean" resultType="com.agilog.beans.ReservationBean">
+		SELECT * FROM RE WHERE RE_CODE = #{resCode}
 	</select>
 	<!-- 공개여부 -->
 	<select id="isPrivateData" parameterType="com.agilog.beans.ReservationBean" resultType="int">
@@ -61,7 +65,7 @@
 	</select>
 	<!-- 예약여부 -->
 	<select id="isResOpenData" parameterType="com.agilog.beans.ReservationBean" resultType="String">
-		SELECT RE_RCCODE FROM re WHERE RE_CODE = #{resCode}  AND RE_BBCODE = #{resBbCode} AND (RE_RCCODE = 'CP'OR RE_RCCODE ='MC')
+		SELECT RE_RCCODE FROM RE WHERE RE_CODE = #{resCode}  AND RE_BBCODE = #{resBbCode} AND (RE_RCCODE = 'CP'OR RE_RCCODE ='MC')
 	</select>
 	
 	
