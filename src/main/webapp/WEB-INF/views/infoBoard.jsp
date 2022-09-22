@@ -13,6 +13,12 @@
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 <!-- 네이버 스크립트 -->
 <script	src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
+<style>
+.backList{
+    position: absolute;
+    left: 40px;
+}
+</style>
 <script>
 
 Kakao.init('2afdabad57ed92e1cc9de5bd4baed321');

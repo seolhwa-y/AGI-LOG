@@ -47,6 +47,7 @@
 	float:right;
 	margin-bottom:1%;
 	margin-right:4%;
+	width:12%;
 }
 </style>
 <script>

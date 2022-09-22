@@ -537,10 +537,9 @@ public class Board2 {
 				}
 				sb.append("</div>");
 				sb.append("<div class=\"pBody\">");
-				sb.append("<div class=\"pContent\"> " + pb.getFbContent() + " </div>");	
+				sb.append("<div class=\"pContent scrollBar\"> " + pb.getFbContent() + " </div>");	
 				sb.append("<div class=\"pPhoto\"> ");
 				if (ppb.size() !=0 ) {
-					System.out.println(ppb);
 					for (int idx = 0; idx < ppb.size(); idx++) {
 						if(ppb.get(idx).getFpLink()!=null) {
 						
@@ -553,11 +552,6 @@ public class Board2 {
 
 						sb.append("</div>");
 					}
-				}else {
-					System.out.println("여기외않와");
-					System.out.println(ppb);
-					sb.append("<div class='imgContainer' style='float: right; height:55%; position:absolute;'><img src='/res/img/infoBoard.png'>");
-					sb.append("</div>");
 				}
 				sb.append("</div>");
 				sb.append("</div>");
@@ -582,7 +576,7 @@ public class Board2 {
 				sb.append("<div class=\"pLike\">좋아요&ensp;<small class=\"sLike\">" + pb.getLikes() + "</small></div>");
 				sb.append("</div>");
 				sb.append("<div class=\"pBody\">");
-				sb.append("<div class=\"pContent\"> " + pb.getFbContent() + " </div>");
+				sb.append("<div class=\"pContent scrollBar\"> " + pb.getFbContent() + " </div>");
 				sb.append("<div class=\"pPhoto\"> ");
 				if (ppb != null) {
 					for (int idx = 0; idx < ppb.size(); idx++) {

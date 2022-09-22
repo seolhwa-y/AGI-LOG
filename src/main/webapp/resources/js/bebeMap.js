@@ -147,6 +147,7 @@ function callReservation(ajaxData) {
 	doList += "</select>";
 	document.getElementById("selectBaby").innerHTML += bbList;
 	document.getElementById("selectDoctor").innerHTML += doList;
+	console(doList);
 }
 
 // 의사 선택시 날짜에 이벤트 추가
@@ -172,7 +173,7 @@ function getResTime() {
 	let doctor = document.getElementById("doctorName").value;
 	let code = doctor.split(":");
 	
-	const clientData = " " + code[0] + "&resDoCode=" + code[1] + "&resDate=" + resDate;
+	const clientData = "resCoCode=" + code[0] + "&resDoCode=" + code[1] + "&resDate=" + resDate;
 	postAjaxJson("GetResTime", clientData, "callResTime");
 }
 

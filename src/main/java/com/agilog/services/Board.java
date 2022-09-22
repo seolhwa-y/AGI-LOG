@@ -215,7 +215,10 @@ public class Board implements ServiceRule {
 				sb.append("<div class=\"pLike\">좋아요&ensp;<small class=\"sLike\">" + pb.getLikes() + "</small></div>");
 				sb.append("</div>");
 				sb.append("<div class=\"pBody\">");
-				sb.append("<div class=\"pContent\"> " + pb.getIbContent() + " </div>");	
+				sb.append("<div class=\"pContent scrollBar\"> " + pb.getIbContent() + " </div>");	
+				sb.append("<div class=\"pPhoto\"> ");
+				sb.append("<div class='imgContainer' style='float: right; height:55%; position:absolute;'><img src='/res/img/infoBoard.png'>");
+				sb.append("</div>");
 				sb.append("</div>");
 				// 0개 일때 !false=>좋아요 누른적 없음
 				if (!this.convertToBoolean(this.session.selectOne("isIbLike", pb))) {
@@ -233,7 +236,11 @@ public class Board implements ServiceRule {
 				sb.append("<div class=\"pLike\">좋아요&ensp;<small class=\"sLike\">" + pb.getLikes() + "</small></div>");
 				sb.append("</div>");
 				sb.append("<div class=\"pBody\">");
-				sb.append("<div class=\"pContent\"> " + pb.getIbContent() + " </div>");	
+				sb.append("<div class=\"pContent scrollBar\"> " + pb.getIbContent() + " </div>");
+				sb.append("<div class=\"pPhoto\"> ");
+				sb.append("<div class='imgContainer' style='float: right; height:55%; position:absolute;'><img src='/res/img/infoBoard.png'>");
+				sb.append("</div>");
+				sb.append("</div>");
 				sb.append("</div>");
 				sb.append("<button class=\"backList\" onClick=\"movePage('MoveInfoBoard')\">목록</button>");
 				sb.append("</div");
