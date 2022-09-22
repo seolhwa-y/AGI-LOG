@@ -84,6 +84,10 @@ public class Board3 implements ServiceRule {
 		StringBuffer sb = new StringBuffer();
 		int i = -1;
 
+		sb.append("<div>");
+		sb.append("<input class=\"fbComment commentInput\" />");
+		sb.append("<button class=\"submitBtn btn\" onClick=\"insertBoardComment("+ pcList.get(0).getFcFbCode() + "," + pcList.get(0).getFcFbSuCode() + "," + pcList.get(0).getFcFbDate() + ")\">확인</button>");
+		sb.append("</div>");
 		sb.append("<div id='commentList'>");
 
 		for(PostCommentBean pb : pcList) {
@@ -113,10 +117,6 @@ public class Board3 implements ServiceRule {
 				e.printStackTrace();
 			}
 		}
-		sb.append("</div>");
-		sb.append("<div>");
-		sb.append("<input class=\"fbComment commentInput\" />");
-		sb.append("<button class=\"submitBtn btn\" onClick=\"insertBoardComment("+ pcList.get(0).getFcFbCode() + "," + pcList.get(0).getFcFbSuCode() + "," + pcList.get(0).getFcFbDate() + ")\">확인</button>");
 		sb.append("</div>");
 
 		return sb.toString();

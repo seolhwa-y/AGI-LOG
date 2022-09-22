@@ -224,7 +224,8 @@
 	
 
 	function init() {
-		if ("${companyAccessInfo.coName}" != "") {
+		alert("${companyAccessInfo}");
+		if ("${companyAccessInfo}" != "") {
 			let accessArea = document.getElementById("accessArea");
 			accessArea.innerHTML = "";
 
@@ -233,6 +234,15 @@
 		}
 	}
 	
+	function init(){
+		if("${companyBean.coName}" != ""){
+			let accessArea = document.getElementById("accessArea");
+			accessArea.innerHTML = "";
+			
+			accessArea.innerHTML = "<span> ${companyBean.coName}님 </span>";
+			accessArea.innerHTML += "<span onclick=\"movePage(\'CompanyLogout\')\">로그아웃</span>";
+		}
+	}
 </script>
 </head>
 <body onload="init()">

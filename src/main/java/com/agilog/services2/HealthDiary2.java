@@ -135,8 +135,10 @@ public class HealthDiary2 implements ServiceRule {
 	
 	// 건강일기 추세데이터 분리 저장
 	private HashMap<String, Object> healthStatusList(List<HealthDiaryBean> healthList, HashMap<String, Object> map) {
-		int i = -1, ii = 0, he = 0, we = 0, hd = 0;
-		int[] height = new int[8], weight = new int[8], head = new int[8];
+		int i = -1, ii = 0;
+		// 키, 몸무게, 머리둘레 소수점 때문에 double 사용
+		double he = 0, we = 0, hd = 0; 
+		double[] height = new double[8], weight = new double[8], head = new double[8];
 		String sStatus = "";
 		
 		for(HealthDiaryBean hdb : healthList) {
@@ -146,15 +148,15 @@ public class HealthDiary2 implements ServiceRule {
 				// 해당 나이가 있을 때 :: 같은 나이가 있을 때를 대비하여 변수에 담아서 비교
 				if(healthList.get(i).getAge() == ii) {
 					// 키 1차원 배열 :: 1단계 3항식
-					he = (healthList.get(i).getBbHeight() != null)? Integer.parseInt(healthList.get(i).getBbHeight()) : 0;
+					he = (healthList.get(i).getBbHeight() != null)? Double.parseDouble(healthList.get(i).getBbHeight()) : 0;
 					height[ii] = height[ii] < he ? he : height[ii];
 			
 					// 몸무게 1차원 배열 :: 1단계 3항식
-					we = (healthList.get(i).getBbWeight() != null)? Integer.parseInt(healthList.get(i).getBbWeight()) : 0;
+					we = (healthList.get(i).getBbWeight() != null)? Double.parseDouble(healthList.get(i).getBbWeight()) : 0;
 					weight[ii] = weight[ii] < we ? we : weight[ii];
 
 					// 머리둘레 1차원 배열 :: 1단계 3항식
-					hd = (healthList.get(i).getHead() != null)? Integer.parseInt(healthList.get(i).getHead()) : 0;
+					hd = (healthList.get(i).getHead() != null)? Double.parseDouble(healthList.get(i).getHead()) : 0;
 					head[ii] = head[ii] < hd ? hd : head[ii];
 				} 
 				// 배열 -> 문자 -> MAP

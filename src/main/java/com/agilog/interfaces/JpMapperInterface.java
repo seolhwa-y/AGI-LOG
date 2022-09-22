@@ -61,6 +61,9 @@ public interface JpMapperInterface {
 	public int delDoctorInfo(CompanyBean cb);
 	public int insDoctorComment(ReservationBean rb);
 	public int updReservation(ReservationBean rb);
+
+	public ReservationBean getPatInfo(ReservationBean rb);
+	
 	//
 	public List<BebeMapCommentBean> getCompanyInfoComment(BebeMapCommentBean bmcb);
 	public int insCompanyComment(BebeMapCommentBean bmcb);
