@@ -539,17 +539,25 @@ public class Board2 {
 				sb.append("<div class=\"pBody\">");
 				sb.append("<div class=\"pContent\"> " + pb.getFbContent() + " </div>");	
 				sb.append("<div class=\"pPhoto\"> ");
-				if (ppb != null) {
+				if (ppb.size() !=0 ) {
+					System.out.println(ppb);
 					for (int idx = 0; idx < ppb.size(); idx++) {
-						if (idx%2 == 0) {
-							sb.append("<div class='imgContainer' style='width:280px;float: left;'><img src='" + ppb.get(idx).getFpLink() + "'>");
-						} else {
-							sb.append("<div class='imgContainer' style='width:280px;float: right;'><img src='" + ppb.get(idx).getFpLink() + "'>");
+						if(ppb.get(idx).getFpLink()!=null) {
+						
+							if (idx%2 == 0) {
+								sb.append("<div class='imgContainer' style='width:280px;float: left;'><img src='" + ppb.get(idx).getFpLink() + "'>");
+							} else {
+								sb.append("<div class='imgContainer' style='width:280px;float: right;'><img src='" + ppb.get(idx).getFpLink() + "'>");
+							}
 						}
-
 
 						sb.append("</div>");
 					}
+				}else {
+					System.out.println("여기외않와");
+					System.out.println(ppb);
+					sb.append("<div class='imgContainer' style='float: right; height:55%; position:absolute;'><img src='/res/img/infoBoard.png'>");
+					sb.append("</div>");
 				}
 				sb.append("</div>");
 				sb.append("</div>");
