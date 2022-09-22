@@ -20,14 +20,16 @@
 	margin-left: 2rem;
 	cursor:pointer;
 }
-.pContent > p {
-    overflow: auto;
-	margin-top: 0;
-    height: 100%;
-    font-size:1.3rem;
-}
-.updBtn{
+.editBtn{
 	margin-right:1rem;
+	font-size:1.5rem;
+}
+.imgContainer > img{
+	width: 100%;
+    height: 100%;
+}
+.pContent{
+overflow: auto;
 }
 </style>
 <script>
@@ -141,7 +143,6 @@ function updLikes(ajaxData){
 		}
 		sLike.innerText = ajax.fbLike.likes;
 	} else {
-		alert("좋아요 실패!");
 	}
 }
 /* 게시글 댓글 작업 */
@@ -225,8 +226,8 @@ function postComment(ajaxData) {
 
 		// 수정 삭제 버튼
 		if(suCode === fbComment[i].fcSuCode) {
-			comment += "<i class='fa-solid fa-pen updBtn editBtn' onClick='updateInput(" + fbComment[i].fcFbCode + "," + fbComment[i].fcFbSuCode + "," + fbComment[i].fcCode + "," + fbComment[i].fcDate +")'></i>";
-			comment += "<i class='fa-solid fa-trash-can delBtn editBtn' onClick='deleteBoardComment(" + fbComment[i].fcFbCode + "," + fbComment[i].fcFbSuCode + "," + fbComment[i].fcCode + "," + fbComment[i].fcDate +")'></i>";
+			comment += "<i class='fa-solid fa-pen editBtn ' onClick='updateInput(" + fbComment[i].fcFbCode + "," + fbComment[i].fcFbSuCode + "," + fbComment[i].fcCode + "," + fbComment[i].fcDate +")'></i>";
+			comment += "<i class='fa-solid fa-trash-can editBtn ' onClick='deleteBoardComment(" + fbComment[i].fcFbCode + "," + fbComment[i].fcFbSuCode + "," + fbComment[i].fcCode + "," + fbComment[i].fcDate +")'></i>";
 		}
 		comment += "</div>";
 	}

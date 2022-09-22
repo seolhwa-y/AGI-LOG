@@ -557,18 +557,15 @@ function checkOverlap() {
 		postAjaxJson("CheckPersonalOverlap",clientData,"callBackOverlap");
 	} else {
 		swal("중복체크", "변경할 닉네임을 입력하세요!", "waring", { button: "확인"});
-		//alert("변경할 닉네임을 입력하세요");
 	}
 }
 //중복체크 콜백
 function callBackOverlap(ajaxData) {
 	if(ajaxData=="ok"){
-		alert("사용가능");
 		swal("중복체크", "사용 가능한 닉네임입니다!", "success", { button: "확인"});
 		check = true;
 	}
 	else {
-		alert(ajaxData);
 		swal("중복체크", "사용 불가능한 닉네임입니다!", "error", { button: "확인"});
 		check = false;
 	}
@@ -582,7 +579,7 @@ function checkAddress() {
         //카카오 지도 발생
         new daum.Postcode({
             oncomplete: function(data) { //선택시 입력값 세팅
-                document.getElementsByName("suAddress")[0].value = data.address + data.bname; // 주소 넣기
+                document.getElementsByName("suAddress")[0].value = data.bname; // 주소 넣기
             }
         }).open();
 }
@@ -591,12 +588,9 @@ function changeParentInfo(){
 	let nickName = document.getElementsByName("suNickName")[0];
 	let address = document.getElementsByName("suAddress")[0];
 	let form = document.getElementById("serverForm");
-	alert(nickName.value);
 	if((nickName.value==""&&address.value=="")){
-		alert("바꾸실 정보를 입력하세요");
 		nickName.focus();
 	}else if(nickName.value!=""&&!isCharLengthCheck(nickName.value,"1","20")){
-		alert("닉네임은 1자~20자 사이로 입력해주세요")
 		nickName.focus();
 	}
 	else{
@@ -748,7 +742,6 @@ function insertBabyInfo(){
 	if(!isCharLengthCheck(bbName.value,"1","20")){
 
 		swal("경고", "아이 이름은 1자~20자 사이로 입력해 주세요!", "error", { button: "확인"});
-		//alert("아이 이름은 1자~20자 사이로 입력해 주세요");
 		bbName.focus();
 		return;
 	}

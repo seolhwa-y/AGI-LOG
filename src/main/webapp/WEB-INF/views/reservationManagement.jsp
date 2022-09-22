@@ -161,7 +161,6 @@
 </style>
 <script>
 function init() {
-	alert("${companyAccessInfo}");
 	if ("${companyAccessInfo}" != "") {
 		let accessArea = document.getElementById("accessArea");
 		accessArea.innerHTML = "";
@@ -171,15 +170,7 @@ function init() {
 		
 	}
 }
-/*function init(){
-	if("${companyBean.coName}" != ""){
-		let accessArea = document.getElementById("accessArea");
-		accessArea.innerHTML = "";
-		
-		accessArea.innerHTML = "<span> ${companyBean.coName}님 </span>";
-		accessArea.innerHTML += "<span onclick=\"movePage(\'CompanyLogout\')\">로그아웃</span>";
-	}
-}/*
+
 /*********************캘린더************************/
 
 	// div 태그_캘린더에 이벤트 추가
@@ -220,10 +211,8 @@ var calendar = new FullCalendar.Calendar(calendarEl, {
 	    let modalHead = document.getElementsByClassName("modal_head")[0];
 	    
 	    if("${companyAccessInfo.coPhoto}"!=""){
-	    	alert("사진있음");
 	    	modalHead.innerHTML = "<div id='profile'><img class='profileImg' src='"+"${companyAccessInfo.coPhoto}"+"'></div><span id='date'>"+info.dateStr+"<span><i class='fa-solid fa-xmark closeBtn editBtn' onclick='modalClose()'></i>";
 	    }else{
-	    	alert("사진없음");
 	    	modalHead.innerHTML = "<div id='profile'><img class='profileImg' src='/res/img/profile_default.png'></div><span id='date'>"+info.dateStr+"<span><i class='fa-solid fa-xmark closeBtn editBtn' onclick='modalClose()'></i>";
 	    }
 	    
@@ -301,12 +290,6 @@ function updateReservation(resCode, idx, idx2) {
 	let doCode = document.getElementsByName("resDoCode")[idx].value;
 	
 	let clientData = "rcCode="+rcCode2+"&resCode="+resCode+"&resDate="+date+"&resTime="+time.split(":")[0]+"&resDoCode="+doCode;
-
-//	if (idx2 != "") {
-//		let doCode = document.getElementsByName("selectDoctor")[idx2];
-//		let doCode2 = doCode.options[doCode.selectedIndex].value;
-//		clientData += "&resDoCode="+doCode2;
-//	}
 
 	postAjaxJson("UpdateReservation",clientData,"resManageMent");
 	swal("요청", "요청하신 작업을 완료하였습니다!", "success", { button: "확인"});

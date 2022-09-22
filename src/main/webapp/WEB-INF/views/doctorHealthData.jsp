@@ -25,9 +25,11 @@ function insDoctorComment(data1,data2) {
 	
 	form.appendChild(createInput("hidden","doComment",doComment,null,null));
 	form.appendChild(createInput("hidden","resCode",data1,null,null));
+	form.appendChild(createInput("hidden","resDoCode",data2,null,null));
 	
 	form.action = "InsertDoctorComment";
 	form.method = "post";
+	console.log(form);
 	form.submit();
 }
 </script>
@@ -53,7 +55,6 @@ function insDoctorComment(data1,data2) {
 		</div>
 		<div id="middle">
 			<div id="rightArea" class="scrollBar">
-			
 				<div id="healthList">${healthDataList}</div>
 				<div>${doctorComment}</div>
 				<div>${message}</div>

@@ -9,6 +9,8 @@
 <script src="https://use.fontawesome.com/releases/v6.1.2/js/all.js"></script>
 <link rel="stylesheet" href="/res/css/agiMain.css">
 <link rel="stylesheet" href="/res/css/login.css">
+<!-- 알림창 꾸미기 -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <!-- 1. LoginWithNaverId Javscript SDK -->
 <script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
 <script src="https://code.jquery.com/jquery-1.12.1.min.js"></script>
@@ -38,7 +40,7 @@
 		}
 		
 		if("${message}"!="") {
-			alert("${message}");
+			swal("로그인 실패", "${message}", "error", { button: "확인"});
 		}
 		let accessArea = document.getElementById("accessArea");
 		if ("${accessInfo.type}" != null && "${accessInfo.type}" != "") {

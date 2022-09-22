@@ -338,7 +338,6 @@ function changeSort(){
 	//option값을 저장
 	let ddSort = postSelect.options[postSelect.selectedIndex].value;
 	let optionText = postSelect.options[postSelect.selectedIndex].text;
-	alert(optionText + "으로 정렬합니다");
 	form.appendChild(createInput("hidden","ddSort",ddSort,null,null));
 	
 
@@ -424,27 +423,32 @@ function viewFeed(ajaxData) {
 	let modalFoot = document.querySelector(".modal_foot");
 	modal.style.display = "block";
 
-	modalHead.innerHTML = "<div class='viewFeedHead'><img style=\"filter: drop-shadow(10px 6px 6px #5D5D5D)\" src=\'" + ddFeed.dpLink + "'><i class=\"fa-solid fa-xmark closeBtn \" onclick =\"modalClose('')\"style=\"float: right;position: absolute; right: 26px;\"></i></div>";
-	modalContent.innerHTML = "<br/><div id='viewFeedDate'>" + ddFeed.ddDate.substring(0, 4) + "년 " + ddFeed.ddDate.substring(4, 6) + "월 " + ddFeed.ddDate.substring(6, 8) + "일 " + ddFeed.ddDate.substring(8, 10) + ":" + ddFeed.ddDate.substring(10, 12) + ":" + ddFeed.ddDate.substring(12, 14) + "</div><div class='viewLike' onClick='dailyDiaryLike(" + ddFeed.ddCode + "," + ddFeed.ddDate + "," + ddFeed.suCode + ")'>❤ " + ddFeed.likes + "</div>"
-							 +"<div id='viewFeedContent' class='scrollBar'><br/>" + ddFeed.ddContent + "</div>";
+	modalHead.innerHTML = "<div class='viewFeedHead'>"
+	+"<img style=\"filter: drop-shadow(10px 6px 6px #5D5D5D)\" src=\'" + ddFeed.dpLink + "'>"
+	+"<i class=\"fa-solid fa-xmark closeBtn \" onclick =\"modalClose('')\"style=\"float: right;position: absolute; right: 26px;\"></i>"
+	+"<div class='viewLike' onClick='dailyDiaryLike(" + ddFeed.ddCode + "," + ddFeed.ddDate + "," + ddFeed.suCode + ")'>❤ " + ddFeed.likes + "</div>"
+	+"</div>";
+	modalContent.innerHTML = "<div id='d_content'>" 
+	+"<div id='viewFeedDate'>" 
+	+ "<div id='feedInfo'><span id='writer'>" + ddFeed.ddSuName+"</span>"
+	+ "<span id='date'>" + ddFeed.ddDate.substring(0, 4) + "년 " + ddFeed.ddDate.substring(4, 6) + "월 " + ddFeed.ddDate.substring(6, 8) + "일 " + ddFeed.ddDate.substring(8, 10) + ":" + ddFeed.ddDate.substring(10, 12) + ":" + ddFeed.ddDate.substring(12, 14) 
+	+ "</span></div>"
+	+"</div>"
+	+"<div id='viewFeedContent' class='scrollBar'>" + ddFeed.ddContent + "</div></div>";
 	if("${accessInfo.suCode}" == ddFeed.suCode) {
-		modalContent.innerHTML += "<div id='UDIcon' class='udicon'><i class='fa-solid fa-pen updBtn editBtn' onClick='feedUpdateInput(" + ddFeed.ddCode + ")' style='margin-right:20%'></i><i class='fa-solid fa-trash-can delBtn editBtn' onClick='deleteDailyDiaryFeed(" + ddFeed.ddCode + ")'></i></div>";
+		let area = document.querySelector("#viewFeedDate");
+		area.innerHTML += "<div id='UDIcon'><i class='fa-solid fa-pen updBtn editBtn' onClick='feedUpdateInput(" + ddFeed.ddCode + ")' style='margin-right:20%'></i><i class='fa-solid fa-trash-can delBtn editBtn' onClick='deleteDailyDiaryFeed(" + ddFeed.ddCode + ")'></i></div>";
 	}
 	
 	let viewLike = document.querySelector(".viewLike");
-	console.log(ddFeed);
 	if(ddFeed.like) {
 		viewLike.className = "viewLike myViewLike";
 	} else {
 		viewLike.className = "viewLike";
 	}
-	//modalFoot.innerHTML = "<button class='mBtnX' onclick='modalClose()'>취소</button><button class='mBtnO' onclick='insertDailyDiary()'>등록</button>";
 		
 	//댓글
 	let comment = "", input = "";
-	
-	
-	
 	comment += "<div id='commentList' class='scrollBar'>";
 	
 	for(i = 0; i < ddComment.length; i++) {
@@ -465,8 +469,8 @@ function viewFeed(ajaxData) {
 		// 수정 삭제 버튼
 		if(suCode === ddComment[i].dcSuCode) {
 			comment += "<div class = 'ueBtn'>"
-			comment += "<i class='fa-solid fa-pen updBtn editBtn' onClick='updateInput(" + ddComment[i].dcDdCode + "," + ddComment[i].dcDdSuCode + "," + ddComment[i].dcCode + "," + ddComment[i].dcDate + "," + ddComment[i].dcDdDate +")'></i>";
-			comment += "<i class='fa-solid fa-trash-can delBtn editBtn' style ='margin-left: 12%;' onClick='deleteDailyDiaryComment(" + ddComment[i].dcDdCode + "," + ddComment[i].dcDdSuCode + "," + ddComment[i].dcCode + "," + ddComment[i].dcDate + "," + ddComment[i].dcDdDate +")'></i>";
+			comment += "<i class='fa-solid fa-pen mUpdBtn editBtn' onClick='updateInput(" + ddComment[i].dcDdCode + "," + ddComment[i].dcDdSuCode + "," + ddComment[i].dcCode + "," + ddComment[i].dcDate + "," + ddComment[i].dcDdDate +")'></i>";
+			comment += "<i class='fa-solid fa-trash-can mDelBtn editBtn' style ='margin-left: 12%;' onClick='deleteDailyDiaryComment(" + ddComment[i].dcDdCode + "," + ddComment[i].dcDdSuCode + "," + ddComment[i].dcCode + "," + ddComment[i].dcDate + "," + ddComment[i].dcDdDate +")'></i>";
 			comment += "</div>"
 		} 
 		comment += "</div>";
@@ -481,8 +485,8 @@ function viewFeed(ajaxData) {
 		input += "<button class=\"mMiniBtn btn ddbtn\" onClick=\"insertDailyDiaryComment("+ ddFeed.ddCode + "," + ddFeed.suCode + "," + ddFeed.ddDate + ")\">확인</button>";
 		input += "</div>";
 	}
-
-	modalContent.innerHTML += comment;
+	let d_content = document.querySelector("#d_content");
+	d_content.innerHTML += comment;
 	modalFoot.innerHTML += input;
 }
 function feedUpdateInput(ddCode) {
@@ -491,11 +495,11 @@ function feedUpdateInput(ddCode) {
 	let content = document.getElementById("viewFeedContent").textContent;
 
 	viewFeedContent.innerHTML = "";
-	viewFeedContent.innerHTML = "<br/><textarea id='updContent'>" + content + "</textarea>";
-
+	viewFeedContent.innerHTML = "<textarea id='updContent'>" + content + "</textarea>";
+	
+	UDIcon.className="";
 	UDIcon.innerHTML = "";
-	UDIcon.innerHTML = "<button class='submitBtn btn contentEdit' onClick='updateDailyDiaryFeed(" + ddCode + ")'>수정</button>";
-	UDIcon.style.marginTop="-14%";
+	UDIcon.innerHTML = "<button class='submitBtn btn' onClick='updateDailyDiaryFeed(" + ddCode + ")'>수정</button>";
 }
 
 //피드 내용 수정
@@ -554,20 +558,6 @@ function updLike(ajaxData) {
 	}
 	
 	viewLike.innerText = "❤ " + ajax.ddLike.likes;
-}
-function changeSort(){
-	let form = document.getElementById("serverForm");
-	let postSelect = document.getElementById("dailySelect");
-	//option값을 저장
-	let ddSort = postSelect.options[postSelect.selectedIndex].value;
-	let optionText = postSelect.options[postSelect.selectedIndex].text;
-	alert(optionText + "으로 정렬합니다");
-	
-	form.appendChild(createInput("hidden","ddSort",ddSort,null,null));
-	
-	form.action = "ChangeDailyDiary";
-	form.method = "get";
-	form.submit();
 }
 
 </script>

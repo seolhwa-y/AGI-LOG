@@ -9,6 +9,8 @@
 <script src="https://use.fontawesome.com/releases/v6.1.2/js/all.js"></script>
 <link rel="stylesheet" href="/res/css/agiMain.css">
 <link rel="stylesheet" href="/res/css/company.css">
+<!-- 알림창 꾸미기 -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <style>
 @import url("//fonts.googleapis.com/earlyaccess/nanumgothic.css" );
 .passw[type=password]{
@@ -18,7 +20,7 @@
 <script>
 	function init(){
 		if("${message}" != ""){
-			alert("${message}");
+			swal("경고", "${message}", "warning", { button: "확인"});
 		}
 	}
 	function companyLogin(){

@@ -54,66 +54,7 @@ public class Company2 implements ServiceRule {
 
 	}
 
-//	private void updateReservationCtl(ModelAndView mav) {
-//		System.out.println("업데이트 진입 체크");
-//		try {
-//			//세션 획득 후 체크. 없으면 로그인 페이지로
-//			CompanyBean cb = ((CompanyBean) this.pu.getAttribute("companyAccessInfo"));
-//			if (cb.getCoManagerCode() != null) {
-//				//예약빈 세팅
-//				ReservationBean rb = (ReservationBean) mav.getModel().get("reservationBean");
-//				rb.setResCoCode(cb.getCoCode());
-//				System.out.println("닥터 코드 체크 : " + rb.getResDoCode());
-//				System.out.println("카테고리 코드 체크 : " + rb.getRcCode());
-//				System.out.println("예약 코드 체크 : " + rb.getResCode());
-//				System.out.println("컴패니 코드 체크 : " + rb.getResCoCode());
-//				
-//				//닥터 코드가 있으면 닥터 코드를 포함하여 업데이트, 없으면 닥터 코드를 제외한 업데이트
-//				if (rb.getResDoCode() != null) {
-//					System.out.println("rd 진입 체크");
-//					this.session.update("updRDRes", rb);
-//					
-//					//예약상태 변경 문자보내기
-//					rb = this.session.selectOne("getResInfoForSms", rb);
-//					HashMap<String,String> map = new HashMap<String,String>();
-//					map.put("resDate", rb.getResDate());
-//					map.put("resSuName", this.enc.aesDecode(rb.getResSuName(), rb.getResSuCode()));
-//					map.put("resSuPhone", this.enc.aesDecode(rb.getResSuPhone(), rb.getResSuCode()));
-//					map.put("resCoName", this.enc.aesDecode(rb.getResCoName(), rb.getResCoCode()));
-//					map.put("resBbName", rb.getResBbName());
-//					map.put("resActionName", rb.getResActionName());
-//					map.put("resDoName", rb.getResDoName());
-//					sms.sendSMS(map);
-//				} else {
-//					System.out.println("cp 진입 체크");
-//					this.session.update("updCPRes", rb);
-//					
-//					//예약상태 변경 문자보내기
-//					rb = this.session.selectOne("getResInfoForSms", rb);
-//					HashMap<String,String> map = new HashMap<String,String>();
-//					map.put("resDate", rb.getResDate());
-//					map.put("resSuName", this.enc.aesDecode(rb.getResSuName(), rb.getResSuCode()));
-//					map.put("resSuPhone", this.enc.aesDecode(rb.getResSuPhone(), rb.getResSuCode()));
-//					map.put("resCoName", this.enc.aesDecode(rb.getResCoName(), rb.getResCoCode()));
-//					map.put("resBbName", rb.getResBbName());
-//					map.put("resActionName", rb.getResActionName());
-//					map.put("resDoName", rb.getResDoName());
-//					sms.sendSMS(map);
-//				}
-//				SimpleDateFormat form = new SimpleDateFormat("yyyy-MM-dd");
-//				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-//				Date d = form.parse(rb.getResDate());
-//				rb.setResDate(sdf.format(d));
-//				//새 표 작성 후 페이지 리다이렉트
-//				mav.setViewName("reservationManagement");
-//			} else {
-//				mav.addObject("message", "세션 만료");
-//				mav.setViewName("companyLogin");
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
+
 	private void sendSmsCtl() {
 	                
 	}

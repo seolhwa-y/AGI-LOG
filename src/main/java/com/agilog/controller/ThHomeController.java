@@ -51,18 +51,8 @@ public class ThHomeController {
 	@Autowired
 	MyPage myPage;
 
-//	@RequestMapping(value = "/UpdateReservation", method = RequestMethod.POST)
-//	public ModelAndView updateReservation(ModelAndView mav, @ModelAttribute ReservationBean rb) {
-//		System.out.println("컨트롤러 진입 체크1");
-//		mav.addObject(rb);
-//		System.out.println("컨트롤러 진입 체크2");
-//		this.company.backController(mav, 72);
-//		return mav;
-//	}
-	
 	@RequestMapping(value = "/MoveWritePage", method = RequestMethod.POST)
 	public ModelAndView moveWritePage(ModelAndView mav) {
-		System.out.println("컨트롤러 진입 체크1");
 		this.board.backController(mav, 57);
 		return mav;
 	}

@@ -23,7 +23,6 @@ public class smsSend {
     private final static boolean isTest = true;
  
     public void sendSMS(HashMap map){
-    	System.out.println(map.get("reCode"));
         try{
   
             URL obj =new URL(apiUrl);
@@ -57,7 +56,7 @@ public class smsSend {
                                 
                                 +"&mode="+base64Encode("1")+"&smsType=S"+"&rdate"+base64Encode("")+"&rtime"+base64Encode(""); // SMS/LMS 여부
  
-            
+            System.out.println(postParams);
             //test 모드일 경우 실제로 SMS발송은 되지 않고 성공적인 호출 확인 여부만 확인 할 수 있도록 함
  
             if(isTest) {
@@ -84,7 +83,6 @@ public class smsSend {
  
             System.out.println("POST Response Code::"+responseCode);
  
- 
             if(responseCode == HttpURLConnection.HTTP_OK){ // success
  
                 BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
@@ -102,17 +100,15 @@ public class smsSend {
                 in.close();
  
                 System.out.println("SMS Content : "+buf.toString());
- 
+                
             }else{
- 
-            	System.out.println("POST request not worked");
+             	System.out.println("POST request not worked");
  
             }
  
         }catch(IOException ex){
  
         	System.out.println("SMS IOException:"+ex.getMessage());
- 
         }
  
     }

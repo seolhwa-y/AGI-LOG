@@ -106,12 +106,12 @@ function submitContents(fbCode) {
 
 	// 에디터의 내용에 대한 값 검증
 	if(fbTitle == "") {
-		alert("제목을 입력해 주세요");
+		swal("경고", "제목을 입력해 주세요!", "warning", { button: "확인"});
 		return;
 	}
 	
 	if(fbContent == "") {
-		alert("내용을 입력해 주세요");
+		swal("경고", "내용을 입력해 주세요!", "warning", { button: "확인"});
 		return;
 	}
 
@@ -185,25 +185,6 @@ function readMultipleImage(input) {
     }
 }
 
-/* 첨부파일 검증 
-function validation(obj){
-    const fileTypes = ['application/pdf', 'image/gif', 'image/jpeg', 'image/png', 'image/bmp', 'image/tif', 'application/haansofthwp', 'application/x-hwp'];
-    if (obj.name.length > 100) {
-        alert("파일명이 100자 이상인 파일은 제외되었습니다.");
-        return false;
-    } else if (obj.size > (100 * 1024 * 1024)) {
-        alert("최대 파일 용량인 100MB를 초과한 파일은 제외되었습니다.");
-        return false;
-    } else if (obj.name.lastIndexOf('.') == -1) {
-        alert("확장자가 없는 파일은 제외되었습니다.");
-        return false;
-    } else if (!fileTypes.includes(obj.type)) {
-        alert("첨부가 불가능한 파일은 제외되었습니다.");
-        return false;
-    } else {
-        return true;
-    }
-}*/
 </script>
 
 <style>

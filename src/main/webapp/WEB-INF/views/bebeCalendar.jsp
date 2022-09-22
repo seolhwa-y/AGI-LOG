@@ -315,7 +315,6 @@ function kakaoLogout() {
       // 일정을 클릭 했을 때 발생
       eventClick: function(info) {
 		if(info.el.classList.item(8) == "healthDiary") {
-			alert("dhlsdksgej");
 		}
 		else {
 			let modalTitle = document.getElementById("modalTitle");
@@ -381,12 +380,6 @@ function kakaoLogout() {
     	  },
       // 특정일자 선택했을때의 펑션
       dateClick: function(info) {
-    	    //alert('Clicked on: ' + info.dateStr);
-    	    //dateStr = 2022-09-02
-    	    //alert('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
-    	    //alert('Current view: ' + info.view.type);
-    	    // change the day's background color just for fun
-    	    //info.dayEl.style.backgroundColor = 'red';
     	    let modalTitle = document.getElementById("modalTitle");
     	    let clientData = "date="+info.dateStr;
     	    
@@ -442,8 +435,6 @@ function showDateDetail(ajaxData){
 		resInfo.innerHTML = "예약 : ";
 	}else{
 		//예약내역 있을 때
-		alert(dateInfo.reservationInfo[0].resDate);
-		alert(dateInfo.reservationInfo[0].resCoName);
 		resInfo.innerHTML = "예약 : "+dateInfo.reservationInfo[0].resDate+":00 &nbsp&nbsp"+dateInfo.reservationInfo[0].resCoName+"&nbsp&nbsp<i class=\"fa-solid fa-trash-can delBtn\" onclick=\"deleteReservation(\'"+dateInfo.reservationInfo[0].resCode+","+dateInfo.reservationInfo[0].resDate+","+dateInfo.reservationInfo[0].resCoName+"\')\"></i>";
 	}
 	// 개인일정여부에 따라 내용 표시
@@ -532,17 +523,6 @@ function deleteSchedule(schInfo){
                 swal("일정삭제를 취소하셨습니다.");
             }
     });
-	
-	/*let delConfirm = confirm("기타일정 '"+info[2]+"' 항목을 삭제하시겠습니까?");
-	if(delConfirm){
-		//확인 누름
-		let clientData = "scheduleCode="+info[0]+"&scheduleDate="+info[1];
-
-		postAjaxJson("DeleteSchedule",clientData,"showDateDetail");
-	}else{
-		//취소 누름
-		alert("삭제가 취소되었습니다");
-	}*/
 	
 }
 

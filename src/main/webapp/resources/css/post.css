@@ -192,3 +192,8 @@
     margin-left: 14rem;
     position: absolute;
 }
+.profileImage {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 25px;
+}

@@ -182,9 +182,7 @@ public class Company implements ServiceRule {
 
 					//password 비교
 					if(this.enc.matches(db.getDoPassword(), acDoc.getDoPassword())){
-						mav.addObject("companyAccessInfo",cb);
-						mav.addObject("patient", this.makePatientList(this.session.selectList("getPatientInfoList", db)));
-						mav.setViewName("patientManagement");
+						this.movePatList(mav);
 					}
 				}else {
 					mav.setViewName("checkDoctor");
@@ -192,9 +190,24 @@ public class Company implements ServiceRule {
 			}
 		} catch (Exception e) {e.printStackTrace();}
 	}
+	
+	private void movePatList(ModelAndView mav) {
+		CompanyBean cb;
+		try {
+			cb = ((CompanyBean) this.pu.getAttribute("companyAccessInfo"));
+			mav.addObject("companyAccessInfo",cb);
+			DoctorBean db = (DoctorBean) mav.getModel().get("doctorBean");
+			
+			db.setCoCode(cb.getCoCode());
+			
+			mav.addObject("patient", this.makePatientList(this.session.selectList("getPatientInfoList", db),db));
+			mav.setViewName("patientManagement");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	private void moveHealthDataList(ModelAndView mav) {
-		System.out.println("hedali in test");
 		CompanyBean cb;
 		try {
 			cb = ((CompanyBean) this.pu.getAttribute("companyAccessInfo"));
@@ -204,14 +217,13 @@ public class Company implements ServiceRule {
 
 			//예약완료, 진료완료일 경우를 걸러냄
 			if(this.session.selectOne("isResOpenData",rb) != null) {
-
+				String doCode = rb.getResDoCode();
 				//Access가 1인 경우만 조회
 				if(this.convertToBoolean(this.session.selectOne("isPrivateData", rb))){
 					mav.addObject("healthDataList", this.makeHealthData(this.session.selectList("getHealthDataList", rb), rb));
-					mav.addObject("doctorComment",this.makePatientCo(this.session.selectOne("getPatientComment",rb)));
+					mav.addObject("doctorComment",this.makePatientCo(this.session.selectOne("getPatientComment",rb),doCode));
 				}else {
-					mav.addObject("doctorComment",this.makePatientCo(this.session.selectOne("getPatientComment",rb)));
-					mav.addObject("doctorComment",this.makePatientCo((ReservationBean)this.session.selectOne("getPatientComment",rb)));
+					mav.addObject("doctorComment",this.makePatientCo((ReservationBean)this.session.selectOne("getPatientComment",rb),doCode));
 				}mav.setViewName("doctorHealthData");
 
 			}else if(this.session.selectOne("isResOpenData",rb) == null){
@@ -307,8 +319,15 @@ public class Company implements ServiceRule {
 		if(rb.getDoComment()!="" || rb.getDoComment()!=null) {
 
 			if(this.convertToBoolean(this.session.update("updDoctorComment",rb))){
-				mav.addObject("message", "소견서를 성공적으로 작성했습니다.");
-				mav.setViewName("checkDoctor");
+				//mav.addObject("message", "소견서를 성공적으로 작성했습니다.");
+				//mav.setViewName("checkDoctor");
+				rb.setResBbCode(((ReservationBean)this.session.selectOne("getPatInfo",rb)).getResBbCode());
+				DoctorBean db = new DoctorBean();
+				db.setDoCode(rb.getResDoCode());
+				mav.addObject(rb);
+				mav.addObject(db);
+				this.moveHealthDataList(mav);
+				//this.movePatList(mav);
 
 			}else {
 				mav.addObject("message", "소견서 작성에 실패했습니다.");
@@ -320,7 +339,7 @@ public class Company implements ServiceRule {
 
 
 	//환자 리스트 EL작업
-	private String makePatientList(List<ReservationBean> patientList) {
+	private String makePatientList(List<ReservationBean> patientList,DoctorBean db) {
 		StringBuffer sb = new StringBuffer();
 
 		sb.append("<table class=\"doctorMgrH\">" );
@@ -331,7 +350,7 @@ public class Company implements ServiceRule {
 		sb.append("</tr>");
 		for(int idx=0; idx<patientList.size(); idx++) {
 			ReservationBean rb = (ReservationBean)patientList.get(idx);
-			sb.append("<tr onClick=\"moveHealthData('"+ rb.getResCode() +"','"+ rb.getResBbCode() +"','"+ rb.getResDate()+"')\">");
+			sb.append("<tr onClick=\"moveHealthData('"+ rb.getResCode() +"','"+ rb.getResBbCode() +"','"+ rb.getResDate()+"','"+ db.getDoCode()+"')\">");
 			sb.append("<td class=\"doctorMgrB\">" + rb.getResDate() + "</td>");
 			sb.append("<td class=\"doctorMgrB\">" + rb.getResBbName() + "</td>");
 			sb.append("<td class=\"doctorMgrB\">" + rb.getResActionName() + "</td>");
@@ -341,17 +360,17 @@ public class Company implements ServiceRule {
 
 		return sb.toString();
 	}
-	private String makePatientCo(ReservationBean rb) {
+	private String makePatientCo(ReservationBean rb,String doCode) {
 		StringBuffer sb = new StringBuffer();
 		if(rb.getDoComment() != null) {
 			sb.append("<table class=\"commentTb\"><tr>");
-			sb.append("<th class=\"doctorMgrCM1\">작성한 진료 소견 : </th>");
+			sb.append("<th class=\"doctorMgrCM1\">작성한 진료 소견</th>");
 			sb.append("<th class=\"doctorMgrCM2\">"+ rb.getDoComment() + "</th>");
 			sb.append("</tr></table>");
 		}else if(rb.getDoComment() == null){
 			sb.append("<div class=\"docCo\">의사소견 입력<br/><br/>");
 			sb.append("<input type=\"text\" name=\"doctorComment\" class=\"commentInput\" placeholder=\"내용을 입력하세요.\"/>");
-			sb.append("<button class=\"submitBtn btn\" "+"onClick=\"insDoctorComment('"+ rb.getResCode() + "')\">입력</button></div>");
+			sb.append("<button class=\"submitBtn btn\" "+"onClick=\"insDoctorComment('"+ rb.getResCode() +"','"+doCode+ "')\">입력</button></div>");
 		}
 		return sb.toString();
 	}
@@ -384,29 +403,28 @@ public class Company implements ServiceRule {
 	//건강기록 EL작업
 	private String makeHealthData(List<HealthDiaryBean> HealthDataList,ReservationBean resBean) {
 		StringBuffer sb = new StringBuffer();
-		for(int idx=0; idx<7; idx++) {
+		sb.append("<div id=\"doctorMgrTitleDiv\">" );
+		sb.append("<p id=\"doctorMgrTitle\">건강 기록지</p></div>");
+		sb.append("<table class=\"patientMgrH\">" );
+		sb.append("<tr>");
+		sb.append("<th colspan=\"11\" class=\"patientMrgS\">예약날짜 : "+ resBean.getResDate() +"</th>");
+		sb.append("</tr>");
+		sb.append("<tr>");
+		sb.append("<th class=\"patientMgrM\">날짜</th>");
+		sb.append("<th class=\"patientMgrM\">키</th>");
+		sb.append("<th class=\"patientMgrM\">몸무게</th>");
+		sb.append("<th class=\"patientMgrM\">발사이즈</th>");
+		sb.append("<th class=\"patientMgrM\">머리둘레</th>");
+		sb.append("<th class=\"patientMgrM\">체온</th>");
+		sb.append("<th class=\"patientMgrM\">수면시간</th>");
+		sb.append("<th class=\"patientMgrM\">배변량</th>");
+		sb.append("<th class=\"patientMgrM\">배변상태</th>");
+		sb.append("<th class=\"patientMgrM\">식사량</th>");
+		sb.append("<th class=\"patientMgrM\">메모</th>");
+		sb.append("</tr>");
+		for(int idx=0; idx<HealthDataList.size(); idx++) {
 			HealthDiaryBean hdb = ((HealthDiaryBean)HealthDataList.get(idx));
-			if(idx==0) {
-				sb.append("<div id=\"doctorMgrTitleDiv\">" );
-				sb.append("<p id=\"doctorMgrTitle\">건강 기록지</p></div>");
-				sb.append("<table class=\"patientMgrH\">" );
-				sb.append("<tr>");
-				sb.append("<th colspan=\"11\" class=\"patientMrgS\">예약날짜 : "+ resBean.getResDate() +"</th>");
-				sb.append("</tr>");
-				sb.append("<tr>");
-				sb.append("<th class=\"patientMgrM\">날짜</th>");
-				sb.append("<th class=\"patientMgrM\">키</th>");
-				sb.append("<th class=\"patientMgrM\">몸무게</th>");
-				sb.append("<th class=\"patientMgrM\">발사이즈</th>");
-				sb.append("<th class=\"patientMgrM\">머리둘레</th>");
-				sb.append("<th class=\"patientMgrM\">체온</th>");
-				sb.append("<th class=\"patientMgrM\">수면시간</th>");
-				sb.append("<th class=\"patientMgrM\">배변량</th>");
-				sb.append("<th class=\"patientMgrM\">배변상태</th>");
-				sb.append("<th class=\"patientMgrM\">식사량</th>");
-				sb.append("<th class=\"patientMgrM\">메모</th>");
-				sb.append("</tr>");
-			}else {
+			
 				sb.append("<tr>");
 				if(hdb.getHdDate()!=null) {
 					sb.append("<td class=\"patientMgrB\">" + hdb.getHdDate() + "</td>");
@@ -442,7 +460,6 @@ public class Company implements ServiceRule {
 					sb.append("<td class=\"patientMgrB m\">" + hdb.getMemo() + "</td>");
 				}else {sb.append("<td class=\"patientMgrB m\">정보없음</td>");}
 				sb.append("</tr>");
-			}
 		}
 		sb.append("</table>");
 		return sb.toString();

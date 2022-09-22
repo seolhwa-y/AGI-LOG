@@ -122,11 +122,9 @@ public class HealthDiary implements ServiceRule {
 	}
 	@Transactional(rollbackFor = SQLException.class)
 	private void insertHealthDiaryCtl(ModelAndView mav) {
-		System.out.println("test");
 		try {
 			boolean result = false;
 			HealthDiaryBean hb = (HealthDiaryBean) mav.getModel().get("healthDiaryBean");
-			System.out.println("returnAction : " + hb.getReturnAction());
 			//세션검사
 			AuthBean ab = (AuthBean)this.pu.getAttribute("accessInfo");
 			//세션존재 -> insert
@@ -213,8 +211,6 @@ public class HealthDiary implements ServiceRule {
 				}
 				if(result) {
 					if (hb.getReturnAction() != null) {
-						System.out.println("check");
-						System.out.println(hb.getReturnAction());
 						mav.addObject("returnAction2", hb.getReturnAction());
 					}
 					mav.setViewName("redirect:/MoveHealthDiaryPage");

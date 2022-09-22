@@ -107,8 +107,8 @@ public class Board implements ServiceRule {
 		
 			PostBean pb = (PostBean)mav.getModel().get("postBean");
 			int pageNum = 0;	// 현재 페이지 번호
-			int listCount = 5;	// 페이지당 나타낼 글의 갯수
-			int pageCount = 3;	// 페이지그룹당 페이지 갯수
+			int listCount = 10;	// 페이지당 나타낼 글의 갯수
+			int pageCount = 10;	// 페이지그룹당 페이지 갯수
 			int maxNum =0; // 전체 글의 숫자	
 	
 			/*페이징 제작 */

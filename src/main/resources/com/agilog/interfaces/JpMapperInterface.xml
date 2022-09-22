@@ -47,17 +47,20 @@
 	</select>
 	<!-- 환자 건강기록 전체 조회 -->
 	<select id="getHealthDataList" parameterType="com.agilog.beans.ReservationBean" resultType="com.agilog.beans.HealthDiaryBean">
-	 SELECT * FROM HEALTHDATAFORDOC
-	 WHERE RESCODE = #{resCode} AND BBCODE = #{resBbCode}
-	 ORDER BY HDDATE DESC
+	<![CDATA[  
+		 SELECT * FROM HEALTHDATAFORDOC
+		 WHERE RESCODE = #{resCode} AND BBCODE = #{resBbCode} AND ROWNUM <8
+		 ORDER BY HDDATE DESC
+	]]> 		
+	 
 	</select>
 	<select id="getPatientComment" parameterType="com.agilog.beans.ReservationBean" resultType="com.agilog.beans.ReservationBean">
-		SELECT RE_CODE AS RESCODE, RE_COMMENT AS DOCOMMENT FROM RE WHERE RE_CODE = #{resCode}
+		SELECT RE_CODE AS RESCODE, RE_COMMENT AS DOCOMMENT, RE_DOCODE AS RESDOCODE FROM RE WHERE RE_CODE = #{resCode}
 	</select>
 	
 	
 	<select id="getPatInfo" parameterType="com.agilog.beans.ReservationBean" resultType="com.agilog.beans.ReservationBean">
-		SELECT * FROM RE WHERE RE_CODE = #{resCode}
+		SELECT RE_BBCODE AS RESBBCODE FROM RE WHERE RE_CODE = #{resCode}
 	</select>
 	<!-- 공개여부 -->
 	<select id="isPrivateData" parameterType="com.agilog.beans.ReservationBean" resultType="int">
@@ -91,7 +94,7 @@
 				   IB_VIEW AS IBVIEW,
 				   IB_LIKE AS LIKES
 			FROM INFOBOARD ORDER BY IBDATE DESC
-		) A)WHERE NUM BETWEEN 1+5*(#{pageNum}-1) AND 5*#{pageNum}
+		) A)WHERE NUM BETWEEN 1+10*(#{pageNum}-1) AND 10*#{pageNum}
 	</select>
 	
 	<!-- 육아정보 게시판 리스트 불러오기 오래된 순 정렬 -->
@@ -106,7 +109,7 @@
 		   IB_LIKE AS LIKES
 		FROM INFOBOARD
 		ORDER BY IBDATE ASC
-		) A)WHERE NUM BETWEEN 1+5*(#{pageNum}-1) AND 5*#{pageNum}
+		) A)WHERE NUM BETWEEN 1+10*(#{pageNum}-1) AND 10*#{pageNum}
 	</select>
 		<!-- 육아정보 게시판 리스트 불러오기 좋아요 순 정렬 -->
 	<select id="getBebeInfoLike" parameterType="com.agilog.beans.PostBean" resultType="com.agilog.beans.PostBean">
@@ -120,7 +123,7 @@
 		   IB_LIKE AS LIKES
 		FROM INFOBOARD
 		ORDER BY IB_LIKE DESC
-		) A)WHERE NUM BETWEEN 1+5*(#{pageNum}-1) AND 5*#{pageNum}
+		) A)WHERE NUM BETWEEN 1+10*(#{pageNum}-1) AND 10*#{pageNum}
 	</select>
 		<!-- 육아정보 게시판 리스트 불러오기 조회수 순 정렬 -->
 	<select id="getBebeInfoView" parameterType="com.agilog.beans.PostBean" resultType="com.agilog.beans.PostBean">
@@ -134,7 +137,7 @@
 		   IB_LIKE AS LIKES
 		FROM INFOBOARD
 		ORDER BY IBVIEW DESC
-		) A)WHERE NUM BETWEEN 1+5*(#{pageNum}-1) AND 5*#{pageNum}
+		) A)WHERE NUM BETWEEN 1+10*(#{pageNum}-1) AND 10*#{pageNum}
 	</select>
 	<!-- 정보게시판 게시글 보기 -->
 	<select id="getBebePost" parameterType="com.agilog.beans.PostBean" resultType="com.agilog.beans.PostBean">

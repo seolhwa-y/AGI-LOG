@@ -80,7 +80,6 @@
 	line-height: 1.5;
 	margin: 0 auto;
 	width:79.6rem;
-	height: 27rem;
 }
 .patientMrgS{
 	text-align:right;
@@ -123,7 +122,7 @@
 #doctorMgrTitleDiv {
 	width: 70rem;
 	height: 2rem;
-	padding: 3rem;
+	
 	margin: 0 auto;
 }
 

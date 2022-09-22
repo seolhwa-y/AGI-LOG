@@ -206,7 +206,6 @@ public class BebeCalendar implements ServiceRule {
 			if(this.converToBoolean(this.session.update("updateReservationStatus",rb))) {
 				//update 성공
 				//모달창 안의 정보 새로 가져가기
-				//rb.setMessage("예약취소를 성공하였습니다.");
 				this.dateDetailCtl(model,1);
 			}else {
 				//update 실패

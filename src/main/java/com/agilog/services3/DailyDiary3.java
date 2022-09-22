@@ -108,7 +108,6 @@ public class DailyDiary3 implements ServiceRule {
 			ddcb.setDcCode(this.session.selectOne("getDcCode", ddcb.getDcDdCode()));
 			
 			if(this.convertToBoolean(this.session.insert("insDailyDiaryComment", ddcb))) {
-				System.out.println("감성일기 댓글 등록 성공");
 				
 				map.put("suCode", ab.getSuCode());
 				map.put("ddComment", this.session.selectList("getDailyDiaryComment", ddcb));
@@ -130,7 +129,6 @@ public class DailyDiary3 implements ServiceRule {
 			ddcb.setDcSuCode(ab.getSuCode());
 			
 			if(this.convertToBoolean(this.session.update("updDailyDiaryComment", ddcb))) {
-				System.out.println("감성일기 댓글 등록 수정");
 				
 				map.put("suCode", ab.getSuCode());
 				map.put("ddComment", this.session.selectList("getDailyDiaryComment", ddcb));
@@ -152,7 +150,6 @@ public class DailyDiary3 implements ServiceRule {
 			
 			ddcb.setDcSuCode(ab.getSuCode());
 			if(this.convertToBoolean(this.session.delete("delDailyDiaryComment", ddcb))) {
-				System.out.println("감성일기 댓글 등록 삭제");
 				
 				map.put("suCode", ab.getSuCode());
 				map.put("ddComment", this.session.selectList("getDailyDiaryComment", ddcb));

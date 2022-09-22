@@ -66,38 +66,24 @@ public class DailyDiary2 implements ServiceRule {
 		}	
 	}
 
-	private void moveDailyDiaryPageCtl(ModelAndView mav) {
-		
-	}
-
-	private void showDailyDiaryCtl(Model model) {
-
-	}
-
-	private void moveMyDailyDiaryPageCtl(ModelAndView mav) {
-
-	}
-
 	private void getDailyDiaryFeedCtl(Model model) {
         HashMap<String, Object> map = new HashMap<String, Object>();
         HashMap<String,String> likeMap = new HashMap<String,String>();
         DailyDiaryCommentBean ddcb = (DailyDiaryCommentBean)model.getAttribute("dailyDiaryCommentBean");
         DailyDiaryBean ddb = (DailyDiaryBean) model.getAttribute("dailyDiaryBean");
-
+        boolean like = false;
         AuthBean ab;
         try {
             ab = (AuthBean)this.pu.getAttribute("accessInfo");
             if(ab != null) {
                 map.put("suCode", ab.getSuCode());
                 likeMap.put("ddCode", ddb.getDdCode());
-                likeMap.put("suCode", (String)map.get("suCode"));
+                likeMap.put("suCode", ab.getSuCode());
                 // 좋아요 누른적 있음
                 if (this.convertToBoolean(this.session.selectOne("isDdLikeM", likeMap))) {
-                        // 현재 유저의 좋아요 여부 저장
-                        ddb.setLike(true);
+                	like = true;
                 } else { // 좋아요 누른적 없음
-                        // 현재 유저의 좋아요 여부 저장
-                        ddb.setLike(false);
+                	like = false;
                 }
             }
         } catch (Exception e) {
@@ -113,7 +99,7 @@ public class DailyDiary2 implements ServiceRule {
         if(ddb.getDpLink() == null) {
             ddb.setDpLink("/res/img/non_photo.png");
         }
-
+        ddb.setLike(like);
         map.put("ddFeed", ddb);
         map.put("ddComment", this.session.selectList("getDailyDiaryComment", ddcb));
         model.addAttribute("dailyDiaryFeed", map);
@@ -191,13 +177,11 @@ public class DailyDiary2 implements ServiceRule {
 						
 						//flag가 트루면 자유게시판으로. flase면 DB에 저장됐던 정보들을 지우고 자유게시판으로.
 						if (flag) {
-							System.out.println("인서트성공");
 							mav.addObject("allDailyDiaryList", this.makeDialyFeed(this.session.selectList("getDailyDiaryFeed")));
 							mav.addObject("message","감성일기 등록을 성공하셨습니다!");
 							mav.addObject("title","감성일기 등록");
 							mav.setViewName("dailyDiary");
 						} else {
-							System.out.println("인서트실패");
 							this.session.delete("delDd", db);
 							this.session.delete("delDdPhoto", ddpb);
 
@@ -267,14 +251,11 @@ public class DailyDiary2 implements ServiceRule {
 			        
 			    	if( file.exists() ){
 			    		if(file.delete()){
-			    			System.out.println("파일삭제 성공");
 			    			//데일리 다이어리 이미지 삭제
 			    			this.session.delete("delDdPhoto", db);
 			    		}else{
-			    			System.out.println("파일삭제 실패");
 			    		}
 			    	}else{
-			    		System.out.println("파일이 존재하지 않습니다.");
 			    	}
 				}
 				

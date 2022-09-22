@@ -469,7 +469,6 @@ public class Authentication implements ServiceRule {
 			}
 			mav.setViewName("companyLogin");
 		} else {
-			System.out.println("SHY : 기업 회원가입 실패");
 		}
 		mav.setViewName("companyLogin");
 	}

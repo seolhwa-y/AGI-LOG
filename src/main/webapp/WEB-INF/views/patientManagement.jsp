@@ -11,12 +11,13 @@
 </head>
 <script>
 
-function moveHealthData(data1,data2,data3){
+function moveHealthData(data1,data2,data3,data4){
 	let form = document.getElementById("serverForm");
 	
 	form.appendChild(createInput("hidden","resCode",data1,null,null));
 	form.appendChild(createInput("hidden","resBbCode",data2,null,null));
 	form.appendChild(createInput("hidden","resDate",data3,null,null));
+	form.appendChild(createInput("hidden","resDoCode",data4,null,null));
 	
 	form.action = "MoveHealthDataList";
 	form.method = "post";
@@ -24,7 +25,6 @@ function moveHealthData(data1,data2,data3){
 }
 
 function init(){
-	alert("${companyAccessInfo}");
 	if("${companyAccessInfo}" != ""){
 		let accessArea = document.getElementById("accessArea");
 		accessArea.innerHTML = "";
@@ -33,16 +33,7 @@ function init(){
 		accessArea.innerHTML += "<span onclick=\"movePage(\'CompanyLogout\')\">로그아웃</span>";	
 	}
 }
-/*
-function init(){
-	if("${companyBean.coName}" != ""){
-		let accessArea = document.getElementById("accessArea");
-		accessArea.innerHTML = "";
-		
-		accessArea.innerHTML = "<span> ${companyBean.coName}님 </span>";
-		accessArea.innerHTML += "<span onclick=\"movePage(\'CompanyLogout\')\">로그아웃</span>";
-	}
-}*/
+
 </script>
 </head>
 <body onload="init()">

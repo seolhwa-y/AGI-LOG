@@ -99,7 +99,7 @@
 			   DP_LINK AS DPLINK
 		FROM DAILYDIARY LEFT OUTER JOIN DAILYDIARYPHOTO ON DD_CODE = DP_DDCODE
 		WHERE DD_SUCODE = #{suCode}
-		ORDER BY DD_DATE
+		ORDER BY DD_DATE DESC
 	</select>
 <!-- 	<select id="getCoResList" parameterType="com.agilog.beans.ReservationBean" resultType="com.agilog.beans.ReservationBean">
         SELECT CR_COCODE AS RESCOCODE,

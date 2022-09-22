@@ -113,7 +113,7 @@ public class Board2 {
 		PostBean pb = (PostBean)mav.getModel().get("postBean");
 		int pageNum = 0;	// 현재 페이지 번호
 		int listCount = 10;	// 페이지당 나타낼 글의 갯수
-		int pageCount = 3;	// 페이지그룹당 페이지 갯수
+		int pageCount = 10;	// 페이지그룹당 페이지 갯수
 		int maxNum =0; // 전체 글의 숫자	
 
 		/*페이징 제작 */
@@ -219,14 +219,11 @@ public class Board2 {
 				        
 				    	if( file.exists() ){
 				    		if(file.delete()){
-				    			System.out.println("파일삭제 성공");
 								//포스트 이미지 DB 삭제
 								this.session.delete("delFbPostPhoto", ppb);
 				    		}else{
-				    			System.out.println("파일삭제 실패");
 				    		}
 				    	}else{
-				    		System.out.println("파일이 존재하지 않습니다.");
 				    	}
 					}
 				}
@@ -258,9 +255,6 @@ public class Board2 {
 				
 				pb = this.session.selectOne("getTnC", pb);
 
-				System.out.println("title : " + pb.getFbTitle());
-				System.out.println("title : " + pb.getFbContent());
-				
 				mav.addObject("postBean", pb);
 				mav.setViewName("postWrite");
 			} else {
@@ -278,7 +272,6 @@ public class Board2 {
 	}
 	
 	private void moveWritePageCtl(ModelAndView mav) {
-		System.out.println("라이트 진입 체크1");
 
 		try {
 			AuthBean ab = ((AuthBean) this.pu.getAttribute("accessInfo"));

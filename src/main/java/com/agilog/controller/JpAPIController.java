@@ -40,9 +40,7 @@ public class JpAPIController {
 	public String checkDoctorCodeCtl(Model model, HttpServletRequest req, @ModelAttribute DoctorBean db) {
 		model.addAttribute("code",req.getParameter("code"));
 		model.addAttribute(db);
-		System.out.println("중복체크 컨트롤러 진입");
 		this.company.backController(model, 79);
-		System.out.println((String)model.getAttribute("check"));
 		return (String)model.getAttribute("check");
 	}
 	//의사 삭제 메소드

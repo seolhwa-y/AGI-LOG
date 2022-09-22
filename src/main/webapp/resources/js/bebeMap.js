@@ -77,7 +77,7 @@ function mapComment(ajaxData) {
 		comment += "<div class = 'comment " + i + "'>";
 		// 프로필 사진이 없을 경우 기본 이미지
 		if (mcComment[i].suPhoto != null) {
-			comment += "<img class='profileImage' src=" + ddComment[i].suPhoto + ">";
+			comment += "<img class='profileImage' src=" + mcComment[i].suPhoto + ">";
 		} else {
 			comment += "<img class='profileImage' src='/res/img/profile_default.png'>";
 		}
@@ -154,7 +154,7 @@ function getDoctorRes() {
 	let day = document.getElementsByClassName("rd-day-body");
 	let babyName = document.getElementById("babyName");
 	
-	if(babyName.value == null) return alert("아이를 선택하세요");
+	if(babyName.value == null) return swal("알림", "아이를 선택하세요!.", "waring", { button: "확인"});;
 	
 	for(i = 0; i < day.length; i++){
 		day[i].addEventListener("dblclick", getResTime);
@@ -172,8 +172,7 @@ function getResTime() {
 	let doctor = document.getElementById("doctorName").value;
 	let code = doctor.split(":");
 	
-	const clientData = "resCoCode=" + code[0] + "&resDoCode=" + code[1] + "&resDate=" + resDate;
-	alert(clientData);
+	const clientData = " " + code[0] + "&resDoCode=" + code[1] + "&resDate=" + resDate;
 	postAjaxJson("GetResTime", clientData, "callResTime");
 }
 
@@ -207,7 +206,8 @@ function callResTime(ajaxData) {
 			}
 		}
 	} else {
-		alert("해당 일자는 예약 불가능합니다.");
+		//alert("해당 일자는 예약 불가능합니다.");
+		swal("알림", "해당 일자는 예약 불가능합니다.", "waring", { button: "확인"});
 	}
 
 }

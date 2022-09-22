@@ -9,6 +9,8 @@
 <script src="https://use.fontawesome.com/releases/v6.1.2/js/all.js"></script>
 <link rel="stylesheet" href="/res/css/agiMain.css">
 <link rel="stylesheet" href="/res/css/freeBoard.css">
+<!-- 알림창 꾸미기 -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <!-- 카카오 스크립트 -->
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
@@ -110,7 +112,7 @@ function changeSort(){
 	//option값을 저장
 	let fbSorts = postSelect.options[postSelect.selectedIndex].value;
 	let optionText = postSelect.options[postSelect.selectedIndex].text;
-	alert(optionText + "으로 정렬합니다");
+	swal("알림", optionText + "으로 정렬합니다", "success", { button: "확인"});
 	form.appendChild(createInput("hidden","fbSort",fbSorts,null,null));
 	
 
@@ -122,8 +124,6 @@ function changeSort(){
 function pageNum(num){
 	let form = document.getElementById("serverForm");
 	form.appendChild(createInput("hidden","page",num,null,null));
-	
-	alert(num);
 	
 	form.action = "MovePageNum";
 	form.method = "get";

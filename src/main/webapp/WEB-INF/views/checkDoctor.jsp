@@ -9,6 +9,8 @@
 <script src="https://use.fontawesome.com/releases/v6.1.2/js/all.js"></script>
 <link rel="stylesheet" href="/res/css/agiMain.css">
 <link rel="stylesheet" href="/res/css/company.css">
+<!-- 알림창 꾸미기 -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <style>
 @import url("//fonts.googleapis.com/earlyaccess/nanumgothic.css" );
 .passw[type=password]{
@@ -33,7 +35,6 @@
 		form.submit();
 	}
 	function init(){
-		alert("${companyAccessInfo}");
 		if("${companyAccessInfo}" != ""){
 			let accessArea = document.getElementById("accessArea");
 			accessArea.innerHTML = "";
@@ -42,19 +43,9 @@
 			accessArea.innerHTML += "<span onclick=\"movePage(\'CompanyLogout\')\">로그아웃</span>";
 		}
 		if("${message}" != ""){
-			alert("${message}");
+			swal("경고", "${message}", "warning", { button: "확인"});
 		}
 	}
-	/*
-	function init(){
-		if("${companyBean.coName}" != ""){
-			let accessArea = document.getElementById("accessArea");
-			accessArea.innerHTML = "";
-			
-			accessArea.innerHTML = "<span> ${companyBean.coName}님 </span>";
-			accessArea.innerHTML += "<span onclick=\"movePage(\'CompanyLogout\')\">로그아웃</span>";
-		}
-	}*/
 </script>
 </head>
 <body onload="init()">

@@ -103,11 +103,8 @@ function changeSort(){
 	//option값을 저장
 	let ibSorts = postSelect.options[postSelect.selectedIndex].value;
 	let optionText = postSelect.options[postSelect.selectedIndex].text;
-	alert(optionText + "으로 정렬합니다");
 	form.appendChild(createInput("hidden","ibSort",ibSorts,null,null));
-	
 
-	
 	form.action = "MoveInfoBoard";
 	form.method = "get";
 	form.submit();

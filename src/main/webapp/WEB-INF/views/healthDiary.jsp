@@ -88,7 +88,7 @@
             }
             //일기 작성 실패 메시지
             if("${fail}"!="") {
-            	alert("${fail}");
+            	swal("알림", "${fail}", "error", { button: "확인"});
             }
             writeForm = document.getElementsByClassName("modal_content")[0].innerHTML;
             
@@ -332,8 +332,8 @@
 			} else item[1].innerHTML = "<span>몸무게</span><span>정보없음</span><span class='unit'>kg</span>";
 			//발
 			if(data.foot!=null) {
-				item[2].innerHTML = "<span>발사이즈</span><span class='data'>"+data.foot+"</span><span class='unit'>cm</span>";
-			} else item[2].innerHTML = "<span>발사이즈</span><span>정보없음</span><span class='unit'>cm</span>";
+				item[2].innerHTML = "<span>발사이즈</span><span class='data'>"+data.foot+"</span><span class='unit'>mm</span>";
+			} else item[2].innerHTML = "<span>발사이즈</span><span>정보없음</span><span class='unit'>mm</span>";
 			//머리
 			if(data.head!=null) {
 				item[3].innerHTML = "<span>머리둘레</span><span class='data'>"+data.head+"</span><span class='unit'>cm</span>";

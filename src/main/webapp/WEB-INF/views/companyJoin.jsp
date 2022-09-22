@@ -11,6 +11,8 @@
 <link rel="stylesheet" href="/res/css/company.css">
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!-- 알림창 꾸미기 -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <style>
 .accessInput-input-group2 {
  width:32.4rem;
@@ -71,6 +73,7 @@
 	              	}
 				} else { 
 					console.log("계속 사업자 아님"); 
+					document.querySelector(".isCheckCC").innerText = "계속사업자만 가입이 가능합니다.";
 					$('[name="coCode"]').val('');
 					return;
 				}
@@ -160,7 +163,7 @@
 		if(isCharLength(coName.value, 2)){
 			console.log("상호 2자리 이상 확인 완료");
 		} else {
-			alert("상호를 다시 입력해주세요.");
+			swal("경고", "상호를 다시 입력해주세요!", "warning", { button: "확인"});
 			coName.value = "";
 			coName.focus();
 			return;

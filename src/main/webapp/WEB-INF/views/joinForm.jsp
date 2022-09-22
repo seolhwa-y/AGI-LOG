@@ -20,7 +20,7 @@
 	        new daum.Postcode({
 	            oncomplete: function(data) { //선택시 입력값 세팅
 	                console.log(data.address);
-	                document.getElementsByName("suAddress")[0].value = data.address + data.bname; // 주소 넣기
+	                document.getElementsByName("suAddress")[0].value =  data.bname; // 주소 넣기
 	            }
 	        }).open();
 	} 

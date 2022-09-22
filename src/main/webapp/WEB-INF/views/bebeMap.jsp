@@ -161,7 +161,6 @@ text-align: center;
     
             let loader = new GLTFLoader();
             loader.load("/res/img/dr.long_leaf/scene.gltf", function(gltf){
-                //alert("병원 예약 완료");
                 scene.add(gltf.scene);
     
                 function animate(){
@@ -310,7 +309,6 @@ text-align: center;
 
             			// 마커에 클릭 이벤트를 등록한다 (우클릭 : rightclick)
             			 kakao.maps.event.addListener(marker, 'click', function () {
-            				 alert("회원가입 시 주소지 입니다.");
             			 });
             		}
             	}); 
@@ -556,7 +554,6 @@ text-align: center;
     	    			console.log(mcList);
     	        		infowindow.setContent(infoWindow);
             		}
-        			//swal("요청", "요청하신 작업을 완료하였습니다!", "success", { button: "완료"});
             	}
             	
 
@@ -567,7 +564,7 @@ text-align: center;
         		let keyword = document.getElementById('keyword').value;
 
         		if (!keyword.replace(/^\s+|\s+$/g, '')) {
-        			alert('키워드를 입력해주세요!');
+        			swal("경고", "키워드를 입력해주세요!", "warning", { button: "확인"});
         			return false;
         		}
         		callSearchPlaces(keyword);
@@ -614,10 +611,10 @@ text-align: center;
         			// 페이지 번호를 표출합니다
         			displayPagination(pagination);
         		} else if (status === kakao.maps.services.Status.ZERO_RESULT) {
-        			alert('검색 결과가 존재하지 않습니다.');
+        			swal("경고", "검색결과가 존재하지 않습니다!", "warning", { button: "확인"});
         			return;
         		} else if (status === kakao.maps.services.Status.ERROR) {
-        			alert('검색 결과 중 오류가 발생했습니다.');
+        			swal("경고", "검색결과 중 오류가 발생했습니다!", "warning", { button: "확인"});
         			return;
         		}
         	}

@@ -185,7 +185,6 @@ public class SkHomeController {
 	
 	@RequestMapping(value = "/InsertHealthDiary", method = RequestMethod.POST)
 	public ModelAndView insertHealthDiary(ModelAndView mav, @ModelAttribute HealthDiaryBean hb) {
-		System.out.println("ihd test");
 		mav.addObject(hb);
 		this.healthDiary.backController(mav, 37);
 		if (mav.getModel().get("returnAction2") != null || mav.getModel().get("returnAction2")=="") {

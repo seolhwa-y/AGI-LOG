@@ -117,7 +117,7 @@ public class Company3 implements ServiceRule {
 								map.put("resBbName", rb.getResBbName());
 								map.put("resActionName", rb.getResActionName());
 								map.put("resDoName", rb.getResDoName());
-								//sms.sendSMS(map);
+								sms.sendSMS(map);
 							}
 						}
 					}
@@ -137,7 +137,7 @@ public class Company3 implements ServiceRule {
 								map.put("resBbName", rb.getResBbName());
 								map.put("resActionName", rb.getResActionName());
 								map.put("resDoName", rb.getResDoName());
-								//sms.sendSMS(map);
+								sms.sendSMS(map);
 							}
 						}
 					}

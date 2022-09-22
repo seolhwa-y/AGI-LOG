@@ -33,8 +33,21 @@
 .checkPW {
     font-size: 16px;
     height: 1rem;
+    width:50%;
+    height:5%;
+    margin-left : 19%;
 }
-
+.isCheckPW{
+    margin-right:32%
+}
+.delBtn{
+	font-size:1.2rem;
+}
+.updBtn{
+	float:right;
+	margin-bottom:1%;
+	margin-right:4%;
+}
 </style>
 <script>
 	
@@ -57,11 +70,9 @@
 		}
 	}
 	function postAjaxJson(jobCode, clientData, fn) {
-		alert(jobCode);
 		const ajax = new XMLHttpRequest();
 		ajax.onreadystatechange = function() {
 			if(ajax.readyState == 4 && ajax.status == 200) { //4:데이터가 넘어옴
-				alert(ajax.responseText);
 				window[fn](ajax.responseText); //응답 데이터
 			}
 		};
@@ -75,16 +86,13 @@
 		//0:? 1:닉네임
 		let doctorCode = document.getElementsByName("doCode")[0];
 		let clientData = "code=1&doCode="+doctorCode.value;
-		alert(clientData);
 		postAjaxJson("CheckDoctorCode",clientData,"callBackOverlap");
 	}
 	function callBackOverlap(ajaxData) {
 		if(ajaxData=="ok"){
-			//alert("사용 가능한 직원코드입니다.");
 			swal("직원코드 중복확인", "사용 가능한 직원코드입니다!", "success", { button: "확인"});
 		}
 		else {
-			//alert("이미 존재하는 직원코드입니다.");
 			swal("직원코드 중복확인", "이미 존재하는 직원코드입니다!", "error", { button: "확인"});
 		}
 	}
@@ -163,7 +171,6 @@
 		
 		if(code.length > 3 && code.length == 0){
 			swal("등록 실패", "직원 코드는 3자리를 입력해주세요!", "waring", { button: "확인"});
-			//alert("직원 코드는 3자리를 입력해주세요.");
 			return;
 		}
 		
@@ -224,7 +231,6 @@
 	
 
 	function init() {
-		alert("${companyAccessInfo}");
 		if ("${companyAccessInfo}" != "") {
 			let accessArea = document.getElementById("accessArea");
 			accessArea.innerHTML = "";
@@ -233,16 +239,7 @@
 			accessArea.innerHTML += "<span onclick=\"movePage(\'CompanyLogout\')\">로그아웃</span>";
 		}
 	}
-/*	
-	function init(){
-		if("${companyBean.coName}" != ""){
-			let accessArea = document.getElementById("accessArea");
-			accessArea.innerHTML = "";
-			
-			accessArea.innerHTML = "<span> ${companyBean.coName}님 </span>";
-			accessArea.innerHTML += "<span onclick=\"movePage(\'CompanyLogout\')\">로그아웃</span>";
-		}
-	}*/
+
 </script>
 </head>
 <body onload="init()">

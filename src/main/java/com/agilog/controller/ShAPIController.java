@@ -188,7 +188,6 @@ public class ShAPIController {
 	@SuppressWarnings("unchecked")
 	@PostMapping("/GetResTime")
 	public List<ReservationBean> getBabyListInfo(Model model, @ModelAttribute ReservationBean rb){
-		System.out.println(rb);
 		model.addAttribute(rb);
 		this.bebeMap.backController(model, 200);
 	
@@ -198,7 +197,6 @@ public class ShAPIController {
 	// 지도 예약완료
 	@PostMapping("/Reservation")
 	public String reservation(Model model, @ModelAttribute ReservationBean rb){
-		System.out.println(rb);
 		model.addAttribute(rb);
 		this.bebeMap.backController(model, 44);
 		

@@ -373,7 +373,6 @@ public class MyPage implements ServiceRule {
 		/* 저장 폴더 경로 설정 */
 		//String path = "C:\\upload\\profile\\"+suCode;
 		String path = req.getSession().getServletContext().getRealPath("/resources/img/")+suCode+"\\profile\\";
-		System.out.println("path:"+path);
 		//String path = "/res/img/"+suCode;
 		
 		/* 확장자 뽑아내서 파일이름 만들어주기 */

@@ -25,6 +25,16 @@
 .moveConn:hover{
   transform: scale(1.2);
 }
+.mainLeft{
+	text-align: center;
+}
+.mainLeft > img{
+filter: opacity(0.9);
+    margin-top: 4%;
+}
+.photo{
+margin-left: 11%;
+}
 </style>
 
 <!-- 카카오 스크립트 -->
@@ -108,7 +118,6 @@
 	}
 
 	function me(ddCode) {
-		alert(ddCode);
 		let form = document.getElementById("serverForm");
 		
 		form.appendChild(createInput("hidden","ddCode",ddCode,"",""));
@@ -147,6 +156,7 @@
 				<div class="main" style="height: 75%;">
 					<div class="mainLeft"
 						style="width: 70%; height: 100%; float: left;">
+						<img src="/res/img/authB.png">
 						<!-- 메인 이미지 영역 -->
 					</div>
 					<div class="mainRight"

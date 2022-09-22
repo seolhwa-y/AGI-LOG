@@ -203,7 +203,7 @@ public class BebeMap implements ServiceRule {
 
 				bmList.add(bmb);
 			}
-		}else {System.out.println("요청한 지역의 정보가 없습니다.");}
+		}else {}
 
 		return bmList;
 	}
@@ -248,7 +248,6 @@ public class BebeMap implements ServiceRule {
 			}
 			
 			if(this.convertToBoolean(this.session.insert("insMapComment", bmcb))) {
-				System.out.println("지도 댓글 등록 성공");
 				
 				map.put("suCode", ab.getSuCode());
 				map.put("mcComment", this.session.selectList("getMapCommentList", bmcb));
@@ -270,7 +269,6 @@ public class BebeMap implements ServiceRule {
 			
 			bmcb.setMcSuCode(ab.getSuCode());
 			if(this.convertToBoolean(this.session.update("updMapComment", bmcb))) {
-				System.out.println("지도 댓글 수정 성공");
 				
 				map.put("suCode", ab.getSuCode());
 				map.put("mcComment", this.session.selectList("getMapCommentList", bmcb));
@@ -292,8 +290,7 @@ public class BebeMap implements ServiceRule {
 			
 			bmcb.setMcSuCode(ab.getSuCode());
 			if(this.convertToBoolean(this.session.delete("delMapComment", bmcb))) {
-				System.out.println("지도 댓글 삭제 성공");
-				
+
 				map.put("suCode", ab.getSuCode());
 				map.put("mcComment", this.session.selectList("getMapCommentList", bmcb));
 				model.addAttribute("delMapComment", map);
@@ -348,7 +345,6 @@ public class BebeMap implements ServiceRule {
 		ReservationBean rb = (ReservationBean)model.getAttribute("reservationBean");
 		
 		if(this.convertToBoolean(this.session.selectOne("isResInfo", rb))) {
-			System.out.print("동일한 시간에 예약할 수 없습니다.");
 			model.addAttribute("message", "동일한 시간에 예약할 수 없습니다.");
 		} else { 
 			rb.setResCode(this.session.selectOne("getResCode", rb));
@@ -356,9 +352,7 @@ public class BebeMap implements ServiceRule {
 	//		rb.setResCount(rb.getResCount()+1);
 			
 			if(this.convertToBoolean(this.session.insert("insReservationList", rb))) {
-				System.out.println("지도 예약 성공");
 				if(this.convertToBoolean(this.session.update("updResTime", rb))) {
-					System.out.println("지도 예약 인원 추가 성공");
 				}
 			}
 		}
