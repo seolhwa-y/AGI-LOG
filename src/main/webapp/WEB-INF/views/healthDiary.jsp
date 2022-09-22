@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="/res/css/agiMain.css">
     <link rel="stylesheet" href="/res/css/healthDiary.css">
 
+<!-- 알림창 꾸미기 -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <!-- 카카오 스크립트 -->
     <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
     <!-- 네이버 스크립트 -->
@@ -96,6 +98,9 @@
             //캘린더에서 특정 날짜에 작성한 일기 확인
             if("${showHdDate}"!="") {
             	showHdDate("${showHdDate}");
+            }
+            if("${title}"!=""){
+            	swal("${title}", "${message}", "success", { button: "확인"});
             }
         }
         /* ------------------------------------------------------------- */
@@ -236,7 +241,7 @@
             if (document.getElementsByClassName("saveBtn")[0] == undefined) {
                 modal.style.display = "block";
             } else {
-                alert("아이정보가 없습니다!");
+            	swal("경고", "아이정보가 없습니다!", "error", { button: "확인"});
                 return;
             }
         }
@@ -396,19 +401,35 @@
         	let data = JSON.parse(ajaxData);
         	if(data.memo!="실패") {
         		hdMemo.innerHTML = "<div style='margin: 10px 0;'>메모<i class='fa-solid fa-pen mUpdBtn editBtn' onclick='updForm("+data.hdCode+")'></i></div><textarea name='memo' class='mMemoInput' readonly>"+data.memo+"</textarea>";
-        	} else alert("수정 실패");
+        		swal("메모 수정", "메모 수정을 성공하였습니다!", "success", { button: "확인"});
+        	} else swal("메모 수정", "메모 수정을 실패하였습니다!", "error", { button: "확인"});;
         }
         //건강일기 삭제
         function deleteHealthDiary(hdCode) {
         	let form = document.getElementById("serverForm");
-        	let result = confirm("삭제하시겠습니까?");
+            swal({
+                title: "건강일기 삭제",
+                text: "건강일기를 삭제하시겠습니까?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                	form.action = "DeleteHealthDiary";
+            		form.method = "post";
+            		
+            		form.appendChild(createInput("hidden","hdCode",hdCode,null,null));
+            		form.submit();
+            });
+        	
+        	/*let result = confirm("삭제하시겠습니까?");
         	if(result) {
         		form.action = "DeleteHealthDiary";
         		form.method = "post";
         		
         		form.appendChild(createInput("hidden","hdCode",hdCode,null,null));
         		form.submit();
-        	}
+        	}*/
         }
     </script>
 </head>

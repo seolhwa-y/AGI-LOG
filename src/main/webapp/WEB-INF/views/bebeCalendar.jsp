@@ -15,6 +15,7 @@
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 <!-- 네이버 스크립트 -->
 <script	src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <style>
 #calendar {
 	margin: 0 auto;
@@ -465,7 +466,9 @@ function showDateDetail(ajaxData){
 			}
 		}
 	}
-	
+	if(dateInfo.message=="성공"){
+		swal("요청", "요청하신 작업을 완료하였습니다!", "success", { button: "확인"});
+	}
 }
 // 모달창 닫기
 function modalClose(){
@@ -490,15 +493,23 @@ function deleteReservation(resInfo){
 	let info = [];
 	info = resInfo.split(",");
 	let date = document.getElementById("modalTitle").innerText;
-	let delConfirm = confirm(info[2]+" 예약을 취소하시겠습니까?");
-	if(delConfirm){
-		//확인 누름
-		let clientData = "resCode="+info[0]+"&resTime="+info[1]+"&resDate="+date;
-		postAjaxJson("DeleteReservation",clientData,"showDateDetail");
-	}else{
-		//취소 누름
-		alert("예약삭제가 취소되었습니다");
-	}
+	
+	 swal({
+	        title: "예약취소",
+	        text: "예약을 취소하시겠습니까?",
+	        icon: "warning",
+	        buttons: true,
+	        dangerMode: true,
+	    })
+	        .then((willDelete) => {
+	            if (willDelete) {
+	            	let clientData = "resCode="+info[0]+"&resTime="+info[1]+"&resDate="+date;
+	                postAjaxJson("DeleteReservation", clientData, "showDateDetail");
+	            } else {
+	                swal("예약취소를 취소하셨습니다.");
+	            }
+	    });
+	
 }
 // 개인일정 삭제
 function deleteSchedule(schInfo){
@@ -506,7 +517,23 @@ function deleteSchedule(schInfo){
 	let info = [];
 	info = schInfo.split(",");
 	
-	let delConfirm = confirm("기타일정 '"+info[2]+"' 항목을 삭제하시겠습니까?");
+	swal({
+        title: "기타일정 삭제",
+        text: "'"+info[2]+"' 항목을 삭제하시겠습니까?",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    })
+        .then((willDelete) => {
+            if (willDelete) {
+            	let clientData = "scheduleCode="+info[0]+"&scheduleDate="+info[1];
+                postAjaxJson("DeleteSchedule", clientData, "showDateDetail");
+            } else {
+                swal("일정삭제를 취소하셨습니다.");
+            }
+    });
+	
+	/*let delConfirm = confirm("기타일정 '"+info[2]+"' 항목을 삭제하시겠습니까?");
 	if(delConfirm){
 		//확인 누름
 		let clientData = "scheduleCode="+info[0]+"&scheduleDate="+info[1];
@@ -515,7 +542,7 @@ function deleteSchedule(schInfo){
 	}else{
 		//취소 누름
 		alert("삭제가 취소되었습니다");
-	}
+	}*/
 	
 }
 
@@ -539,8 +566,24 @@ function updateSchedule(schInfo){
 	
 	let updSchedule = document.getElementById("updSchedule");
 	let clientData = "scheduleCode="+info[0]+"&scheduleDate="+info[1]+"&scheduleName="+updSchedule.value;
-
-	postAjaxJson("UpdateSchedule",clientData,"showDateDetail");
+	
+	   swal({
+	        title: "일정 수정",
+	        text: "일정을 수정하시겠습니까?",
+	        icon: "info",
+	        buttons: true,
+	        dangerMode: false,
+	    })
+	        .then((willDelete) => {
+	            if (willDelete) {
+	                postAjaxJson("UpdateSchedule", clientData, "showDateDetail");
+	            } else {
+	                swal("일정 수정을 취소하셨습니다.");
+	            }
+	    });
+	
+	
+	//postAjaxJson("UpdateSchedule",clientData,"showDateDetail");
 }
 // 개인일정 추가
 function insSch(schDate){
@@ -554,7 +597,20 @@ function insertSchedule(schDate){
 	let insSchedule = document.getElementById("insSchedule");
 	let clientData = "scheduleName="+insSchedule.value+"&scheduleDate="+schDate;
 	
-	postAjaxJson("InsertSchedule",clientData,"showDateDetail");
+	   swal({
+	        title: "일정 추가",
+	        text: "'"+insSchedule.value+"' 일정을 추가하시겠습니까?",
+	        icon: "info",
+	        buttons: true,
+	        dangerMode: false,
+	    })
+	        .then((willDelete) => {
+	            if (willDelete) {
+	                postAjaxJson("InsertSchedule", clientData, "showDateDetail");
+	            } else {
+	                swal("일정 추가를 취소하셨습니다.");
+	            }
+	    });
 }
 
 function showDd(date) {

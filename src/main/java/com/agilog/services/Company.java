@@ -67,6 +67,9 @@ public class Company implements ServiceRule {
 				case 83:
 					this.moveHealthDataList(mav);
 					break;
+				case 1000:
+					this.moveCheckDoctor(mav);
+					break;
 				default:
 					break;
 				}
@@ -78,6 +81,17 @@ public class Company implements ServiceRule {
 	}
 
 
+
+	private void moveCheckDoctor(ModelAndView mav) {
+		
+		try {
+			CompanyBean cb;
+			cb =(CompanyBean)this.pu.getAttribute("companyAccessInfo");
+			mav.addObject("companyAccessInfo",cb);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	public void backController(Model model, int serviceCode) {
 		switch (serviceCode) {
@@ -98,7 +112,6 @@ public class Company implements ServiceRule {
 		DoctorBean db = (DoctorBean)model.getAttribute("doctorBean");
 		try {
 			CompanyBean compb = (CompanyBean)this.pu.getAttribute("companyAccessInfo");
-			System.out.println("세션 :" + compb);
 
 			db.setCoCode(compb.getCoCode());
 			db.setDoPassword(this.enc.encode(db.getDoPassword()));
@@ -122,6 +135,7 @@ public class Company implements ServiceRule {
 				cb.setCoCode(compb.getCoCode());
 				/* 내가 받은 프로젝트의 데이터를 html에 만들고 EL로 저장 */
 				mav.addObject("doctor",this.makeDoctorList(this.session.selectList("getDoctorInfo", cb)));
+				mav.addObject("companyAccessInfo",compb);
 				mav.setViewName("doctorManagement");	
 			}else {
 				mav.setViewName("checkManager");
@@ -136,17 +150,18 @@ public class Company implements ServiceRule {
 		try {
 			CompanyBean cb = ((CompanyBean) this.pu.getAttribute("companyAccessInfo"));
 			if(cb != null) {
+				mav.addObject("companyAccessInfo",cb);
 				if(cb.getCoManagerCode()!=null) {
 					//mav.addObject("resInfo", this.makeHTMLCReservation(this.session.selectList("getDoctorInfo", cb), this.session.selectList("getResInfo", cb)));
 					//mav.setViewName("reservationManagement");
 					this.checkManager(mav);
+					
 				} else {
 					mav.setViewName("checkManager");
 				}
 			}
 			else {
 				mav.setViewName("companyLogin");
-				System.out.println("세션만료");
 			}
 
 		} catch (Exception e) {e.printStackTrace();}
@@ -156,25 +171,22 @@ public class Company implements ServiceRule {
 	private void movePatientManagementCtl(ModelAndView mav) {
 		try {
 			CompanyBean cb = ((CompanyBean) this.pu.getAttribute("companyAccessInfo"));
-			System.out.println("세션 : " + cb);
 
 			if(cb != null) {
 				DoctorBean db = (DoctorBean) mav.getModel().get("doctorBean");
 				//세션에서 coCode를 가져와 삽입
 				db.setCoCode(cb.getCoCode());
-				System.out.println("코드합친거 : " + db);
 
 				if(this.convertToBoolean(this.session.selectOne("isDoctorCode", db))){
 					DoctorBean acDoc = this.session.selectOne("isDoctorMember", db);
 
 					//password 비교
 					if(this.enc.matches(db.getDoPassword(), acDoc.getDoPassword())){
-
+						mav.addObject("companyAccessInfo",cb);
 						mav.addObject("patient", this.makePatientList(this.session.selectList("getPatientInfoList", db)));
 						mav.setViewName("patientManagement");
 					}
 				}else {
-					System.out.println("인증실패");
 					mav.setViewName("checkDoctor");
 				}
 			}
@@ -188,26 +200,20 @@ public class Company implements ServiceRule {
 			ReservationBean rb = (ReservationBean) mav.getModel().get("reservationBean");
 			rb.setResCoCode(cb.getCoCode());
 
-			System.out.println("예약정보" +rb);
 
 			//예약완료, 진료완료일 경우를 걸러냄
 			if(this.session.selectOne("isResOpenData",rb) != null) {
-				System.out.println("예약완료 또는 진료 완료");
 
 				//Access가 1인 경우만 조회
 				if(this.convertToBoolean(this.session.selectOne("isPrivateData", rb))){
-					System.out.println("정보공개");
-					System.out.println("컨버트 : " + rb.getResDoCode());
 					mav.addObject("healthDataList", this.makeHealthData(this.session.selectList("getHealthDataList", rb), rb));
 					mav.addObject("doctorComment",this.makePatientCo(this.session.selectOne("getPatientComment",rb)));
 				}else {
-					System.out.println("정보 비공개");
 					mav.addObject("doctorComment",this.makePatientCo(this.session.selectOne("getPatientComment",rb)));
 
 				}mav.setViewName("doctorHealthData");
 
 			}else if(this.session.selectOne("isResOpenData",rb) == null){
-				System.out.println("예약상태가 예약중이거나 예약취소입니다.");
 				mav.addObject("message",this.alert());
 			}mav.setViewName("doctorHealthData");
 			
@@ -222,54 +228,43 @@ public class Company implements ServiceRule {
 
 	@SuppressWarnings("unused")
 	private void checkManager(ModelAndView mav) {
-		System.out.println("cManager1");
 		try {
 			CompanyBean cb = ((CompanyBean) this.pu.getAttribute("companyAccessInfo"));
 			if(cb != null) {
-				System.out.println("cManager2");
 				//매니저 코드 치고 로그인 성공 했을때
 				if(cb.getCoManagerCode()!=null) {
-					System.out.println("cManager3");
-					System.out.println(cb.getCoManagerCode());
 					//예약 갯수 조회
 					List<ReservationBean> re = this.session.selectList("getResCount",cb);
 					mav.addObject("resCount",this.makeEventResCount(re));
 					mav.addObject("coCode",cb.getCoManagerCode());
+					mav.addObject("companyAccessInfo",cb);
 					//mav.addObject("resInfo", this.makeHTMLCReservation(this.session.selectList("getDoctorInfo", cb), this.session.selectList("getResInfo", cb)));
 					mav.setViewName("reservationManagement");
 				}
 				//처음 매니저 코드 치고 로그인 해야할 때
 				else if(((CompanyBean)mav.getModel().get("companyBean")).getCoManagerCode()!=null) {
-					System.out.println("cManager4");
-					System.out.println(((CompanyBean)mav.getModel().get("companyBean")).getCoManagerCode());
 					cb.setCoManagerCode(this.enc.aesEncode(((CompanyBean)mav.getModel().get("companyBean")).getCoManagerCode(), cb.getCoCode()));
-					System.out.println("coMaCd : " + cb.getCoManagerCode());
 					if(this.convertToBoolean(this.session.selectOne("isManagerCode", cb))) {
-						System.out.println("cManager5");
 						// 세션에 저장할 로그인 유저 정보 가져오기
 						CompanyBean company = (CompanyBean) this.session.selectList("getCompanyAccessAllInfo", cb).get(0);
-						company.setCoName(this.enc.aesDecode(company.getCoName(), company.getCoCode()));
-						System.out.println("체크 매니저 진입 체크 : "+company);
 						// 세션에 userCode저장
 						this.pu.setAttribute("companyAccessInfo", company);
 						//예약 갯수 조회
 						List<ReservationBean> re = this.session.selectList("getResCount",cb);
 						mav.addObject("resCount",this.makeEventResCount(re));
 						mav.addObject("coCode",cb.getCoManagerCode());
+						mav.addObject("companyAccessInfo",cb);
 						//mav.addObject("resInfo", this.makeHTMLCReservation(this.session.selectList("getDoctorInfo", cb), this.session.selectList("getResInfo", cb)));
 						mav.setViewName("reservationManagement");
 					}
 					else {
-						System.out.println("cManager6");
 						mav.addObject("message", "매니저 코드가 일치하지 않습니다. 다시 입력해주세요.");
 						mav.setViewName("redirect:/");
 					}
 				}
 			}
 			else {
-				System.out.println("cManager7");
 				mav.setViewName("companyLogin");
-				System.out.println("세션만료");
 			}
 
 		} catch (Exception e) {e.printStackTrace();}
@@ -287,7 +282,6 @@ public class Company implements ServiceRule {
 	}
 	//의사 코드 중복검사
 	private void checkDoctorCodeCtl(Model model) {
-		System.out.println("중복체크 메소드 진입");
 		String code = (String) model.getAttribute("code");
 		DoctorBean db = (DoctorBean) model.getAttribute("doctorBean");
 		int result = 0;
@@ -297,7 +291,6 @@ public class Company implements ServiceRule {
 			break;
 		case "1":
 			result = Integer.parseInt(this.session.selectOne("checkDoctorCode", db).toString());
-			System.out.println(result);
 			break;
 		}
 		if (this.convertToBoolean(result)) {
@@ -313,12 +306,10 @@ public class Company implements ServiceRule {
 		if(rb.getDoComment()!="" || rb.getDoComment()!=null) {
 
 			if(this.convertToBoolean(this.session.update("updDoctorComment",rb))){
-				System.out.println("업데이트성공");
 				mav.addObject("message", "소견서를 성공적으로 작성했습니다.");
 				mav.setViewName("checkDoctor");
 
 			}else {
-				System.out.println("업데이트실패");
 				mav.addObject("message", "소견서 작성에 실패했습니다.");
 				mav.setViewName("checkDoctor");
 
@@ -351,9 +342,7 @@ public class Company implements ServiceRule {
 	}
 	private String makePatientCo(ReservationBean rb) {
 		StringBuffer sb = new StringBuffer();
-		System.out.println("코멘트 정보 : " + rb);
 		if(rb.getDoComment() != null) {
-			System.out.println("코멘트 들어오나");
 			sb.append("<table class=\"commentTb\"><tr>");
 			sb.append("<th class=\"doctorMgrCM1\">작성한 진료 소견 : </th>");
 			sb.append("<th class=\"doctorMgrCM2\">"+ rb.getDoComment() + "</th>");
@@ -363,7 +352,6 @@ public class Company implements ServiceRule {
 			sb.append("<input type=\"text\" name=\"doctorComment\" class=\"commentInput\" placeholder=\"내용을 입력하세요.\"/>");
 			sb.append("<button class=\"submitBtn btn\" "
 					+ "onClick=\"insDoctorComment('"+ rb.getResCode()+"','"+ rb.getDoComment() + "')\">입력</button></div>");
-			System.out.println("소견서 정보 없음");
 		}
 		return sb.toString();
 	}
@@ -396,7 +384,6 @@ public class Company implements ServiceRule {
 	//건강기록 EL작업
 	private String makeHealthData(List<HealthDiaryBean> HealthDataList,ReservationBean resBean) {
 		StringBuffer sb = new StringBuffer();
-		System.out.println("1 : " + HealthDataList.size());
 		for(int idx=0; idx<7; idx++) {
 			HealthDiaryBean hdb = ((HealthDiaryBean)HealthDataList.get(idx));
 			if(idx==0) {
@@ -467,8 +454,6 @@ public class Company implements ServiceRule {
 		StringBuffer sb = new StringBuffer();
 		int idx = 0;
 		if(re.size()!=0) {
-			System.out.println(re);
-			System.out.println(re.size());
 			for (ReservationBean rb:re) {
 				sb.append("{start:'" + rb.getResDate() + "'");
 				sb.append(",title:'" + rb.getResCount() + "'");

@@ -39,6 +39,7 @@ public class JpHomeController {
 	//환자관리 의사인증 페이지 이동 : 재필
 	@RequestMapping(value = "/IntoCheckDoctor", method = RequestMethod.GET)
 	public ModelAndView intoCheckDoctor(ModelAndView mav) {
+		this.company.backController(mav, 1000);
 		mav.setViewName("checkDoctor");
 		return mav;
 	}

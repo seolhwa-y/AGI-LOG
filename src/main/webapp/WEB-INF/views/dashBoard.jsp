@@ -36,6 +36,10 @@
 <script>
 	Kakao.init('2afdabad57ed92e1cc9de5bd4baed321');
 	function getInfo() {
+		if("${message}"=="회원가입성공"){
+			swal("회원가입 성공", "회원가입을 성공하였습니다!", "success", { button: "확인"});
+		}
+		
 		/* 테마 이미지 or 단순색상 */
 		let body = document.getElementById("body");
 		

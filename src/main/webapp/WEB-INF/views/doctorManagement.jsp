@@ -9,6 +9,8 @@
 <script src="/res/js/agiMain.js"></script>
 <link rel="stylesheet" href="/res/css/agiMain.css">
 <link rel="stylesheet" href="/res/css/company.css">
+<!-- 알림창 꾸미기 -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <style>
 .modal_head {
     margin-bottom: 6rem;
@@ -78,10 +80,12 @@
 	}
 	function callBackOverlap(ajaxData) {
 		if(ajaxData=="ok"){
-			alert("사용 가능한 직원코드입니다.");
+			//alert("사용 가능한 직원코드입니다.");
+			swal("직원코드 중복확인", "사용 가능한 직원코드입니다!", "success", { button: "확인"});
 		}
 		else {
-			alert("이미 존재하는 직원코드입니다.");
+			//alert("이미 존재하는 직원코드입니다.");
+			swal("직원코드 중복확인", "이미 존재하는 직원코드입니다!", "error", { button: "확인"});
 		}
 	}
 	/* 비밀번호 유효성 체크 */
@@ -158,7 +162,8 @@
 		let password = document.getElementsByName("doPassword")[0].value; 
 		
 		if(code.length > 3 && code.length == 0){
-			alert("직원 코드는 3자리를 입력해주세요.");
+			swal("등록 실패", "직원 코드는 3자리를 입력해주세요!", "waring", { button: "확인"});
+			//alert("직원 코드는 3자리를 입력해주세요.");
 			return;
 		}
 		
@@ -168,9 +173,27 @@
 	
 	function deleteDoctor(data){		
 		clientData = "doCode="+data;
-		postAjaxJson("DeleteDoctor",clientData,"callBack");
+		
+		   // 경고
+	    swal({
+	        title: "직원삭제",
+	        text: "직원을 삭제하시겠습니까?",
+	        icon: "warning",
+	        buttons: true,
+	        dangerMode: true,
+	    })
+	        .then((willDelete) => {
+	            if (willDelete) {
+	                postAjaxJson("DeleteDoctor", clientData, "callBack");
+	            } else {
+	                swal("삭제를 취소하셨습니다.");
+	            }
+	    });
+		   
+		//postAjaxJson("DeleteDoctor",clientData,"callBack");
 	}
 	function callBack(ajaxData){
+		swal("요청", "요청하신 작업을 완료하였습니다!", "success", { button: "확인"});
 		let data = JSON.parse(ajaxData);
 		const doctorList = document.getElementById("doctorList");		
 		let info = "";

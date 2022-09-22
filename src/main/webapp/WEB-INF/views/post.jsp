@@ -179,8 +179,8 @@ function deleteBoardComment(fbCode, fbSuCode, fcCode, fcDate, fbDate) {
 	
     // 경고
     swal({
-        title: "진짜로 삭제하십니까?",
-        text: "삭제하면 되돌릴 수 없습니다.",
+        title: "댓글삭제",
+        text: "댓글을 삭제하시겠습니까?",
         icon: "warning",
         buttons: true,
         dangerMode: true,

@@ -8,6 +8,8 @@
 <script src="/res/js/agiMain.js"></script>
 <script src="https://use.fontawesome.com/releases/v6.1.2/js/all.js"></script>
 <link rel="stylesheet" href="/res/css/agiMain.css">
+<!-- 알림창 꾸미기 -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <style>
 #middle {
 	display: flex;
@@ -284,9 +286,6 @@ function getInfo() {
 		}
 	}
 	
-	if("${message}"!= ""){
-		alert("${message}");
-	}
 	
 	let accessArea = document.getElementById("accessArea");
 	if ("${accessInfo.type}"!= null&&"${accessInfo.type}"!="") {
@@ -319,8 +318,6 @@ function getInfo() {
 	if(!"${mypageInfo.suPhoto}" == ""){
 		pImage.innerHTML = "<img class='profileImage' src=\'"+"${mypageInfo.suPhoto}"+"\'>";
 	}else{
-		alert("${mypageInfo.suPhoto}");
-		alert("없어염");
 		pImage.innerHTML = "<img class='profileImage' src='/res/img/profile_default.png'>";
 		//bImage.innerHTML = "<img class='profileImage' src='"+"/res/img/profile_default.png"+"'>";
 	}
@@ -339,7 +336,6 @@ function getInfo() {
 	if(!"${mypageInfo.babyList[0].bbPhoto}" == ""){
 		bImage.innerHTML = "<img class='profileImage' src='"+"${mypageInfo.babyList[0].bbPhoto}"+"'>";
 	}else{ 
-		alert("애기도없어여");
 		bImage.innerHTML = "<img class='profileImage' src='"+"/res/img/profile_default.png"+"'>";
 	}
 	bbName.innerText="${mypageInfo.babyList[0].bbName}";
@@ -352,7 +348,9 @@ function getInfo() {
 		let getBabyInfo = document.getElementById("getBabyInfo");
 		getBabyInfo.style.display="block";
 	}	
-
+	if("${message}"!=""){
+		swal("${title}", "${message}", "success", { button: "확인"});
+	}
 }
 function openPopUp() {
 	testPopUp = window
@@ -558,17 +556,20 @@ function checkOverlap() {
 		let clientData = "code=1&suNickName="+nickName.value;
 		postAjaxJson("CheckPersonalOverlap",clientData,"callBackOverlap");
 	} else {
-		alert("변경할 닉네임을 입력하세요");
+		swal("중복체크", "변경할 닉네임을 입력하세요!", "waring", { button: "확인"});
+		//alert("변경할 닉네임을 입력하세요");
 	}
 }
 //중복체크 콜백
 function callBackOverlap(ajaxData) {
 	if(ajaxData=="ok"){
 		alert("사용가능");
+		swal("중복체크", "사용 가능한 닉네임입니다!", "success", { button: "확인"});
 		check = true;
 	}
 	else {
 		alert(ajaxData);
+		swal("중복체크", "사용 불가능한 닉네임입니다!", "error", { button: "확인"});
 		check = false;
 	}
 }
@@ -745,7 +746,9 @@ function insertBabyInfo(){
 	let bbWeight = document.getElementsByName("bbWeight")[0];
 	//이름 글자 제한
 	if(!isCharLengthCheck(bbName.value,"1","20")){
-		alert("아이 이름은 1자~20자 사이로 입력해 주세요");
+
+		swal("경고", "아이 이름은 1자~20자 사이로 입력해 주세요!", "error", { button: "확인"});
+		//alert("아이 이름은 1자~20자 사이로 입력해 주세요");
 		bbName.focus();
 		return;
 	}
@@ -887,6 +890,7 @@ function changeTheme(num){
 	
 }
 function callBackTheme(theme){
+	swal("테마변경", "테마변경을 완료하였습니다!", "success", { button: "확인"});
 	//let middle = document.getElementById("middle");
 	let body = document.getElementById("body");
 	let sideMenu = document.querySelector(".side-menu");

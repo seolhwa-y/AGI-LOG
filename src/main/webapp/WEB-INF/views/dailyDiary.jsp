@@ -17,6 +17,9 @@
 <!-- 네이버 스크립트 -->
 <script	src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
 <style>
+  .scrollBar::-webkit-scrollbar-track {
+      background:none;
+  }
 #commentList {
 	width: 95%;
 	height: 8rem;
@@ -157,6 +160,12 @@ function getInfo() {
 		getFeed("${ddCode}");             
 		
 	}
+	
+	if("${title}"=="경고"){
+		swal("${title}", "${message}", "error", { button: "확인"});
+	}else if("${title}"!=""){
+		swal("${title}", "${message}", "success", { button: "확인"});
+	}
 }
 function openPopUp() {
 	testPopUp = window
@@ -264,6 +273,7 @@ function insertDailyDiaryComment(ddCode, ddSuCode, ddDate) {
 	const ddComment = document.getElementsByClassName("ddComment")[0].value;
 	const clientData = "dcDdCode=" + ddCode + "&dcDdSuCode=" + ddSuCode + "&dcDdDate=" + ddDate + "&dcContent=" + ddComment;
 	postAjaxJson("InsertDailyDiaryComment", clientData, "dailyDiaryComment");
+	swal("댓글등록", "댓글 등록을 성공하였습니다!", "success", { button: "확인"});
 }
 
 // 2. 댓글 수정
@@ -272,6 +282,7 @@ function updateDailyDiaryComment(ddCode, ddSuCode, dcCode, dcDate, ddDate) {
 	const clientData = "dcDdCode=" + ddCode + "&dcCode=" + dcCode + "&dcDdSuCode=" + ddSuCode + "&dcDate=" + dcDate + "&dcContent=" + updDbComment + "&dcDdDate=" + ddDate;
 
 	postAjaxJson("UpdateDailyDiaryComment", clientData, "dailyDiaryComment");
+	swal("댓글수정", "댓글 수정을 성공하였습니다!", "success", { button: "확인"});
 }
 
 // 3. 댓글 삭제
@@ -280,8 +291,8 @@ function deleteDailyDiaryComment(ddCode, ddSuCode, dcCode, dcDate, ddDate) {
 	
     // 경고
     swal({
-        title: "진짜로 삭제하십니까?",
-        text: "삭제하면 되돌릴 수 없습니다.",
+        title: "댓글 삭제",
+        text: "댓글을 삭제하시겠습니까?",
         icon: "warning",
         buttons: true,
         dangerMode: true,
@@ -289,6 +300,7 @@ function deleteDailyDiaryComment(ddCode, ddSuCode, dcCode, dcDate, ddDate) {
         .then((willDelete) => {
             if (willDelete) {
         		postAjaxJson("DeleteDailyDiaryComment", clientData, "dailyDiaryComment");
+        		swal("댓글 삭제", "댓글 삭제를 성공하였습니다!", "success", { button: "확인"});
             } else {
                 swal("삭제를 취소하셨습니다.");
             }
@@ -348,6 +360,8 @@ function getFeed(ddCode){
 
 //피드 콜백
 function viewFeed(ajaxData) {
+	
+	
 	const ajax = JSON.parse(ajaxData);
 	const suCode = ajax.suCode;
 	const ddComment = ajax.ddComment;
@@ -443,14 +457,15 @@ function updateDailyDiaryFeed(ddCode) {
 	const clientData = "ddCode=" + ddCode + "&ddContent=" + updContent;
 	
 	postAjaxJson("UpdateDailyDiaryFeed", clientData, "viewFeed");
+	swal("피드 내용 수정", "피드 내용 수정을 성공하였습니다!", "success", { button: "확인"});
 }
 
 
 function deleteDailyDiaryFeed(ddCode) {
 	
 	swal({
-        title: "진짜로 삭제하십니까?",
-        text: "삭제한 피드는 복구할 수 없습니다.",
+        title: "피드 삭제",
+        text: "피드를 삭제하시겠습니까?",
         icon: "warning",
         buttons: true,
         dangerMode: true,

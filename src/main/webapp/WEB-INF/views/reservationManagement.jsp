@@ -8,7 +8,8 @@
 <script src="https://use.fontawesome.com/releases/v6.1.2/js/all.js"></script>
 <link rel="stylesheet" href="/res/css/agiMain.css">
 <link rel="stylesheet" href="/res/css/company.css">
-
+<!-- 알림창 꾸미기 -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <link href='/res/css/calender/main.css' rel='stylesheet' />
 <script src='/res/js/calender/main.js'></script>
 <style>
@@ -209,8 +210,10 @@ var calendar = new FullCalendar.Calendar(calendarEl, {
 	    let modalHead = document.getElementsByClassName("modal_head")[0];
 	    
 	    if("${companyAccessInfo.coPhoto}"!=""){
+	    	alert("사진있음");
 	    	modalHead.innerHTML = "<div id='profile'><img class='profileImg' src='"+"${companyAccessInfo.coPhoto}"+"'></div><span id='date'>"+info.dateStr+"<span><i class='fa-solid fa-xmark closeBtn editBtn' onclick='modalClose()'></i>";
 	    }else{
+	    	alert("사진없음");
 	    	modalHead.innerHTML = "<div id='profile'><img class='profileImg' src='/res/img/profile_default.png'></div><span id='date'>"+info.dateStr+"<span><i class='fa-solid fa-xmark closeBtn editBtn' onclick='modalClose()'></i>";
 	    }
 	    
@@ -288,7 +291,6 @@ function updateReservation(resCode, idx, idx2) {
 	let doCode = document.getElementsByName("resDoCode")[idx].value;
 	
 	let clientData = "rcCode="+rcCode2+"&resCode="+resCode+"&resDate="+date+"&resTime="+time.split(":")[0]+"&resDoCode="+doCode;
-	alert(clientData);
 
 //	if (idx2 != "") {
 //		let doCode = document.getElementsByName("selectDoctor")[idx2];
@@ -297,6 +299,7 @@ function updateReservation(resCode, idx, idx2) {
 //	}
 
 	postAjaxJson("UpdateReservation",clientData,"resManageMent");
+	swal("요청", "요청하신 작업을 완료하였습니다!", "success", { button: "확인"});
 }
 // 모달창 닫기
 function modalClose(){

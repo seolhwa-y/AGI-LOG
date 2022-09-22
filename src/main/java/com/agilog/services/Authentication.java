@@ -167,6 +167,7 @@ public class Authentication implements ServiceRule {
 				this.naverLoginCtl(mav);
 			}
 		}
+		mav.addObject("message","회원가입성공");
 	}
 
 	// 기업회원 로그아웃 제어

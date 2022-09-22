@@ -17,6 +17,9 @@
 <!-- 네이버 스크립트 -->
 <script	src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
 <style>
+  .scrollBar::-webkit-scrollbar-track {
+      background:none;
+  }
 #commentList {
 	width: 95%;
 	height: 8rem;
@@ -212,6 +215,16 @@
     margin-top: 2px;
     width:70px;
 	}
+	
+		.contentEdit{
+float: right;
+    margin-right: -25rem;
+    right: 13px;
+    height: 33px;
+    margin-top: 110px;
+    width: 70px;
+    position: absolute;
+}
 		.udicon{
 	margin-top: -23.5rem;
     margin-left: -23rem;
@@ -481,7 +494,7 @@ function feedUpdateInput(ddCode) {
 	viewFeedContent.innerHTML = "<br/><textarea id='updContent'>" + content + "</textarea>";
 
 	UDIcon.innerHTML = "";
-	UDIcon.innerHTML = "<button class='submitBtn btn' onClick='updateDailyDiaryFeed(" + ddCode + ")'>수정</button>";
+	UDIcon.innerHTML = "<button class='submitBtn btn contentEdit' onClick='updateDailyDiaryFeed(" + ddCode + ")'>수정</button>";
 	UDIcon.style.marginTop="-14%";
 }
 
@@ -493,14 +506,16 @@ function updateDailyDiaryFeed(ddCode) {
 	const clientData = "ddCode=" + ddCode + "&ddContent=" + updContent;
 	
 	postAjaxJson("UpdateDailyDiaryFeed", clientData, "viewFeed");
+	swal("피드 내용 수정", "피드 내용 수정을 성공하였습니다!", "success", { button: "확인"});
+
 }
 
 
 function deleteDailyDiaryFeed(ddCode) {
 	
 	swal({
-        title: "진짜로 삭제하십니까?",
-        text: "삭제한 피드는 복구할 수 없습니다.",
+        title: "피드 삭제",
+        text: "피드를 삭제하시겠습니까?",
         icon: "warning",
         buttons: true,
         dangerMode: true,

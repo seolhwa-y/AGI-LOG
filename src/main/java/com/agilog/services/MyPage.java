@@ -135,21 +135,25 @@ public class MyPage implements ServiceRule {
 					hdb.setCaCode("02");
 					/* DB :: HealthDiary테이블에 아이 키 INSERT */
 					if(this.converToBoolean(this.session.insert("insHDHeight",hdb))) {
-						mav.addObject("message","아이 추가 성공");
+						mav.addObject("message","아이 추가를 성공하였습니다!");
+						mav.addObject("title","아이 추가");
 						this.moveMyPageCtl(mav);
 					}else {
 						/* 아이 추가 실패 */
-						mav.addObject("message","아이 추가 실패");
+						mav.addObject("message","아이 추가를 실패하였습니다!");
+						mav.addObject("title","아이 추가");
 						this.moveMyPageCtl(mav);
 					}
 				}else{
 					/* 아이 추가 실패 */
-					mav.addObject("message","아이 추가 실패");
+					mav.addObject("message","아이 추가를 실패하였습니다!");
+					mav.addObject("title","아이 추가");
 					this.moveMyPageCtl(mav);
 				}
 			}else {
 				/* 아이 추가 실패 */
-				mav.addObject("message","아이 추가 실패");
+				mav.addObject("message","아이 추가를 실패하였습니다!");
+				mav.addObject("title","아이 추가");
 				this.moveMyPageCtl(mav);
 			}
 		} catch (Exception e) {
@@ -195,8 +199,11 @@ public class MyPage implements ServiceRule {
 			
 			if(isUpd) {
 				this.moveMyPageCtl(mav);
+				mav.addObject("message","부모 프로필 업데이트를 성공하였습니다!");
+				mav.addObject("title","부모 프로필 업데이트");
 			} else {
-				mav.addObject("message","업데이트 실패");
+				mav.addObject("message","부모 프로필 업데이트를 실패하였습니다!");
+				mav.addObject("title","부모 프로필 업데이트");
 				this.moveMyPageCtl(mav);
 			}
 		} catch (Exception e) {
@@ -293,12 +300,12 @@ public class MyPage implements ServiceRule {
 			bb.setSuCode(((AuthBean)this.pu.getAttribute("accessInfo")).getSuCode());
 			/* DB에 생일 UPDATE*/
 			if(this.converToBoolean(this.session.update("updBabyBirthday",bb))){
-				String message = "아이생일 업데이트 성공";
-				mav.addObject("message",message);
+				mav.addObject("message","아이 프로필 업데이트를 성공하였습니다!");
+				mav.addObject("title","아이 프로필 업데이트");
 			}else {
 				/* 업데이트 실패 */
-				String message = "아이생일 업데이트 실패";
-				mav.addObject("message",message);
+				mav.addObject("message","아이 프로필 업데이트를 실패하였습니다!");
+				mav.addObject("title","아이 프로필 업데이트");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -339,11 +346,12 @@ public class MyPage implements ServiceRule {
 			/* DB에 파일 저장한 경로 INSERT */
 			if(this.converToBoolean((this.session.update("updBabyPhoto",bb)))){
 				/* 성공 */
-				mav.addObject("message","아이 프로필사진 업데이트 성공");
-
+				mav.addObject("message","아이 프로필사진 업데이트를 실패하였습니다!");
+				mav.addObject("title","프로필사진 업데이트");
 			}else {
 				/* 실패 */
-				mav.addObject("message","아이 프로필사진 업데이트 실패");
+				mav.addObject("message","아이 프로필사진 업데이트를 실패하였습니다!");
+				mav.addObject("title","프로필사진 업데이트");
 			}
 		
 		} catch (IllegalStateException e) {
@@ -388,10 +396,12 @@ public class MyPage implements ServiceRule {
 			ab.setSuPhoto(suPhoto);
 			if(this.converToBoolean((this.session.update("updSocialUserPhoto",ab)))){
 				/* 성공 */
-				mav.addObject("message","부모 프로필사진 업데이트 성공");
+				mav.addObject("message","부모 프로필사진 업데이트를 성공하였습니다!");
+				mav.addObject("title","프로필사진 업데이트");
 			}else {
 				/* 실패 */
-				mav.addObject("message","부모 프로필사진 업데이트 실패");
+				mav.addObject("message","부모 프로필사진 업데이트를 실패하였습니다!");
+				mav.addObject("title","프로필사진 업데이트");
 			}
 		} catch (IllegalStateException e) {
 			e.printStackTrace();

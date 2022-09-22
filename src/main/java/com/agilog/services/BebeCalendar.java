@@ -47,7 +47,7 @@ public class BebeCalendar implements ServiceRule {
 	public void backController(Model model, int serviceCode) {
 		switch (serviceCode) {
 		case 48:
-			this.dateDetailCtl(model);
+			this.dateDetailCtl(model,0);
 			break;
 		case 49:
 			this.deleteScheduleCtl(model);
@@ -64,7 +64,7 @@ public class BebeCalendar implements ServiceRule {
 		}
 	}
 	// 캘린더에서 특정일자 클릭 시 모달창 띄워주고 안에 내용 보여주기
-	private void dateDetailCtl(Model model) {
+	private void dateDetailCtl(Model model,int num) {
 		BebeCalendarBean bcb = (BebeCalendarBean)model.getAttribute("bebeCalendarBean");
 		try {
 			bcb.setSuCode(((AuthBean)this.pu.getAttribute("accessInfo")).getSuCode());
@@ -108,7 +108,9 @@ public class BebeCalendar implements ServiceRule {
 			if(scheduleList.size()!=0) {
 				bcb.setScheduleList(scheduleList);
 			}
-	
+		if(this.converToBoolean(num)) {
+			bcb.setMessage("성공");
+		}
 		model.addAttribute(bcb);
 	}
 
@@ -130,7 +132,7 @@ public class BebeCalendar implements ServiceRule {
 			if(this.converToBoolean(this.session.update("delSchedule",sb))) {
 				//insert 성공
 				//모달창 안의 정보 새로 가져가기
-				this.backController(model, 48);
+				this.dateDetailCtl(model,1);
 			}else {
 				//insert 실패
 				//moveCalendarCtl
@@ -154,7 +156,7 @@ public class BebeCalendar implements ServiceRule {
 			if(this.converToBoolean(this.session.update("updSchedule",sb))) {
 				//insert 성공
 				//모달창 안의 정보 새로 가져가기
-				this.backController(model, 48);
+				this.dateDetailCtl(model,1);
 			}else {
 				//insert 실패
 				//moveCalendarCtl
@@ -180,7 +182,7 @@ public class BebeCalendar implements ServiceRule {
 			if(this.converToBoolean(this.session.insert("insSchedule",sb))) {
 				//insert 성공
 				//모달창 안의 정보 새로 가져가기
-				this.backController(model, 48);
+				this.dateDetailCtl(model,1);
 			}else {
 				//insert 실패
 				//moveCalendarCtl
@@ -204,7 +206,8 @@ public class BebeCalendar implements ServiceRule {
 			if(this.converToBoolean(this.session.update("updateReservationStatus",rb))) {
 				//update 성공
 				//모달창 안의 정보 새로 가져가기
-				this.backController(model, 48);
+				//rb.setMessage("예약취소를 성공하였습니다.");
+				this.dateDetailCtl(model,1);
 			}else {
 				//update 실패
 				//moveCalendarCtl

@@ -21,4 +21,5 @@ public class BebeCalendarBean {
 	private String babyName;
 	private List<ScheduleBean> scheduleList;
 	private String suCode;
+	private String message;
 }

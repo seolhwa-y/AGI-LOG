@@ -31,4 +31,6 @@ public class ReservationBean {
 	
 	private int resCount;
 	private String resTime;
+	
+	private String message;
 }

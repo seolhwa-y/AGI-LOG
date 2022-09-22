@@ -79,50 +79,45 @@ public class DailyDiary2 implements ServiceRule {
 	}
 
 	private void getDailyDiaryFeedCtl(Model model) {
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		DailyDiaryCommentBean ddcb = (DailyDiaryCommentBean)model.getAttribute("dailyDiaryCommentBean");
-		DailyDiaryBean ddb = (DailyDiaryBean) model.getAttribute("dailyDiaryBean");
-		
-		AuthBean ab;
-		try {
-			ab = (AuthBean)this.pu.getAttribute("accessInfo");
-			if(ab != null) {
-				map.put("suCode", ab.getSuCode());
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        HashMap<String,String> likeMap = new HashMap<String,String>();
+        DailyDiaryCommentBean ddcb = (DailyDiaryCommentBean)model.getAttribute("dailyDiaryCommentBean");
+        DailyDiaryBean ddb = (DailyDiaryBean) model.getAttribute("dailyDiaryBean");
 
-		ddb = this.session.selectOne("getDDFeed", ddb);
-		
-		ddcb.setDcDdCode(ddb.getDdCode());
-		ddcb.setDcDdSuCode(ddb.getSuCode());//suCode == ddSuCode
-		ddcb.setDcDdDate(ddb.getDdDate());
-		
-		if(ddb.getDpLink() == null) {
-			ddb.setDpLink("/res/img/non_photo.png");
-		}
-		
-		HashMap<String,String> likeMap = new HashMap<String,String>();
-		likeMap.put("ddCode", ddb.getDdCode());
-		likeMap.put("suCode", (String)map.get("suCode"));
-		System.out.println(likeMap);
-		// 좋아요 누른적 있음
-		if (this.convertToBoolean(this.session.selectOne("isDdLikeM", likeMap))) {
-				// 현재 유저의 좋아요 여부 저장
-				ddb.setLike(true);
-				System.out.println("좋아요");
-		} else { // 좋아요 누른적 없음
-				// 현재 유저의 좋아요 여부 저장
-				ddb.setLike(false);
-				System.out.println("아니요");
-		}
-		
-		map.put("ddFeed", ddb);
-		map.put("ddComment", this.session.selectList("getDailyDiaryComment", ddcb));
-		model.addAttribute("dailyDiaryFeed", map);
-		
-	}
+        AuthBean ab;
+        try {
+            ab = (AuthBean)this.pu.getAttribute("accessInfo");
+            if(ab != null) {
+                map.put("suCode", ab.getSuCode());
+                likeMap.put("ddCode", ddb.getDdCode());
+                likeMap.put("suCode", (String)map.get("suCode"));
+                // 좋아요 누른적 있음
+                if (this.convertToBoolean(this.session.selectOne("isDdLikeM", likeMap))) {
+                        // 현재 유저의 좋아요 여부 저장
+                        ddb.setLike(true);
+                } else { // 좋아요 누른적 없음
+                        // 현재 유저의 좋아요 여부 저장
+                        ddb.setLike(false);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        ddb = this.session.selectOne("getDDFeed", ddb);
+
+        ddcb.setDcDdCode(ddb.getDdCode());
+        ddcb.setDcDdSuCode(ddb.getSuCode());//suCode == ddSuCode
+        ddcb.setDcDdDate(ddb.getDdDate());
+
+        if(ddb.getDpLink() == null) {
+            ddb.setDpLink("/res/img/non_photo.png");
+        }
+
+        map.put("ddFeed", ddb);
+        map.put("ddComment", this.session.selectList("getDailyDiaryComment", ddcb));
+        model.addAttribute("dailyDiaryFeed", map);
+    }
 
 	private void insertDailyDiaryCtl(ModelAndView mav) {
 		HttpServletRequest req = (HttpServletRequest)mav.getModel().get("req");
@@ -196,9 +191,13 @@ public class DailyDiary2 implements ServiceRule {
 						
 						//flag가 트루면 자유게시판으로. flase면 DB에 저장됐던 정보들을 지우고 자유게시판으로.
 						if (flag) {
+							System.out.println("인서트성공");
 							mav.addObject("allDailyDiaryList", this.makeDialyFeed(this.session.selectList("getDailyDiaryFeed")));
+							mav.addObject("message","감성일기 등록을 성공하셨습니다!");
+							mav.addObject("title","감성일기 등록");
 							mav.setViewName("dailyDiary");
 						} else {
+							System.out.println("인서트실패");
 							this.session.delete("delDd", db);
 							this.session.delete("delDdPhoto", ddpb);
 
@@ -207,19 +206,24 @@ public class DailyDiary2 implements ServiceRule {
 						}
 					} else {
 						mav.addObject("allDailyDiaryList", this.makeDialyFeed(this.session.selectList("getDailyDiaryFeed")));
+						mav.addObject("message","감성일기 등록을 성공하셨습니다!");
+						mav.addObject("title","감성일기 등록");
 						mav.setViewName("dailyDiary");
 					}
 				} else {
 					mav.addObject("message", "네트워크가 불안정합니다. 잠시 후 다시 시도해 주세요.");
+					mav.addObject("title","경고");
 					mav.addObject("allDailyDiaryList", this.makeDialyFeed(this.session.selectList("getDailyDiaryFeed")));
 					mav.setViewName("dailyDiary");
 				}
 			} else {
+				mav.addObject("title","경고");
 				mav.addObject("message", "세션이 만료되었습니다. 다시 로그인 해주세요");
 				mav.setViewName("dashBoard");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			mav.addObject("title","경고");
 			mav.addObject("message", "네트워크가 불안정합니다.");
 			mav.setViewName("dashBoard");
 		}
@@ -282,16 +286,21 @@ public class DailyDiary2 implements ServiceRule {
 				if(this.convertToBoolean(this.session.delete("delDd", db))) {
 					mav.addObject("allDailyDiaryList", this.makeDialyFeed(this.session.selectList("getDailyDiaryFeed")));
 					mav.setViewName("dailyDiary");
+					mav.addObject("title","감성일기 삭제");
+					mav.addObject("message", "감성일기 삭제를 성공하였습니다!");
 				} else {
+					mav.addObject("title","경고");
 					mav.addObject("message", "네트워크가 불안정합니다.");
 					mav.setViewName("dailyDiary");
 				}
 			} else {
+				mav.addObject("title","경고");
 				mav.addObject("message", "세션이 만료되었습니다. 다시 로그인 해주세요");
 				mav.setViewName("dashBoard");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			mav.addObject("title","경고");
 			mav.addObject("message", "네트워크가 불안정합니다.");
 			mav.setViewName("dashBoard");
 		}
