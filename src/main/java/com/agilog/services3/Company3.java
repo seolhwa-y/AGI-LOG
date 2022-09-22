@@ -92,6 +92,7 @@ public class Company3 implements ServiceRule {
 	
 	@Transactional(rollbackFor = SQLException.class)
 	private void updateReservationCtl(Model model) {
+		
 		try {
 			//세션 획득 후 체크. 없으면 로그인 페이지로
 			CompanyBean cb = ((CompanyBean) this.pu.getAttribute("companyAccessInfo"));
@@ -119,6 +120,18 @@ public class Company3 implements ServiceRule {
 								map.put("resDoName", rb.getResDoName());
 								sms.sendSMS(map);
 							}
+						}else if(rb.getRcCode().equals("CP")) {
+							//예약상태 변경 문자보내기
+							rb = this.session.selectOne("getResInfoForSms", rb);
+							HashMap<String,String> map = new HashMap<String,String>();
+							map.put("resDate", rb.getResDate());
+							map.put("resSuName", this.enc.aesDecode(rb.getResSuName(), rb.getResSuCode()));
+							map.put("resSuPhone", this.enc.aesDecode(rb.getResSuPhone(), rb.getResSuCode()));
+							map.put("resCoName", rb.getResCoName());
+							map.put("resBbName", rb.getResBbName());
+							map.put("resActionName", rb.getResActionName());
+							map.put("resDoName", rb.getResDoName());
+							sms.sendSMS(map);
 						}
 					}
 				} else {

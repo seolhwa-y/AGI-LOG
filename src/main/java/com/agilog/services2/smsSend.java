@@ -40,10 +40,10 @@ public class smsSend {
             				+map.get("resSuName")+"님, 자녀 "+map.get("resBbName")+"님의 "
             				+map.get("resDate")+"일자 예약상태가 "
             				+map.get("resActionName")+"로 변경되었습니다.";*/
-            String content = map.get("resCoName")+"::"
-    				+map.get("resSuName")+"::"+map.get("resBbName")+"::"
-    				+map.get("resDate")+"::"
-    				+map.get("resActionName")+"::"+map.get("resDoName");
+            String content = map.get("resCoName")+"\n"+"담당의 "+map.get("resDoName")+"\n"
+    				+map.get("resDate")+"\n"
+    				+map.get("resSuName")+"님 "
+    				+map.get("resActionName");
             String rphone = (String) map.get("resSuPhone");
             
             String postParams = "user_id="+base64Encode("chlwltn94")
@@ -56,7 +56,6 @@ public class smsSend {
                                 
                                 +"&mode="+base64Encode("1")+"&smsType=S"+"&rdate"+base64Encode("")+"&rtime"+base64Encode(""); // SMS/LMS 여부
  
-            System.out.println(postParams);
             //test 모드일 경우 실제로 SMS발송은 되지 않고 성공적인 호출 확인 여부만 확인 할 수 있도록 함
  
             if(isTest) {
@@ -81,7 +80,6 @@ public class smsSend {
  
             int responseCode = con.getResponseCode();
  
-            System.out.println("POST Response Code::"+responseCode);
  
             if(responseCode == HttpURLConnection.HTTP_OK){ // success
  
@@ -99,16 +97,13 @@ public class smsSend {
  
                 in.close();
  
-                System.out.println("SMS Content : "+buf.toString());
                 
             }else{
-             	System.out.println("POST request not worked");
  
             }
  
         }catch(IOException ex){
  
-        	System.out.println("SMS IOException:"+ex.getMessage());
         }
  
     }
