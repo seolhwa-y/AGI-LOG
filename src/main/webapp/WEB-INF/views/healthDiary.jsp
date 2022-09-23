@@ -25,6 +25,9 @@
     height: 40px;
     font-size: 20px;
 }
+.miniProfile > img{
+	border-radius : 25px;
+}
     </style>
     <script>
         Kakao.init('2afdabad57ed92e1cc9de5bd4baed321');

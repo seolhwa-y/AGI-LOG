@@ -1,4 +1,25 @@
 /* etc */
+
+#coInfo {
+	padding-left: 34px;
+	position: relative;
+	width: 75%;
+	height: 100%;
+}
+
+#coInfo .title {
+	padding-left: 0;
+}
+
+#coInfo .text {
+	margin-left: 0;
+}
+
+#coInfo .dateText {
+	position: absolute;
+	right: 0;
+	top: 0;
+}
 #middle {
 	display: flex;
 }

@@ -38,35 +38,39 @@ public class DashBoard implements ServiceRule {
 
 	}
 	
-	// Î©îÏù∏ÌéòÏù¥ÏßÄ :: Í∞êÏÑ±ÏùºÍ∏∞ ÌîºÎìú ÏÇ¨ÏßÑ Î∂àÎü¨Ïò§Í∏∞
-	private void moveMainCtl(ModelAndView mav) {
-		StringBuffer sb = new StringBuffer();
-		AuthBean ab;
-		
-		try {
-			ab = (AuthBean) this.pu.getAttribute("accessInfo");
-			if (ab != null) {
-				mav.addObject("accessInfo", ab);
-			}
-			
-			List<DailyDiaryPhotoBean> ddpList = this.session.selectList("getDairyDiaryPhoto");
-			if(ddpList.size() != 0) {
-				for(int i = 0; i < ddpList.size(); i++) {
-					if(ddpList.get(i).getDpLink() != null) {
-						sb.append("<img src='"+ ddpList.get(i).getDpLink() +"' onclick=\"me('"+ ddpList.get(i).getDpDdCode() +"')\" class=\"todayPhoto\">");
-					} else {
-						sb.append("");
-					}
-				}
-			} else {
-				sb.append("");
-			}
-			mav.addObject("dailyDiaryPhoto", sb.toString());
-			mav.setViewName("dashBoard");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	// ∏ﬁ¿Œ∆‰¿Ã¡ˆ :: ∞®º∫¿œ±‚ ««µÂ ªÁ¡¯ ∫“∑Øø¿±‚
+    private void moveMainCtl(ModelAndView mav) {
+        StringBuffer sb = new StringBuffer();
+        AuthBean ab;
+
+        try {
+            ab = (AuthBean) this.pu.getAttribute("accessInfo");
+            if (ab != null) {
+                mav.addObject("accessInfo", ab);
+            }
+
+            List<DailyDiaryPhotoBean> ddpList = this.session.selectList("getDairyDiaryPhoto");
+            if(ddpList.size() != 0) {
+                for(int i = 0; i < ddpList.size(); i++) {
+                    if(i<9){
+                        if(ddpList.get(i).getDpLink() != null) {
+                            sb.append("<img src=\'"+ ddpList.get(i).getDpLink() +"\' onclick=\"me(\'"+ ddpList.get(i).getDpDdCode() +"\')\" class=\"todayPhoto\">");
+                        } else {
+                            sb.append("");
+                        }
+                    } else {
+                        break;
+                    }
+                }
+            } else {
+                sb.append("");
+            }
+            mav.addObject("dailyDiaryPhoto", sb.toString());
+            mav.setViewName("dashBoard");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 	// BooleanCheck ÔøΩÔøΩ
 	private boolean converToBoolean(int booleanCheck) {

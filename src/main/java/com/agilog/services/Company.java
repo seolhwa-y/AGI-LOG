@@ -74,7 +74,7 @@ public class Company implements ServiceRule {
 					break;
 				}
 			}else {
-				// landing page로 이동
+				// landing page濡� �씠�룞
 				mav.setViewName("companyLogin");
 			}
 		} catch (Exception e) {e.printStackTrace();}
@@ -106,7 +106,7 @@ public class Company implements ServiceRule {
 			break;}
 	}
 
-	//의사 추가
+	//�쓽�궗 異붽�
 	@Transactional(propagation = Propagation.REQUIRED)
 	private void insertDoctorCtl(Model model) {
 		DoctorBean db = (DoctorBean)model.getAttribute("doctorBean");
@@ -124,7 +124,7 @@ public class Company implements ServiceRule {
 
 	}
 
-	//전문의 관리 페이지 이동
+	//�쟾臾몄쓽 愿�由� �럹�씠吏� �씠�룞
 	private void moveDoctorManagementCtl(ModelAndView mav) {
 		try {
 			if(((CompanyBean)(this.pu.getAttribute("companyAccessInfo"))).getCoManagerCode() != null) {
@@ -133,7 +133,7 @@ public class Company implements ServiceRule {
 				CompanyBean cb = new CompanyBean();
 
 				cb.setCoCode(compb.getCoCode());
-				/* 내가 받은 프로젝트의 데이터를 html에 만들고 EL로 저장 */
+				/* �궡媛� 諛쏆� �봽濡쒖젥�듃�쓽 �뜲�씠�꽣瑜� html�뿉 留뚮뱾怨� EL濡� ���옣 */
 				mav.addObject("doctor",this.makeDoctorList(this.session.selectList("getDoctorInfo", cb)));
 				mav.addObject("companyAccessInfo",compb);
 				mav.setViewName("doctorManagement");	
@@ -145,7 +145,7 @@ public class Company implements ServiceRule {
 	}
 
 
-	//예약관리 페이지 이동
+	//�삁�빟愿�由� �럹�씠吏� �씠�룞
 	private void moveReservationManagementCtl(ModelAndView mav) {
 		try {
 			CompanyBean cb = ((CompanyBean) this.pu.getAttribute("companyAccessInfo"));
@@ -167,24 +167,27 @@ public class Company implements ServiceRule {
 		} catch (Exception e) {e.printStackTrace();}
 	}
 
-	//환자정보 불러오기 인증 및 EL 출력
+	//�솚�옄�젙蹂� 遺덈윭�삤湲� �씤利� 諛� EL 異쒕젰
 	private void movePatientManagementCtl(ModelAndView mav) {
 		try {
 			CompanyBean cb = ((CompanyBean) this.pu.getAttribute("companyAccessInfo"));
-
 			if(cb != null) {
 				DoctorBean db = (DoctorBean) mav.getModel().get("doctorBean");
-				//세션에서 coCode를 가져와 삽입
+				//�꽭�뀡�뿉�꽌 coCode瑜� 媛��졇�� �궫�엯
 				db.setCoCode(cb.getCoCode());
 
 				if(this.convertToBoolean(this.session.selectOne("isDoctorCode", db))){
 					DoctorBean acDoc = this.session.selectOne("isDoctorMember", db);
 
-					//password 비교
+					//password 鍮꾧탳
 					if(this.enc.matches(db.getDoPassword(), acDoc.getDoPassword())){
 						this.movePatList(mav);
+					} else {
+						mav.addObject("message", "아이디 또는 비밀번호를 확인해주세요.");
+						mav.setViewName("checkDoctor");
 					}
 				}else {
+					mav.addObject("message", "아이디 또는 비밀번호를 확인해주세요.");
 					mav.setViewName("checkDoctor");
 				}
 			}
@@ -215,10 +218,10 @@ public class Company implements ServiceRule {
 			rb.setResCoCode(cb.getCoCode());
 
 
-			//예약완료, 진료완료일 경우를 걸러냄
+			//�삁�빟�셿猷�, 吏꾨즺�셿猷뚯씪 寃쎌슦瑜� 嫄몃윭�깂
 			if(this.session.selectOne("isResOpenData",rb) != null) {
 				String doCode = rb.getResDoCode();
-				//Access가 1인 경우만 조회
+				//Access媛� 1�씤 寃쎌슦留� 議고쉶
 				if(this.convertToBoolean(this.session.selectOne("isPrivateData", rb))){
 					mav.addObject("healthDataList", this.makeHealthData(this.session.selectList("getHealthDataList", rb), rb));
 					mav.addObject("doctorComment",this.makePatientCo(this.session.selectOne("getPatientComment",rb),doCode));
@@ -235,7 +238,7 @@ public class Company implements ServiceRule {
 	
 	private String alert() {
 		StringBuffer sb = new StringBuffer();
-			sb.append("<div class =\"resAlert\">예약상태가<br/>'예약중'이거나 '예약취소'인 예약건은<br/>열람하실 수 없습니다.</div>");
+			sb.append("<div class =\"resAlert\">�삁�빟�긽�깭媛�<br/>'�삁�빟以�'�씠嫄곕굹 '�삁�빟痍⑥냼'�씤 �삁�빟嫄댁�<br/>�뿴�엺�븯�떎 �닔 �뾾�뒿�땲�떎.</div>");
 		return sb.toString();
 	}
 
@@ -244,9 +247,9 @@ public class Company implements ServiceRule {
 		try {
 			CompanyBean cb = ((CompanyBean) this.pu.getAttribute("companyAccessInfo"));
 			if(cb != null) {
-				//매니저 코드 치고 로그인 성공 했을때
+				//留ㅻ땲�� 肄붾뱶 移섍퀬 濡쒓렇�씤 �꽦怨� �뻽�쓣�븣
 				if(cb.getCoManagerCode()!=null) {
-					//예약 갯수 조회
+					//�삁�빟 媛��닔 議고쉶
 					List<ReservationBean> re = this.session.selectList("getResCount",cb);
 					mav.addObject("resCount",this.makeEventResCount(re));
 					mav.addObject("coCode",cb.getCoManagerCode());
@@ -254,15 +257,15 @@ public class Company implements ServiceRule {
 					//mav.addObject("resInfo", this.makeHTMLCReservation(this.session.selectList("getDoctorInfo", cb), this.session.selectList("getResInfo", cb)));
 					mav.setViewName("reservationManagement");
 				}
-				//처음 매니저 코드 치고 로그인 해야할 때
+				//泥섏쓬 留ㅻ땲�� 肄붾뱶 移섍퀬 濡쒓렇�씤 �빐�빞�븷 �븣
 				else if(((CompanyBean)mav.getModel().get("companyBean")).getCoManagerCode()!=null) {
 					cb.setCoManagerCode(this.enc.aesEncode(((CompanyBean)mav.getModel().get("companyBean")).getCoManagerCode(), cb.getCoCode()));
 					if(this.convertToBoolean(this.session.selectOne("isManagerCode", cb))) {
-						// 세션에 저장할 로그인 유저 정보 가져오기
+						// �꽭�뀡�뿉 ���옣�븷 濡쒓렇�씤 �쑀�� �젙蹂� 媛��졇�삤湲�
 						CompanyBean company = (CompanyBean) this.session.selectList("getCompanyAccessAllInfo", cb).get(0);
-						// 세션에 userCode저장
+						// �꽭�뀡�뿉 userCode���옣
 						this.pu.setAttribute("companyAccessInfo", company);
-						//예약 갯수 조회
+						//�삁�빟 媛��닔 議고쉶
 						List<ReservationBean> re = this.session.selectList("getResCount",cb);
 						mav.addObject("resCount",this.makeEventResCount(re));
 						mav.addObject("coCode",cb.getCoManagerCode());
@@ -271,7 +274,7 @@ public class Company implements ServiceRule {
 						mav.setViewName("reservationManagement");
 					}
 					else {
-						mav.addObject("message", "매니저 코드가 일치하지 않습니다. 다시 입력해주세요.");
+						mav.addObject("message", "留ㅻ땲�� 肄붾뱶媛� �씪移섑븯吏� �븡�뒿�땲�떎. �떎�떆 �엯�젰�빐二쇱꽭�슂.");
 						mav.setViewName("redirect:/");
 					}
 				}
@@ -282,7 +285,7 @@ public class Company implements ServiceRule {
 
 		} catch (Exception e) {e.printStackTrace();}
 	}
-	//의사 삭제
+	//�쓽�궗 �궘�젣
 	private void deleteDoctorCtl(Model model) {
 		DoctorBean db = (DoctorBean)model.getAttribute("doctorBean");
 
@@ -293,7 +296,7 @@ public class Company implements ServiceRule {
 			model.addAttribute("doctor",this.session.selectList("getDoctorInfo", db));
 		} catch (Exception e) {e.printStackTrace();}
 	}
-	//의사 코드 중복검사
+	//�쓽�궗 肄붾뱶 以묐났寃��궗
 	private void checkDoctorCodeCtl(Model model) {
 		String code = (String) model.getAttribute("code");
 		DoctorBean db = (DoctorBean) model.getAttribute("doctorBean");
@@ -319,7 +322,7 @@ public class Company implements ServiceRule {
 		if(rb.getDoComment()!="" || rb.getDoComment()!=null) {
 
 			if(this.convertToBoolean(this.session.update("updDoctorComment",rb))){
-				//mav.addObject("message", "소견서를 성공적으로 작성했습니다.");
+				//mav.addObject("message", "�냼寃ъ꽌瑜� �꽦怨듭쟻�쑝濡� �옉�꽦�뻽�뒿�땲�떎.");
 				//mav.setViewName("checkDoctor");
 				rb.setResBbCode(((ReservationBean)this.session.selectOne("getPatInfo",rb)).getResBbCode());
 				DoctorBean db = new DoctorBean();
@@ -330,7 +333,7 @@ public class Company implements ServiceRule {
 				//this.movePatList(mav);
 
 			}else {
-				mav.addObject("message", "소견서 작성에 실패했습니다.");
+				mav.addObject("message", "�냼寃ъ꽌 �옉�꽦�뿉 �떎�뙣�뻽�뒿�땲�떎.");
 				mav.setViewName("checkDoctor");
 
 			}
@@ -338,15 +341,15 @@ public class Company implements ServiceRule {
 	}
 
 
-	//환자 리스트 EL작업
+	//�솚�옄 由ъ뒪�듃 EL�옉�뾽
 	private String makePatientList(List<ReservationBean> patientList,DoctorBean db) {
 		StringBuffer sb = new StringBuffer();
 
 		sb.append("<table class=\"doctorMgrH\">" );
 		sb.append("<tr>");
-		sb.append("<th class=\"doctorMgrM\">진료 날짜</th>");
-		sb.append("<th class=\"doctorMgrM\">환자 이름</th>");
-		sb.append("<th class=\"doctorMgrM\">진료 상태</th>");
+		sb.append("<th class=\"doctorMgrM\">吏꾨즺 �궇吏�</th>");
+		sb.append("<th class=\"doctorMgrM\">�솚�옄 �씠由�</th>");
+		sb.append("<th class=\"doctorMgrM\">吏꾨즺 �긽�깭</th>");
 		sb.append("</tr>");
 		for(int idx=0; idx<patientList.size(); idx++) {
 			ReservationBean rb = (ReservationBean)patientList.get(idx);
@@ -364,26 +367,26 @@ public class Company implements ServiceRule {
 		StringBuffer sb = new StringBuffer();
 		if(rb.getDoComment() != null) {
 			sb.append("<table class=\"commentTb\"><tr>");
-			sb.append("<th class=\"doctorMgrCM1\">작성한 진료 소견</th>");
+			sb.append("<th class=\"doctorMgrCM1\">�옉�꽦�븳 吏꾨즺 �냼寃�</th>");
 			sb.append("<th class=\"doctorMgrCM2\">"+ rb.getDoComment() + "</th>");
 			sb.append("</tr></table>");
 		}else if(rb.getDoComment() == null){
-			sb.append("<div class=\"docCo\">의사소견 입력<br/><br/>");
-			sb.append("<input type=\"text\" name=\"doctorComment\" class=\"commentInput\" placeholder=\"내용을 입력하세요.\"/>");
-			sb.append("<button class=\"submitBtn btn\" "+"onClick=\"insDoctorComment('"+ rb.getResCode() +"','"+doCode+ "')\">입력</button></div>");
+			sb.append("<div class=\"docCo\">�쓽�궗�냼寃� �엯�젰<br/><br/>");
+			sb.append("<input type=\"text\" name=\"doctorComment\" class=\"commentInput\" placeholder=\"�궡�슜�쓣 �엯�젰�븯�꽭�슂.\"/>");
+			sb.append("<button class=\"submitBtn btn\" "+"onClick=\"insDoctorComment('"+ rb.getResCode() +"','"+doCode+ "')\">�엯�젰</button></div>");
 		}
 		return sb.toString();
 	}
 
-	//의사 리스트 EL작업
+	//�쓽�궗 由ъ뒪�듃 EL�옉�뾽
 	private String makeDoctorList(List<DoctorBean> doctorList) {
 		StringBuffer sb = new StringBuffer();
 
 		sb.append("<table class=\"doctorMgrH\">" );
 		sb.append("<tr>");
-		sb.append("<th class=\"doctorMgrM\">직원코드</th>");
-		sb.append("<th class=\"doctorMgrM\">직원이름</th>");
-		sb.append("<th class=\"doctorMgrM\">관리</th>");
+		sb.append("<th class=\"doctorMgrM\">吏곸썝肄붾뱶</th>");
+		sb.append("<th class=\"doctorMgrM\">吏곸썝�씠由�</th>");
+		sb.append("<th class=\"doctorMgrM\">愿�由�</th>");
 		sb.append("</tr>");
 		for(int idx=0; idx<doctorList.size(); idx++) {
 			DoctorBean db = ((DoctorBean)doctorList.get(idx));
@@ -392,7 +395,7 @@ public class Company implements ServiceRule {
 			sb.append("<td class=\"doctorMgrB\">" + db.getDoName() + "</td>");
 			sb.append("<td class=\"doctorMgrB\">"
 					+ "<button class=\"delBtn\" onClick=\"deleteDoctor("+ db.getDoCode() +")\">");
-			sb.append("<i class=\"fa-solid fa-trash-can delBtn\"></i>삭제</button>");
+			sb.append("<i class=\"fa-solid fa-trash-can delBtn\"></i>�궘�젣</button>");
 			sb.append("</td>");
 			sb.append("</tr>");
 		}
@@ -400,27 +403,27 @@ public class Company implements ServiceRule {
 
 		return sb.toString();
 	}
-	//건강기록 EL작업
+	//嫄닿컯湲곕줉 EL�옉�뾽
 	private String makeHealthData(List<HealthDiaryBean> HealthDataList,ReservationBean resBean) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<div id=\"doctorMgrTitleDiv\">" );
-		sb.append("<p id=\"doctorMgrTitle\">건강 기록지</p></div>");
+		sb.append("<p id=\"doctorMgrTitle\">嫄닿컯 湲곕줉吏�</p></div>");
 		sb.append("<table class=\"patientMgrH\">" );
 		sb.append("<tr>");
-		sb.append("<th colspan=\"11\" class=\"patientMrgS\">예약날짜 : "+ resBean.getResDate() +"</th>");
+		sb.append("<th colspan=\"11\" class=\"patientMrgS\">�삁�빟�궇吏� : "+ resBean.getResDate() +"</th>");
 		sb.append("</tr>");
 		sb.append("<tr>");
-		sb.append("<th class=\"patientMgrM\">날짜</th>");
-		sb.append("<th class=\"patientMgrM\">키</th>");
-		sb.append("<th class=\"patientMgrM\">몸무게</th>");
-		sb.append("<th class=\"patientMgrM\">발사이즈</th>");
-		sb.append("<th class=\"patientMgrM\">머리둘레</th>");
-		sb.append("<th class=\"patientMgrM\">체온</th>");
-		sb.append("<th class=\"patientMgrM\">수면시간</th>");
-		sb.append("<th class=\"patientMgrM\">배변량</th>");
-		sb.append("<th class=\"patientMgrM\">배변상태</th>");
-		sb.append("<th class=\"patientMgrM\">식사량</th>");
-		sb.append("<th class=\"patientMgrM\">메모</th>");
+		sb.append("<th class=\"patientMgrM\">�궇吏�</th>");
+		sb.append("<th class=\"patientMgrM\">�궎</th>");
+		sb.append("<th class=\"patientMgrM\">紐몃Т寃�</th>");
+		sb.append("<th class=\"patientMgrM\">諛쒖궗�씠利�</th>");
+		sb.append("<th class=\"patientMgrM\">癒몃━�몮�젅</th>");
+		sb.append("<th class=\"patientMgrM\">泥댁삩</th>");
+		sb.append("<th class=\"patientMgrM\">�닔硫댁떆媛�</th>");
+		sb.append("<th class=\"patientMgrM\">諛곕��웾</th>");
+		sb.append("<th class=\"patientMgrM\">諛곕��긽�깭</th>");
+		sb.append("<th class=\"patientMgrM\">�떇�궗�웾</th>");
+		sb.append("<th class=\"patientMgrM\">硫붾え</th>");
 		sb.append("</tr>");
 		for(int idx=0; idx<HealthDataList.size(); idx++) {
 			HealthDiaryBean hdb = ((HealthDiaryBean)HealthDataList.get(idx));
@@ -428,37 +431,37 @@ public class Company implements ServiceRule {
 				sb.append("<tr>");
 				if(hdb.getHdDate()!=null) {
 					sb.append("<td class=\"patientMgrB\">" + hdb.getHdDate() + "</td>");
-				} else {sb.append("<td class=\"patientMgrB\">정보없음</td>");}
+				} else {sb.append("<td class=\"patientMgrB\">�젙蹂댁뾾�쓬</td>");}
 				if(hdb.getBbHeight()!=null) {
 					sb.append("<td class=\"patientMgrB\">" + hdb.getBbHeight() + "&nbsp;cm</td>");
-				}else {sb.append("<td class=\"patientMgrB\">정보없음</td>");}
+				}else {sb.append("<td class=\"patientMgrB\">�젙蹂댁뾾�쓬</td>");}
 				if(hdb.getBbWeight()!=null) {
 					sb.append("<td class=\"patientMgrB\">" + hdb.getBbWeight() + "&nbsp;kg</td>");
-				}else {sb.append("<td class=\"patientMgrB\">정보없음</td>");}	
+				}else {sb.append("<td class=\"patientMgrB\">�젙蹂댁뾾�쓬</td>");}	
 				if(hdb.getFoot()!=null) {
 					sb.append("<td class=\"patientMgrB\">" + hdb.getFoot() + "&nbsp;mm</td>");
-				}else {sb.append("<td class=\"patientMgrB\">정보없음</td>");}
+				}else {sb.append("<td class=\"patientMgrB\">�젙蹂댁뾾�쓬</td>");}
 				if(hdb.getHead()!=null) {
 					sb.append("<td class=\"patientMgrB\">" + hdb.getHead() + "&nbsp;inch</td>");
-				}else {sb.append("<td class=\"patientMgrB\">정보없음</td>");}
+				}else {sb.append("<td class=\"patientMgrB\">�젙蹂댁뾾�쓬</td>");}
 				if(hdb.getTemperature()!=null) {
 					sb.append("<td class=\"patientMgrB\">" + hdb.getTemperature() + "&nbsp;&deg;c</td>");
-				}else {sb.append("<td class=\"patientMgrB\">정보없음</td>");}
+				}else {sb.append("<td class=\"patientMgrB\">�젙蹂댁뾾�쓬</td>");}
 				if(hdb.getSleep()!=null) {
 					sb.append("<td class=\"patientMgrB\">" + hdb.getSleep() + "</td>");
-				}else {sb.append("<td class=\"patientMgrB\">정보없음</td>");}
+				}else {sb.append("<td class=\"patientMgrB\">�젙蹂댁뾾�쓬</td>");}
 				if(hdb.getDefecation()!=null) {
 					sb.append("<td class=\"patientMgrB\">" + hdb.getDefecation() + "</td>");
-				}else {sb.append("<td class=\"patientMgrB\">정보없음</td>");}
+				}else {sb.append("<td class=\"patientMgrB\">�젙蹂댁뾾�쓬</td>");}
 				if(hdb.getDefstatus()!=null) {
 					sb.append("<td class=\"patientMgrB\">" + hdb.getDefstatus() + "</td>");
-				}else {sb.append("<td class=\"patientMgrB\">정보없음</td>");}
+				}else {sb.append("<td class=\"patientMgrB\">�젙蹂댁뾾�쓬</td>");}
 				if(hdb.getMeal()!=null) {
 					sb.append("<td class=\"patientMgrB\">" + hdb.getMeal() + "</td>");
-				}else {sb.append("<td class=\"patientMgrB\">정보없음</td>");}
+				}else {sb.append("<td class=\"patientMgrB\">�젙蹂댁뾾�쓬</td>");}
 				if(hdb.getMemo()!=null) {
 					sb.append("<td class=\"patientMgrB m\">" + hdb.getMemo() + "</td>");
-				}else {sb.append("<td class=\"patientMgrB m\">정보없음</td>");}
+				}else {sb.append("<td class=\"patientMgrB m\">�젙蹂댁뾾�쓬</td>");}
 				sb.append("</tr>");
 		}
 		sb.append("</table>");
@@ -466,7 +469,7 @@ public class Company implements ServiceRule {
 	}
 
 
-	//캘린더 내부 예약개수 형식 만들기
+	//罹섎┛�뜑 �궡遺� �삁�빟媛쒖닔 �삎�떇 留뚮뱾湲�
 	private String makeEventResCount(List<ReservationBean> re) {
 		StringBuffer sb = new StringBuffer();
 		int idx = 0;
@@ -485,7 +488,7 @@ public class Company implements ServiceRule {
 		return sb.toString();
 	}
 
-	// BooleanCheck ��
+	// BooleanCheck 占쏙옙
 	private boolean convertToBoolean(int booleanCheck) {
 		return booleanCheck == 0 ? false : true;
 
