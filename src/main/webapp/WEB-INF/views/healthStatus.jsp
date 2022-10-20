@@ -112,32 +112,36 @@ function lineChart(data, check){
 				  ["키", 0, 1, 2, 3, 4, 5, 6],
 				  ["몸무게", 0, 1, 2, 3, 4, 5, 6]]
 	 */
+	let heightList = JSON.parse("${babyStatusList.heightList}");
+	let weightList = JSON.parse("${babyStatusList.weightList}");
+	let headList = JSON.parse("${babyStatusList.headList}");
+/* 	 
 	 let height = "", weight = "", head = "";
-	 console.log("check DATA :: " + data);
+	 console.log("check DATA :: " + data); */
 		
-	 // 방식에 따른 조건문 :: page : ajax = 1 : 0
+ 	 // 방식에 따른 조건문 :: page : ajax = 1 : 0
 	 if(check == 1) {
-		 /* 페이지 */
-		 height = "${babyStatusList.heightList}".replace(/ /g, "").split("[")[1].split("]")[0].split(",");
-		 weight = "${babyStatusList.weightList}".replace(/ /g, "").split("[")[1].split("]")[0].split(",");
-		 head = "${babyStatusList.headList}".replace(/ /g, "").split("[")[1].split("]")[0].split(",");
+		/* 페이지 */
+		heightList = JSON.parse("${babyStatusList.heightList}");
+		weightList = JSON.parse("${babyStatusList.weightList}");
+		headList = JSON.parse("${babyStatusList.headList}");
 	 } else if (check == 0) {
-		 /* API 방식 */
-		 height = data.heightList.replace(/ /g, "").split("[")[1].split("]")[0].split(",");
-		 weight = data.weightList.replace(/ /g, "").split("[")[1].split("]")[0].split(",");
-		 head = data.headList.replace(/ /g, "").split("[")[1].split("]")[0].split(",");
-	 }
+		/* API 방식 */
+		heightList = JSON.parse(data.heightList);
+		weightList = JSON.parse(data.weightList);
+		headList = JSON.parse(data.headList);
+	 } 
 
 	// 나이별 건강 데이터 분리 체크
-	console.log("splineChart_height :: " + height);
-	console.log("splineChart_weight :: " + weight);
-	console.log("splineChart_head :: " + head);
+/*  	console.log("splineChart_height :: " + heightList[0]);
+	console.log("splineChart_weight :: " + weightList[0]);
+	console.log("splineChart_head :: " + headList[0]);  */
 	
 	/* 아이 키 */
 	let heightChart = bb.generate({
 		  data: {
 			    columns: [
-				[ "키", height[0], height[1], height[2], height[3], height[4], height[5], height[6], height[7] ]
+				[ "키", heightList[0][0], heightList[0][1], heightList[0][2], heightList[0][3], heightList[0][4], heightList[0][5], heightList[0][6], heightList[0][7], heightList[0][8] ]
 			    ],
 			    type: "line", // for ESM specify as: line()
 			  },
@@ -148,7 +152,7 @@ function lineChart(data, check){
 	let weightChart = bb.generate({
 		  data: {
 			    columns: [
-			    [ "몸무게", weight[0], weight[1], weight[2], weight[3], weight[4], weight[5], weight[6], weight[7] ]
+			    [ "몸무게", weightList[0][0], weightList[0][1], weightList[0][2], weightList[0][3], weightList[0][4], weightList[0][5], weightList[0][6], weightList[0][7], weightList[0][8] ]
 			    ],
 			    type: "line", // for ESM specify as: line()
 			  },
@@ -159,7 +163,7 @@ function lineChart(data, check){
 	let headChart = bb.generate({
 			data: {
 				  columns: [
-				  [ "머리둘레", head[0], head[1], head[2], head[3], head[4], head[5], head[6], head[7] ]
+				  [ "머리둘레", headList[0][0], headList[0][1], headList[0][2], headList[0][3], headList[0][5], headList[0][6], headList[0][7], headList[0][8] ]
 				  ],
 				  type: "line", // for ESM specify as: line()
 				},
@@ -208,15 +212,13 @@ function cngHealthStatus() {
 
 // 2-1. 변경된 아이 추세 데이터 받아서 해당함수에 전송 
 function cngLineChert(ajax) {
-	let babyStatusList = JSON.parse(ajax);
-	
-	console.log("cngLineChert_babyStatusList :: " + babyStatusList);
+	let list = JSON.parse(ajax);
 	
 	document.getElementsByClassName("aChart")[0].innerHTML = "";
 	document.getElementsByClassName("aChart")[1].innerHTML = "";
 	document.getElementsByClassName("aChart")[2].innerHTML = "";
-	
-	lineChart(babyStatusList, 0);
+
+	lineChart(list, 0);
 }
 
 </script>

@@ -98,18 +98,25 @@ public class DailyDiary3 implements ServiceRule {
 	// 감성일기 댓글 등록
 	@Transactional(rollbackFor = SQLException.class)
 	private void insertDailyDiaryCommentCtl(Model model) {
+		/* 
+		 * 개발자 : 염설화
+		 * 세부기능 : 사용자가 특정 감성일기에서 댓글 내용을 입력 후 등록 버튼을 눌렀을 때 게시글에 댓글을 남긴다.
+		 */
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		DailyDiaryCommentBean ddcb = (DailyDiaryCommentBean)model.getAttribute("dailyDiaryCommentBean");
-		
+
 		try {
 			AuthBean ab = (AuthBean)this.pu.getAttribute("accessInfo");
-			
+
+			// 현재 로그인한 유저와 댓글 작성자 확인을 위하여 세션에서 유저코드 가져와서 저장
 			ddcb.setDcSuCode(ab.getSuCode());
+			// 댓글 코드 Max + 1
 			ddcb.setDcCode(this.session.selectOne("getDcCode", ddcb.getDcDdCode()));
-			
+
+			// DB에 댓글 INSERT
 			if(this.convertToBoolean(this.session.insert("insDailyDiaryComment", ddcb))) {
-				
 				map.put("suCode", ab.getSuCode());
+				// 해당 감성일기에 댓글 내용을 다시 읽어온다.
 				map.put("ddComment", this.session.selectList("getDailyDiaryComment", ddcb));
 				model.addAttribute("insDdComment", map);
 			}
@@ -121,6 +128,10 @@ public class DailyDiary3 implements ServiceRule {
 	// 감성일기 댓글 수정
 	@Transactional(rollbackFor = SQLException.class)
 	private void updateDailyDiaryCommentCtl(Model model) {
+		/* 
+		 * 개발자 : 염설화
+		 * 세부기능 : 사용자가 특정 감성일기에서 댓글 내용을 수정 후 수정 버튼을 눌렀을 때 게시글에 댓글을 수정한다.
+		 */
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		DailyDiaryCommentBean ddcb = (DailyDiaryCommentBean)model.getAttribute("dailyDiaryCommentBean");
 		
@@ -128,9 +139,10 @@ public class DailyDiary3 implements ServiceRule {
 			AuthBean ab = (AuthBean)this.pu.getAttribute("accessInfo");
 			ddcb.setDcSuCode(ab.getSuCode());
 			
+			// DB에 댓글 UPDATE
 			if(this.convertToBoolean(this.session.update("updDailyDiaryComment", ddcb))) {
-				
 				map.put("suCode", ab.getSuCode());
+				// 해당 감성일기에 댓글 내용을 다시 읽어온다.
 				map.put("ddComment", this.session.selectList("getDailyDiaryComment", ddcb));
 				model.addAttribute("updDdComment", map);
 			}
@@ -142,16 +154,21 @@ public class DailyDiary3 implements ServiceRule {
 	// 감성일기 댓글 삭제
 	@Transactional(rollbackFor = SQLException.class)
 	private void deleteDailyDiaryCommentCtl(Model model) {
+		/* 
+		 * 개발자 : 염설화
+		 * 세부기능 : 사용자가 특정 감성일기에서 댓글을 삭제 버튼을 눌렀을 때 게시글에 댓글을 삭제한다.
+		 */
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		DailyDiaryCommentBean ddcb = (DailyDiaryCommentBean)model.getAttribute("dailyDiaryCommentBean");
 		
 		try {
 			AuthBean ab = (AuthBean)this.pu.getAttribute("accessInfo");
-			
 			ddcb.setDcSuCode(ab.getSuCode());
+
+			// DB에 댓글 UPDATE
 			if(this.convertToBoolean(this.session.delete("delDailyDiaryComment", ddcb))) {
-				
 				map.put("suCode", ab.getSuCode());
+				// 해당 감성일기에 댓글 내용을 다시 읽어온다.
 				map.put("ddComment", this.session.selectList("getDailyDiaryComment", ddcb));
 				model.addAttribute("delDdComment", map);
 			}

@@ -66,17 +66,34 @@ public class DailyDiary2 implements ServiceRule {
 		}	
 	}
 
+	// 감성일기 피드 상세내용 보기
 	private void getDailyDiaryFeedCtl(Model model) {
+		/* 
+		 * 개발자 : 김태훈(게시글), 염설화(댓글), 한슬기(좋아요)
+		 * 세부기능 : 사용자가 감성일기 피드를 눌렀을 때, 게시글 내용, 댓글, 좋아요 불러온다.
+		 */
         HashMap<String, Object> map = new HashMap<String, Object>();
         HashMap<String,String> likeMap = new HashMap<String,String>();
         DailyDiaryCommentBean ddcb = (DailyDiaryCommentBean)model.getAttribute("dailyDiaryCommentBean");
         DailyDiaryBean ddb = (DailyDiaryBean) model.getAttribute("dailyDiaryBean");
         boolean like = false;
         AuthBean ab;
+        
+        // 김태훈 : 감성일기 내용 불러오기
+        ddb = this.session.selectOne("getDDFeed", ddb);
+        
+        // 감성일기 내용에 사진이 없을 경우 기본 이미지로 대체.
+        if(ddb.getDpLink() == null) {
+            ddb.setDpLink("/res/img/non_photo.png");
+        }
+        
+        // 한슬기 : 감성일기 좋아요
         try {
             ab = (AuthBean)this.pu.getAttribute("accessInfo");
             if(ab != null) {
+				// 염설화 : 현재 로그인한 유저와 게시글 및 댓글 작성자 확인을 위하여 세션에서 유저코드 가져와서 저장
                 map.put("suCode", ab.getSuCode());
+                
                 likeMap.put("ddCode", ddb.getDdCode());
                 likeMap.put("suCode", ab.getSuCode());
                 // 좋아요 누른적 있음
@@ -90,18 +107,17 @@ public class DailyDiary2 implements ServiceRule {
             e.printStackTrace();
         }
 
-        ddb = this.session.selectOne("getDDFeed", ddb);
-
+        // 염설화 : 감성일기 댓글 내용 불러오기
         ddcb.setDcDdCode(ddb.getDdCode());
         ddcb.setDcDdSuCode(ddb.getSuCode());//suCode == ddSuCode
         ddcb.setDcDdDate(ddb.getDdDate());
+        
+        map.put("ddComment", this.session.selectList("getDailyDiaryComment", ddcb));
 
-        if(ddb.getDpLink() == null) {
-            ddb.setDpLink("/res/img/non_photo.png");
-        }
+        // 감성일기 상세 내용 map 담아서 전송
         ddb.setLike(like);
         map.put("ddFeed", ddb);
-        map.put("ddComment", this.session.selectList("getDailyDiaryComment", ddcb));
+
         model.addAttribute("dailyDiaryFeed", map);
     }
 
@@ -131,7 +147,7 @@ public class DailyDiary2 implements ServiceRule {
 				MultipartFile files = ((MultipartFile)mav.getModel().get("files"));
 				
 				/* 저장 폴더 경로 설정 */
-				String path = req.getSession().getServletContext().getRealPath("/resources/img/")+ab.getSuCode()+"\\dailydiary\\";
+				String path = req.getSession().getServletContext().getRealPath("/resources/img/")+ab.getSuCode()+"/dailydiary/";
 				
 				if(this.convertToBoolean(this.session.insert("insDd", db))) {
 					//이미지 파일이 있는지 체크
@@ -149,7 +165,7 @@ public class DailyDiary2 implements ServiceRule {
 						String ext = files.getOriginalFilename().substring(pos);
 						//생성된 랜덤이름 + 확장자 저장 
 						String fileName = uniqueName+ext;
-		
+
 						File realPath = new File(path,fileName);//최종 경로로 파일 저장
 						files.transferTo(realPath);//파일 실제 전송
 

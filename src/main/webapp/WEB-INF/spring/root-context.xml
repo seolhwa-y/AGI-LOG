@@ -3,17 +3,25 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
 	xmlns:tx="http://www.springframework.org/schema/tx"
-	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	<!-- DBCP: HikariCP >> 프로젝트 시작과 동시에 특정 DB와의 커넥션을 생성 한 후, 대여 -->
 	<bean id="authbDBCP" class="com.zaxxer.hikari.HikariConfig">
 		<property name="driverClassName" value="oracle.jdbc.OracleDriver"></property>
- 		<property name="jdbcUrl" value="jdbc:oracle:thin:@authbdb.hoonzzang.com:11000:xe"></property>
-		<property name="username" value="authb"></property>
-		<property name="password" value="1234"></property>
+ 		<property name="jdbcUrl" value="jdbc:oracle:thin:@WULJD0UJ1ZMHAE4V_high?TNS_ADMIN=/Users/shy/OracleCloud2022/agi-log/Wallet_WULJD0UJ1ZMHAE4V"></property>
+		<property name="username" value="ADMIN"></property>
+		<property name="password" value="OracleCloud2022"></property>
 	</bean>
 	
 	<!-- DBCP Using >> DataSource -->

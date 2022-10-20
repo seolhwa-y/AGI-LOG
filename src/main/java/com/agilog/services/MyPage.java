@@ -112,7 +112,7 @@ public class MyPage implements ServiceRule {
 			String babyCode = this.session.selectOne("getNewBabyCode",ab);
 			bb.setBbCode(babyCode);
 			bb.setSuCode(ab.getSuCode());
-			
+			System.out.println(bb);
 			/*아이 추가 :: baby 테이블에 인서트*/
 			if(this.converToBoolean(this.session.insert("insBabyInfo",bb))) {
 				/*아이 추가 :: HealthDiary 테이블에 인서트*/

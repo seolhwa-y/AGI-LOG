@@ -90,36 +90,35 @@ public class BebeMap implements ServiceRule {
 		}
 	}
 
+	// 지도 페이지 이동
 	private void moveMapCtl(ModelAndView mav) {
+		/* 
+		 * 개발자 : 염설화
+		 * 세부기능 : 지도 페이지 이동하면서 유저의 지역정보를 가져온다.
+		 */
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		Gson gson = new Gson();
 		
 		try {
 			AuthBean ab = (AuthBean) this.pu.getAttribute("accessInfo");
-			if (ab != null) {
-				if (ab.getSuCode().length() == 10) {
-					ab.setType("kakao");
-				} else {
-					ab.setType("naver");
-				}
-				mav.addObject("accessInfo", ab);
-				
-				List<BebeMapBean> bmbList = this.ApiExplorer(mav);
-				String bmList = gson.toJson(bmbList);
-				
-				ab = this.session.selectOne("getSuAddress", ab);
-				String suInfo = gson.toJson(ab);
-				
-				map.put("bmList", bmList);
-				map.put("suInfo", suInfo);
-				
-				mav.setViewName("bebeMap");
-				
-				mav.addObject("suInfo", suInfo);
-				mav.addObject("bmList", bmList);
-				//mav.addObject("bmList", map);
 
+			// 소셜 회원 구분
+			if (ab.getSuCode().length() == 10) {
+				ab.setType("kakao");
+			} else {
+				ab.setType("naver");
 			}
+			mav.addObject("accessInfo", ab);
+
+			// 현재 로그인 되어있는 유저의 지역정보를 DB에 가져온다.
+			ab = this.session.selectOne("getSuAddress", ab);
+			
+			// 가져온 정보를 JSON으로 바꿔서 MAP에 저장한다.
+//			String suInfo = gson.toJson(ab);
+			map.put("suInfo", gson.toJson(ab));
+			
+			mav.addObject("suInfo", map);
+			mav.setViewName("bebeMap");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
