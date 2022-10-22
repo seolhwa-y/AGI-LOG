@@ -19,61 +19,61 @@
 ## 사용기술
 > **언어**  
 
--HTML5
--CSS3
--JAVASCRIPT
--JAVA
+- HTML5
+- CSS3
+- JAVASCRIPT
+- JAVA
 
 > **프레임워크**
 
--Spring Framework
--MyBatis 3.5.10
+- Spring Framework
+- MyBatis 3.5.10
 	
 > **서버**
 
--Apache Tomcat 9.0
+- Apache Tomcat 9.0
 
 > **DB**  
 
--Oracle 11g
+- Oracle 11g
 
 > **IDE**  
 
--Eclipse 2022-03
--SQL Developer
--Visual Studio Code
+- Eclipse 2022-03
+- SQL Developer
+- Visual Studio Code
 
 > **라이브러리** 
  
--Bootstrap
--FullCalender
--billboard.js
--Three.js
--SweetAlert
--Smart Editor2
--GSON
--JQuery
+- Bootstrap
+- FullCalender
+- billboard.js
+- Three.js
+- SweetAlert
+- Smart Editor2
+- GSON
+- JQuery
 
 > **API**  
 
--KAKAO/NAVER Login
--KAKAO Map
--DAME 주소검색
--사업자등록번호 진위확인
--카페24
+- KAKAO/NAVER Login
+- KAKAO Map
+- DAME 주소검색
+- 사업자등록번호 진위확인
+- 카페24
 
 > **ETC**  
 
--GitHub
--Excel
--PowerPoint
--eXERD
--Discord
+- GitHub
+- Excel
+- PowerPoint
+- eXERD
+- Discord
 <br>
 
 ## 개발기간 (WBS)
-![](KakaoTalk_Photo_2022-10-23-00-19-30.png)
+![poster](./mdImg/WBS.png)
 <br>
 
 ## ERD
-![](KakaoTalk_Image_2022-10-23-00-20-45.png)
+![poster](./mdImg/ERD.png)
