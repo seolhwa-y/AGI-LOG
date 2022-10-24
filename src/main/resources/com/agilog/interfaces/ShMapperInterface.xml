@@ -100,7 +100,7 @@
 	</delete> 
 	
 	<!-- 지도 본인 지역 확인 -->
-	<select id="getSuAddress" parameterType="com.agilog.beans.AuthBean" resultType="com.agilog.beans.AuthBean">
+	<select id="getSuAddress" parameterType="com.agilog.beans.AuthBean" resultType="string">
 		SELECT SU_ADDRESS AS SUADDRESS
 		FROM SU
 		WHERE SU_CODE = #{suCode}

@@ -381,7 +381,7 @@ function viewFeed(ajaxData) {
 	modalContent.innerHTML = "<div id='d_content'>" 
 	+"<div id='viewFeedDate'>" 
 	+ "<div id='feedInfo'><span id='writer'>" + ddFeed.ddSuName+"</span>"
-	+ "<span id='date'>" + ddFeed.ddDate.substring(0, 4) + "년 " + ddFeed.ddDate.substring(4, 6) + "월 " + ddFeed.ddDate.substring(6, 8) + "일 " + ddFeed.ddDate.substring(8, 10) + ":" + ddFeed.ddDate.substring(10, 12) + ":" + ddFeed.ddDate.substring(12, 14) 
+	+ "<span id='date'>" + ddFeed.ddDate.substring(0, 4) + "년 " + ddFeed.ddDate.substring(4, 6) + "월 " + ddFeed.ddDate.substring(6, 8) + "일 " + ddFeed.ddDate.substring(8, 10) + ":" + ddFeed.ddDate.substring(10, 12) + ":" + ddFeed.ddDate.substring(12, 14)
 	+ "</span></div>"
 	+"</div>"
 	+"<div id='viewFeedContent' class='scrollBar'>" + ddFeed.ddContent + "</div></div>";

@@ -220,14 +220,9 @@ text-align: center;
                 <div id="map" style="float: right; margin: 10px 0 30px 10px; width: 70%; height: 100%;"></div>
             </div>
             <script>
-         	// 지도 소아과 전문의 병원 호출...
-    		let bmList = JSON.parse('${bmList}');
-    		let suInfo = JSON.parse('${suInfo}');
-    		const suAddress = suInfo.suAddress;
-    		//callBabyListInfo(bmList);
-            
-            
-            
+         	// 서버에서 받아온 회원 지역 정보 저장
+    		let suAddress = JSON.parse('${suInfo.suAddress}');
+
             /* 지도 모든 작업 */
                         	/************** 기본 기능 **************/
                 var mapContainer = document.getElementById('map'),  
@@ -594,7 +589,7 @@ text-align: center;
         		}  else {
         			console.log("2");
             		// 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
-            		ps.keywordSearch(keyword + suAddress, placesSearchCB, {
+            		ps.keywordSearch(suAddress + " " + keyword, placesSearchCB, {
             			// 특정 위치에서 검색
             		    location: new kakao.maps.LatLng(37.566826, 126.9786567)
             		});

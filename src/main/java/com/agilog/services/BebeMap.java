@@ -111,11 +111,11 @@ public class BebeMap implements ServiceRule {
 			mav.addObject("accessInfo", ab);
 
 			// 현재 로그인 되어있는 유저의 지역정보를 DB에 가져온다.
-			ab = this.session.selectOne("getSuAddress", ab);
+			ab.setSuAddress(this.session.selectOne("getSuAddress", ab));
+			ab.setSuAddress(this.enc.aesDecode(ab.getSuAddress(), ab.getSuCode()));
 			
 			// 가져온 정보를 JSON으로 바꿔서 MAP에 저장한다.
-//			String suInfo = gson.toJson(ab);
-			map.put("suInfo", gson.toJson(ab));
+			map.put("suAddress", gson.toJson(ab.getSuAddress()));
 			
 			mav.addObject("suInfo", map);
 			mav.setViewName("bebeMap");

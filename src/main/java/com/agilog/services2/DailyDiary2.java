@@ -167,6 +167,9 @@ public class DailyDiary2 implements ServiceRule {
 						String fileName = uniqueName+ext;
 
 						File realPath = new File(path,fileName);//최종 경로로 파일 저장
+					System.out.println("path" + path);
+					System.out.println("fileName" + fileName);
+					System.out.println("realPath" + realPath);
 						files.transferTo(realPath);//파일 실제 전송
 
 						//이미지 코드 설정. 이미지가 없으면 1로 설정하고 있으면 마지막 게시글 코드+1값으로 설정함

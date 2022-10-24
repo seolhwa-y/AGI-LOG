@@ -53,7 +53,7 @@ public interface ShMapperInterface {
 	public int delDailyDiaryComment(DailyDiaryCommentBean ddcb);
 	
 	// 지도 본인 지역 확인
-	public AuthBean getSuAddress(AuthBean ab);
+	public String getSuAddress(AuthBean ab);
 	// 지도 기업 연계 정보 조회
 	public String getCoCode(CompanyBean cb);
 	// 지도 댓글 조회
