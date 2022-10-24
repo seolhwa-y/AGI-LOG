@@ -1,59 +1,79 @@
-# 아기-로그 agi-log
+# 아기로그 (agi-log)
 
-<div align="center">
-</div>
+## 프로젝트 소개
+> **아기의 건강을 관리하자**
 
-<br><br>
+기존 서비스의 육아일기 말고 매일 아이의 건강을 기록하여, 아이가 아플 때 전문의에게 진료를 더 편히 볼 수 있게 해주는 웹서비스
+<br>
 
-## 프로젝트 소개 💸
+## 팀원소개
+|이름|역활|업무|
+|:---:|:---:|:---:|
+|김재필|엔지니어|기업_의사관리, 기업_환자관리, 일반_감성일기, 일반_게시판|
+|최지수|기획자|일반_감성일기, 일반_캘린더, 일반_마이페이지, 기업_예약관리|
+|김태훈|PM|DB설계, 일반_감성일기, 일반_자유게시판, 일반_예약관리|
+|염설화|팀장|DB설계, 일반_감성일기, 일반_건강일기, 일반_지도, 일반_자유게시판|
+|한슬기|PM|일반_감성일기, 일반_건강일기, 일반_캘린더, 일반_게시판, 기업_예약관리|
+<br>
 
-> **_아기의 건강을 관리하자_**
+## 사용기술
+> **언어**  
 
-기존 서비스의 육아일기 말고 매일 아이의 건강을 기록하여, 아이가 아플 때 전문의에게 진료를 더 편히 볼 수 있게 해주는 웹 서비스 입니다.
+- HTML5
+- CSS3
+- JAVASCRIPT
+- JAVA
 
-<br><br>
+> **프레임워크**
 
-## 팀원 소개 
-|역활|천사|보조팀장|PM|팀장|보조PM|
-|:---:|:---:|:---:|:---:|:---:|:---:|
-|이름|김재필|최지수|김태훈|염설화|한슬기|
-|업무|기업, 게시판|마이페이지, 캘린더, 피드|기업, 게시판, 감성일기|건강일기, 지도, 댓글|건강일기, 캘린더, 좋아요|
+- Spring Framework
+- MyBatis 3.5.10
+	
+> **서버**
 
-<br><br>
+- Apache Tomcat 9.0
 
-## 기술 스택 
+> **DB**  
 
-> 언어
+- Oracle 11g
 
-<div align="center">
-</div>
+> **IDE**  
 
-> 프론트
+- Eclipse 2022-03
+- SQL Developer
+- Visual Studio Code
 
-<div align="center">
-</div>
+> **라이브러리** 
+ 
+- Bootstrap
+- FullCalender
+- billboard.js
+- Three.js
+- SweetAlert
+- Smart Editor2
+- GSON
+- JQuery
 
-> 백
+> **API**  
 
-<div align="center">
-</div>
+- KAKAO/NAVER Login
+- KAKAO Map
+- DAME 주소검색
+- 사업자등록번호 진위확인
+- 카페24
 
-> 라이브러리
+> **ETC**  
 
-<div align="center">
-</div>
+- GitHub
+- Excel
+- PowerPoint
+- eXERD
+- Discord
+<br>
 
-> 프레임워크
+## 개발기간 (WBS)
+![poster](./mdImg/WBS.png)
+<br>
 
-<div align="center">
-</div>
-
-> API
-
-<div align="center">
-</div>
-
-> ETC
-
-<div align="center">
-</div>
+## ERD
+![poster](./mdImg/ERD.png)
