@@ -191,18 +191,6 @@ public class Board2 {
 		return sb.toString();
 	}
 	
-	private void changeSortCtl(Model model) {
-		
-	}
-	
-	private void changeListCtl(ModelAndView mav) {
-		
-	}
-	
-	private void moveFreeBoardCtl(ModelAndView mav) {
-		
-	}
-	
 	private void deleteFBPostCtl(ModelAndView mav) {
 		try {
 			AuthBean ab = ((AuthBean) this.pu.getAttribute("accessInfo"));
@@ -267,10 +255,6 @@ public class Board2 {
 		
 	}
 	
-	private void moveInfoBoardCtl(ModelAndView mav) {
-		
-	}
-	
 	private void moveWritePageCtl(ModelAndView mav) {
 
 		try {
@@ -292,22 +276,6 @@ public class Board2 {
 		mav.addObject("content",this.makePostView(this.session.selectOne("getFbPostContent", pb)));
 		this.showFreePostCtl(mav,pb);
 		mav.setViewName("post");
-	}
-	
-	private void searchPostCtl(ModelAndView mav) {
-		
-	}
-	
-	private void insertPostCommentCtl(Model model) {
-		
-	}
-	
-	private void updateBoardCommentCtl(Model model) {
-		
-	}
-	
-	private void deleteBoardCommentCtl(Model model) {
-		
 	}
 	
 	private void insertPostCtl(ModelAndView mav) {
@@ -412,10 +380,6 @@ public class Board2 {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-	
-	private void moveUpdatePostPageCtl(ModelAndView mav) {
-		
 	}
 	
 	private void updatePostCtl(ModelAndView mav) {
@@ -527,7 +491,7 @@ public class Board2 {
 				sb.append("<div class=\"pTitle\">" + pb.getFbTitle() + "</div>");
 				sb.append("<div class=\"pHead\">");
 				
-				sb.append("<div class=\"pWriter\">작성자&ensp;<small class=\"swriter\">" + pb.getFbSuName() + "</small></div>");
+				sb.append("<div class=\"pWriter\">작성자&ensp;<small class=\"swriter\">" + pb.getSuNickName() + "</small></div>");
 				
 				sb.append("<div class=\"pDate\">작성일&ensp;<small class=\"sDate\">" + pb.getFbDate() +"</small></div>");
 				sb.append("<div class=\"pView\">조회수&ensp;<small class=\"sView\">" + pb.getFbView() + "</small></div>");
@@ -569,7 +533,7 @@ public class Board2 {
 				sb.append("<div class=\"pTitle\">" + pb.getFbTitle() + "</div>");
 				sb.append("<div class=\"pHead\">");
 				
-				sb.append("<div class=\"pWriter\">작성자&ensp;<small class=\"sWriter\">" + pb.getFbSuName() + "</small></div>");
+				sb.append("<div class=\"pWriter\">작성자&ensp;<small class=\"sWriter\">" + pb.getSuNickName() + "</small></div>");
 				
 				sb.append("<div class=\"pDate\">작성일&ensp;<small class=\"sDate\">" + pb.getFbDate() +"</small></div>");
 				sb.append("<div class=\"pView\">조회수&ensp;<small class=\"sView\">" + pb.getFbView() + "</small></div>");
@@ -601,6 +565,7 @@ public class Board2 {
 	}
 	//자유게시판 목록 EL 작업
 	private String makeBoardList(List<PostBean> fbBoardList) {
+		System.out.println(fbBoardList);
 		StringBuffer sb = new StringBuffer();
 		sb.append("<select id=\"freeBoardSelect\" onChange=\"changeSort()\">");
 			sb.append("<option value = \"none\" selected disabled>정렬순서</option>");
@@ -624,7 +589,7 @@ public class Board2 {
 				sb.append("<td class=\"freeBoardB\">"+ pb.getFbDate() +"</td>");
 				sb.append("<td class=\"freeBoardTitle\">"+ pb.getFbTitle() +"</td>");
 				
-				sb.append("<td class=\"freeBoardWriter\">"+ pb.getFbSuName() +"</td>");
+				sb.append("<td class=\"freeBoardWriter\">"+ pb.getSuNickName() +"</td>");
 				
 				sb.append("<td class=\"freeBoardB\">"+ pb.getLikes() +"</td>");
 				sb.append("<td class=\"freeBoardB\">"+ pb.getFbView() +"</td>");

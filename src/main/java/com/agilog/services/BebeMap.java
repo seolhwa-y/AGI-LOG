@@ -123,18 +123,200 @@ public class BebeMap implements ServiceRule {
 			e.printStackTrace();
 		}
 	}
+
+	// 지도 정보 확인 후 댓글 불러오기
+	private void viewCompanyInfoCtl(Model model) {
+		/* 
+		 * 개발자 : 염설화
+		 * 세부기능 : 사용자가 감성일기 피드를 눌렀을 때, 게시글 내용, 댓글, 좋아요 불러온다.
+		 */
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		
+		CompanyBean cb = (CompanyBean)model.getAttribute("companyBean");
+		
+		try {
+			AuthBean ab = (AuthBean)this.pu.getAttribute("accessInfo");
+			String coCode = this.session.selectOne("getCoCode", cb);
+			
+			cb.setCoCode(coCode);
+			if(cb.getCoCode() != null) {
+				map.put("suCode", ab.getSuCode());
+				map.put("coInfo", cb);
+				map.put("mcComment", this.session.selectList("getMapCommentList", cb));
+				model.addAttribute("mcCommentList", map);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	// 지도 댓글 등록
+	@Transactional(rollbackFor = SQLException.class)
+	private void insertMapCommentCtl(Model model) {
+		/* 
+		 * 개발자 : 염설화
+		 * 세부기능 : 사용자가 감성일기 피드를 눌렀을 때, 게시글 내용, 댓글, 좋아요 불러온다.
+		 */
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		BebeMapCommentBean bmcb = (BebeMapCommentBean)model.getAttribute("bebeMapCommentBean");
+		
+		try {
+			AuthBean ab = (AuthBean)this.pu.getAttribute("accessInfo");
+			
+			bmcb.setMcSuCode(ab.getSuCode());
+			bmcb.setMcCode(this.session.selectOne("getMcCode", bmcb.getCoCode()));
+			
+			if(bmcb.getMcCode() == null) {
+				bmcb.setMcCode("1");
+			}
+			
+			if(this.convertToBoolean(this.session.insert("insMapComment", bmcb))) {
+				
+				map.put("suCode", ab.getSuCode());
+				map.put("mcComment", this.session.selectList("getMapCommentList", bmcb));
+				model.addAttribute("insMapComment", map);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	// 지도 댓글 수정
+	@Transactional(rollbackFor = SQLException.class)
+	private void updateMapCommentCtl(Model model) {
+		/* 
+		 * 개발자 : 염설화
+		 * 세부기능 : 사용자가 감성일기 피드를 눌렀을 때, 게시글 내용, 댓글, 좋아요 불러온다.
+		 */
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		BebeMapCommentBean bmcb = (BebeMapCommentBean)model.getAttribute("bebeMapCommentBean");
+		
+		try {
+			AuthBean ab = (AuthBean)this.pu.getAttribute("accessInfo");
+			
+			bmcb.setMcSuCode(ab.getSuCode());
+			if(this.convertToBoolean(this.session.update("updMapComment", bmcb))) {
+				
+				map.put("suCode", ab.getSuCode());
+				map.put("mcComment", this.session.selectList("getMapCommentList", bmcb));
+				model.addAttribute("updMapComment", map);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
+	}
+
+	// 지도 댓글 삭제
+	@Transactional(rollbackFor = SQLException.class)
+	private void deleteMapCommentCtl(Model model) {
+		/* 
+		 * 개발자 : 염설화
+		 * 세부기능 : 사용자가 감성일기 피드를 눌렀을 때, 게시글 내용, 댓글, 좋아요 불러온다.
+		 */
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		BebeMapCommentBean bmcb = (BebeMapCommentBean)model.getAttribute("bebeMapCommentBean");
+		
+		try {
+			AuthBean ab = (AuthBean)this.pu.getAttribute("accessInfo");
+			
+			bmcb.setMcSuCode(ab.getSuCode());
+			if(this.convertToBoolean(this.session.delete("delMapComment", bmcb))) {
+
+				map.put("suCode", ab.getSuCode());
+				map.put("mcComment", this.session.selectList("getMapCommentList", bmcb));
+				model.addAttribute("delMapComment", map);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	// 내 아기 정보, 해당 병원에 의사정보 및 예약 가능여부 불러오기
+	private void showReservationCtl(Model model) {
+		/* 
+		 * 개발자 : 염설화
+		 * 세부기능 : 사용자가 감성일기 피드를 눌렀을 때, 게시글 내용, 댓글, 좋아요 불러온다.
+		 */
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		ReservationBean rb = (ReservationBean)model.getAttribute("reservationBean");
+		DoctorBean db = new DoctorBean();
+		try {
+			AuthBean ab = (AuthBean)this.pu.getAttribute("accessInfo");
+			
+			// 아이 정보 불러오기
+			List<BabyBean> babyList = this.session.selectList("getTotalBabyCode", ab);
+			map.put("babyList", babyList); 
+			
+			// 의사 정보 불러오기
+			db.setCoCode(rb.getResCoCode());
+			List<DoctorBean> doctorList = this.session.selectList("getDoctorInfo", db);
+			map.put("doctorList", doctorList); 
+			
+//			// 해당 병원 
+//			List<ReservationBean> resList = this.session.selectList("getResList", rb);
+//			map.put("resList", resList); 
+			
+			model.addAttribute("resInfo", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+			
+		model.addAttribute("resList", rb);
+	}
+
+	// 예약 가능한 시간대 가져오기
+	private void getResTime(Model model) {
+		/* 
+		 * 개발자 : 염설화
+		 * 세부기능 : 사용자가 감성일기 피드를 눌렀을 때, 게시글 내용, 댓글, 좋아요 불러온다.
+		 */
+		ReservationBean rb = (ReservationBean)model.getAttribute("reservationBean");
+		
+		// 해당 병원 
+		List<ReservationBean> resList = this.session.selectList("getReservationList", rb);
+		
+		model.addAttribute("resTime", resList);
+	}
+	
+	// 지도 예약완료
+	@Transactional(rollbackFor = SQLException.class)
+	private void reservationCtl(Model model) {
+		/* 
+		 * 개발자 : 염설화
+		 * 세부기능 : 사용자가 감성일기 피드를 눌렀을 때, 게시글 내용, 댓글, 좋아요 불러온다.
+		 */
+		ReservationBean rb = (ReservationBean)model.getAttribute("reservationBean");
+		
+		if(this.convertToBoolean(this.session.selectOne("isResInfo", rb))) {
+			model.addAttribute("message", "동일한 시간에 예약할 수 없습니다.");
+		} else { 
+			rb.setResCode(this.session.selectOne("getResCode", rb));
+			rb.setResCount(this.session.selectOne("getResCountPlus", rb));
+	//		rb.setResCount(rb.getResCount()+1);
+			
+			if(this.convertToBoolean(this.session.insert("insReservationList", rb))) {
+				if(this.convertToBoolean(this.session.update("updResTime", rb))) {
+				}
+			}
+		}
+	}
 	
 	// API 국립중앙의료원 :: 전국 병·의원 찾기 서비스 :: 달빛어린이병원 및 소아전문센터
 	public List<BebeMapBean> ApiExplorer(ModelAndView mav) throws IOException {
+		/* 
+		 * 개발자 : 염설화
+		 * 세부기능 : 사용자가 감성일기 피드를 눌렀을 때, 게시글 내용, 댓글, 좋아요 불러온다.
+		 */
 		/* 소아전문 */
 		String url = "http://apis.data.go.kr/B552657/HsptlAsembySearchService/getBabyListInfoInqire";	// EndPoint
 		String key = "?serviceKey=O1knyhqepuJAw4ayaaud9WPTKZtq0t8v8MKi6RidO7aqPOqF1o%2B8NNqgqpPV4%2BG4fqiFdK4RzH0vE%2BV5Viv1%2BQ%3D%3D";		// Encoding
 		String callURL = url + key + "&ORD=NAME";
-		/* 병원 전체 */
-//		String url = "http://apis.data.go.kr/B552657/HsptlAsembySearchService/getHsptlMdcncListInfoInqire";	// EndPoint
-//		String key = "?serviceKey=O1knyhqepuJAw4ayaaud9WPTKZtq0t8v8MKi6RidO7aqPOqF1o%2B8NNqgqpPV4%2BG4fqiFdK4RzH0vE%2BV5Viv1%2BQ%3D%3D";		// Encoding
-//		String callURL = url + key + "&QZ=B&ORD=NAME&pageNo=1&numOfRows=15";
-		
+		/* 병원 전체 
+		String url = "http://apis.data.go.kr/B552657/HsptlAsembySearchService/getHsptlMdcncListInfoInqire";	// EndPoint
+		String key = "?serviceKey=O1knyhqepuJAw4ayaaud9WPTKZtq0t8v8MKi6RidO7aqPOqF1o%2B8NNqgqpPV4%2BG4fqiFdK4RzH0vE%2BV5Viv1%2BQ%3D%3D";		// Encoding
+		String callURL = url + key + "&QZ=B&ORD=NAME&pageNo=1&numOfRows=15";
+		*/
 		// openAPI에서 받아온 데이터를 JSON으로 파싱
 		Map<String, Object> map = this.getApi(callURL);
 		
@@ -146,6 +328,10 @@ public class BebeMap implements ServiceRule {
 	
 	// API DATA -> JSON
 	private Map<String, Object> getApi(String callURL) throws MalformedURLException, IOException {
+		/* 
+		 * 개발자 : 염설화
+		 * 세부기능 : 사용자가 감성일기 피드를 눌렀을 때, 게시글 내용, 댓글, 좋아요 불러온다.
+		 */
 		Map<String, Object> map = new HashMap<String, Object>();
 		URL url;
 		url = new URL(callURL);
@@ -174,6 +360,10 @@ public class BebeMap implements ServiceRule {
 	// JSON DATA -> List<BebeMapBean>
 	@SuppressWarnings("unchecked")
 	private List<BebeMapBean> jsonParser(Map<String, Object> map) {
+		/* 
+		 * 개발자 : 염설화
+		 * 세부기능 : 사용자가 감성일기 피드를 눌렀을 때, 게시글 내용, 댓글, 좋아요 불러온다.
+		 */
 		Map<String, Object> response = (Map<String, Object>) map.get("response");
 		Map<String, Object> body = (Map<String, Object>) response.get("body");
 		Map<String, Object> items = (Map<String, Object>) body.get("items");
@@ -188,7 +378,6 @@ public class BebeMap implements ServiceRule {
 				BebeMapBean bmb = new BebeMapBean();
 				// 상호
 				bmb.setName((String)item.get("dutyName"));
-
 				// 주소 + 상세주소
 				bmb.setAddress((String) item.get("dutyAddr"));
 				// 연락처
@@ -206,159 +395,6 @@ public class BebeMap implements ServiceRule {
 
 		return bmList;
 	}
-
-	// 지도 정보 확인 후 댓글 불러오기
-	private void viewCompanyInfoCtl(Model model) {
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		
-		CompanyBean cb = (CompanyBean)model.getAttribute("companyBean");
-		
-		try {
-			AuthBean ab = (AuthBean)this.pu.getAttribute("accessInfo");
-			String coCode = this.session.selectOne("getCoCode", cb);
-			
-			cb.setCoCode(coCode);
-			if(cb.getCoCode() != null) {
-				map.put("suCode", ab.getSuCode());
-				map.put("coInfo", cb);
-				map.put("mcComment", this.session.selectList("getMapCommentList", cb));
-				model.addAttribute("mcCommentList", map);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	// 지도 댓글 등록
-	@Transactional(rollbackFor = SQLException.class)
-	private void insertMapCommentCtl(Model model) {
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		BebeMapCommentBean bmcb = (BebeMapCommentBean)model.getAttribute("bebeMapCommentBean");
-		
-		try {
-			AuthBean ab = (AuthBean)this.pu.getAttribute("accessInfo");
-			
-			bmcb.setMcSuCode(ab.getSuCode());
-			bmcb.setMcCode(this.session.selectOne("getMcCode", bmcb.getCoCode()));
-			
-			if(bmcb.getMcCode() == null) {
-				bmcb.setMcCode("1");
-			}
-			
-			if(this.convertToBoolean(this.session.insert("insMapComment", bmcb))) {
-				
-				map.put("suCode", ab.getSuCode());
-				map.put("mcComment", this.session.selectList("getMapCommentList", bmcb));
-				model.addAttribute("insMapComment", map);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	// 지도 댓글 수정
-	@Transactional(rollbackFor = SQLException.class)
-	private void updateMapCommentCtl(Model model) {
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		BebeMapCommentBean bmcb = (BebeMapCommentBean)model.getAttribute("bebeMapCommentBean");
-		
-		try {
-			AuthBean ab = (AuthBean)this.pu.getAttribute("accessInfo");
-			
-			bmcb.setMcSuCode(ab.getSuCode());
-			if(this.convertToBoolean(this.session.update("updMapComment", bmcb))) {
-				
-				map.put("suCode", ab.getSuCode());
-				map.put("mcComment", this.session.selectList("getMapCommentList", bmcb));
-				model.addAttribute("updMapComment", map);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}		
-	}
-
-	// 지도 댓글 삭제
-	@Transactional(rollbackFor = SQLException.class)
-	private void deleteMapCommentCtl(Model model) {
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		BebeMapCommentBean bmcb = (BebeMapCommentBean)model.getAttribute("bebeMapCommentBean");
-		
-		try {
-			AuthBean ab = (AuthBean)this.pu.getAttribute("accessInfo");
-			
-			bmcb.setMcSuCode(ab.getSuCode());
-			if(this.convertToBoolean(this.session.delete("delMapComment", bmcb))) {
-
-				map.put("suCode", ab.getSuCode());
-				map.put("mcComment", this.session.selectList("getMapCommentList", bmcb));
-				model.addAttribute("delMapComment", map);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	// 내 아기 정보, 해당 병원에 의사정보 및 예약 가능여부 불러오기
-	private void showReservationCtl(Model model) {
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		ReservationBean rb = (ReservationBean)model.getAttribute("reservationBean");
-		DoctorBean db = new DoctorBean();
-		try {
-			AuthBean ab = (AuthBean)this.pu.getAttribute("accessInfo");
-			
-			// 아이 정보 불러오기
-			List<BabyBean> babyList = this.session.selectList("getTotalBabyCode", ab);
-			map.put("babyList", babyList); 
-			
-			// 의사 정보 불러오기
-			db.setCoCode(rb.getResCoCode());
-			List<DoctorBean> doctorList = this.session.selectList("getDoctorInfo", db);
-			map.put("doctorList", doctorList); 
-			
-//			// 해당 병원 
-//			List<ReservationBean> resList = this.session.selectList("getResList", rb);
-//			map.put("resList", resList); 
-			
-			model.addAttribute("resInfo", map);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-			
-		model.addAttribute("resList", rb);
-	}
-
-	private void getResTime(Model model) {
-		ReservationBean rb = (ReservationBean)model.getAttribute("reservationBean");
-		
-		// 해당 병원 
-		List<ReservationBean> resList = this.session.selectList("getReservationList", rb);
-		
-		model.addAttribute("resTime", resList);
-	}
-	
-	// 지도 예약완료
-	@Transactional(rollbackFor = SQLException.class)
-	//private void reservationCtl(ModelAndView mav) {
-	private void reservationCtl(Model model) {
-		ReservationBean rb = (ReservationBean)model.getAttribute("reservationBean");
-		
-		if(this.convertToBoolean(this.session.selectOne("isResInfo", rb))) {
-			model.addAttribute("message", "동일한 시간에 예약할 수 없습니다.");
-		} else { 
-			rb.setResCode(this.session.selectOne("getResCode", rb));
-			rb.setResCount(this.session.selectOne("getResCountPlus", rb));
-	//		rb.setResCount(rb.getResCount()+1);
-			
-			if(this.convertToBoolean(this.session.insert("insReservationList", rb))) {
-				if(this.convertToBoolean(this.session.update("updResTime", rb))) {
-				}
-			}
-		}
-	}
-	
-
-	
 	
 	private boolean convertToBoolean(int booleanCheck) {
 		return booleanCheck == 0? false : true;

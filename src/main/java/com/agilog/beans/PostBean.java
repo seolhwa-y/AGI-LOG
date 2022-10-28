@@ -12,6 +12,7 @@ public class PostBean {
 	private String fbContent;
 	private int fbView;
 //	private int fbLike;
+	private String suNickName;
 	
 	private String ibCode;
 	private String ibDate;

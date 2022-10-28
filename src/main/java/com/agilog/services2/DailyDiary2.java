@@ -232,22 +232,6 @@ public class DailyDiary2 implements ServiceRule {
 		}
 	}
 
-	private void insertDailyDiaryCommentCtl(Model model) {
-
-	}
-
-	private void updateDailyDiaryCommentCtl(Model model) {
-
-	}
-
-	private void deleteDailyDiaryComentCtl(Model model) {
-
-	}
-
-	private void selectFeedSortCtl(ModelAndView mav) {
-
-	}
-
 	private void updateDailyDiaryFeedCtl(Model model) {
 		DailyDiaryBean ddb = (DailyDiaryBean) model.getAttribute("dailyDiaryBean");
 		if(this.convertToBoolean(this.session.update("updDDFeed", ddb))) {
@@ -304,14 +288,6 @@ public class DailyDiary2 implements ServiceRule {
 			mav.addObject("message", "네트워크가 불안정합니다.");
 			mav.setViewName("dashBoard");
 		}
-	}
-
-	private void trendHashTagCtl(Model model) {
-
-	}
-
-	private void searchHashTagCtl(Model model) {
-
 	}
 
 	private String makeDialyFeed(List<DailyDiaryBean> feedList) {

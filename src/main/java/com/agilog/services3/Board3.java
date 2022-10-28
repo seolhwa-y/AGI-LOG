@@ -36,7 +36,6 @@ public class Board3 implements ServiceRule {
 		try {
 			if (this.pu.getAttribute("accessInfo") != null) {
 				switch (serviceCode) {
-				case 580 : this.showFreePostCtl(mav); break;
 				}
 			} else {
 				mav.setViewName("login");
@@ -53,78 +52,14 @@ public class Board3 implements ServiceRule {
 		case 62 : this.deletePostCommentCtl(model); break;
 		}
 	}
-	
-	// 특정 게시글 댓글 내용 보기
-	private void showFreePostCtl(ModelAndView mav) {
-		PostCommentBean pcb = new PostCommentBean();
-		StringBuffer sb = new StringBuffer();
-
-		PostBean pb = (PostBean)mav.getModel().get("postBean");
-
-		pcb.setFcFbCode(pb.getFbCode());
-		pcb.setFcFbDate(pb.getFbDate());
-		pcb.setFcFbSuCode(pb.getFbSuCode());
-		
-		List<PostCommentBean> pcList = this.session.selectList("getPostCommentList", pcb);
-
-		if(pcList.size() != 0) {
-			mav.addObject("fbComment", this.makeCommentHTML(pcList));
-		}else {
-			sb.append("<div>");
-			sb.append("<input class=\"fbComment commentInput\" />");
-			sb.append("<button class=\"submitBtn btn\" onClick=\"insertBoardComment("+ pcb.getFcFbCode() + "," + pcb.getFcFbSuCode() + "," + pcb.getFcFbDate() + ")\">확인</button>");
-			sb.append("</div>");
-			sb.append("<div id='commentList'></div>");
-			mav.addObject("fbComment", sb.toString());
-		}
-	}
-	
-	// 댓글 내용 양식 만들기
-	private String makeCommentHTML(List<PostCommentBean> pcList) {
-		StringBuffer sb = new StringBuffer();
-		int i = -1;
-
-		sb.append("<div>");
-		sb.append("<input class=\"fbComment commentInput\" />");
-		sb.append("<button class=\"submitBtn btn\" onClick=\"insertBoardComment("+ pcList.get(0).getFcFbCode() + "," + pcList.get(0).getFcFbSuCode() + "," + pcList.get(0).getFcFbDate() + ")\">확인</button>");
-		sb.append("</div>");
-		sb.append("<div id='commentList'>");
-
-		for(PostCommentBean pb : pcList) {
-			i++;
-
-			try {
-				AuthBean ab = (AuthBean)this.pu.getAttribute("accessInfo");
-
-				sb.append("<div class = 'comment " + i + "'>");
-				// 기본 프로필 사진 or 내가 등록한 프로필 사진
-				if(pcList.get(i).getSuPhoto() != null) {
-					sb.append("<img class='profileImage' src=" + pcList.get(i).getSuPhoto() + ">");
-				} else {
-					sb.append("<img class='profileImage' src='/res/img/profile_default.png'>");
-				}
-
-				sb.append("<div class = 'suNickname'>" + pcList.get(i).getSuNickname() + "</div>");
-				sb.append("<div class=\"fcContent " + pcList.get(i).getFcDate() + "\">" + pcList.get(i).getFcContent() + "</div>");
-
-				// 댓글 수정, 삭제 버튼 :: 내가 쓴 댓글의 경우만 수정, 삭제 버튼 생성
-				if(ab.getSuCode().equals(pcList.get(i).getFcSuCode())) {
-					sb.append("<i class=\"fa-solid fa-pen updBtn editBtn\" onClick=\"updateInput(" + pcList.get(i).getFcFbCode() + "," + pcList.get(i).getFcFbSuCode() + "," + pcList.get(i).getFcCode() + "," + pcList.get(i).getFcDate() + "," + pcList.get(i).getFcFbDate() + ")\"></i>");
-					sb.append("<i class=\"fa-solid fa-trash-can delBtn editBtn\" onClick=\"deleteBoardComment(" + pcList.get(i).getFcFbCode() + "," + pcList.get(i).getFcFbSuCode() + "," + pcList.get(i).getFcCode() + "," + pcList.get(i).getFcDate() + "," + pcList.get(i).getFcFbDate() + ")\"></i>");
-				}
-				sb.append("</div>");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		sb.append("</div>");
-
-		return sb.toString();
-	}
 
 	// 특정 게시글에 댓글 등록
 	@Transactional(rollbackFor = SQLException.class)
 	private void insertPostCommentCtl(Model model) {
+		/* 
+		 * 개발자 : 염설화
+		 * 세부기능 : 사용자가 감성일기 피드를 눌렀을 때, 게시글 내용, 댓글, 좋아요 불러온다.
+		 */
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		PostCommentBean pcb = (PostCommentBean)model.getAttribute("postCommentBean");
 		System.out.println("날짜 확인 : " + pcb.getFcDate());
@@ -150,6 +85,10 @@ public class Board3 implements ServiceRule {
 	// 특정 게시글에 댓글 수정
 	@Transactional(rollbackFor = SQLException.class)
 	private void updatePostCommentCtl(Model model) {
+		/* 
+		 * 개발자 : 염설화
+		 * 세부기능 : 사용자가 감성일기 피드를 눌렀을 때, 게시글 내용, 댓글, 좋아요 불러온다.
+		 */
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		PostCommentBean pcb = (PostCommentBean)model.getAttribute("postCommentBean");
 
@@ -173,6 +112,10 @@ public class Board3 implements ServiceRule {
 	// 특정 게시글에 댓글 삭제
 	@Transactional(rollbackFor = SQLException.class)
 	private void deletePostCommentCtl(Model model) {
+		/* 
+		 * 개발자 : 염설화
+		 * 세부기능 : 사용자가 감성일기 피드를 눌렀을 때, 게시글 내용, 댓글, 좋아요 불러온다.
+		 */
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		PostCommentBean pcb = (PostCommentBean)model.getAttribute("postCommentBean");
 
@@ -193,67 +136,6 @@ public class Board3 implements ServiceRule {
 		}
 	}
 	
-	private void moveInfoBoardCtl(ModelAndView mav) {
-	
-	}
-	
-	private void moveWritePageCtl(ModelAndView mav) {
-
-	}
-	
-	private void moveShowPostCtl(ModelAndView mav) {
-		
-	}
-	
-	/*private void insertPostCtl(ModelAndView mav) {
-	System.out.println("인서트 진입 체크1");
-	
-	try {
-		AuthBean ab = ((AuthBean) this.pu.getAttribute("accessInfo"));
-		if(ab != null) {
-			//포스트빈 세팅
-			PostBean pb = (PostBean) mav.getModel().get("postBean");
-			
-			pb.setFbSuCode(ab.getSuCode());
-
-			if (this.session.selectOne("getFbCode") == null) {
-				pb.setFbCode("1");
-			} else {
-				pb.setFbCode(Integer.toString(Integer.parseInt(this.session.selectOne("getFbCode"))+1));
-			}
-			System.out.println("코드 체크2 : " + pb.getFbCode());
-			System.out.println("유저 코드 체크 : " + pb.getFbSuCode());
-			System.out.println("타이틀 체크 : " + pb.getFbTitle());
-			System.out.println("컨텐츠 체크 : " + pb.getFbContent());
-			
-			if(this.convertToBoolean(this.session.insert("insFbPost", pb))) {
-				mav.setViewName("freeBoard");
-			}
-		} else {
-			mav.addObject("message", "세션이 만료되었습니다. 다시 로그인 해주세요");
-			mav.setViewName("dashBoard");
-		}
-	} catch (Exception e) {
-		e.printStackTrace();
-	}
-	
-	//포스트빈 세팅
-	PostBean pb = (PostBean) mav.getModel().get("postBean");
-	
-	System.out.println("타이틀 체크 : " + pb.getFbTitle());
-	System.out.println("컨텐츠 체크 : " + pb.getFbContent());
-
-	mav.setViewName("freeBoard");
-}*/
-
-
-//정보게시판 목록 EL 작업
-private String makeBoardList(List<BoardBean> BoardList) {
-	StringBuffer sb = new StringBuffer();
-	return sb.toString();
-	
-}
-
 	private boolean convertToBoolean(int booleanCheck) {
 		return booleanCheck == 0 ? false : true;
 	}

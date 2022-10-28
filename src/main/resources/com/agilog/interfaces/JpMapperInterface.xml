@@ -156,7 +156,7 @@
 	<select id="getFreeInfo" parameterType="com.agilog.beans.PostBean" resultType="com.agilog.beans.PostBean">
 		SELECT*FROM(SELECT ROWNUM AS NUM, A.*
 		FROM(
-		SELECT * FROM FBPOSTLIST ORDER BY FBDATE DESC
+			SELECT * FROM FBPOSTLIST ORDER BY FBDATE DESC
 		) A)WHERE NUM BETWEEN 1+10*(#{pageNum}-1) AND 10*#{pageNum}
 	</select>
 	
